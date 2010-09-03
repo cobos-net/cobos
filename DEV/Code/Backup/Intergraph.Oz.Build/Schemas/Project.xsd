@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="Project"
+    targetNamespace="http://www.intergraph.com/oz/build/autobuild"
+    elementFormDefault="qualified"
+    xmlns="http://www.intergraph.com/oz/build/autobuild"
+    xmlns:ips="http://www.intergraph.com/oz/build/autobuild"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+  <!-- ======================================================================== -->
+  <!-- Filename:                                                                -->
+  <!-- Description:                                                             -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- Created by:                                    Date:                     -->
+  <!-- Updated by:                                    Date:                     -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--  Notes:                                                                  -->
+  <!--                                                                          -->
+  <!-- ======================================================================== -->
+
+  <xs:include schemaLocation="./Vss.xsd" />
+
+  <xs:complexType name="Project">
+    <xs:annotation>
+      <xs:documentation>
+        TBD: Add element description
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="name" type="xs:string" />
+      <xs:element name="description" type="xs:string" minOccurs="0" />
+      <xs:element name="configPath" type="xs:string" />
+      <xs:element name="workingFolder" type="xs:string" />
+      <xs:element name="vssConfiguration" type="VssConfiguration" />
+    </xs:sequence>
+  </xs:complexType>
+  
+</xs:schema>

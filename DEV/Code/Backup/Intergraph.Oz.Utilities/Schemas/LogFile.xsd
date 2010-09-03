@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="LogFile"
+    targetNamespace="http://www.intergraph.com/oz/utilities/logger"
+    elementFormDefault="qualified"
+    xmlns="http://www.intergraph.com/oz/utilities/logger"
+    xmlns:cad="http://www.intergraph.com/oz/utilities/logger"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+  <!-- ======================================================================== -->
+  <!-- Filename:                                                                -->
+  <!-- Description:                                                             -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- Created by:                                    Date:                     -->
+  <!-- Updated by:                                    Date:                     -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--  Notes:                                                                  -->
+  <!--                                                                          -->
+  <!-- ======================================================================== -->
+
+
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- Basic Log file structure                                                 -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+  <xs:element name="LogFile">
+    <xs:annotation>
+      <xs:documentation>
+        TBD: Add element description
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Metadata" type="LogFileMetadata" minOccurs="0" maxOccurs="unbounded" />
+        <xs:element ref="LogFileMessage" minOccurs="0" maxOccurs="unbounded" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- Log file entries                                                         -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+  <xs:complexType name="LogFileMessageType" abstract="true">
+    <xs:annotation>
+      <xs:documentation>
+        TBD: Add element description
+      </xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="timestamp" type="xs:dateTime" use="required" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:element name="LogFileMessage" type="LogFileMessageType"/>
+  
+  <!-- Information category -->
+  <xs:element name="Information" substitutionGroup="LogFileMessage">
+    <xs:annotation>
+      <xs:documentation>
+        TBD: Add element description
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="LogFileMessageType" />
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- Warning category -->
+  <xs:element name="Warning" substitutionGroup="LogFileMessage">
+    <xs:annotation>
+      <xs:documentation>
+        TBD: Add element description
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="LogFileMessageType" />
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- Error category -->
+  <xs:element name="Error" substitutionGroup="LogFileMessage">
+    <xs:annotation>
+      <xs:documentation>
+        TBD: Add element description
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="LogFileMessageType" />
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- Error category -->
+  <xs:element name="Debug" substitutionGroup="LogFileMessage">
+    <xs:annotation>
+      <xs:documentation>
+        TBD: Add element description
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="LogFileMessageType" />
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- Log file metadata                                                        -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+  <!-- simple name/value metadata item -->
+  <xs:complexType name="LogFileMetadata">
+    <xs:annotation>
+      <xs:documentation>
+        TBD: Add element description
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Name" type="xs:string" />
+      <xs:element name="Value" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>

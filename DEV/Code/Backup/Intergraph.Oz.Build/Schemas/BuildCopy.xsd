@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="FileCopy"
+    targetNamespace="http://www.intergraph.com/oz/build/autobuild"
+    elementFormDefault="qualified"
+    xmlns="http://www.intergraph.com/oz/build/autobuild"
+    xmlns:ips="http://www.intergraph.com/oz/build/autobuild"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+  <!-- ======================================================================== -->
+  <!-- Filename:                                                                -->
+  <!-- Description:                                                             -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- Created by:                                    Date:                     -->
+  <!-- Updated by:                                    Date:                     -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--  Notes:                                                                  -->
+  <!--                                                                          -->
+  <!-- ======================================================================== -->
+
+  <xs:include schemaLocation="./Base.xsd" />
+
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- Build copy operations                                                    -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+  <xs:complexType name="BuildCopy">
+    <xs:annotation>
+      <xs:documentation>
+        TBD: Add element description
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="BuildStep">
+        <xs:sequence>
+          <xs:element name="group" type="FileCopyGroup" minOccurs="1" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  
+  <xs:complexType name="FileCopyGroup">
+    <xs:annotation>
+      <xs:documentation>
+        TBD: Add element description
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="folder" type="FileCopyTargetFolder" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attribute name="targetFolder" type="xs:string" use="required" />
+    <xs:attribute name="cleanBefore" type="xs:boolean" default="true" />
+  </xs:complexType>
+
+  
+  <xs:complexType name="FileCopyTargetFolder">
+    <xs:annotation>
+      <xs:documentation>
+        TBD: Add element description
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="folder" type="FileCopyTargetFolder" />
+        <xs:element name="source" type="FileCopySourceFolder" />
+      </xs:choice>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="required" />
+  </xs:complexType>
+
+  
+  <xs:complexType name="FileCopySourceFolder">
+    <xs:annotation>
+      <xs:documentation>
+        TBD: Add element description
+      </xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="wildcard" type="xs:string" use="required" />
+        <xs:attribute name="searchOption" type="FileSearchOption" use="required" />
+        <xs:attribute name="buildTree" type="xs:boolean" default="false" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  
+  
+  <xs:simpleType name="FileSearchOption">
+    <xs:annotation>
+      <xs:documentation>
+        TBD: Add element description
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value ="AllDirectories" />
+      <xs:enumeration value="TopDirectoryOnly" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+</xs:schema>

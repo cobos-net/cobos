@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="Base"
+    targetNamespace="http://www.intergraph.com/oz/build/autobuild"
+    elementFormDefault="qualified"
+    xmlns="http://www.intergraph.com/oz/build/autobuild"
+    xmlns:ips="http://www.intergraph.com/oz/build/autobuild"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+  <!-- ======================================================================== -->
+  <!-- Filename:                                                                -->
+  <!-- Description:                                                             -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- Created by:                                    Date:                     -->
+  <!-- Updated by:                                    Date:                     -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--  Notes:                                                                  -->
+  <!--                                                                          -->
+  <!-- ======================================================================== -->
+
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- Basic build entity bases                                                 -->
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+  <!-- Refers to a buildable item e.g. resource file -->
+  <xs:complexType name="BuildEntity">
+    <xs:annotation>
+      <xs:documentation>
+        TBD: Add element description
+      </xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="includeInBuild" type="xs:boolean" default="true"/>
+  </xs:complexType>
+
+  <!-- Refers to a step in the build process e.g. update version numbers -->
+  <xs:complexType name="BuildStep">
+    <xs:annotation>
+      <xs:documentation>
+        TBD: Add element description
+      </xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="performBuildStep" type="xs:boolean" default="true"/>
+  </xs:complexType>
+
+  <!-- Refers to a simple build entity that just references a file -->
+  <xs:complexType name="BuildEntityPath">
+    <xs:annotation>
+      <xs:documentation>
+        TBD: Add element description
+      </xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="includeInBuild" type="xs:boolean" default="true"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  
+</xs:schema>
