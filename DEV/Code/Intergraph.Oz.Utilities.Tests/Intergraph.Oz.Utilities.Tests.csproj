@@ -70,17 +70,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="File\DriveMappingTests.cs" />
     <Compile Include="File\FileHandleTests.cs" />
     <Compile Include="File\FileUtilityTests.cs" />
     <Compile Include="File\NormalisedPathTests.cs" />
     <Compile Include="File\PathResolverTests.cs" />
-    <Compile Include="Logger\LogFileTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestManager.cs" />
     <Compile Include="Text\MacroExpanderTests.cs" />
     <Compile Include="Threading\ResourcePoolTests.cs" />
+    <Compile Include="Win32\DesktopTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="TestFiles\Images\wallpaper.bmp" />
     <Content Include="TestFiles\TestCpp\dummy.h" />
     <Content Include="TestFiles\TestCpp\include\dummy2.h" />
     <Content Include="TestFiles\TestCpp\include\stdExtensions.h" />

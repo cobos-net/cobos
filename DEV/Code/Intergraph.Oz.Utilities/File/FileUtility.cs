@@ -88,6 +88,39 @@ namespace Intergraph.Oz.Utilities.File
 		}
 
 		/// <summary>
+		/// Convenience method for testing a folder has files.  Not recursive.
+		/// </summary>
+		/// <param name="path"></param>
+		/// <returns></returns>
+		public static bool FolderHasFiles( string path )
+		{
+			return Directory.GetFiles( path ).Length > 0;
+		}
+
+		/// <summary>
+		/// Convenience method for testing a folder for sub-folders
+		/// </summary>
+		/// <param name="path"></param>
+		/// <returns></returns>
+		public static bool FolderHasFolders( string path )
+		{
+			return Directory.GetDirectories( path ).Length > 0;
+		}
+
+		/// <summary>
+		/// The normal windows definition of an empty folder is one that
+		/// has no files, directories don't count.  This method tells you
+		/// that the folder is completely empty of files and folders.
+		/// </summary>
+		/// <param name="path"></param>
+		/// <returns></returns>
+		public static bool FolderIsEmpty( string path )
+		{
+			return !(FolderHasFiles( path ) || FolderHasFiles( path ));
+		}
+
+
+		/// <summary>
 		/// Tries to determine whether a path is an absolute path or not.
 		/// Extends Path.IsRooted, which cannot detect the difference
 		/// between a relative path e.g. "\relative\subfolder" and the
@@ -157,6 +190,47 @@ namespace Intergraph.Oz.Utilities.File
 			return true;
 		}
 
+		/// <summary>
+		/// Delete all folders from the specified directory
+		/// </summary>
+		/// <param name="path"></param>
+		/// <returns></returns>
+		public static bool DeleteAllFolders( string path )
+		{
+			if ( !Directory.Exists( path ) )
+			{
+				return false;
+			}
+
+			foreach ( string d in Directory.GetDirectories( path ) )
+			{
+				Directory.Delete( d, true );
+			}
+
+			return true;
+		}
+		
+		/// <summary>
+		/// Clean the directory of all files and folders
+		/// </summary>
+		/// <param name="path"></param>
+		/// <returns></returns>
+		public static bool CleanDirectory( string path )
+		{
+			if ( !Directory.Exists( path ) )
+			{
+				return false;
+			}
+
+			string error = null;
+
+			DeleteAllFiles( path, "*", true, ref error );
+
+			DeleteAllFolders( path );
+
+			return true;
+		}
+		
 		/// <summary>
 		/// Remove any read only attributes from the file
 		/// </summary>

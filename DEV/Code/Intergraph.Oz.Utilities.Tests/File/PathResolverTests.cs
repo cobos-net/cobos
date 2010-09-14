@@ -32,7 +32,7 @@ namespace Intergraph.Oz.Utilities.Tests.File
 		[Fact]
 		public void Construction_with_invalid_root_fails()
 		{
-			Assert.Throws<IntergraphException>( 
+			Assert.Throws<Exception>( 
 				delegate 
 				{ 
 					PathResolver resolver = new PathResolver( @"C:\totally\madeup\folder\location", null ); 

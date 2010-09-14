@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using Intergraph.Oz.Utilities.Logger;
 
 namespace Intergraph.Oz.Utilities.File
 {
@@ -34,7 +33,7 @@ namespace Intergraph.Oz.Utilities.File
 
 			if ( !FileUtility.ExistsAsFolder( rootFolder.Value ) )
 			{
-				throw new IntergraphException( string.Format( "Cannot use a non-existent folder as the root: {0}", rootFolder.Value ), MessageCategory.Error );
+				throw new Exception( string.Format( "Cannot use a non-existent folder as the root: {0}", rootFolder.Value ) );
 			}
 
 			_lookInFolders = new List<NormalisedPath>( lookInFolders == null ?  1 : lookInFolders.Length + 1 );

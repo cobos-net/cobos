@@ -211,6 +211,15 @@ namespace Intergraph.Oz.Utilities.File
 			string[] directories = path.Split( new char[] { Path.DirectorySeparatorChar } );
 			string[] fullpath = new string[ directories.Length ];
 
+			// crude test for unc path specifiers.  Remember this for later, the processing strips the
+			// leading '\\' characters out.
+			bool isUnc = false;
+
+			if ( path.Length >= 2 )
+			{
+				isUnc = path[ 0 ] == Path.DirectorySeparatorChar && path[ 1 ] == Path.DirectorySeparatorChar;
+			}
+
 			int d = 0, f = 0;
 
 			for ( ; d < directories.Length; ++d )
@@ -232,7 +241,15 @@ namespace Intergraph.Oz.Utilities.File
 				}
 			}
 
-			return string.Join( pathSeperator, fullpath, 0, f );
+			if ( isUnc )
+			{
+				// re-apply the leading unc path specifier
+				return @"\\" + string.Join( pathSeperator, fullpath, 0, f );
+			}
+			else
+			{
+				return string.Join( pathSeperator, fullpath, 0, f );
+			}
 		}
 
 	}

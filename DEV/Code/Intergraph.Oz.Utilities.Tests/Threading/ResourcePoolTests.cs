@@ -54,6 +54,8 @@ namespace Intergraph.Oz.Utilities.Tests.Threading
 
 			_allDone.WaitOne();
 
+			// allow worker threads to finish
+			Thread.Sleep( 100 );
 
 			Assert.Equal( 0, _resourcePool.NumPending );
 			Assert.Equal( 5, _resourcePool.NumAvailable );

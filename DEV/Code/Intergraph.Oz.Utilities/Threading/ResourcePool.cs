@@ -216,7 +216,7 @@ namespace Intergraph.Oz.Utilities.Threading
 			{
 				if ( _freeList.Count == 0 )
 				{
-					throw new IntergraphError( "An error occured in the resource pool, some resources have not been returned to the pool." );
+					throw new Exception( "An error occured in the resource pool, some resources have not been returned to the pool." );
 				}
 
 				resource = new ResourceHandle( this, _freeList.First.Value );
@@ -248,7 +248,7 @@ namespace Intergraph.Oz.Utilities.Threading
 
 			if ( !found )
 			{
-				throw new IntergraphError( "Attempted to realease a resource that doesn't belong to this resource pool" );
+				throw new Exception( "Attempted to realease a resource that doesn't belong to this resource pool" );
 			}
 
 			lock ( _freeList )

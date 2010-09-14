@@ -32,6 +32,26 @@ namespace Intergraph.Oz.Utilities.Extensions
 		}
 
 		/// <summary>
+		/// Find the index of the specified object in the array
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="a"></param>
+		/// <param name="obj"></param>
+		/// <returns></returns>
+		public static int IndexOf<T>( this T[] a, T obj )
+		{
+			for ( int i = 0; i < a.Length; ++i )
+			{
+				if ( Object.ReferenceEquals( a[ i ], obj ) )
+				{
+					return i;
+				}
+			}
+
+			return -1;
+		}
+
+		/// <summary>
 		/// Returns a one-level deep copy of a portion of an array.
 		/// </summary>
 		/// <typeparam name="T"></typeparam>

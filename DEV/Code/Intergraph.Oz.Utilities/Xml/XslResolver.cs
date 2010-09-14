@@ -6,7 +6,7 @@ using System.Xml;
 
 namespace Intergraph.Oz.Utilities.Xml
 {
-	class XslResolver : XmlResolver
+	public class XslResolver : XmlResolver
 	{
 		string _namespace;
 

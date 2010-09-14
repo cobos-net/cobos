@@ -25,7 +25,7 @@ namespace Intergraph.Oz.Utilities.Xml
 			try
 			{
 				// load the embedded stylesheet resource
-				Assembly assembly = Assembly.GetExecutingAssembly();
+				Assembly assembly = Assembly.GetCallingAssembly();
 				xmlReader = new XmlTextReader( assembly.GetManifestResourceStream( xsltResource ) );
 
 				XslCompiledTransform xslt = new XslCompiledTransform();
@@ -50,7 +50,7 @@ namespace Intergraph.Oz.Utilities.Xml
 			try
 			{
 				// load the embedded stylesheet resource
-				Assembly assembly = Assembly.GetExecutingAssembly();
+				Assembly assembly = Assembly.GetCallingAssembly();
 				xmlReader = new XmlTextReader( assembly.GetManifestResourceStream( xsltResource ) );
 
 				XslCompiledTransform xslt = new XslCompiledTransform();
