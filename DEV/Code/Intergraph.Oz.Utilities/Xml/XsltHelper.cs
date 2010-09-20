@@ -14,7 +14,7 @@ namespace Intergraph.Oz.Utilities.Xml
 		public static XslCompiledTransform Load( string filename, string resNamespace )
 		{
 			XslCompiledTransform xslt = new XslCompiledTransform();
-			xslt.Load( filename, null, new XslResolver( resNamespace ) );
+			xslt.Load( filename, null, new XslResolver( Assembly.GetCallingAssembly(), resNamespace ) );
 			return xslt;
 		}
 

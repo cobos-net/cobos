@@ -16,6 +16,7 @@ syntax: glob
 *.log
 */[Dd]ebug/*
 */[Rr]elease/*
+*/release build folder/*
 */App_Data/*
 */_UpgradeReport_Files/*
 */Backup/*

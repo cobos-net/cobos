@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Xml;
 
@@ -9,9 +9,11 @@ namespace Intergraph.Oz.Utilities.Xml
 	public class XslResolver : XmlResolver
 	{
 		string _namespace;
+		Assembly _assembly;
 
-		public XslResolver( string ns )
+		public XslResolver( Assembly assembly, string ns )
 		{
+			_assembly = assembly;
 			_namespace = ns;
 		}
 
@@ -27,7 +29,7 @@ namespace Intergraph.Oz.Utilities.Xml
 			// now build the resource path
 			string resourcepath = _namespace + "." + filename;
 			// and open the stream to the resource
-			return GetType().Module.Assembly.GetManifestResourceStream( resourcepath );
+			return _assembly.GetManifestResourceStream( resourcepath );
 		}
 	}
 }
