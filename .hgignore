@@ -6,6 +6,7 @@ syntax: glob
 # Ignore Visual Studio 2008 files
 *.csproj.user
 *.vcproj*.user
+*.vs10x
 */obj/*
 */[Bb]in/*
 */[Ll]ib/*
