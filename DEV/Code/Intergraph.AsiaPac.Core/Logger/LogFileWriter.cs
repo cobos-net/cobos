@@ -33,7 +33,26 @@ namespace Intergraph.AsiaPac.Core.Logger
 			get;
 			set;
 		}
+
+		/// <summary>
+		/// Default to information level for broad logging information
+		/// </summary>
+		MessageCategory _logLevel = MessageCategory.Information;
 		
+		public MessageCategory LogLevel
+		{
+			get
+			{
+				return _logLevel;
+			}
+			set
+			{
+				_logLevel = value;
+
+				Log( "Log level set to " + MessageCategoryFormat.ToString( _logLevel ), MessageCategory.Information, DateTime.Now );
+			}
+		}
+								
 		/// <summary>
 		/// 
 		/// </summary>
@@ -68,28 +87,28 @@ namespace Intergraph.AsiaPac.Core.Logger
 
 			if ( applicationName != null )
 			{
-				logFileFolder += String.Format( @"\{0}-", applicationName );
+				_logPath = logFileFolder + @"\" + applicationName + "-";
 			}
 			else
 			{
-				logFileFolder += @"\";
+				_logPath = logFileFolder + @"\";
 			}
 
 #if LOG_FILE_XML_FORMAT
-			logFileFolder = String.Format( @"{0}{1}.xml", logFileFolder, DateTime.Now.ToString( "yyyyMMdd-HHmmss" ) );
+			_logPath += DateTime.Now.ToString( "yyyyMMdd-HHmmss" ) + ".xlog";
 #else
-			logPath = String.Format( @"{0}{1}.log", logPath, DateTime.Now.ToString( "yyyyMMdd-HHmmss" ) );
+			_logPath += DateTime.Now.ToString( "yyyyMMdd-HHmmss" ) + ".log";
 #endif
-			_logPath = logFileFolder;
 
 			try
 			{
 				_fstream = new FileStream( _logPath, FileMode.Create, FileAccess.ReadWrite );
 
 				// create a thread-safe wrapper around the log writer
-				_writer = TextWriter.Synchronized( new StreamWriter( _fstream ) );
+				
+				_writer = new StreamWriter( _fstream );
 
-				WriteHeader();
+				//WriteHeader( _writer );
 			}
 			catch ( System.Exception )
 			{
@@ -99,23 +118,68 @@ namespace Intergraph.AsiaPac.Core.Logger
 			}
 		}
 
-		private bool _disposed = false;
+		/// <summary>
+		/// 
+		/// </summary>
+		private void WriteHeader( TextWriter writer )
+		{
+#if LOG_FILE_XML_FORMAT
+			writer.WriteLine( "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" );
+			writer.WriteLine( "<LogFile xmlns=\"http://www.intergraph.com/asiapac/core/logger\">" );
+#else
+			writer.WriteLine( "*********************************************" );
+			writer.WriteLine( String.Format( "** Log started {0}", DateTime.Now.ToString( "s" ) ) );
+			writer.WriteLine( "*********************************************" );
+#endif
+			writer.Flush();
+		}
 
 		/// <summary>
 		/// 
 		/// </summary>
+		private void WriteFooter( TextWriter writer )
+		{
+#if LOG_FILE_XML_FORMAT
+			writer.WriteLine( "</LogFile>" );
+#else
+			writer.WriteLine( "*********************************************" );
+			writer.WriteLine( String.Format( "** Log finished {0}", DateTime.Now.ToString( "s" ) ) );
+			writer.WriteLine( "*********************************************" );
+#endif
+			writer.Flush();
+		}
+
+		#endregion
+
+		#region IDisposable implementation
+
+		private bool _disposed = false;
+
+		~LogFileWriter()
+		{
+			Dispose( false );
+		}
+
 		public void Dispose()
 		{
-			lock ( this )
-			{
-				if ( _disposed )
-				{
-					return;
-				}
+			Dispose( true );
+		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		protected void Dispose( bool disposing )
+		{
+			if ( _disposed )
+			{
+				return;
+			}
+
+			if ( disposing )
+			{
 				if ( _writer != null )
 				{
-					WriteFooter();
+					//WriteFooter( _writer );
 					_writer.Dispose();
 					_writer = null;
 				}
@@ -128,39 +192,12 @@ namespace Intergraph.AsiaPac.Core.Logger
 
 				_logPath = null;
 
-				_disposed = true;
+				GC.SuppressFinalize( this );
 			}
-		}
 
-		/// <summary>
-		/// 
-		/// </summary>
-		private void WriteHeader()
-		{
-#if LOG_FILE_XML_FORMAT
-			_writer.WriteLine( "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" );
-			_writer.WriteLine( "<LogFile xmlns=\"http://www.intergraph.com/asiapac/utilities/logger\">" );
-#else
-			_writer.WriteLine( "*********************************************" );
-			_writer.WriteLine( String.Format( "** Log started {0}", DateTime.Now.ToString( "s" ) ) );
-			_writer.WriteLine( "*********************************************" );
-#endif
-			_writer.Flush();
-		}
+			// free unmanaged resources...
 
-		/// <summary>
-		/// 
-		/// </summary>
-		private void WriteFooter()
-		{
-#if LOG_FILE_XML_FORMAT
-			_writer.WriteLine( "</LogFile>" );
-#else
-			_writer.WriteLine( "*********************************************" );
-			_writer.WriteLine( String.Format( "** Log finished {0}", DateTime.Now.ToString( "s" ) ) );
-			_writer.WriteLine( "*********************************************" );
-#endif
-			_writer.Flush();
+			_disposed = true;
 		}
 
 		#endregion
@@ -173,18 +210,25 @@ namespace Intergraph.AsiaPac.Core.Logger
 		/// <param name="e"></param>
 		public void Log( Exception e )
 		{
-			DateTime timestamp = DateTime.Now;
+			if ( MessageCategory.Error > _logLevel )
+			{
+				return;
+			}
 
-			Log( String.Format( "{0} ({1})", e.Message, e.Source ), MessageCategory.Error, timestamp );
+			StringBuilder message = new StringBuilder( 1024 );
+
+			message.AppendLine( e.Message + " (" + e.Source + ")" );
 
 			Exception inner = e;
 
 			while ( (inner = inner.InnerException) != null )
 			{
-				Log( String.Format( "{0} ({1})", inner.Message, inner.Source ), MessageCategory.Error, timestamp );
+				message.AppendLine( inner.Message + " (" + inner.Source + ")" );
 			}
 
-			Log( e.StackTrace, MessageCategory.Error, timestamp );
+			message.AppendLine( e.StackTrace );
+			
+			Log( message.ToString(), MessageCategory.Error, DateTime.Now );
 		}
 
 		/// <summary>
@@ -213,6 +257,11 @@ namespace Intergraph.AsiaPac.Core.Logger
 		/// <param name="args"></param>
 		public void Information( string format, params object[] args )
 		{
+			if ( MessageCategory.Information > _logLevel )
+			{
+				return;
+			}
+
 			Log( String.Format( format, args ), MessageCategory.Information, DateTime.Now );
 		}
 
@@ -223,6 +272,11 @@ namespace Intergraph.AsiaPac.Core.Logger
 		/// <param name="args"></param>
 		public void Warning( string format, params object[] args )
 		{
+			if ( MessageCategory.Warning > _logLevel )
+			{
+				return;
+			}
+
 			Log( String.Format( format, args ), MessageCategory.Warning, DateTime.Now );
 		}
 
@@ -233,6 +287,11 @@ namespace Intergraph.AsiaPac.Core.Logger
 		/// <param name="args"></param>
 		public void Error( string format, params object[] args )
 		{
+			if ( MessageCategory.Error > _logLevel )
+			{
+				return;
+			}
+
 			Log( String.Format( format, args ), MessageCategory.Error, DateTime.Now );
 		}
 
@@ -243,6 +302,11 @@ namespace Intergraph.AsiaPac.Core.Logger
 		/// <param name="args"></param>
 		public void Debug( string format, params object[] args )
 		{
+			if ( MessageCategory.Debug > _logLevel )
+			{
+				return;
+			}
+
 			Log( String.Format( format, args ), MessageCategory.Debug, DateTime.Now );
 		}
 
@@ -254,18 +318,23 @@ namespace Intergraph.AsiaPac.Core.Logger
 		/// <param name="timestamp"></param>
 		public void Log( string entry, MessageCategory category, DateTime timestamp )
 		{
+			if ( category > _logLevel )
+			{
+				return;
+			}
+
 			string categoryString = MessageCategoryFormat.ToString( category );
 
 			string timestampString = timestamp.ToString( "s" );
 
 			if ( _writer != null )
 			{
-				lock ( _readWriteLock )
+				lock ( this )
 				{
 #if LOG_FILE_XML_FORMAT
-					_writer.WriteLine( "\t<{0} timestamp=\"{1}\">{2}</{0}>", categoryString, timestampString, entry );
+					_writer.WriteLine( "<" + categoryString + " timestamp=\""+ timestampString + "\">" + entry + " </" + categoryString + ">" );
 #else
-					_writer.WriteLine( "{0}\t{1}\t{2}", timestampString, categoryString, entry );
+					_writer.WriteLine( "{0} {1}: {2}", timestampString, categoryString, entry );
 #endif
 					_writer.Flush();
 				}
@@ -286,15 +355,15 @@ namespace Intergraph.AsiaPac.Core.Logger
 		{
 			if ( _writer != null )
 			{
-				lock ( _readWriteLock )
+				lock ( this )
 				{
 #if LOG_FILE_XML_FORMAT
-					_writer.WriteLine( "\t<Metadata>" );
-					_writer.WriteLine( "\t\t<Name>{0}</Name>", name );
-					_writer.WriteLine( "\t\t<Value>{0}</Value>", value );
-					_writer.WriteLine( "\t</Metadata>" );
+					_writer.WriteLine( "<metadata>" );
+					_writer.WriteLine( "<name>{0}</name>", name );
+					_writer.WriteLine( "<value>{0}</value>", value );
+					_writer.WriteLine( "</metadata>" );
 #else
-					_writer.WriteLine( "{0}:\t\t{1}", name, value );
+					_writer.WriteLine( "{0}:{1}", name, value );
 #endif
 					_writer.Flush();
 				}
@@ -302,7 +371,7 @@ namespace Intergraph.AsiaPac.Core.Logger
 
 			if ( LogToConsole )
 			{
-				System.Console.WriteLine( "{0}:\t\t{1}", name, value );
+				System.Console.WriteLine( "{0}:{1}", name, value );
 			}
 		}
 
@@ -327,31 +396,29 @@ namespace Intergraph.AsiaPac.Core.Logger
 		/// <param name="path"></param>
 		public void WriteToFile( string path )
 		{
-			// bit more complicated than I would like because the log file is in Xml format
-			// but isn't closed with the </LogFile> tag until the log file is actually closed,
-			// so we need to read the file as is into a temporary store and then append the closing
-			// Xml tag before we can use the Xslt to transform to Html.
+			const int CHUNK_SIZE = 128;
 
-			lock ( _readWriteLock )
+			lock ( this )
 			{
 				_writer.Flush();
 				_fstream.Seek( 0, SeekOrigin.Begin );
 
-				TextReader reader = TextReader.Synchronized( new StreamReader( _fstream ) );
+				TextReader reader = new StreamReader( _fstream );
 
 				using ( StreamWriter writer = new StreamWriter( path ) )
 				{
-					char[] buffer = new char[ 1024 ];
+					WriteHeader( writer );
+
+					char[] buffer = new char[ CHUNK_SIZE ];
 					int bytesRead;
 
-					while ( (bytesRead = reader.Read( buffer, 0, 1024 )) != 0 )
+					while ( (bytesRead = reader.Read( buffer, 0, CHUNK_SIZE )) != 0 )
 					{
 						writer.Write( buffer, 0, bytesRead );
 					}
 
-#if LOG_FILE_XML_FORMAT
-					writer.Write( "</LogFile>" );
-#endif
+					WriteFooter( writer );
+
 				}
 				// dont Close or Dispose the reader, this will close the underlying FileStream object
 			}
@@ -371,8 +438,9 @@ namespace Intergraph.AsiaPac.Core.Logger
 
 				XsltHelper.Transform( "Intergraph.AsiaPac.Core.Logger.LogFile.xslt", tmpname, path );
 			}
-			catch ( System.Exception )
+			catch ( System.Exception e )
 			{
+				System.Diagnostics.Debug.Print( e.Message );
 				throw;
 			}
 			finally

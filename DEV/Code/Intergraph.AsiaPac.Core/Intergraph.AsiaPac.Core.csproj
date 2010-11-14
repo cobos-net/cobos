@@ -58,10 +58,19 @@
     <Compile Include="UI\IntergraphApplication.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Logger\LogFile.xslt" />
+    <EmbeddedResource Include="Logger\LogFile.xslt">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Logger\sample.xml" />
+    <Content Include="Logger\LogFile2.xslt" />
+    <Content Include="Logger\LogFile3.xslt">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Logger\LogFile4.xslt" />
+    <Content Include="Logger\sample.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Logger\Template.htm" />
   </ItemGroup>
   <ItemGroup>

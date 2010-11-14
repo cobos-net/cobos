@@ -31,7 +31,7 @@
     </xs:annotation>
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="Metadata" type="LogFileMetadata" minOccurs="0" maxOccurs="unbounded" />
+        <xs:element name="metadata" type="LogFileMetadata" minOccurs="0" maxOccurs="unbounded" />
         <xs:element ref="LogFileMessage" minOccurs="0" maxOccurs="unbounded" />
       </xs:sequence>
     </xs:complexType>
@@ -57,7 +57,7 @@
   <xs:element name="LogFileMessage" type="LogFileMessageType"/>
   
   <!-- Information category -->
-  <xs:element name="Information" substitutionGroup="LogFileMessage">
+  <xs:element name="information" substitutionGroup="LogFileMessage">
     <xs:annotation>
       <xs:documentation>
         TBD: Add element description
@@ -71,7 +71,7 @@
   </xs:element>
 
   <!-- Warning category -->
-  <xs:element name="Warning" substitutionGroup="LogFileMessage">
+  <xs:element name="warning" substitutionGroup="LogFileMessage">
     <xs:annotation>
       <xs:documentation>
         TBD: Add element description
@@ -85,7 +85,7 @@
   </xs:element>
 
   <!-- Error category -->
-  <xs:element name="Error" substitutionGroup="LogFileMessage">
+  <xs:element name="error" substitutionGroup="LogFileMessage">
     <xs:annotation>
       <xs:documentation>
         TBD: Add element description
@@ -99,7 +99,7 @@
   </xs:element>
 
   <!-- Error category -->
-  <xs:element name="Debug" substitutionGroup="LogFileMessage">
+  <xs:element name="debug" substitutionGroup="LogFileMessage">
     <xs:annotation>
       <xs:documentation>
         TBD: Add element description
@@ -124,8 +124,8 @@
       </xs:documentation>
     </xs:annotation>
     <xs:sequence>
-      <xs:element name="Name" type="xs:string" />
-      <xs:element name="Value" type="xs:string" />
+      <xs:element name="name" type="xs:string" />
+      <xs:element name="value" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
 
