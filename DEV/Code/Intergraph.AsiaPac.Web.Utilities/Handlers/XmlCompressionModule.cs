@@ -10,7 +10,7 @@ using System.Web.UI.HtmlControls;
 using System.IO.Compression;
 using System.Globalization;
 
-namespace Intergraph.CAD.Web.Framework.Handlers
+namespace Intergraph.AsiaPac.Web.Utilities.Handlers
 {
 	public class XmlCompressionModule : IHttpModule
 	{

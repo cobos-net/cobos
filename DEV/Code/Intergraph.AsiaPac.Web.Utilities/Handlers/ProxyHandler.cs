@@ -13,7 +13,7 @@ using System.Web.SessionState;
 using System.Net;
 using System.IO;
 
-namespace Intergraph.CAD.Web.Framework.Handlers
+namespace Intergraph.AsiaPac.Web.Utilities.Handlers
 {
 	public static class ProxyHandler
 	{
@@ -75,7 +75,7 @@ namespace Intergraph.CAD.Web.Framework.Handlers
 					proxyresponse.Close();
 				}
 			}
-			catch ( CadException ex )
+			catch ( Exception ex )
 			{
 				pageResponse.StatusCode = 500;
 				pageResponse.StatusDescription = String.Format( "InternalServerError: {0}\n{1}", ex.Message, pageRequest[ "url" ] );

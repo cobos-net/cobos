@@ -12,6 +12,7 @@ syntax: glob
 */[Ll]ib/*
 */[Gg]enerated/*
 *.ncb
+*.sdf
 *.suo
 *.scc
 *.log
