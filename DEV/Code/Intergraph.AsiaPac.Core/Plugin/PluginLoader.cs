@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Reflection;
+using System.Security.Permissions;
 
 namespace Intergraph.AsiaPac.Core.Plugin
 {
@@ -57,6 +58,9 @@ namespace Intergraph.AsiaPac.Core.Plugin
 
 			try
 			{
+				FileIOPermission perm = new FileIOPermission( FileIOPermissionAccess.AllAccess, path );
+				perm.Assert();
+
 				Assembly asm = Assembly.Load( AssemblyName.GetAssemblyName( path ) );
 
 				if ( asm == null )

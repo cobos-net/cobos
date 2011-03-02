@@ -61,6 +61,26 @@ namespace Intergraph.AsiaPac.Utilities.Extensions
 		/// <summary>
 		/// 
 		/// </summary>
+		/// <param name="s"></param>
+		/// <returns></returns>
+		public static byte[] ConvertToByteArray( this string s )
+		{
+			return new System.Text.UTF8Encoding().GetBytes( s );
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="bytes"></param>
+		/// <returns></returns>
+		public static string ConvertToString( this byte[] bytes )
+		{
+			return new System.Text.UTF8Encoding().GetString( bytes );
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
 		/// <param name="value"></param>
 		/// <returns></returns>
 		public static bool IsQuoted( this string value )
