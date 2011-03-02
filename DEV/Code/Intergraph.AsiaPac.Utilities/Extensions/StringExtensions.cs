@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Security;
 using Intergraph.AsiaPac.Utilities.Text;
@@ -279,6 +280,35 @@ namespace Intergraph.AsiaPac.Utilities.Extensions
 					throw new Exception( exceptionString );
 				}
 			}
+		}
+
+		/// <summary>
+		/// Minify the string, removing \r\n\t and excess whitespace
+		/// Particularly useful when reading CDATA from Xml.
+		/// </summary>
+		/// <param name="s"></param>
+		/// <returns></returns>
+		public static string RemoveWhitespace( this string s )
+		{
+			char[] arr = s.ToCharArray();
+
+			for ( int i = 0; i < arr.Length; i++ )
+			{
+				switch ( arr[ i ] )
+				{
+				case '\t':
+				case '\r':
+				case '\n':
+					arr[ i ] = ' ';
+					break;
+				}
+			}
+
+			s = new string( arr );
+
+			s = Regex.Replace( s, @"\s+", " " );
+
+			return s.Trim();
 		}
 
 	}

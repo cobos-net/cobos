@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema id="DataModel"
+	targetNamespace="http://schemas.intergraph.com/asiapac/cad/datamodel" 
+	elementFormDefault="qualified"
+	xmlns="http://schemas.intergraph.com/asiapac/cad/datamodel"
+	xmlns:cad="http://schemas.intergraph.com/asiapac/cad/datamodel"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+>
+
+	<!-- 
+	=============================================================================
+	Filename: DataModel.xsd
+	Description: Generic Data Model schema for modelling CAD data
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Created by: N.Davis                        Date: 2010-04-09
+	Modified by:                               Date:
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Notes: 
+
+
+	============================================================================
+	-->
+
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Root data model element
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<xsd:element name="DataModel" type="DataModelType"/>
+
+	<xsd:complexType name="DataModelType">
+		<xsd:sequence>
+			<xsd:element ref="DataModelComponent"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Data model component
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<xsd:complexType name="DataModelComponentType" abstract="true">
+		<xsd:attribute name="name" type="xsd:string" use="required"/>
+	</xsd:complexType>
+
+	<xsd:element name="DataModelComponent" type="DataModelComponentType"/>
+	
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Data object
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<xsd:element name="Object" type="ObjectType" substitutionGroup="DataModelComponent"/>
+
+	<xsd:complexType name="ObjectType">
+		<xsd:complexContent>
+			<xsd:extension base="DataModelComponentType">
+				<xsd:sequence>
+					<xsd:choice maxOccurs="unbounded">
+						<xsd:element ref="Object"/>
+						<xsd:element ref="Property"/>
+					</xsd:choice>
+				</xsd:sequence>
+				<xsd:attribute name="name" type="xsd:string" use="required"/>
+				<xsd:attribute name="dbTable" type="xsd:string" use="required"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Data property
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<xsd:element name="Property" type="PropertyType"/>
+
+	<xsd:complexType name="PropertyType">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:string">
+				<xsd:attribute name="name" type="xsd:string" use="required"/>
+				<xsd:attribute name="dbColumn" type="xsd:string" use="optional"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Enumerated types
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<xsd:element name="Enumeration">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="Item" maxOccurs="unbounded">
+					<xsd:complexType>
+						<xsd:simpleContent>
+							<xsd:
+							<xsd:attribute name="id" type="xsd:string"/>
+							<xsd:attribute name="value" type="xsd:positiveInteger"/>
+						</xsd:simpleContent>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+</xsd:schema>

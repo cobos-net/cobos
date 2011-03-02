@@ -18,7 +18,7 @@ namespace Intergraph.AsiaPac.Core.Plugin
 		/// <param name="host"></param>
 		/// <param name="path"></param>
 		/// <returns></returns>
-		public static IPluginClient LoadPluginFromDirectory( string path, string typeName )
+		public static IPluginClient LoadPluginFromFolder( string path, string typeName )
 		{
 			if ( !Directory.Exists( path ) )
 			{
@@ -40,6 +40,27 @@ namespace Intergraph.AsiaPac.Core.Plugin
 			}
 
 			return null;
+		}
+
+		/// <summary>
+		/// Load a plugin from an assembly in one of the specified folders.
+		/// </summary>
+		/// <param name="folders"></param>
+		/// <param name="typeName"></param>
+		/// <returns></returns>
+		public static IPluginClient LoadPluginFromFolders( string[] folders, string typeName )
+		{
+			IPluginClient plugin = null;
+
+			foreach ( string folder in folders )
+			{
+				if ( (plugin = PluginLoader.LoadPluginFromFolder( folder, typeName )) != null )
+				{
+					break;
+				}
+			}
+
+			return plugin;
 		}
 
 		/// <summary>
