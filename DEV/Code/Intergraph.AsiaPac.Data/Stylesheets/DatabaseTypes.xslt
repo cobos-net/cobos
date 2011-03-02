@@ -44,31 +44,32 @@
 		<xsl:element name="xsl:stylesheet">
 			<xsl:call-template name="nsdecl"/>
 			<xsl:attribute name="version">1.0</xsl:attribute>
+			<xsl:attribute name="exclude-result-prefixes">msxsl</xsl:attribute>
 			<xsl:element name="xsl:output">
 				<xsl:attribute name="method">xml</xsl:attribute>
 				<xsl:attribute name="indent">yes</xsl:attribute>
 				<xsl:attribute name="encoding">utf-8</xsl:attribute>
 			</xsl:element>
-			<xsl:apply-templates select="./*" />
+
+			<xsl:element name="xsl:variable">
+				<xsl:attribute name="name">databaseTypes</xsl:attribute>
+				<xsl:copy-of select="xsd:simpleType"/>
+			</xsl:element>
+			<xsl:element name="xsl:variable">
+				<xsl:attribute name="name">databaseTypesNodeSet</xsl:attribute>
+				<xsl:attribute name="select">msxsl:node-set( $databaseTypes )</xsl:attribute>
+			</xsl:element>
+
+			<xsl:element name="xsl:variable">
+				<xsl:attribute name="name">databaseTables</xsl:attribute>
+				<xsl:copy-of select="xsd:element" />
+			</xsl:element>
+			<xsl:element name="xsl:variable">
+				<xsl:attribute name="name">databaseTablesNodeSet</xsl:attribute>
+				<xsl:attribute name="select">msxsl:node-set( $databaseTables )</xsl:attribute>
+			</xsl:element>
 		</xsl:element>
 
-	</xsl:template>
-
-	<!-- 
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	Merge the Excel worksheets into Sections
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	-->
-
-	<xsl:template match="xsd:element | xsd:simpleType">
-
-		<xsl:element name="xsl:variable">
-			<xsl:attribute name="name">
-				<xsl:value-of select="@name"/>
-			</xsl:attribute>
-			<xsl:copy-of select="."/>
-		</xsl:element>
-		
 	</xsl:template>
 
 </xsl:stylesheet>

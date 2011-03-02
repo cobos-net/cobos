@@ -31,8 +31,9 @@
 
 	<xsd:complexType name="DataModelType">
 		<xsd:sequence>
-			<xsd:element ref="DataModelComponent"/>
+			<xsd:element ref="DataModelComponent" maxOccurs="unbounded"/>
 		</xsd:sequence>
+		<xsd:attribute name="name" type="xsd:string" use="required"/>
 	</xsd:complexType>
 
 	<!--
@@ -59,13 +60,14 @@
 		<xsd:complexContent>
 			<xsd:extension base="DataModelComponentType">
 				<xsd:sequence>
-					<xsd:choice maxOccurs="unbounded">
+					<xsd:choice minOccurs="0" maxOccurs="unbounded">
 						<xsd:element ref="Object"/>
 						<xsd:element ref="Property"/>
 					</xsd:choice>
 				</xsd:sequence>
 				<xsd:attribute name="name" type="xsd:string" use="required"/>
-				<xsd:attribute name="dbTable" type="xsd:string" use="required"/>
+				<xsd:attribute name="dbTable" type="xsd:string" use="optional"/>
+				<xsd:attribute name="type" type="xsd:string" use="optional"/>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
@@ -83,6 +85,8 @@
 			<xsd:extension base="xsd:string">
 				<xsd:attribute name="name" type="xsd:string" use="required"/>
 				<xsd:attribute name="dbColumn" type="xsd:string" use="optional"/>
+				<xsd:attribute name="dbAlias" type="xsd:string" use="optional"/>
+				<xsd:attribute name="stringFormat" type="StringFormatEnum" use="optional"/>
 			</xsd:extension>
 		</xsd:simpleContent>
 	</xsd:complexType>
@@ -95,18 +99,88 @@
 
 	<xsd:element name="Enumeration">
 		<xsd:complexType>
-			<xsd:sequence>
-				<xsd:element name="Item" maxOccurs="unbounded">
-					<xsd:complexType>
-						<xsd:simpleContent>
-							<xsd:
-							<xsd:attribute name="id" type="xsd:string"/>
-							<xsd:attribute name="value" type="xsd:positiveInteger"/>
-						</xsd:simpleContent>
-					</xsd:complexType>
-				</xsd:element>
-			</xsd:sequence>
+			<xsd:complexContent>
+				<xsd:extension base="DataModelComponentType">
+					<xsd:sequence>
+						<xsd:element name="Item" type="EnumerationItem" maxOccurs="unbounded"/>
+					</xsd:sequence>
+				</xsd:extension>
+			</xsd:complexContent>
 		</xsd:complexType>
 	</xsd:element>
 
+	<xsd:complexType name="EnumerationItem">
+		<xsd:simpleContent>
+			<xsd:extension base ="xsd:string">
+				<xsd:attribute name="id" type="xsd:string" use="required"/>
+				<xsd:attribute name="value" type="xsd:positiveInteger" use="optional"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Special string formats
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<xsd:simpleType name="StringFormatEnum">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="CDTS"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Table filters - i.e. canned where clauses.
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<xsd:element name="TableFilters" type="TableFiltersType" substitutionGroup="DataModelComponent"/>
+
+	<xsd:complexType name="TableFiltersType">
+		<xsd:complexContent>
+			<xsd:extension base="DataModelComponentType">
+				<xsd:sequence>
+					<xsd:element name="Filter" type="TableFilter" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="TableFilter">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:string">
+				<xsd:attribute name="name" use="required"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Table keys - used for joining tables.
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<xsd:element name="TableKeys" type="TableKeysType" substitutionGroup="DataModelComponent"/>
+
+	<xsd:complexType name="TableKeysType">
+		<xsd:complexContent>
+			<xsd:extension base="DataModelComponentType">
+				<xsd:sequence>
+					<xsd:element name="Key" type="TableKeyType" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="TableKeyType">
+		<xsd:sequence>
+			<xsd:element name="Key" type="xsd:string"/>
+			<xsd:element name="ForeignTable" type="xsd:string"/>
+			<xsd:element name="ForeignKey" type="xsd:string"/>
+		</xsd:sequence>
+		<xsd:attribute name="name" type="xsd:string" use="required"/>
+	</xsd:complexType>
+	
 </xsd:schema>

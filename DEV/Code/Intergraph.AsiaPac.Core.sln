@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intergraph.AsiaPac.WpfAppli
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intergraph.AsiaPac.Data", "Intergraph.AsiaPac.Data\Intergraph.AsiaPac.Data.csproj", "{6906B107-C149-4682-AF7B-FEF9F697FE36}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intergraph.AsiaPac.Data.Tests", "Intergraph.AsiaPac.Data.Tests\Intergraph.AsiaPac.Data.Tests.csproj", "{45697D04-D665-448A-BB4B-939F8F3E66FF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,10 @@ Global
 		{6906B107-C149-4682-AF7B-FEF9F697FE36}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6906B107-C149-4682-AF7B-FEF9F697FE36}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6906B107-C149-4682-AF7B-FEF9F697FE36}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45697D04-D665-448A-BB4B-939F8F3E66FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45697D04-D665-448A-BB4B-939F8F3E66FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45697D04-D665-448A-BB4B-939F8F3E66FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45697D04-D665-448A-BB4B-939F8F3E66FF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -41,14 +41,24 @@
 		<xsl:copy/>
 	</xsl:template>
 
+	<xsl:variable name="lowercase" select="'abcdefghijklmnopqrstuvwxyz'" />
+	<xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'" />
+
+	<xsl:template name="upperCase">
+		<xsl:param name="input"/>
+		<xsl:value-of select="translate( $input, $lowercase, $uppercase )"/>
+	</xsl:template>
+
+	<xsl:template name="lowerCase">
+		<xsl:param name="input"/>
+		<xsl:value-of select="translate( $input, $uppercase, $lowercase )"/>
+	</xsl:template>
+
 	<!-- 
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	Recursive template to camel case an input string
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
-
-	<xsl:variable name="lowercase" select="'abcdefghijklmnopqrstuvwxyz'" />
-	<xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'" />
 
 	<xsl:variable name="invalidClassNameChar">
 		<xsl:text>!@#$%^&amp;*()-+={[}}|\:;"'&lt;&gt;,./?~`</xsl:text>

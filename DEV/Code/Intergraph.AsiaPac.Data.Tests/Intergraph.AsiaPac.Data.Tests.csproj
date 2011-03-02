@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{6906B107-C149-4682-AF7B-FEF9F697FE36}</ProjectGuid>
+    <ProjectGuid>{45697D04-D665-448A-BB4B-939F8F3E66FF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Intergraph.AsiaPac.Data</RootNamespace>
-    <AssemblyName>Intergraph.AsiaPac.Data</AssemblyName>
+    <RootNamespace>Intergraph.AsiaPac.Data.Tests</RootNamespace>
+    <AssemblyName>Intergraph.AsiaPac.Data.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,7 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Oracle.DataAccess, Version=2.112.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=x86" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -39,40 +38,40 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="xunit">
+      <HintPath>..\..\..\..\PhoneView\DEV\Lib\xunit-1.5\xunit.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AsyncTask.cs" />
-    <Compile Include="CadDataSet.cs" />
-    <Compile Include="DatabaseConnection.cs" />
-    <Compile Include="DatabaseQuery.cs" />
+    <Compile Include="Events\Generated\Dataset.cs">
+      <DependentUpon>Dataset.xsd</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Intergraph.AsiaPac.Utilities\Intergraph.AsiaPac.Utilities.csproj">
-      <Project>{5EC3C9B9-DAE8-481C-8495-2A0A737D87A3}</Project>
-      <Name>Intergraph.AsiaPac.Utilities</Name>
+    <Content Include="DataModel\EventModel.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Units\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Intergraph.AsiaPac.Data\Intergraph.AsiaPac.Data.csproj">
+      <Project>{6906B107-C149-4682-AF7B-FEF9F697FE36}</Project>
+      <Name>Intergraph.AsiaPac.Data</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Stylesheets\CadDatabase.xslt">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Stylesheets\DatabaseTypes.xslt" />
-    <Content Include="Stylesheets\Dataset.xslt" />
-    <Content Include="Stylesheets\Enum.xslt" />
-    <Content Include="Stylesheets\Utilities.xslt" />
-    <Content Include="Stylesheets\xslt.js" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Stylesheets\DBSchema.xslt" />
-  </ItemGroup>
-  <ItemGroup />
-  <ItemGroup>
-    <None Include="Schemas\DataModel.xsd">
-      <SubType>Designer</SubType>
+    <None Include="Events\Generated\Dataset.xsd" />
+    <None Include="Events\Generated\Dataset.xss">
+      <DependentUpon>Dataset.xsd</DependentUpon>
     </None>
+    <None Include="prebuild.bat" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>$(ProjectDir)/prebuild.bat $(ProjectDir)</PreBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
