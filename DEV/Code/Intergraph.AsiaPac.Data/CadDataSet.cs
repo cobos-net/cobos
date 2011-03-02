@@ -9,7 +9,7 @@ using Intergraph.AsiaPac.Utilities.Xml;
 
 namespace Intergraph.AsiaPac.Data
 {
-	using AsyncDBTask = AsyncTask<CadDataSet, Database.QueryDatabaseAsync>;
+	using AsyncDBTask = AsyncTask<CadDataSet, DatabaseConnection.QueryDatabaseAsync>;
 
 	public class CadDataSet
 	{
