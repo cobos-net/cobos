@@ -307,7 +307,7 @@ namespace Intergraph.AsiaPac.Data
 
 			CadDataSet dataset = Execute( desc, "COLUMN", "TABLE_COLUMNS" );
 
-			XslCompiledTransform xslTableToXsd = XsltHelper.Load( "DBSchema.xslt", "Intergraph.AsiaPac.Data.Stylesheets" );
+			XslCompiledTransform xslTableToXsd = XsltHelper.Load( "DatabaseSchema.xslt", "Intergraph.AsiaPac.Data.Stylesheets" );
 
 			if ( xslTableToXsd != null )
 			{

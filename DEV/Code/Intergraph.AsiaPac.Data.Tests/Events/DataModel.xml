@@ -21,22 +21,22 @@
 
 	<!--
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	Agency object
+	Agency type
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-	<Object name="Agency" dbTable="AEVEN">
+	<Type name="Agency" dbTable="AEVEN">
 		<Property name="agencyId" dbColumn="ag_id"/>
 		<Property name="dispatchGroup" dbColumn="dgroup"/>
-	</Object>
+	</Type>
 	
 	<!--
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	Common Event Address object
+	Common Event Address type
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-	<Object name="EventAddress" dbTable="EVENT">
+	<Type name="EventAddress" dbTable="EVENT">
 		<Property name="commonPlaceName" dbColumn="ecompl" dbAlias="loc_common_placename"/>
 		<Property name="apartmentNumber" dbColumn="eapt" dbAlias="loc_apartment"/>
 		<Property name="streetNumber" dbColumn="estnum" dbAlias="loc_street_num"/>
@@ -51,48 +51,48 @@
 		<Property name="comments" dbColumn="loc_com" dbAlias="loc_comments"/>
 		<Property name="mslink" dbColumn="fea_mslink" dbAlias="loc_mslink"/>
 		<Property name="verified" dbColumn="loc_ver" dbAlias="loc_verified"/>
-	</Object>
+	</Type>
 
 	<!--
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	Common Event Location object
+	Common Event Location type
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-	<Object name="EventLocation" dbTable="EVENT">
+	<Type name="EventLocation" dbTable="EVENT">
 		<Property name="x" dbColumn="x_cord"/>
 		<Property name="y" dbColumn="y_cord"/>
-	</Object>
+	</Type>
 
 	<!--
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	Common Event type object
+	Common Event type type
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-	<Object name="EventType" dbTable="AEVEN">
-		<Property name="Code" dbColumn="tycod"/>
-		<Property name="Description" dbColumn="typ_eng"/>
-	</Object>
+	<Type name="EventType" dbTable="AEVEN">
+		<Property name="code" dbColumn="tycod"/>
+		<Property name="description" dbColumn="typ_eng"/>
+	</Type>
 
 	<!--
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	Common Event sub-type object
+	Common Event sub-type type
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-	<Object name="EventSubType" dbTable="AEVEN">
-		<Property name="Code" dbColumn="sub_tycod"/>
-		<Property name="Description" dbColumn="sub_eng"/>
-	</Object>
+	<Type name="EventSubType" dbTable="AEVEN">
+		<Property name="code" dbColumn="sub_tycod"/>
+		<Property name="description" dbColumn="sub_eng"/>
+	</Type>
 
 	<!--
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	Event status objects
+	Event status type
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-	<Object name="EventStatus" dbTable="AEVEN">
+	<Type name="EventStatus" dbTable="AEVEN">
 		<Property name="statusCode" dbColumn="event_status"/>
 		<Property name="alarmLevel" dbColumn="alarm_lev"/>
 		<Property name="pendingTimer" dbColumn="pend_dts"/>
@@ -105,57 +105,53 @@
 			<Property name="forUnit" dbColumn="hold_unt"/>
 			<Property name="timestamp" dbColumn="hold_dts"/>
 		</Object>
-	</Object>
+	</Type>
 
+	<Object name="EventStatusObj" type="EventStatus"/>
+	
 	<!--
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	Event timeline
+	Event timeline type
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-	<Object name="EventTimeline" dbTable="AEVEN">
+	<Type name="EventTimeline" dbTable="AEVEN">
 		<Property name="created" dbColumn="ad_ts"/>
 		<Property name="dispatched" dbColumn="ds_ts"/>
 		<Property name="enroute" dbColumn="en_ts"/>
 		<Property name="arrived" dbColumn="ar_ts"/>
 		<Property name="transport" dbColumn="tr_ts"/>
 		<Property name="transportArrived" dbColumn="ta_ts"/>
-	</Object>
+	</Type>
 
 	<!--
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	Keys
+	AEVEN Metadata
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-	<TableKeys name="AEVEN">
-		<Key name="default">
-			<Key>EID</Key>
-			<ForeignTable>EVENT</ForeignTable>
-			<ForeignKey>EID</ForeignKey>
-		</Key>
-	</TableKeys>
-
-	<TableKeys name="EVENT">
-		<Key name="default">
-			<Key>EID</Key>
-			<ForeignTable>AEVEN</ForeignTable>
-			<ForeignKey>EID</ForeignKey>
-		</Key>
-	</TableKeys>
+	<TableMetadata name="AEVEN">
+		<Filters>
+			<Filter name="default">AEVEN.open_and_curent = 'T' and AEVEN.curent in ('T', 'O')</Filter>
+		</Filters>
+		<Keys>
+			<Key foreignKey="eid" references="EVENT" referenceKey="eid"/>
+		</Keys>
+	</TableMetadata>
 
 	<!--
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	Filters
+	EVENT Metadata
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-	<TableFilters name="AEVEN">
-		<Filter name="default">AEVEN.open_and_curent = 'T' and AEVEN.curent in ('T', 'O')</Filter>
-	</TableFilters>
-
-	<TableFilters name="EVENT">
-		<Filter name="default">EVENT.curent in ('T', 'O')</Filter>
-	</TableFilters>
+	<TableMetadata name="EVENT">
+		<Filters>
+			<Filter name="default">EVENT.curent in ('T', 'O')</Filter>
+		</Filters>
+		<Keys>
+			<Key foreignKey="eid" references="AEVEN" referenceKey="eid"/>
+		</Keys>
+	</TableMetadata>
 
 </DataModel>

@@ -31,20 +31,26 @@ try
          if ( result != null )
          {
             mode = result[ 1 ];
+            WScript.Echo( "Xslt mode: " +  mode );
             continue;
          }         
          
          result = regParam.exec( args( a ) );
          if ( result != null )
          {
+            WScript.Echo( "Xslt Parameter: " + result[ 1 ] + " = " + result[ 2 ] );
             params.push( { name: result[ 1 ], value: result[ 2 ] } );
             continue;
          }         
       }
       
-      // NOTE: there appears to be a bug in MSXML 6.0 pre SP3.
-      // MSXML 6.0 SP3 is only widely available in Windows 7, Windows XP SP3 and Vista
-      // include SP2 only.  The fix is to use MSXML 3.0 objects.
+      // NOTE: there appears to be a bug in MSXML 6.0 pre SP3:
+      //
+      // xmlTemplate.stylesheet = xslDoc; // fails in 6.0
+      //
+      // MSXML 6.0 SP3 is only widely available in Windows 7. 
+      // Windows XP SP3 and Vista include SP2 only.  
+      // The fix is to use MSXML 3.0 objects.
 
       //var xmlDoc = new ActiveXObject("Msxml2.DOMDocument.6.0");
       var xmlDoc = new ActiveXObject("Msxml2.DOMDocument.3.0");

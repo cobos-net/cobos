@@ -21,10 +21,10 @@ namespace Intergraph.AsiaPac.Core.Plugin.Test
 			string path = Uri.UnescapeDataString( uri.Path );
 			string directory = Path.GetDirectoryName( path );
 
-			IPluginClient plugin1 = PluginLoader.LoadPluginFromDirectory( directory, "TestPluginClient1" );
+			IPluginClient plugin1 = PluginLoader.LoadPluginFromFolder( directory, "TestPluginClient1" );
 			Assert.True( plugin1 != null );
 
-			IPluginClient plugin2 = PluginLoader.LoadPluginFromDirectory( directory, "TestPluginClient2" );
+			IPluginClient plugin2 = PluginLoader.LoadPluginFromFolder( directory, "TestPluginClient2" );
 			Assert.True( plugin2 != null );
 
 			plugin1.Configure( this, "Plugin1 Name", null );

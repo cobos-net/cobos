@@ -33,24 +33,29 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="xunit">
-      <HintPath>..\..\..\..\PhoneView\DEV\Lib\xunit-1.5\xunit.dll</HintPath>
+      <HintPath>..\..\Lib\xUnit\xunit.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Events\EventsTests.cs" />
+    <Compile Include="Events\Generated\DataModel.cs">
+      <DependentUpon>DataModel.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Events\Generated\Dataset.cs">
       <DependentUpon>Dataset.xsd</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="DataModel\EventModel.xml" />
+    <Compile Include="Statements\SqlSelectTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Units\" />
@@ -62,11 +67,17 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Events\Generated\DataModel.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Events\Generated\Dataset.xsd" />
     <None Include="Events\Generated\Dataset.xss">
       <DependentUpon>Dataset.xsd</DependentUpon>
     </None>
     <None Include="prebuild.bat" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Events\DataModel.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

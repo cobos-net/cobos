@@ -17,7 +17,6 @@ REM Global build parameters
 REM -----------------------------------------------------------------
 
 set stylesheets=..\\Intergraph.AsiaPac.Data\Stylesheets
-set datamodel=.\DataModel
 set schemas=.\Schemas
 set eventsout=.\Events\Generated
 set unitsout=.\Units\Generated
@@ -31,8 +30,8 @@ set xsltjs=%stylesheets%\xslt.js
 REM Input data
 REM -----------------------------------------------------------------
 
-set eventmodel=%datamodel%\EventModel.xml
-set unitmodel=%datamodel%\UnitModel.xml
+set eventmodel=.\Events\DataModel.xml
+set unitmodel=.\Units\DataModel.xml
 
 @echo on
 
@@ -43,10 +42,10 @@ echo 1.1 Refresh the Xslt database variables
 
 
 echo 1.2 Create the Xsd schemas for the datamodels
-
+%xsltjs% %eventmodel% %stylesheets%\DataModelSchema.xslt %eventsout%\DataModel.xsd
 
 echo 1.3 Create the Xsd for the dataset
-%xsltjs% %eventmodel% %stylesheets%\Dataset.xslt %eventsout%\Dataset.xsd
+%xsltjs% %eventmodel% %stylesheets%\DataModelDataset.xslt %eventsout%\Dataset.xsd
 
 echo 2. Create strongly typed datasets
 echo -----------------------------------------------------------------
@@ -55,3 +54,5 @@ echo -----------------------------------------------------------------
 
 echo 3. Create C# boilerplate code
 echo -----------------------------------------------------------------
+
+%xsltjs% %eventmodel% %stylesheets%\DataModelClasses.xslt %eventsout%\DataModel.cs codeNS="Intergraph.AsiaPac.Data.Tests.Events" contractNS="http://www.intergraph.com/asiapac/cad/interop/dataservice"

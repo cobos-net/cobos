@@ -2,7 +2,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 					 xmlns:msxsl="urn:schemas-microsoft-com:xslt"
 					 xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-					 xmlns="http://www.w3.org/2001/XMLSchema"
+					 xmlns="http://schemas.intergraph.com/asiapac/cad/datamodel"
 					 xmlns:cad="http://schemas.intergraph.com/asiapac/cad/datamodel"
 					 exclude-result-prefixes="cad"
 >
@@ -27,10 +27,11 @@
 	<xsl:template name="nsdecl">
 		<xsl:variable name="nsdecl">
 			<nsdecl xmlns:msxsl="urn:schemas-microsoft-com:xslt"
-						xmlns="http://www.w3.org/2001/XMLSchema"
+						xmlns="http://schemas.intergraph.com/asiapac/cad/datamodel"
+						xmlns:cad="http://schemas.intergraph.com/asiapac/cad/datamodel"
 						xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
 		</xsl:variable>
-		<xsl:apply-templates mode="nsdecl" select="msxsl:node-set($nsdecl)"/>
+		<xsl:apply-templates mode="copyAttributesAndNamespace" select="msxsl:node-set($nsdecl)"/>
 	</xsl:template>
 	
 	<!-- 
@@ -40,6 +41,8 @@
 	-->
 	
 	<xsl:template match="/xsd:schema">
+		
+		<xsl:call-template name="generatedXmlWarning"/>
 
 		<xsl:element name="xsl:stylesheet">
 			<xsl:call-template name="nsdecl"/>

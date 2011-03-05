@@ -24,6 +24,8 @@
 	============================================================================
 	-->
 
+	<xsl:include href="Utilities.xslt"/>
+
 	<!--
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	Key for building the XSD string types using a length restriction
@@ -31,7 +33,6 @@
 	-->
 
 	<xsl:key name="stringLengths" match="COLUMN" use="CHAR_LENGTH"/>
-
 	<xsl:key name="tableNames" match="COLUMN" use="TABLE_NAME"/>
 	
 	<!--
@@ -41,6 +42,8 @@
 	-->
 
 	<xsl:template match="/TABLE_COLUMNS">
+
+		<xsl:call-template name="generatedXmlWarning"/>
 
 		<xsd:schema targetNamespace="http://schemas.intergraph.com/asiapac/cad/datamodel"
 				elementFormDefault="qualified"
@@ -75,22 +78,6 @@
 					</xsd:complexType>
 				</xsd:element>
 			</xsl:for-each>
-
-			<!-- 
-			<xsd:element name="ROWSET">
-				<xsd:complexType>
-					<xsd:sequence>
-						<xsd:element name="ROW" minOccurs="0" maxOccurs="unbounded">
-							<xsd:complexType>
-								<xsd:sequence>
-									<xsl:apply-templates select="./COLUMN"/>
-								</xsd:sequence>
-							</xsd:complexType>
-						</xsd:element>
-					</xsd:sequence>
-				</xsd:complexType>
-			</xsd:element>
-			-->
 		
 		</xsd:schema>
 

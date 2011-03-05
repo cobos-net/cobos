@@ -46,6 +46,7 @@
     <Compile Include="DatabaseConnection.cs" />
     <Compile Include="DatabaseQuery.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Statements\SqlSelect.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Intergraph.AsiaPac.Utilities\Intergraph.AsiaPac.Utilities.csproj">
@@ -54,19 +55,21 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Stylesheets\CadDatabase.xslt">
+    <EmbeddedResource Include="Stylesheets\CadDatabase.xslt">
       <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Stylesheets\DatabaseTypes.xslt" />
-    <Content Include="Stylesheets\Dataset.xslt" />
-    <Content Include="Stylesheets\Enum.xslt" />
-    <Content Include="Stylesheets\Utilities.xslt" />
-    <Content Include="Stylesheets\xslt.js" />
+    </EmbeddedResource>
+    <EmbeddedResource Include="Stylesheets\DatabaseSchema.xslt" />
+    <EmbeddedResource Include="Stylesheets\DatabaseTypes.xslt" />
+    <EmbeddedResource Include="Stylesheets\DataModelClasses.xslt" />
+    <EmbeddedResource Include="Stylesheets\DataModelDataset.xslt" />
+    <EmbeddedResource Include="Stylesheets\DataModelSchema.xslt" />
+    <EmbeddedResource Include="Stylesheets\Enum.xslt" />
+    <EmbeddedResource Include="Stylesheets\Utilities.xslt" />
+    <EmbeddedResource Include="Stylesheets\xslt.js" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Stylesheets\DBSchema.xslt" />
+    <EmbeddedResource Include="Stylesheets\DataModelCommon.xslt" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <None Include="Schemas\DataModel.xsd">
       <SubType>Designer</SubType>

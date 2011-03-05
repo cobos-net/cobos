@@ -74,6 +74,21 @@
 
 	<!--
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Data object
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<xsd:element name="Type" type="TypeType" substitutionGroup ="DataModelComponent"/> 
+	
+	<xsd:complexType name="TypeType">
+		<xsd:complexContent>
+			<xsd:extension base="ObjectType">
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+						 
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	Data property
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
@@ -132,23 +147,36 @@
 
 	<!--
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	Table filters - i.e. canned where clauses.
+	Table metadata.
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-	<xsd:element name="TableFilters" type="TableFiltersType" substitutionGroup="DataModelComponent"/>
+	<xsd:element name="TableMetadata" type="TableMetadataType" substitutionGroup="DataModelComponent"/>
 
-	<xsd:complexType name="TableFiltersType">
+	<xsd:complexType name="TableMetadataType">
 		<xsd:complexContent>
 			<xsd:extension base="DataModelComponentType">
 				<xsd:sequence>
-					<xsd:element name="Filter" type="TableFilter" maxOccurs="unbounded"/>
+					<xsd:element name="Filters" type="TableFiltersType" minOccurs="0"/>
+					<xsd:element name="Keys" type="TableFiltersType" minOccurs="0"/>
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
 
-	<xsd:complexType name="TableFilter">
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Table filters - i.e. canned where clauses.
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<xsd:complexType name="TableFiltersType">
+		<xsd:sequence>
+			<xsd:element name="Filter" type="TableFilterType" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="TableFilterType">
 		<xsd:simpleContent>
 			<xsd:extension base="xsd:string">
 				<xsd:attribute name="name" use="required"/>
@@ -162,25 +190,17 @@
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-	<xsd:element name="TableKeys" type="TableKeysType" substitutionGroup="DataModelComponent"/>
-
 	<xsd:complexType name="TableKeysType">
-		<xsd:complexContent>
-			<xsd:extension base="DataModelComponentType">
-				<xsd:sequence>
-					<xsd:element name="Key" type="TableKeyType" maxOccurs="unbounded"/>
-				</xsd:sequence>
-			</xsd:extension>
-		</xsd:complexContent>
+		<xsd:sequence>
+			<xsd:element name="Key" type="TableKeyType" maxOccurs="unbounded"/>
+		</xsd:sequence>
 	</xsd:complexType>
 
 	<xsd:complexType name="TableKeyType">
-		<xsd:sequence>
-			<xsd:element name="Key" type="xsd:string"/>
-			<xsd:element name="ForeignTable" type="xsd:string"/>
-			<xsd:element name="ForeignKey" type="xsd:string"/>
-		</xsd:sequence>
-		<xsd:attribute name="name" type="xsd:string" use="required"/>
+		<xsd:sequence/>
+		<xsd:attribute name="foreignKey" type="xsd:string"/>
+		<xsd:attribute name="references" type="xsd:string"/>
+		<xsd:attribute name="referenceKey" type="xsd:string"/>
 	</xsd:complexType>
 	
 </xsd:schema>
