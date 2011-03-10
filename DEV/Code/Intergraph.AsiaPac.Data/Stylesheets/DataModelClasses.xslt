@@ -126,7 +126,7 @@ namespace <xsl:value-of select="$codeNS"/>
 
 	<!-- output an embedded object -->
 	<xsl:template match="cad:Object" mode="propertyDefinition">
-		[DataMember]
+		[DataMember(Order=<xsl:value-of select="position() - 1"/>)]
 		public <xsl:value-of select="@className"/><xsl:text> </xsl:text><xsl:value-of select="@name"/>
 		{
 			get { return new <xsl:value-of select="@className"/>( _rowData ); }
@@ -136,7 +136,7 @@ namespace <xsl:value-of select="$codeNS"/>
 
 	<!-- output a simple property type -->
 	<xsl:template match="cad:Property" mode="propertyDefinition">
-		[DataMember]
+		[DataMember(Order=<xsl:value-of select="position() - 1"/>)]
 		public <xsl:apply-templates select="." mode="propertyType"/> <xsl:value-of select="@name"/>
 		{
 			<xsl:apply-templates select="." mode="propertyBody"/>
@@ -163,7 +163,7 @@ namespace <xsl:value-of select="$codeNS"/>
 		<xsl:apply-templates select="@minOccurs" mode="propertyType"/>
 	</xsl:template>
 
-	<xsl:template match="cad:Property[ @dbType = 'xsd:date' and @minOccurs = 0 ]" mode="propertyType">
+	<xsl:template match="cad:Property[ @dbType = 'xsd:dateTime' ]" mode="propertyType">
 		<xsl:text>DateTime</xsl:text>
 		<xsl:apply-templates select="@minOccurs" mode="propertyType"/>
 	</xsl:template>

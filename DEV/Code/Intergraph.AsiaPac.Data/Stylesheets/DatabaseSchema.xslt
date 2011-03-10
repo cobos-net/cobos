@@ -125,7 +125,7 @@
 	</xsl:template>
 
 	<xsl:template match="DATA_TYPE[. = 'DATE']">
-		<xsl:text>xsd:date</xsl:text>
+		<xsl:text>xsd:dateTime</xsl:text>
 	</xsl:template>
 
 	<!--

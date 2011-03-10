@@ -8,15 +8,15 @@
 	-->
 
 	<Object name="AgencyEvent" dbTable="AEVEN">
-		<Property name="agencyEventNumber" dbColumn="num_1"/>
-		<Property name="commonEventNumber" dbColumn="eid"/>
-		<Object name="agency" type="Agency"/>
-		<Object name="type" type="EventType"/>
-		<Object name="subType" type="EventSubType"/>
-		<Object name="address" type="EventAddress"/>
-		<Object name="location" type="EventLocation"/>
-		<Object name="status" type="EventStatus"/>
-		<Object name="timeline" type="EventTimeline"/>
+		<Property name="AgencyEventId" dbColumn="num_1"/>
+		<Property name="CommonEventId" dbColumn="eid"/>
+		<Object name="Agency" type="AgencyType"/>
+		<Object name="Type" type="EventTypeType"/>
+		<Object name="SubType" type="EventSubTypeType"/>
+		<Object name="Address" type="EventAddressType"/>
+		<Object name="Location" type="EventLocationType"/>
+		<Object name="Status" type="EventStatusType"/>
+		<Object name="Timeline" type="EventTimelineType"/>
 	</Object>
 
 	<!--
@@ -25,7 +25,7 @@
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-	<Type name="Agency" dbTable="AEVEN">
+	<Type name="AgencyType" dbTable="AEVEN">
 		<Property name="agencyId" dbColumn="ag_id"/>
 		<Property name="dispatchGroup" dbColumn="dgroup"/>
 	</Type>
@@ -36,21 +36,21 @@
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-	<Type name="EventAddress" dbTable="EVENT">
-		<Property name="commonPlaceName" dbColumn="ecompl" dbAlias="loc_common_placename"/>
-		<Property name="apartmentNumber" dbColumn="eapt" dbAlias="loc_apartment"/>
-		<Property name="streetNumber" dbColumn="estnum" dbAlias="loc_street_num"/>
-		<Property name="directionPrefix" dbColumn="edirpre" dbAlias="loc_direction_prefix"/>
-		<Property name="streetName" dbColumn="efeanme" dbAlias="loc_street"/>
-		<Property name="streetType" dbColumn="efeatyp" dbAlias="loc_street_type"/>
-		<Property name="directionSuffix" dbColumn="edirsuf" dbAlias="loc_direction_suffix"/>
-		<Property name="xStreet1" dbColumn="xstreet1" dbAlias="loc_xstreet1"/>
-		<Property name="xStreet2" dbColumn="xstreet2" dbAlias="loc_xstreet2"/>
-		<Property name="area" dbColumn="earea" dbAlias="loc_area"/>
-		<Property name="municipality" dbColumn="emun" dbAlias="loc_municipality"/>
-		<Property name="comments" dbColumn="loc_com" dbAlias="loc_comments"/>
-		<Property name="mslink" dbColumn="fea_mslink" dbAlias="loc_mslink"/>
-		<Property name="verified" dbColumn="loc_ver" dbAlias="loc_verified"/>
+	<Type name="EventAddressType" dbTable="EVENT">
+		<Property name="CommonPlaceName" dbColumn="ecompl" dbAlias="loc_common_placename"/>
+		<Property name="ApartmentNumber" dbColumn="eapt" dbAlias="loc_apartment"/>
+		<Property name="StreetNumber" dbColumn="estnum" dbAlias="loc_street_num"/>
+		<Property name="DirectionPrefix" dbColumn="edirpre" dbAlias="loc_direction_prefix"/>
+		<Property name="StreetName" dbColumn="efeanme" dbAlias="loc_street"/>
+		<Property name="StreetType" dbColumn="efeatyp" dbAlias="loc_street_type"/>
+		<Property name="DirectionSuffix" dbColumn="edirsuf" dbAlias="loc_direction_suffix"/>
+		<Property name="CrossStreet1" dbColumn="xstreet1" dbAlias="loc_xstreet1"/>
+		<Property name="CrossStreet2" dbColumn="xstreet2" dbAlias="loc_xstreet2"/>
+		<Property name="Area" dbColumn="earea" dbAlias="loc_area"/>
+		<Property name="Municipality" dbColumn="emun" dbAlias="loc_municipality"/>
+		<Property name="Comments" dbColumn="loc_com" dbAlias="loc_comments"/>
+		<Property name="Mslink" dbColumn="fea_mslink" dbAlias="loc_mslink"/>
+		<Property name="Verified" dbColumn="loc_ver" dbAlias="loc_verified"/>
 	</Type>
 
 	<!--
@@ -59,9 +59,9 @@
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-	<Type name="EventLocation" dbTable="EVENT">
-		<Property name="x" dbColumn="x_cord"/>
-		<Property name="y" dbColumn="y_cord"/>
+	<Type name="EventLocationType" dbTable="EVENT">
+		<Property name="X" dbColumn="x_cord"/>
+		<Property name="Y" dbColumn="y_cord"/>
 	</Type>
 
 	<!--
@@ -70,9 +70,9 @@
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-	<Type name="EventType" dbTable="AEVEN">
-		<Property name="code" dbColumn="tycod"/>
-		<Property name="description" dbColumn="typ_eng"/>
+	<Type name="EventTypeType" dbTable="AEVEN">
+		<Property name="Code" dbColumn="tycod"/>
+		<Property name="Description" dbColumn="typ_eng"/>
 	</Type>
 
 	<!--
@@ -81,9 +81,9 @@
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-	<Type name="EventSubType" dbTable="AEVEN">
-		<Property name="code" dbColumn="sub_tycod"/>
-		<Property name="description" dbColumn="sub_eng"/>
+	<Type name="EventSubTypeType" dbTable="AEVEN">
+		<Property name="Code" dbColumn="sub_tycod"/>
+		<Property name="Description" dbColumn="sub_eng"/>
 	</Type>
 
 	<!--
@@ -92,18 +92,18 @@
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-	<Type name="EventStatus" dbTable="AEVEN">
-		<Property name="statusCode" dbColumn="event_status"/>
-		<Property name="alarmLevel" dbColumn="alarm_lev"/>
-		<Property name="pendingTimer" dbColumn="pend_dts"/>
-		<Object name="units" dbTable="AEVEN">
-			<Property name="assignedUnits" dbColumn="assigned_units"/>
-			<Property name="dispatchAssignedUnit" dbColumn="dispass_unit"/>
+	<Type name="EventStatusType" dbTable="AEVEN">
+		<Property name="StatusCode" dbColumn="event_status"/>
+		<Property name="AlarmLevel" dbColumn="alarm_lev"/>
+		<Property name="PendingTimer" dbColumn="pend_dts"/>
+		<Object name="Units" dbTable="AEVEN">
+			<Property name="AssignedUnits" dbColumn="assigned_units"/>
+			<Property name="DispatchAssignedUnit" dbColumn="dispass_unit"/>
 		</Object>
-		<Object name="hold" dbTable="AEVEN">
-			<Property name="type" dbColumn="hold_type"/>
-			<Property name="forUnit" dbColumn="hold_unt"/>
-			<Property name="timestamp" dbColumn="hold_dts"/>
+		<Object name="Hold" dbTable="AEVEN">
+			<Property name="Type" dbColumn="hold_type"/>
+			<Property name="ForUnit" dbColumn="hold_unt"/>
+			<Property name="Timestamp" dbColumn="hold_dts"/>
 		</Object>
 	</Type>
 
@@ -115,13 +115,27 @@
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-	<Type name="EventTimeline" dbTable="AEVEN">
-		<Property name="created" dbColumn="ad_ts"/>
-		<Property name="dispatched" dbColumn="ds_ts"/>
-		<Property name="enroute" dbColumn="en_ts"/>
-		<Property name="arrived" dbColumn="ar_ts"/>
-		<Property name="transport" dbColumn="tr_ts"/>
-		<Property name="transportArrived" dbColumn="ta_ts"/>
+	<Type name="EventTimelineType" dbTable="AEVEN">
+		<Property name="Created" dbColumn="ad_ts"/>
+		<Property name="Dispatched" dbColumn="ds_ts"/>
+		<Property name="Enroute" dbColumn="en_ts"/>
+		<Property name="Arrived" dbColumn="ar_ts"/>
+		<Property name="Transport" dbColumn="tr_ts"/>
+		<Property name="TransportArrived" dbColumn="ta_ts"/>
+	</Type>
+
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Caller type
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<Type name="CallerType" dbTable="EVENT">
+		<Property name="Name" dbColumn="clname"/>
+		<Property name="Number" dbColumn="clrnum"/>
+		<Property name="StreetAddress" dbColumn="cstr_add"/>
+		<Property name="City" dbColumn="ccity"/>
+		<Property name="Source" dbColumn="call_sour"/>
 	</Type>
 
 	<!--

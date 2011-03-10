@@ -68,7 +68,9 @@
     <EmbeddedResource Include="Stylesheets\xslt.js" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Stylesheets\DataModelCommon.xslt" />
+    <EmbeddedResource Include="Stylesheets\DataModelCommon.xslt">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="Schemas\DataModel.xsd">
