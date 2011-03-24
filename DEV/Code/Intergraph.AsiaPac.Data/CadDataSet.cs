@@ -11,7 +11,7 @@ namespace Intergraph.AsiaPac.Data
 {
 	using AsyncDBTask = AsyncTask<CadDataSet, DatabaseConnection.QueryDatabaseAsync>;
 
-	public class CadDataSet
+	public class CadDataSet : DataSet
 	{
 		/// <summary>
 		/// 
@@ -37,24 +37,19 @@ namespace Intergraph.AsiaPac.Data
 		/// <summary>
 		/// 
 		/// </summary>
-		public readonly DataSet Results;
-
-		/// <summary>
-		/// 
-		/// </summary>
 		/// <param name="dataSetName"></param>
 		public CadDataSet( string dataSetName )
+			: base( dataSetName )
 		{
-			Results = new DataSet( dataSetName );
 		}
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="dataSet"></param>
-		public CadDataSet( DataSet dataSet )
+		public CadDataSet()
+			: base()
 		{
-			Results = dataSet;
 		}
 
 		/// <summary>
@@ -66,8 +61,8 @@ namespace Intergraph.AsiaPac.Data
 			// create any relationships that may be required
 			foreach ( Relationship relation in relationships )
 			{
-				DataTable parentTable = Results.Tables[ relation.ParentTable ];
-				DataTable childTable = Results.Tables[ relation.ChildTable ];
+				DataTable parentTable = Tables[ relation.ParentTable ];
+				DataTable childTable = Tables[ relation.ChildTable ];
 
 				if ( parentTable == null || childTable == null )
 				{
@@ -85,7 +80,7 @@ namespace Intergraph.AsiaPac.Data
 				DataRelation dataRelation = new DataRelation( relation.Name, parentColumn, childColumn, false );
 				dataRelation.Nested = true;
 
-				Results.Relations.Add( dataRelation );
+				Relations.Add( dataRelation );
 			}
 		}
 
@@ -94,7 +89,7 @@ namespace Intergraph.AsiaPac.Data
 		/// </summary>
 		public void ClearRelationships()
 		{
-			Results.Relations.Clear();
+			Relations.Clear();
 		}
 
 		/// <summary>
@@ -103,23 +98,18 @@ namespace Intergraph.AsiaPac.Data
 		/// <returns></returns>
 		public XmlDocument ToXml()
 		{
+#if DEBUG
 			Stopwatch timer = new Stopwatch();
 			timer.Start();
+#endif
 
 			XmlDocument doc = new XmlDocument();
+			doc.LoadXml( GetXml() );
 
-			//MemoryStream stream = new MemoryStream( 10 * (1024 * 1024) );
-			//Results.WriteXml( stream );
-
-			//stream.Seek(0, SeekOrigin.Begin);
-			//StreamReader reader = new StreamReader(stream);
-
-			//doc.LoadXml( reader.ReadToEnd() );
-
-			doc.LoadXml( Results.GetXml() );
-
+#if DEBUG
 			timer.Stop();
 			Debug.Print( "Dataset to Xml: {0}", timer.ElapsedMilliseconds );
+#endif
 
 			return doc;
 		}
@@ -150,18 +140,21 @@ namespace Intergraph.AsiaPac.Data
 				xsltArgs = new XsltArgumentList();
 			}
 
-			//Add the layer name
+			// add the layer name
 			//xsltArgs.AddParam( "layername", "", m_layerName );
 			//xsltArgs.AddParam( "layerdescription", "", m_description );
 
+#if DEBUG
 			Stopwatch timer = new Stopwatch();
 			timer.Start();
-
+#endif
 			//Do the transform
 			xslt.Transform( doc.CreateNavigator(), xsltArgs, results );
 
+#if DEBUG
 			timer.Stop();
 			Debug.Print( "Xslt Transform: {0}", timer.ElapsedMilliseconds );
+#endif
 		}
 
 		/// <summary>
@@ -182,24 +175,19 @@ namespace Intergraph.AsiaPac.Data
 				xsltArgs = new XsltArgumentList();
 			}
 
-			//Add the layer name
 			//xsltArgs.AddParam( "layername", "", m_layerName );
 			//xsltArgs.AddParam( "layerdescription", "", m_description );
 
-			//Create a memory stream to write the converted data in to
 			using ( MemoryStream stream = new MemoryStream() )
 			{
-				//Do the transform
 				xslt.Transform( doc.CreateNavigator(), xsltArgs, stream );
-				//Move back to the start of the memory stream
 				stream.Seek( 0, SeekOrigin.Begin );
 
-				/*FileStream fstream = new FileStream( @"C:\temp\tesst.xml", FileMode.Create );
+				/*FileStream fstream = new FileStream( @"C:\temp\test.xml", FileMode.Create );
 				stream.WriteTo( fstream );
 				fstream.Close();
 				stream.Seek( 0, SeekOrigin.Begin );*/
 
-				//Deserialize the XML file to the object      
 				result = XmlHelper<TObject>.Deserialize( stream );
 			}
 

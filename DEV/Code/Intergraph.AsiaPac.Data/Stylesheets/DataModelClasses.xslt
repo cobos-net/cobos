@@ -2,8 +2,8 @@
 						xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 						xmlns:msxsl="urn:schemas-microsoft-com:xslt"
 						exclude-result-prefixes="msxsl"
-						xmlns="http://schemas.intergraph.com/asiapac/cad/datamodel"
-						xmlns:cad="http://schemas.intergraph.com/asiapac/cad/datamodel"
+						xmlns="http://schemas.intergraph.com/asiapac/cad/datamodel/1.0.0"
+						xmlns:cad="http://schemas.intergraph.com/asiapac/cad/datamodel/1.0.0"
 						xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 >
 	<xsl:output method="text" indent="yes" omit-xml-declaration="yes"/>
@@ -50,10 +50,12 @@ using System.ServiceModel.Web;
 using System.Text;
 using Intergraph.AsiaPac.Data;
 using Intergraph.AsiaPac.Data.Statements;
+using Intergraph.AsiaPac.Data.Utilities;
+using Intergraph.IPS.Utility;
 
 namespace <xsl:value-of select="$codeNS"/>
 {
-	<xsl:apply-templates select="cad:Object"/>
+	<xsl:apply-templates select="cad:Object|cad:TableObject"/>
 }
 	</xsl:template>
 
@@ -63,19 +65,20 @@ namespace <xsl:value-of select="$codeNS"/>
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 	
-	<xsl:template match="cad:Object">
+	<xsl:template match="cad:Object|cad:TableObject">
 
 		<xsl:variable name="classHierarchy">
 			<xsl:apply-templates select="." mode="classHierarchy"/>
-			<xsl:copy-of select="//cad:TableMetadata"/>
 		</xsl:variable>
 		
 		<xsl:variable name="classHierarchyNodeset" select="msxsl:node-set( $classHierarchy )"/>
-		<!--xsl:copy-of select="$classHierarchyNodeset"/-->
 		
-		<xsl:apply-templates select="$classHierarchyNodeset/cad:Object" mode="classDefinition"/>
+		<!-- Useful for debugging -->
+		<!-- xsl:copy-of select="$classHierarchyNodeset"/ -->
+		
+		<xsl:apply-templates select="$classHierarchyNodeset/node()[ self::cad:Object | self::cad:TableObject ]" mode="classDefinition"/>
 
-		<xsl:apply-templates select="$classHierarchyNodeset/cad:Object" mode="dataAdapter"/>
+		<xsl:apply-templates select="$classHierarchyNodeset/node()[ self::cad:Object | self::cad:TableObject ]" mode="dataAdapter"/>
 
 	</xsl:template>
 	
@@ -111,7 +114,7 @@ namespace <xsl:value-of select="$codeNS"/>
 		}
 
 		<!-- add property declarations -->
-		<xsl:apply-templates select="child::cad:Property|child::cad:Object" mode="propertyDefinition"/>
+		<xsl:apply-templates select="child::cad:Property[ not( @hidden ) ]|child::cad:Object|child::cad:Reference" mode="propertyDefinition"/>
 
 		<!-- add nested classes -->
 		<xsl:apply-templates select="child::cad:Object" mode="classDefinition"/>
@@ -135,22 +138,52 @@ namespace <xsl:value-of select="$codeNS"/>
 	</xsl:template>
 
 	<!-- output a simple property type -->
-	<xsl:template match="cad:Property" mode="propertyDefinition">
+	<xsl:template match="cad:Property|cad:Reference" mode="propertyDefinition">
 		[DataMember(Order=<xsl:value-of select="position() - 1"/>)]
-		public <xsl:apply-templates select="." mode="propertyType"/> <xsl:value-of select="@name"/>
+		public <xsl:apply-templates select="." mode="propertyType"/> <xsl:apply-templates select="." mode="propertyDefinitionName"/>
 		{
-			<xsl:apply-templates select="." mode="propertyBody"/>
+		<xsl:apply-templates select="." mode="propertyBody"/>
 		}
 	</xsl:template>
 
+	<xsl:template match="cad:Property" mode="propertyDefinitionName">
+		<xsl:value-of select="@name"/>
+	</xsl:template>
+
+	<xsl:template match="cad:Reference[ not( @isCollection ) ]" mode="propertyDefinitionName">
+		<xsl:value-of select="@ref"/>
+	</xsl:template>
+
+	<xsl:template match="cad:Reference[ @isCollection ]" mode="propertyDefinitionName">
+		<xsl:value-of select="@name"/>
+	</xsl:template>
+	
 	<!--
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	Match property types
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-	<xsl:template match="cad:Property[ @dbType = 'xsd:string' or contains( @dbType, 'string_' ) ]" mode="propertyType">
+	<xsl:template match="cad:Property[ @dbType = 'xsd:string' ]" mode="propertyType">
 		<xsl:text>string </xsl:text>
+	</xsl:template>
+
+	<xsl:template match="cad:Property[ contains( @dbType, 'string_' ) and not( @stringFormat ) ]" mode="propertyType">
+		<xsl:text>string </xsl:text>
+	</xsl:template>
+
+	<xsl:template match="cad:Property[ contains( @dbType, 'string_' ) and @stringFormat = 'Separator' ]" mode="propertyType">
+		<xsl:text>string </xsl:text>
+	</xsl:template>
+
+	<xsl:template match="cad:Property[ contains( @dbType, 'string_' ) and @stringFormat = 'CadDts' ]" mode="propertyType">
+		<xsl:text>DateTime</xsl:text>
+		<xsl:apply-templates select="@minOccurs" mode="propertyType"/>
+	</xsl:template>
+
+	<xsl:template match="cad:Property[ contains( @dbType, 'string_' ) and @stringFormat = 'CadBoolean' ]" mode="propertyType">
+		<xsl:text>bool</xsl:text>
+		<xsl:apply-templates select="@minOccurs" mode="propertyType"/>
 	</xsl:template>
 
 	<xsl:template match="cad:Property[ @dbType = 'xsd:integer' ]" mode="propertyType">
@@ -178,25 +211,75 @@ namespace <xsl:value-of select="$codeNS"/>
 
 	<!--
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Match reference types
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<xsl:template match="cad:Reference[ not( @isCollection ) ]" mode="propertyType">
+		<xsl:value-of select="@ref"/>
+		<xsl:text> </xsl:text>
+	</xsl:template>
+
+	<xsl:template match="cad:Reference[ @isCollection ]" mode="propertyType">
+		<xsl:apply-templates select="." mode="listDecl"/>
+		<xsl:text> </xsl:text>
+	</xsl:template>
+
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	Create the property get function body
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-	<xsl:template match="cad:Property[ @minOccurs = 1 ]" mode="propertyBody">
-			get { return _rowData.<xsl:value-of select="@dbColumn"/>; }
+	<xsl:template match="cad:Property[ @minOccurs = 1 ]|cad:Reference" mode="propertyBody">
+			get 
+			{ 
+				<xsl:apply-templates select="." mode="propertyReturn"/> 
+			}
 			set { }
 	</xsl:template>
 
 	<xsl:template match="cad:Property[ @minOccurs = 0 ]" mode="propertyBody">
 			get
 			{
-				if ( _rowData.Is<xsl:value-of select="@dbColumn"/>Null() )
+				if ( _rowData.Is<xsl:apply-templates mode="qualifiedName" select="."/>Null() )
 				{
 					return null;
 				}
-				return _rowData.<xsl:value-of select="@dbColumn"/>;
+				<xsl:apply-templates select="." mode="propertyReturn"/>
 			}
 			set { }
+	</xsl:template>
+
+	<!-- basic return type -->
+	<xsl:template match="cad:Property[ not( @stringFormat ) ]" mode="propertyReturn">
+				return _rowData.<xsl:apply-templates mode="qualifiedName" select="."/>;
+	</xsl:template>
+
+	<xsl:template match="cad:Property[ @stringFormat = 'CadDts' ]" mode="propertyReturn">
+				return DateFormatter.ConvertFromDTS( _rowData.<xsl:apply-templates mode="qualifiedName" select="."/> );
+	</xsl:template>
+
+	<xsl:template match="cad:Property[ @stringFormat = 'CadBoolean' ]" mode="propertyReturn">
+				return CADBoolean.ParseString( _rowData.<xsl:apply-templates mode="qualifiedName" select="."/> );
+	</xsl:template>
+
+	<xsl:template match="cad:Property[ @stringFormat = 'Separator' ]" mode="propertyReturn">
+		<xsl:variable name="separator">
+			<xsl:value-of select="substring-before( @formatArgs, ' ' )"/>
+		</xsl:variable>
+		<xsl:variable name="index">
+			<xsl:value-of select="substring-after( @formatArgs, ' ' )"/>
+		</xsl:variable>
+				return StringSeparator.GetTokenAt( _rowData.<xsl:apply-templates mode="qualifiedName" select="."/>, '<xsl:value-of select="$separator"/>', <xsl:value-of select="$index"/> );
+	</xsl:template>
+
+	<xsl:template match="cad:Reference[ not( @isCollection ) ]" mode="propertyReturn">
+				return null; // is not a collection
+	</xsl:template>
+
+	<xsl:template match="cad:Reference[ @isCollection ]" mode="propertyReturn">
+				return null; // is a collection
 	</xsl:template>
 
 	<!--
@@ -222,11 +305,13 @@ namespace <xsl:value-of select="$codeNS"/>
 		static readonly string[] _innerJoin = <xsl:apply-templates mode="sqlInnerJoin" select="."/>;
 
 		static readonly string[] _where = <xsl:apply-templates mode="sqlWhere" select="."/>;
-		
+
 		const string _groupBy = null;
-		
+
 		const string _orderBy = null;
-			
+
+		public static readonly SqlSelect Select = new SqlSelect( _select, _from, _innerJoin, _where, _groupBy, _orderBy );
+
 		<xsl:apply-templates select="." mode="getDataMethodDecl"/>
 		{
 			<xsl:apply-templates select="." mode="getDataMethodBody"/>
@@ -242,21 +327,19 @@ namespace <xsl:value-of select="$codeNS"/>
 
 	<!-- Add the getData method signature -->
 	<xsl:template match="cad:Object" mode="getDataMethodDecl">
-		public <xsl:call-template name="listDecl"/>
+		public <xsl:apply-templates select="." mode="listDecl"/>
 		<xsl:text> GetData( string[] where, string orderBy, string groupBy )</xsl:text>
 	</xsl:template>
 
 	<!-- Add the getData method body -->
 	<xsl:template match="cad:Object" mode="getDataMethodBody">
-			SqlSelect selectObj = new SqlSelect( _select, _from, _innerJoin, _where, _groupBy, _orderBy );
-		
-			string select = selectObj.ToString( null, null, null, where, groupBy, orderBy );
+			string select = Select.ToString( null, null, null, where, groupBy, orderBy );
 		
 			<xsl:value-of select="@datasetTableType"/> table = <xsl:call-template name="executeStatement"/>( select );
 
 			int numRows = table.Rows.Count;
 
-			<xsl:call-template name="listDecl"/> results = new <xsl:call-template name="listDecl"/>( numRows );
+			<xsl:apply-templates select="." mode="listDecl"/> results = new <xsl:apply-templates select="." mode="listDecl"/>( numRows );
 
 			<xsl:text  disable-output-escaping="yes"><![CDATA[for ( int row = 0; row < numRows; ++row )]]></xsl:text>
 			{
@@ -267,9 +350,15 @@ namespace <xsl:value-of select="$codeNS"/>
 	</xsl:template>
 	
 	<!-- encapsulate details for statements using generics -->
-	<xsl:template name="listDecl">
+	<xsl:template match="cad:Object" mode="listDecl">
 		<xsl:text disable-output-escaping="yes"><![CDATA[List<]]></xsl:text>
 		<xsl:value-of select="@className"/>
+		<xsl:text disable-output-escaping="yes"><![CDATA[>]]></xsl:text>
+	</xsl:template>
+
+	<xsl:template match="cad:Reference" mode="listDecl">
+		<xsl:text disable-output-escaping="yes"><![CDATA[List<]]></xsl:text>
+		<xsl:value-of select="@ref"/>
 		<xsl:text disable-output-escaping="yes"><![CDATA[>]]></xsl:text>
 	</xsl:template>
 
@@ -281,51 +370,66 @@ namespace <xsl:value-of select="$codeNS"/>
 
 	<!-- Append the column names to form the select string-->
 	<xsl:template match="cad:Property" mode="sqlSelect">
-		<xsl:value-of select="../@dbTable"/>.<xsl:value-of select="@dbColumn"/>
+		<xsl:value-of select="@dbTable"/>.<xsl:apply-templates select="." mode="sqlSelectColumn"/>
 		<xsl:if test="not( position() = last() )">, </xsl:if>
 	</xsl:template>
 
-	<!-- Get all of the required joins or where clauses -->
-	<xsl:key name="byDbTable" match="cad:Object" use="@dbTable"/>
+	<xsl:template match="cad:Property[ not( @dbAlias ) ]" mode="sqlSelectColumn">
+		<xsl:value-of select="@dbColumn"/>
+	</xsl:template>
 
+	<xsl:template match="cad:Property[ @dbAlias ]" mode="sqlSelectColumn">
+		<xsl:value-of select="@dbColumn"/>
+		<xsl:text > AS </xsl:text>
+		<xsl:value-of select="@dbAlias"/>
+	</xsl:template>
+	
 	<!-- Find all inner join tables -->
-	<xsl:template match="cad:Object" mode="sqlInnerJoin">
-		<xsl:variable name="masterTable">
-			<xsl:value-of select="@dbTable"/>
-		</xsl:variable>
+	<xsl:template match="cad:Object[ ./cad:Metadata//cad:Key ]" mode="sqlInnerJoin">
 		<xsl:text>new string[]{ </xsl:text>
-		<xsl:for-each select="descendant::cad:Object[ not( @dbTable = current()/@dbTable ) ][ generate-id() = generate-id( key( 'byDbTable', @dbTable )[ 1 ] ) ]">
-			<xsl:text>"</xsl:text>
-			<xsl:apply-templates mode="sqlInnerJoin" select="//cad:TableMetadata[ @name = $masterTable ]//cad:Key[ @references = current()/@dbTable ]"/>
-			<xsl:text>"</xsl:text>
-			<xsl:if test="not( position() = last() )">, </xsl:if>
-		</xsl:for-each>
+		<xsl:apply-templates mode="sqlInnerJoin" select="./cad:Metadata//cad:Key"/>
 		<xsl:text> }</xsl:text>
 	</xsl:template>
 
+	<xsl:template match="cad:Object[ not( ./cad:Metadata//cad:Key ) ]" mode="sqlInnerJoin">
+		<xsl:text>null</xsl:text>
+	</xsl:template>
+	
 	<!-- INNER JOIN clause -->
 	<xsl:template match="cad:Key" mode="sqlInnerJoin">
+		<xsl:text>"</xsl:text>
 		<xsl:value-of select="@references"/>
 		<xsl:text> ON </xsl:text>
-		<xsl:value-of select="ancestor::cad:TableMetadata[ 1 ]/@name"/>
+		<xsl:value-of select="ancestor::cad:Object[ 1 ]/@dbTable"/>
 		<xsl:text>.</xsl:text>
 		<xsl:value-of select="@foreignKey"/>
 		<xsl:text> = </xsl:text>
 		<xsl:value-of select="@references"/>
 		<xsl:text>.</xsl:text>
 		<xsl:value-of select="@referenceKey"/>
+		<xsl:text>"</xsl:text>
+		<xsl:if test="not( position() = last() )">, </xsl:if>
 	</xsl:template>
 	
 	<!-- Get all of the required where clauses -->
-	<xsl:template match="cad:Object" mode="sqlWhere">
+	<xsl:template match="cad:Object[ ./cad:Metadata//cad:Filter ]" mode="sqlWhere">
 		<xsl:text>new string[]{ </xsl:text>
-		<xsl:for-each select="descendant-or-self::cad:Object[ generate-id() = generate-id( key( 'byDbTable', @dbTable )[ 1 ] ) ]">
-			<xsl:text>"</xsl:text>
-			<xsl:value-of select="//cad:TableMetadata[ @name = current()/@dbTable ]//cad:Filter[ @name = 'default' ]"/>
-			<xsl:text>"</xsl:text>
-			<xsl:if test="not( position() = last() )">, </xsl:if>
-		</xsl:for-each>
+		<xsl:apply-templates select="./cad:Metadata//cad:Filter" mode="sqlWhere"/>
 		<xsl:text> }</xsl:text>
 	</xsl:template>
 
+	<!-- WHERE clause -->
+	<xsl:template match="cad:Filter" mode="sqlWhere">
+		<xsl:text>"</xsl:text>
+		<xsl:value-of select="."/>
+		<xsl:text>"</xsl:text>
+		<xsl:if test="not( position() = last() )">, </xsl:if>
+	</xsl:template>
+
+	<xsl:template match="cad:Object[ not( ./cad:Metadata//cad:Filter ) ]" mode="sqlWhere">
+		<xsl:text>null</xsl:text>
+	</xsl:template>
+					  
+	
+	
 </xsl:stylesheet>

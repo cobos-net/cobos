@@ -18,6 +18,7 @@ namespace Intergraph.AsiaPac.Data.Statements
 		readonly string[] _where;
 		readonly string _groupBy;
 		readonly string _orderBy;
+		readonly string _statement;	// cache the basic ToString result
 
 		public SqlSelect()
 		{
@@ -32,9 +33,15 @@ namespace Intergraph.AsiaPac.Data.Statements
 			_where = where;
 			_groupBy = groupBy;
 			_orderBy = orderBy;
+			_statement = ToStringInternal();
 		}
 
 		public override string ToString()
+		{
+			return _statement;
+		}
+
+		string ToStringInternal()
 		{
 			StringBuilder buffer = new StringBuilder( 512 );
 

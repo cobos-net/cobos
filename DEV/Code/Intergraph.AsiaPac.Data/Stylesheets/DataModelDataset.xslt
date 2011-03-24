@@ -2,11 +2,11 @@
 						xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 						xmlns:msxsl="urn:schemas-microsoft-com:xslt"
 						exclude-result-prefixes="msxsl"
-						xmlns="http://schemas.intergraph.com/asiapac/cad/datamodel"
-						xmlns:cad="http://schemas.intergraph.com/asiapac/cad/datamodel"
+						xmlns="http://schemas.intergraph.com/asiapac/cad/datamodel/1.0.0"
+						xmlns:cad="http://schemas.intergraph.com/asiapac/cad/datamodel/1.0.0"
 						xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 						xmlns:msdata="urn:schemas-microsoft-com:xml-msdata"
-						xmlns:msprop="urn:schemas-microsoft-com:xml-msprop"
+						xmlns:codegen="urn:schemas-microsoft-com:xml-msprop"
 >
 	<xsl:output method="xml" indent="yes"/>
 
@@ -36,10 +36,10 @@
 
 		<xsl:call-template name="generatedXmlWarning"/>
 
-		<xsd:schema targetNamespace="http://schemas.intergraph.com/asiapac/cad/datamodel"
+		<xsd:schema targetNamespace="http://schemas.intergraph.com/asiapac/cad/datamodel/1.0.0"
 				elementFormDefault="qualified"
-				xmlns="http://schemas.intergraph.com/asiapac/cad/datamodel"
-				xmlns:cad="http://schemas.intergraph.com/asiapac/cad/datamodel"
+				xmlns="http://schemas.intergraph.com/asiapac/cad/datamodel/1.0.0"
+				xmlns:cad="http://schemas.intergraph.com/asiapac/cad/datamodel/1.0.0"
 				xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 				xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
 			<xsl:element name="xsd:element">
@@ -49,7 +49,7 @@
 				<xsl:attribute name="msdata:IsDataSet">true</xsl:attribute>
 				<xsd:complexType>
 					<xsd:choice maxOccurs="unbounded">
-						<xsl:apply-templates select="cad:Object" mode="expandTopLevel"/>
+						<xsl:apply-templates select="cad:Object|cad:TableObject" mode="expandTopLevel"/>
 					</xsd:choice>
 				</xsd:complexType>
 			</xsl:element>
@@ -65,7 +65,7 @@
 	-->
 
 	<!-- Match a top level object and expand the object hierarchy -->
-	<xsl:template match="cad:Object" mode="expandTopLevel">
+	<xsl:template match="cad:Object|cad:TableObject" mode="expandTopLevel">
 		<xsl:variable name="classHierarchy">
 			<xsl:apply-templates select="." mode="classHierarchy"/>
 		</xsl:variable>
@@ -100,11 +100,17 @@
 	<xsl:template match="cad:Property">
 		
 		<xsl:element name="xsd:element">
-			<xsl:attribute name="name">
+			<xsl:variable name="qualifiedName">
 				<xsl:apply-templates mode="qualifiedName" select="."/>
+			</xsl:variable>
+			<xsl:attribute name="name">
+				<xsl:value-of select="$qualifiedName"/>
+			</xsl:attribute>
+			<xsl:attribute name="codegen:typedName">
+				<xsl:value-of select="$qualifiedName"/>
 			</xsl:attribute>
 			<xsl:attribute name="msdata:ColumnName">
-				<xsl:value-of select="@dbColumn"/>
+				<xsl:apply-templates select="." mode="dbColumn"/>
 			</xsl:attribute>
 			<xsl:attribute name="type">
 				<xsl:value-of select="@dbType"/>
@@ -112,22 +118,6 @@
 			<xsl:copy-of select="@minOccurs"/>
 		</xsl:element>
 	
-	</xsl:template>
-	
-	<!--
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	Process a property name - nested types are flattened in our DB model
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	-->
-
-	<xsl:template match="cad:Property" mode="qualifiedName">
-		<xsl:apply-templates select="ancestor::cad:Object[ not( position() = last() ) ]" mode="qualifiedName"/>
-		<xsl:value-of select="@name"/>
-	</xsl:template>
-
-	<xsl:template match="cad:Object" mode="qualifiedName">
-		<xsl:value-of select="@name"/>
-		<xsl:text>_</xsl:text>
 	</xsl:template>
 
 </xsl:stylesheet>

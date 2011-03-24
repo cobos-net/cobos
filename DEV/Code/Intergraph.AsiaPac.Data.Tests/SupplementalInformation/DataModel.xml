@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<DataModel name="SupplementalInformationDataModel" xmlns="http://schemas.intergraph.com/asiapac/cad/datamodel/1.0.0" xmlns:cad="http://schemas.intergraph.com/asiapac/cad/datamodel/1.0.0">
+
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Incident Times
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<TableObject name="IncidentTimes" dbTable="INCIDENT_TRACKING">
+		<Metadata>
+			<Filters>
+				<Filter>curent = 'T'</Filter>
+			</Filters>
+			<Keys/>
+		</Metadata>
+	</TableObject>
+
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Vehicle
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<TableObject name="Vehicle" dbTable="VEHIC">
+		<Metadata>
+			<Filters>
+				<Filter>curent = 'T'</Filter>
+			</Filters>
+			<Keys/>
+		</Metadata>
+	</TableObject>
+
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Person
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<TableObject name="Person" dbTable="PERSO">
+		<Metadata>
+			<Filters>
+				<Filter>curent = 'T'</Filter>
+			</Filters>
+			<Keys/>
+		</Metadata>
+	</TableObject>
+
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Tow Vehicle
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<TableObject name="TowVehicle" dbTable="TOW_VEHIC">
+		<Metadata>
+			<Filters>
+				<Filter>curent = 'T'</Filter>
+			</Filters>
+			<Keys/>
+		</Metadata>
+	</TableObject>
+
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Contact Name
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<TableObject name="ContactName" dbTable="CONT_NAME">
+		<Metadata>
+			<Filters>
+				<Filter>curent = 'T'</Filter>
+			</Filters>
+			<Keys/>
+		</Metadata>
+	</TableObject>
+
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Property
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<TableObject name="Property" dbTable="PROPT">
+		<Metadata>
+			<Filters>
+				<Filter>curent = 'T'</Filter>
+			</Filters>
+			<Keys/>
+		</Metadata>
+	</TableObject>
+	
+</DataModel>

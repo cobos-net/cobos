@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<DataModel name="EventDataModel" xmlns="http://schemas.intergraph.com/asiapac/cad/datamodel" xmlns:cad="http://schemas.intergraph.com/asiapac/cad/datamodel">
+<DataModel name="EventDataModel" xmlns="http://schemas.intergraph.com/asiapac/cad/datamodel/1.0.0" xmlns:cad="http://schemas.intergraph.com/asiapac/cad/datamodel/1.0.0">
 
 	<!--
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -10,13 +10,62 @@
 	<Object name="AgencyEvent" dbTable="AEVEN">
 		<Property name="AgencyEventId" dbColumn="num_1"/>
 		<Property name="CommonEventId" dbColumn="eid"/>
-		<Object name="Agency" type="AgencyType"/>
-		<Object name="Type" type="EventTypeType"/>
-		<Object name="SubType" type="EventSubTypeType"/>
-		<Object name="Address" type="EventAddressType"/>
-		<Object name="Location" type="EventLocationType"/>
-		<Object name="Status" type="EventStatusType"/>
-		<Object name="Timeline" type="EventTimelineType"/>
+		<Property name="ScheduledDestinationCommonEventId" dbColumn="dest_eid"/>
+		<Object name="Address" type="EventAddress"/>
+		<Property name="DestinationCommonPlaceName" dbColumn="d_ecompl" dbTable="EVENT"/>
+		<Object name="Directory" type="EventDirectory"/>
+		<Object name="Location" type="EventLocation"/>
+		<Object name="Agency" type="AgencyInformation"/>
+		<Object name="Type" type="EventType"/>
+		<Property name="StatusCode" dbColumn="event_status"/>
+		<Property name="Priority" dbColumn="priority"/>
+		<Property name="AlarmLevel" dbColumn="alarm_lev"/>
+		<Property name="CommunicationDifficulty" dbTable="EVENT" dbColumn="bes_comm_difficulty"/>
+		<Object name="Units">
+			<Property name="PrimaryUnit" dbColumn="prim_unit"/>
+			<Property name="DispatchAssignedUnit" dbColumn="dispass_unit"/>
+			<Property name="NumberOfAssignedUnits" dbColumn="assigned_units"/>
+		</Object>
+		<Object name="Held">
+			<Property name="EventTypeCode" dbColumn="hold_type"/>
+			<Property name="UnitId" dbColumn="hold_unt"/>
+			<Property name="AgreedResponseTimestamp" dbColumn="hold_dts" stringFormat="CadDts"/>
+		</Object>
+		<Object name="Timestamps" type="EventTimestamps"/>
+		<Object name="Caller" type="EventCaller"/>
+		<Object name="ChangeHistory" type="EventChangeHistory"/>
+		<Reference ref="EventComment" isCollection="true" name="Comments"/>
+		<Reference ref="Disposition"/>
+		<Metadata>
+			<Filters>
+				<Filter>AEVEN.open_and_curent = 'T' and AEVEN.curent in ('T', 'O')</Filter>
+				<Filter>EVENT.curent in ('T', 'O')</Filter>
+			</Filters>
+			<Keys>
+				<Key foreignKey="eid" references="EVENT" referenceKey="eid"/>
+			</Keys>
+		</Metadata>
+	</Object>
+
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Agency Event Summary
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<Object name="AgencyEventSummary" dbTable="AEVEN">
+		<Property name="AgencyEventId" dbColumn="num_1"/>
+		<Property name="CommonEventId" dbColumn="eid"/>
+		<Property name="StatusCode" dbColumn="event_status"/>
+		<Object name="Timestamps">
+			<Property name="LastStatusChanged" dbColumn="scdts" stringFormat="CadDts"/>
+		</Object>
+		<Metadata>
+			<Filters>
+				<Filter>AEVEN.open_and_curent = 'T' and AEVEN.curent in ('T', 'O')</Filter>
+			</Filters>
+			<Keys/>
+		</Metadata>
 	</Object>
 
 	<!--
@@ -25,9 +74,13 @@
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-	<Type name="AgencyType" dbTable="AEVEN">
-		<Property name="agencyId" dbColumn="ag_id"/>
-		<Property name="dispatchGroup" dbColumn="dgroup"/>
+	<Type name="AgencyInformation" dbTable="AEVEN">
+		<Property name="AgencyId" dbColumn="ag_id"/>
+		<Property name="DispatchGroup" dbColumn="dgroup"/>
+		<Property name="Lev2" dbColumn="LEV2"/>
+		<Property name="Lev3" dbColumn="LEV3"/>
+		<Property name="Lev4" dbColumn="LEV4"/>
+		<Property name="Lev5" dbColumn="LEV5"/>
 	</Type>
 	
 	<!--
@@ -36,21 +89,33 @@
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-	<Type name="EventAddressType" dbTable="EVENT">
+	<Type name="EventAddress" dbTable="EVENT">
+		<XsdProperty name="Text" type="xsd:string" minOccurs="0"/>
 		<Property name="CommonPlaceName" dbColumn="ecompl" dbAlias="loc_common_placename"/>
 		<Property name="ApartmentNumber" dbColumn="eapt" dbAlias="loc_apartment"/>
 		<Property name="StreetNumber" dbColumn="estnum" dbAlias="loc_street_num"/>
-		<Property name="DirectionPrefix" dbColumn="edirpre" dbAlias="loc_direction_prefix"/>
+		<Property name="DirectionalPrefix" dbColumn="edirpre" dbAlias="loc_direction_prefix"/>
 		<Property name="StreetName" dbColumn="efeanme" dbAlias="loc_street"/>
 		<Property name="StreetType" dbColumn="efeatyp" dbAlias="loc_street_type"/>
-		<Property name="DirectionSuffix" dbColumn="edirsuf" dbAlias="loc_direction_suffix"/>
+		<Property name="DirectionalSuffix" dbColumn="edirsuf" dbAlias="loc_direction_suffix"/>
+		<Property name="Suburb" dbColumn="emun" dbAlias="loc_municipality"/>
+		<Property name="Area" dbColumn="earea" dbAlias="loc_area"/>
 		<Property name="CrossStreet1" dbColumn="xstreet1" dbAlias="loc_xstreet1"/>
 		<Property name="CrossStreet2" dbColumn="xstreet2" dbAlias="loc_xstreet2"/>
-		<Property name="Area" dbColumn="earea" dbAlias="loc_area"/>
-		<Property name="Municipality" dbColumn="emun" dbAlias="loc_municipality"/>
-		<Property name="Comments" dbColumn="loc_com" dbAlias="loc_comments"/>
-		<Property name="Mslink" dbColumn="fea_mslink" dbAlias="loc_mslink"/>
-		<Property name="Verified" dbColumn="loc_ver" dbAlias="loc_verified"/>
+		<Property name="Comment" dbColumn="loc_com" dbAlias="loc_comments"/>
+		<Property name="Verified" dbColumn="loc_ver" dbAlias="loc_verified" stringFormat="CadBoolean"/>
+		<Property name="LocationOfInterestSearchPerformed" dbColumn="loi_search" stringFormat="CadBoolean"/>
+	</Type>
+
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Common Event Directory type
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<Type name="EventDirectory" dbTable="EVENT">
+		<Property name="Melway" dbColumn="ver_melway"/>
+		<Property name="VicRoads" dbColumn="ver_vicroads"/>
 	</Type>
 
 	<!--
@@ -59,55 +124,32 @@
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-	<Type name="EventLocationType" dbTable="EVENT">
+	<Type name="EventLocation" dbTable="EVENT">
 		<Property name="X" dbColumn="x_cord"/>
 		<Property name="Y" dbColumn="y_cord"/>
 	</Type>
 
 	<!--
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	Common Event type type
+	Event type type
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-	<Type name="EventTypeType" dbTable="AEVEN">
-		<Property name="Code" dbColumn="tycod"/>
-		<Property name="Description" dbColumn="typ_eng"/>
-	</Type>
-
-	<!--
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	Common Event sub-type type
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	-->
-
-	<Type name="EventSubTypeType" dbTable="AEVEN">
-		<Property name="Code" dbColumn="sub_tycod"/>
-		<Property name="Description" dbColumn="sub_eng"/>
-	</Type>
-
-	<!--
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	Event status type
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	-->
-
-	<Type name="EventStatusType" dbTable="AEVEN">
-		<Property name="StatusCode" dbColumn="event_status"/>
-		<Property name="AlarmLevel" dbColumn="alarm_lev"/>
-		<Property name="PendingTimer" dbColumn="pend_dts"/>
-		<Object name="Units" dbTable="AEVEN">
-			<Property name="AssignedUnits" dbColumn="assigned_units"/>
-			<Property name="DispatchAssignedUnit" dbColumn="dispass_unit"/>
+	<Type name="EventType" dbTable="AEVEN">
+		<Object name="Type">
+			<Property name="Code" dbColumn="tycod"/>
+			<Property name="Description" dbColumn="typ_eng"/>
 		</Object>
-		<Object name="Hold" dbTable="AEVEN">
-			<Property name="Type" dbColumn="hold_type"/>
-			<Property name="ForUnit" dbColumn="hold_unt"/>
-			<Property name="Timestamp" dbColumn="hold_dts"/>
+		<Object name="SubType">
+			<Property name="Code" dbColumn="sub_tycod"/>
+			<Property name="Description" dbColumn="sub_eng"/>
 		</Object>
 	</Type>
 
-	<Object name="EventStatusObj" type="EventStatus"/>
+
+	<!-- Top level object for testing purposes 
+	<Object name="EventStatusTest" type="EventStatus"/>
+	-->
 	
 	<!--
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -115,13 +157,17 @@
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-	<Type name="EventTimelineType" dbTable="AEVEN">
-		<Property name="Created" dbColumn="ad_ts"/>
-		<Property name="Dispatched" dbColumn="ds_ts"/>
-		<Property name="Enroute" dbColumn="en_ts"/>
-		<Property name="Arrived" dbColumn="ar_ts"/>
-		<Property name="Transport" dbColumn="tr_ts"/>
-		<Property name="TransportArrived" dbColumn="ta_ts"/>
+	<Type name="EventTimestamps" dbTable="AEVEN">
+		<Property name="Creation" dbColumn="sdts" stringFormat="CadDts"/>
+		<Property name="Added" dbColumn="ad_ts" stringFormat="CadDts"/>
+		<Property name="PendingDispatch" dbColumn="pend_dts" stringFormat="CadDts"/>
+		<Property name="FirstDispatched" dbColumn="ds_ts" stringFormat="CadDts"/>
+		<Property name="FirstEnroute" dbColumn="en_ts" stringFormat="CadDts"/>
+		<Property name="FirstArrived" dbColumn="ar_ts" stringFormat="CadDts"/>
+		<Property name="FirstTransport" dbColumn="tr_ts" stringFormat="CadDts"/>
+		<Property name="FirstTransportArrived" dbColumn="ta_ts" stringFormat="CadDts"/>
+		<Property name="LastStatusChanged" dbColumn="scdts" stringFormat="CadDts"/>
+		<Property name="Closed" dbColumn="xdts" stringFormat="CadDts"/>
 	</Type>
 
 	<!--
@@ -130,42 +176,115 @@
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-	<Type name="CallerType" dbTable="EVENT">
+	<Type name="EventCaller" dbTable="EVENT">
 		<Property name="Name" dbColumn="clname"/>
-		<Property name="Number" dbColumn="clrnum"/>
-		<Property name="StreetAddress" dbColumn="cstr_add"/>
-		<Property name="City" dbColumn="ccity"/>
+		<Property name="PhoneNumber" dbColumn="clrnum"/>
+		<Property name="Address" dbColumn="cstr_add"/>
 		<Property name="Source" dbColumn="call_sour"/>
+	</Type>
+	
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Change History
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<Type name="EventChangeHistory" dbTable="AEVEN">
+		<Property name="OpenAndCurrent" dbColumn="open_and_curent" stringFormat="CadBoolean"/>
+		<Property name="Reopened" dbColumn="reopen" stringFormat="CadBoolean"/>
+		<Object name="Created">
+			<Property name="EmployeeId" dbColumn="create_pers"/>
+			<Property name="Terminal" dbColumn="create_term"/>
+		</Object>
+		<Object name="Updated">
+			<Property name="EmployeeId" dbColumn="upers"/>
+			<Property name="Terminal" dbColumn="uterm"/>
+		</Object>
+		<Object name="Closed">
+			<Property name="EmployeeId" dbColumn="xpers"/>
+			<Property name="Terminal" dbColumn="xterm"/>
+			<Property name="Comment" dbColumn="xcmt"/>
+		</Object>
 	</Type>
 
 	<!--
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	AEVEN Metadata
+	Event Comments, non-agency specific
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-	<TableMetadata name="AEVEN">
-		<Filters>
-			<Filter name="default">AEVEN.open_and_curent = 'T' and AEVEN.curent in ('T', 'O')</Filter>
-		</Filters>
-		<Keys>
-			<Key foreignKey="eid" references="EVENT" referenceKey="eid"/>
-		</Keys>
-	</TableMetadata>
+	<Object name="EventComment" type="EventCommentType">
+		<Metadata>
+			<Filters>
+				<Filter>AEVEN.open_and_curent = 'T' and AEVEN.curent in ('T', 'O')</Filter>
+			</Filters>
+			<Keys>
+				<Key foreignKey="eid" references="AEVEN" referenceKey="eid"/>
+			</Keys>
+		</Metadata>
+	</Object>
+
+	<Type name="EventCommentType" dbTable="EVCOM">
+		<Property name="AgencyEventId" dbColumn="num_1" dbTable="AEVEN" hidden="true"/>
+		<Property name="CommonEventId" dbColumn="eid" hidden="true"/>
+		<Property name="Text" dbColumn="comm"/>
+		<Property name="Scope" dbColumn="comm_scope"/>
+		<Property name="SystemMessageNumber" dbColumn="comm_key"/>
+		<Property name="LineGroup" dbColumn="lin_grp" hidden="true"/>
+		<Property name="LineOrder" dbColumn="lin_ord" hidden="true"/>
+		<Object name="Created">
+			<Property name="Timestamp" dbColumn="cdts" stringFormat="CadDts"/>
+			<Property name="EmployeeId" dbColumn="cpers"/>
+			<Property name="Terminal" dbColumn="cterm"/>
+		</Object>
+	</Type>
 
 	<!--
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	EVENT Metadata
+	Event Disposition
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-	<TableMetadata name="EVENT">
-		<Filters>
-			<Filter name="default">EVENT.curent in ('T', 'O')</Filter>
-		</Filters>
-		<Keys>
-			<Key foreignKey="eid" references="AEVEN" referenceKey="eid"/>
-		</Keys>
-	</TableMetadata>
+	<Object name="Disposition" type="EventDispositionType">
+		<Metadata>
+			<Filters>
+				<Filter>EV_DISPO.curent = 'T'</Filter>
+				<Filter>AEVEN.open_and_curent = 'T' and AEVEN.curent in ('T', 'O')</Filter>
+			</Filters>
+			<Keys>
+				<Key foreignKey="num_1" references="AEVEN" referenceKey="num_1"/>
+			</Keys>
+		</Metadata>
+	</Object>
+
+	<Type name="EventDispositionType" dbTable="EV_DISPO">
+		<Property name="AgencyEventId" dbColumn="num_1"/>
+		<Property name="CommonEventId" dbColumn="eid"/>
+		<Property name="DispositionCode" dbColumn="dispo"/>
+		<Property name="CreateTerminal" dbColumn="cterm"/>
+		<Property name="EmployeeUnit" dbColumn="row_num"/>
+		<Object name="ResultCodes">
+			<Property name="Qualifier1" dbColumn="qual1"/>
+			<Property name="Qualifier2" dbColumn="qual2"/>
+			<Property name="Qualifier3" dbColumn="qual3"/>
+		</Object>
+		<Property name="UnitId" dbColumn="unit_id"/>
+	</Type>
+
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Event Agencies
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<Object name="Agencies" dbTable="AEVEN">
+		<Property name="CommonEventId" dbColumn="eid"/>
+		<Property name="AgencyId" dbColumn="ag_id"/>
+		<Metadata>
+			<Filters/>
+			<Keys/>
+		</Metadata>
+	</Object>
+
 
 </DataModel>

@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xsd:schema id="DataModel"
-	targetNamespace="http://schemas.intergraph.com/asiapac/cad/datamodel" 
+	targetNamespace="http://schemas.intergraph.com/asiapac/cad/datamodel/1.0.0" 
 	elementFormDefault="qualified"
-	xmlns="http://schemas.intergraph.com/asiapac/cad/datamodel"
-	xmlns:cad="http://schemas.intergraph.com/asiapac/cad/datamodel"
+	xmlns="http://schemas.intergraph.com/asiapac/cad/datamodel/1.0.0"
+	xmlns:cad="http://schemas.intergraph.com/asiapac/cad/datamodel/1.0.0"
 	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 >
 
@@ -63,22 +63,67 @@
 					<xsd:choice minOccurs="0" maxOccurs="unbounded">
 						<xsd:element ref="Object"/>
 						<xsd:element ref="Property"/>
+						<xsd:element ref="XsdProperty"/>
+						<xsd:element ref="Reference"/>
 					</xsd:choice>
+					<xsd:element name="Metadata" type="TableMetadataType" minOccurs="0"/>
 				</xsd:sequence>
-				<xsd:attribute name="name" type="xsd:string" use="required"/>
-				<xsd:attribute name="dbTable" type="xsd:string" use="optional"/>
-				<xsd:attribute name="type" type="xsd:string" use="optional"/>
+				<xsd:attribute name="name" type="xsd:string" use="required">
+					<xsd:annotation>
+						<xsd:documentation>
+							The name of the object to be published.
+							This defines the class and dataset names for the 
+							processed objects.
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="dbTable" type="xsd:string" use="optional">
+					<xsd:annotation>
+						<xsd:documentation>
+							The database table that this object's properties
+							are retrieved from.  If omitted this is inherited
+							from the ancestor that defines the table.
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="type" type="xsd:string" use="optional">
+					<xsd:annotation>
+						<xsd:documentation>
+							Indicates that the object is a common type, defined
+							at the top level of the data model.
+							The type declaration is inlined into the object
+							hierarchy for processing.
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="reference" type="xsd:string" use="optional">
+					<xsd:annotation>
+						<xsd:documentation>
+							Indicates a relationship between top level objects.
+							Implemented as a DataSet relationship in the dataset model.
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="isCollection" type="xsd:boolean" use="optional" default="false">
+					<xsd:annotation>
+						<xsd:documentation>
+							Indicates a one to many relationship between top level objects.
+							Implemented as a DataSet relationship in the dataset model.
+							Implemented as a List&lt;T&gt; type.
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
 
 	<!--
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	Data object
+	Data type
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-	<xsd:element name="Type" type="TypeType" substitutionGroup ="DataModelComponent"/> 
+	<xsd:element name="Type" type="TypeType" substitutionGroup="DataModelComponent"/> 
 	
 	<xsd:complexType name="TypeType">
 		<xsd:complexContent>
@@ -86,10 +131,63 @@
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
-						 
+
 	<!--
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	Data property
+	Reference type - forms relationships between top level objects
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<xsd:element name="Reference" type="ReferenceType"/>
+
+	<xsd:complexType name="ReferenceType">
+		<xsd:attribute name="ref" type="xsd:string" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+					The ref attribute references a top level object that
+					will be a relation to the top level object containing
+					this Reference object.
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="isCollection" type="xsd:boolean" use="optional" default="false">
+			<xsd:annotation>
+				<xsd:documentation>
+					Marks this reference as a one-to-many relationship.
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="name" type="xsd:string" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>
+					The name attribute only applies to collection objects.
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Table object - Use this to publish an entire database table row as an object
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<xsd:element name="TableObject" type="TableObjectType" substitutionGroup="DataModelComponent"/>
+
+	<xsd:complexType name="TableObjectType">
+		<xsd:complexContent>
+			<xsd:extension base="DataModelComponentType">
+				<xsd:sequence>
+					<xsd:element name="Metadata" type="TableMetadataType"/>
+				</xsd:sequence>
+				<xsd:attribute name="dbTable" type="xsd:string"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Database property
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
@@ -98,10 +196,101 @@
 	<xsd:complexType name="PropertyType">
 		<xsd:simpleContent>
 			<xsd:extension base="xsd:string">
-				<xsd:attribute name="name" type="xsd:string" use="required"/>
-				<xsd:attribute name="dbColumn" type="xsd:string" use="optional"/>
-				<xsd:attribute name="dbAlias" type="xsd:string" use="optional"/>
-				<xsd:attribute name="stringFormat" type="StringFormatEnum" use="optional"/>
+				<xsd:attribute name="name" type="xsd:string" use="required">
+					<xsd:annotation>
+						<xsd:documentation>
+							The name of the property is the name that will be
+							used to access the data in the code object.  
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="dbTable" type="xsd:string" use="optional">
+					<xsd:annotation>
+						<xsd:documentation>
+							The database table that this object's properties
+							are retrieved from.  If omitted this is inherited
+							from the ancestor that defines the table.
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="dbColumn" type="xsd:string" use="required">
+					<xsd:annotation>
+						<xsd:documentation>
+							The column in the database that the value is queried from.
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="dbAlias" type="xsd:string" use="optional">
+					<xsd:annotation>
+						<xsd:documentation>
+							This can be used to resolve duplicate names when joining
+							tables or to alias an aggregate function.  Used to form
+							the 'AS' directive in a SELECT e.g.
+							SELECT SUM(COL1) AS TOTAL...
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="hidden" type="xsd:boolean" use="optional" default="false">
+					<xsd:annotation>
+						<xsd:documentation>
+							If no name is provided, the property will be hidden,
+							i.e. the property will only be used as part
+							of the database query.
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="stringFormat" type="StringFormatEnum" use="optional">
+					<xsd:annotation>
+						<xsd:documentation>
+							Some database field values are other data types encoded as strings.
+							An example of this would be the CAD CDTS value.
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="formatArgs" type="xsd:string" use="optional">
+					<xsd:annotation>
+						<xsd:documentation>
+							Additional arguments used to process string encoded values.
+							The arguments supplied will depend on the implementation
+							for the particular string format.
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Schema only property
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<xsd:element name="XsdProperty" type="XsdPropertyType"/>
+
+	<xsd:complexType name="XsdPropertyType">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:string">
+				<xsd:attribute name="name" type="xsd:string" use="required">
+					<xsd:annotation>
+						<xsd:documentation></xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="type" type="xsd:string" use="required">
+					<xsd:annotation>
+						<xsd:documentation></xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="minOccurs" type="xsd:string" use="optional" default="1">
+					<xsd:annotation>
+						<xsd:documentation></xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="maxOccurs" type="xsd:string" use="optional" default="1">
+					<xsd:annotation>
+						<xsd:documentation></xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
 			</xsd:extension>
 		</xsd:simpleContent>
 	</xsd:complexType>
@@ -119,6 +308,7 @@
 					<xsd:sequence>
 						<xsd:element name="Item" type="EnumerationItem" maxOccurs="unbounded"/>
 					</xsd:sequence>
+					<xsd:attribute name="base" type="xsd:string" use="required"/>
 				</xsd:extension>
 			</xsd:complexContent>
 		</xsd:complexType>
@@ -127,7 +317,6 @@
 	<xsd:complexType name="EnumerationItem">
 		<xsd:simpleContent>
 			<xsd:extension base ="xsd:string">
-				<xsd:attribute name="id" type="xsd:string" use="required"/>
 				<xsd:attribute name="value" type="xsd:positiveInteger" use="optional"/>
 			</xsd:extension>
 		</xsd:simpleContent>
@@ -141,7 +330,9 @@
 
 	<xsd:simpleType name="StringFormatEnum">
 		<xsd:restriction base="xsd:string">
-			<xsd:enumeration value="CDTS"/>
+			<xsd:enumeration value="CadDts"/>
+			<xsd:enumeration value="CadBoolean"/>
+			<xsd:enumeration value="Seperator"/>
 		</xsd:restriction>
 	</xsd:simpleType>
 
@@ -151,17 +342,11 @@
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-	<xsd:element name="TableMetadata" type="TableMetadataType" substitutionGroup="DataModelComponent"/>
-
 	<xsd:complexType name="TableMetadataType">
-		<xsd:complexContent>
-			<xsd:extension base="DataModelComponentType">
-				<xsd:sequence>
-					<xsd:element name="Filters" type="TableFiltersType" minOccurs="0"/>
-					<xsd:element name="Keys" type="TableFiltersType" minOccurs="0"/>
-				</xsd:sequence>
-			</xsd:extension>
-		</xsd:complexContent>
+		<xsd:sequence>
+			<xsd:element name="Filters" type="TableFiltersType" minOccurs="0"/>
+			<xsd:element name="Keys" type="TableKeysType" minOccurs="0"/>
+		</xsd:sequence>
 	</xsd:complexType>
 
 	<!--
@@ -172,16 +357,8 @@
 
 	<xsd:complexType name="TableFiltersType">
 		<xsd:sequence>
-			<xsd:element name="Filter" type="TableFilterType" maxOccurs="unbounded"/>
+			<xsd:element name="Filter" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
 		</xsd:sequence>
-	</xsd:complexType>
-
-	<xsd:complexType name="TableFilterType">
-		<xsd:simpleContent>
-			<xsd:extension base="xsd:string">
-				<xsd:attribute name="name" use="required"/>
-			</xsd:extension>
-		</xsd:simpleContent>
 	</xsd:complexType>
 
 	<!--
@@ -192,7 +369,7 @@
 
 	<xsd:complexType name="TableKeysType">
 		<xsd:sequence>
-			<xsd:element name="Key" type="TableKeyType" maxOccurs="unbounded"/>
+			<xsd:element name="Key" type="TableKeyType" minOccurs="0" maxOccurs="unbounded"/>
 		</xsd:sequence>
 	</xsd:complexType>
 

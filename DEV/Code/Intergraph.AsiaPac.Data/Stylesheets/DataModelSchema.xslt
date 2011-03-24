@@ -2,8 +2,8 @@
 						xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 						xmlns:msxsl="urn:schemas-microsoft-com:xslt"
 						exclude-result-prefixes="msxsl"
-						xmlns="http://schemas.intergraph.com/asiapac/cad/datamodel"
-						xmlns:cad="http://schemas.intergraph.com/asiapac/cad/datamodel"
+						xmlns="http://schemas.intergraph.com/asiapac/cad/datamodel/1.0.0"
+						xmlns:cad="http://schemas.intergraph.com/asiapac/cad/datamodel/1.0.0"
 						xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 >
 	<xsl:output method="xml" indent="yes"/>
@@ -24,9 +24,31 @@
 	-->
 
 	<!-- include the generated database schema variables -->
-	<xsl:include href="CadDatabase.xslt"/>
-	<xsl:include href="Utilities.xslt"/>
+	<xsl:include href="DataModelCommon.xslt"/>
 
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Controls how the minOccurs attributes are set for nested objects and types.
+	
+	strict:		nested objects are always mandatory, nested types are set 
+					according to the database schema definition.  (default)
+	
+	optional:	every nested object and type has minOccurs="0"
+	
+	mandatory:	every nested object and type has minOccurs="1"
+	
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+	<xsl:param name="multiplicityMode"/>
+
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Set the root node name if you want to contain all of the top level elements 
+	within a 
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+	<xsl:param name="rootNodeName"/>
+	
 	<!--
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	Process the data model into an Xml schema
@@ -37,19 +59,62 @@
 
 		<xsl:call-template name="generatedXmlWarning"/>
 
-		<xsd:schema targetNamespace="http://schemas.intergraph.com/asiapac/cad/datamodel"
+		<xsd:schema targetNamespace="http://schemas.intergraph.com/asiapac/cad/datamodel/1.0.0"
 				elementFormDefault="qualified"
-				xmlns="http://schemas.intergraph.com/asiapac/cad/datamodel"
-				xmlns:cad="http://schemas.intergraph.com/asiapac/cad/datamodel"
+				xmlns="http://schemas.intergraph.com/asiapac/cad/datamodel/1.0.0"
+				xmlns:cad="http://schemas.intergraph.com/asiapac/cad/datamodel/1.0.0"
 				xmlns:xsd="http://www.w3.org/2001/XMLSchema">
 
-			<xsl:apply-templates select="child::cad:Object | child::cad:Type"/>
+			<xsl:choose>
+				<xsl:when test="$rootNodeName != ''">
+					<xsl:element name="xsd:element">
+						<xsl:attribute name="name">
+							<xsl:value-of select="$rootNodeName"/>
+						</xsl:attribute>
+						<xsl:element name="xsd:complexType">
+							<xsl:element name="xsd:sequence">
+								<xsl:apply-templates select="child::cad:Object|child::cad:TableObject"/>
+							</xsl:element>
+						</xsl:element>
+					</xsl:element>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:apply-templates select="child::cad:Object|child::cad:TableObject"/>
+				</xsl:otherwise>
+			</xsl:choose>
+
+			<xsl:apply-templates select="child::cad:Type"/>
+
+			<xsl:apply-templates select="child::cad:Enumeration"/>
 
 			<!-- copy the database type definitions -->
 			<xsl:copy-of select="$databaseTypesNodeSet"/>
 
 		</xsd:schema>
 
+	</xsl:template>
+
+	<xsl:template match="cad:Object[ not( parent::cad:DataModel ) ]" mode="minOccurs">
+		<xsl:attribute name="minOccurs">
+			<xsl:choose>
+				<xsl:when test="$multiplicityMode = 'optional'">
+					<xsl:value-of select="0"/>
+				</xsl:when>
+				<xsl:when test="$multiplicityMode = 'mandatory'">
+					<xsl:value-of select="1"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<!-- strict -->
+					<xsl:value-of select="1"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:attribute>
+	</xsl:template>
+
+	<xsl:template match="cad:Object[ parent::cad:DataModel ]|cad:TableObject" mode="minOccurs">
+		<xsl:if test="$rootNodeName != ''">
+			<xsl:attribute name="minOccurs">0</xsl:attribute>
+		</xsl:if>
 	</xsl:template>
 
 	<!--
@@ -59,15 +124,17 @@
 	-->
 
 	<xsl:template match="cad:Object[ not( @type ) ]">
-
-		<xsd:element name="{@name}">
-			<xsd:complexType>
-				<xsd:sequence>
-					<xsl:apply-templates select="./*"/>
-				</xsd:sequence>
-			</xsd:complexType>
-		</xsd:element>
-
+		<xsl:element name="xsd:element">
+			<xsl:attribute name="name">
+				<xsl:value-of select="@name"/>
+			</xsl:attribute>
+			<xsl:apply-templates select="." mode="minOccurs"/>
+			<xsl:element name="xsd:complexType">
+				<xsl:element name="xsd:sequence">
+					<xsl:apply-templates select="child::cad:Object | child::cad:Property[ not( @hidden ) ] | child::cad:Reference | child::cad:XsdProperty"/>
+				</xsl:element>
+			</xsl:element>
+		</xsl:element>
 	</xsl:template>
 
 	<!--
@@ -77,9 +144,15 @@
 	-->
 
 	<xsl:template match="cad:Object[ @type ]">
-		
-		<xsd:element name="{@name}" type="{@type}"/>
-	
+		<xsl:element name="xsd:element">
+			<xsl:attribute name="name">
+				<xsl:value-of select="@name"/>
+			</xsl:attribute>
+			<xsl:attribute name="type">
+				<xsl:value-of select="@type"/>
+			</xsl:attribute>
+			<xsl:apply-templates select="." mode="minOccurs"/>
+		</xsl:element>
 	</xsl:template>
 
 	<!--
@@ -89,13 +162,52 @@
 	-->
 
 	<xsl:template match="cad:Type">
-
 		<xsd:complexType name="{@name}">
 			<xsd:sequence>
-				<xsl:apply-templates select="./*"/>
+				<xsl:apply-templates select="child::cad:Object | child::cad:Property[ not( @hidden ) ] | child::cad:XsdProperty"/>
 			</xsd:sequence>
 		</xsd:complexType>
+	</xsl:template>
 
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Process a table object
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<xsl:template match="cad:TableObject">
+		<xsl:element name="xsd:element">
+			<xsl:attribute name="name">
+				<xsl:value-of select="@name"/>
+			</xsl:attribute>
+			<xsl:apply-templates select="." mode="minOccurs"/>
+			<xsl:element name="xsd:complexType">
+				<xsl:element name="xsd:sequence">
+					<xsl:apply-templates select="$databaseTablesNodeSet/xsd:element[ @name = translate( current()/@dbTable, $lowercase, $uppercase ) ]//xsd:element"
+												mode="tableObjectElements"/>
+				</xsl:element>
+			</xsl:element>
+		</xsl:element>
+	</xsl:template>
+
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Process a reference object
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<xsl:template match="cad:Reference[ not( @isCollection ) ]">
+		<xsd:element ref="{@ref}" minOccurs="0" maxOccurs="1"/>
+	</xsl:template>
+
+	<xsl:template match="cad:Reference[ @isCollection ]">
+		<xsd:element name="{@name}">
+			<xsd:complexType>
+				<xsd:sequence>
+					<xsd:element ref="{@ref}" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:complexType>
+		</xsd:element>
 	</xsl:template>
 
 	<!--
@@ -105,16 +217,63 @@
 	-->
 
 	<xsl:template match="cad:Property">
-
 		<xsl:element name="xsd:element">
 			<xsl:attribute name="name">
 				<xsl:value-of select="@name"/>
 			</xsl:attribute>
-			<xsl:apply-templates select="$databaseTablesNodeSet/xsd:element[ @name = translate( current()/../@dbTable, $lowercase, $uppercase ) ]
-													//xsd:element[ @name = translate( current()/@dbColumn, $lowercase, $uppercase ) ]" 
-										mode="copyDbAttributes"/>
+			<xsl:apply-templates select="." mode="setDataAttributes"/>
 		</xsl:element>
-		
+	</xsl:template>
+
+	<!-- Set the data attributes for a standard type (i.e. not string encoded data) -->
+	<xsl:template match="cad:Property[ not( @stringFormat ) ]" mode="setDataAttributes">
+		<xsl:variable name="dbTable">
+			<xsl:apply-templates mode="getDbTable" select="."/>
+		</xsl:variable>
+		<xsl:apply-templates select="$databaseTablesNodeSet/xsd:element[ @name = translate( $dbTable, $lowercase, $uppercase ) ]
+									//xsd:element[ @name = translate( current()/@dbColumn, $lowercase, $uppercase ) ]"
+									mode="copyDbAttributes"/>
+	</xsl:template>
+
+	<xsl:template match="cad:Property[ @stringFormat = 'CadDts' ]" mode="setDataAttributes">
+		<xsl:attribute name="type">xsd:dateTime</xsl:attribute>
+		<xsl:apply-templates select="." mode="setDataMultiplicity"/>
+	</xsl:template>
+
+	<xsl:template match="cad:Property[ @stringFormat = 'CadBoolean' ]" mode="setDataAttributes">
+		<xsl:attribute name="type">xsd:boolean</xsl:attribute>
+		<xsl:apply-templates select="." mode="setDataMultiplicity"/>
+	</xsl:template>
+
+	<xsl:template match="cad:Property[ @stringFormat = 'Separator' ]" mode="setDataAttributes">
+		<xsl:attribute name="type">xsd:string</xsl:attribute>
+		<xsl:apply-templates select="." mode="setDataMultiplicity"/>
+	</xsl:template>
+
+	<xsl:template match="cad:Property" mode="setDataMultiplicity">
+		<xsl:choose>
+			<xsl:when test="$multiplicityMode = 'optional'">
+				<xsl:attribute name="minOccurs">0</xsl:attribute>
+			</xsl:when>
+			<xsl:when test="$multiplicityMode = 'mandatory'">
+				<xsl:attribute name="minOccurs">1</xsl:attribute>
+			</xsl:when>
+			<xsl:otherwise>
+				<!-- strict -->
+				<xsl:variable name="dbTable">
+					<xsl:apply-templates mode="getDbTable" select="."/>
+				</xsl:variable>
+				<xsl:copy-of select="$databaseTablesNodeSet/xsd:element[ @name = translate( $dbTable, $lowercase, $uppercase ) ]
+									//xsd:element[ @name = translate( current()/@dbColumn, $lowercase, $uppercase ) ]/@minOccurs"/>
+			</xsl:otherwise>
+		</xsl:choose>
+
+	</xsl:template>
+
+	<xsl:template match="cad:XsdProperty">
+		<xsl:element name="xsd:element">
+			<xsl:copy-of select="@*"/>
+		</xsl:element>
 	</xsl:template>
 
 	<!--
@@ -123,10 +282,51 @@
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-	<xsl:template match="xsd:element" mode="copyDbAttributes">
-		<xsl:copy-of select="@type"/>
-		<xsl:copy-of select="@minOccurs"/>
+	<xsl:template match="xsd:element" mode="tableObjectElements">
+		<xsl:element name="xsd:element">
+			<xsl:attribute name="name">
+				<xsl:call-template name="capsUnderscoreToClassName">
+					<xsl:with-param name="tokens" select="@name"/>
+				</xsl:call-template>
+			</xsl:attribute>
+			<xsl:apply-templates select="." mode="copyDbAttributes"/>
+		</xsl:element>
 	</xsl:template>
 
 
+	<xsl:template match="xsd:element" mode="copyDbAttributes">
+		<xsl:copy-of select="@type"/>
+		<xsl:choose>
+			<xsl:when test="$multiplicityMode = 'optional'">
+				<xsl:attribute name="minOccurs">0</xsl:attribute>
+			</xsl:when>
+			<xsl:when test="$multiplicityMode = 'mandatory'">
+				<xsl:attribute name="minOccurs">1</xsl:attribute>
+			</xsl:when>
+			<xsl:otherwise> 
+				<!-- strict -->
+				<xsl:copy-of select="@minOccurs"/>
+			</xsl:otherwise>
+		</xsl:choose>
+		
+	</xsl:template>
+
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Process enumerations
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<xsl:template match="cad:Enumeration">
+		<xsd:simpleType name="{@name}">
+			<xsd:restriction base="{@base}">
+				<xsl:apply-templates select="cad:Item"/>
+			</xsd:restriction>
+		</xsd:simpleType>
+	</xsl:template>
+
+	<xsl:template match="cad:Item">
+		<xsd:enumeration value="{text()}"/>
+	</xsl:template>
+	
 </xsl:stylesheet>

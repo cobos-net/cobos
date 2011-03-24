@@ -60,7 +60,8 @@
 
 	<!-- 
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	Recursive template to camel case an input string
+	Title case an input string with whitespace delimited tokens, removing
+	invalid characters for class naming conventions.
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
@@ -68,14 +69,21 @@
 		<xsl:text>!@#$%^&amp;*()-+={[}}|\:;"'&lt;&gt;,./?~`</xsl:text>
 	</xsl:variable>
 
-	<xsl:template name="className">
+	<xsl:template name="tokensToClassName">
 		<xsl:param name="tokens"/>
-		<xsl:call-template name="camelCase">
+		<xsl:call-template name="titleCaseTokens">
 			<xsl:with-param name="tokens" select="translate( $tokens, $invalidClassNameChar, '' )"/>
 		</xsl:call-template>
 	</xsl:template>
 
-	<xsl:template name="camelCase">
+	<!-- 
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Recursive template to title case an input string with whitespace delimited
+	tokens.
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<xsl:template name="titleCaseTokens">
 		<xsl:param name="tokens"/>
 
 		<xsl:variable name="before" select="substring-before( $tokens, ' ' )"/>
@@ -83,7 +91,7 @@
 		<xsl:choose>
 			<xsl:when test="$before">
 				<xsl:value-of select="concat( translate( substring( $before, 1, 1 ), $lowercase, $uppercase  ), substring( $before, 2 ) )" />
-				<xsl:call-template name="camelCase">
+				<xsl:call-template name="titleCaseTokens">
 					<xsl:with-param name="tokens" select="substring-after( $tokens, ' ' )"/>
 				</xsl:call-template>
 			</xsl:when>
@@ -93,6 +101,44 @@
 		</xsl:choose>
 
 	</xsl:template>
+
+	<xsl:template name="titleCaseName">
+		<xsl:param name="name"/>
+		<xsl:value-of select="concat( translate( substring( $name, 1, 1 ), $lowercase, $uppercase  ), substring( $name, 2 ) )" />
+	</xsl:template>
+
+		<!-- 
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Convert a CAPS_UNDERSCORE_TITLE (e.g. database column name) to TitleCase
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<xsl:template name="capsUnderscoreToClassName">
+		<xsl:param name="tokens"/>
+		<xsl:call-template name="capsUnderscoreToTitleCase">
+			<xsl:with-param name="tokens" select="translate( $tokens, $invalidClassNameChar, '' )"/>
+		</xsl:call-template>
+	</xsl:template>
+
+	<xsl:template name="capsUnderscoreToTitleCase">
+		<xsl:param name="tokens"/>
+
+		<xsl:variable name="before" select="substring-before( $tokens, '_' )"/>
+
+		<xsl:choose>
+			<xsl:when test="$before">
+				<xsl:value-of select="concat( translate( substring( $before, 1, 1 ), $lowercase, $uppercase ), translate( substring( $before, 2 ), $uppercase, $lowercase ) )" />
+				<xsl:call-template name="capsUnderscoreToTitleCase">
+					<xsl:with-param name="tokens" select="substring-after( $tokens, '_' )"/>
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="concat( translate( substring( $tokens, 1, 1 ), $lowercase, $uppercase  ), translate( substring( $tokens, 2 ), $uppercase, $lowercase ) )" />
+			</xsl:otherwise>
+		</xsl:choose>
+
+	</xsl:template>
+
 
 	<!-- 
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

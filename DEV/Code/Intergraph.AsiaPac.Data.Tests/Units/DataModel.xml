@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<DataModel name="UnitDataModel" xmlns="http://schemas.intergraph.com/asiapac/cad/datamodel/1.0.0" xmlns:cad="http://schemas.intergraph.com/asiapac/cad/datamodel/1.0.0">
+
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Unit Detail
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<Object name="UnitDetail" dbTable="CD_UNITS">
+		<Property name="UnitId" dbColumn="unid"/>
+		<Property name="CarId" dbColumn="carid"/>
+		<Property name="MdtUnitId" dbColumn="mdtid"/>
+		<Property name="Location" dbColumn="location"/>
+		<Property name="AgencyEventId" dbColumn="num_1"/>
+		<Property name="CommonEventId" dbColumn="eid"/>
+		<Property name="AgencyId" dbColumn="ag_id"/>
+		<Property name="DispatchGroup" dbColumn="dgroup"/>
+		<Object name="Type">
+			<Property name="Code" dbColumn="tycod"/>
+			<Property name="SubCode" dbColumn="sub_tycod"/>
+		</Object>
+		<Property name="Status" dbColumn="unit_status"/>
+		<Property name="StatusChange" dbColumn="status_dts" stringFormat="CadDts"/>
+		<Property name="UnitHistoryComment" dbColumn="uhiscm"/>
+		<Metadata>
+			<Filters/>
+			<Keys/>
+		</Metadata>
+	</Object>
+
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Unit History
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<Object name="UnitHistory" dbTable="UN_HI">
+		<Property name="UnitId" dbColumn="unid"/>
+		<Property name="CarId" dbColumn="carid"/>
+		<Property name="MdtUnitId" dbColumn="mdtid"/>
+		<Property name="Location" dbColumn="location"/>
+		<Property name="AgencyEventId" dbColumn="num_1"/>
+		<Property name="CommonEventId" dbColumn="eid"/>
+		<Property name="AgencyId" dbColumn="ag_id"/>
+		<Property name="DispatchGroup" dbColumn="dgroup"/>
+		<Object name="Type">
+			<Property name="Code" dbColumn="tycod"/>
+			<Property name="SubCode" dbColumn="sub_tycod"/>
+		</Object>
+		<Property name="Status" dbColumn="unit_status"/>
+		<Property name="StatusChange" dbColumn="cdts" stringFormat="CadDts"/>
+		<Property name="UnitHistoryComment" dbColumn="uhiscm"/>
+		<Metadata>
+			<Filters/>
+			<Keys/>
+		</Metadata>
+	</Object>
+
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Unit Agencies
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<Object name="Agencies" dbTable="CD_UNITS">
+		<Property name="UnitId" dbColumn="unid"/>
+		<Property name="AgencyId" dbColumn="ag_id"/>
+		<Metadata>
+			<Filters/>
+			<Keys/>
+		</Metadata>
+	</Object>
+
+</DataModel>

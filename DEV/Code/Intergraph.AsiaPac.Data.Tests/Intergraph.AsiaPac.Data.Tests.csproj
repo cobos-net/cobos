@@ -46,6 +46,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Events\CommentsTests.cs" />
+    <Compile Include="Events\DispositionTests.cs" />
     <Compile Include="Events\EventsTests.cs" />
     <Compile Include="Events\Generated\DataModel.cs">
       <DependentUpon>DataModel.xsd</DependentUpon>
@@ -54,12 +56,51 @@
       <DependentUpon>Dataset.xsd</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="HospitalDiversion\Generated\DataModel.cs">
+      <DependentUpon>DataModel.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="HospitalDiversion\Generated\Dataset.cs">
+      <DependentUpon>Dataset.xsd</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="HospitalDiversion\Generated\Dataset.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Dataset.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="HospitalDiversion\HospitalDiversionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Statements\SqlSelectTests.cs" />
+    <Compile Include="SupplementalInformation\Generated\DataModel.cs">
+      <DependentUpon>DataModel.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="SupplementalInformation\Generated\Dataset.cs">
+      <DependentUpon>Dataset.xsd</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SupplementalInformation\Generated\Dataset.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Dataset.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="SupplementalInformation\SupplementalInformationTests.cs" />
+    <Compile Include="TestManager.cs" />
+    <Compile Include="Units\Generated\DataModel.cs">
+      <DependentUpon>DataModel.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Units\Generated\Dataset.cs">
+      <DependentUpon>Dataset.xsd</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Units\Generated\Dataset.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Dataset.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Units\UnitsTests.cs" />
+    <Compile Include="Utilities\StringSeparatorTests.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Units\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Intergraph.AsiaPac.Data\Intergraph.AsiaPac.Data.csproj">
       <Project>{6906B107-C149-4682-AF7B-FEF9F697FE36}</Project>
@@ -74,10 +115,57 @@
     <None Include="Events\Generated\Dataset.xss">
       <DependentUpon>Dataset.xsd</DependentUpon>
     </None>
+    <None Include="HospitalDiversion\Generated\DataModel.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="HospitalDiversion\Generated\Dataset.xsc">
+      <DependentUpon>Dataset.xsd</DependentUpon>
+    </None>
+    <None Include="HospitalDiversion\Generated\Dataset.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>Dataset.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="HospitalDiversion\Generated\Dataset.xss">
+      <DependentUpon>Dataset.xsd</DependentUpon>
+    </None>
     <None Include="prebuild.bat" />
+    <None Include="SupplementalInformation\Generated\DataModel.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="SupplementalInformation\Generated\Dataset.xsc">
+      <DependentUpon>Dataset.xsd</DependentUpon>
+    </None>
+    <None Include="SupplementalInformation\Generated\Dataset.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>Dataset.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="SupplementalInformation\Generated\Dataset.xss">
+      <DependentUpon>Dataset.xsd</DependentUpon>
+    </None>
+    <None Include="Units\Generated\DataModel.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Units\Generated\Dataset.xsc">
+      <DependentUpon>Dataset.xsd</DependentUpon>
+    </None>
+    <None Include="Units\Generated\Dataset.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>Dataset.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Units\Generated\Dataset.xss">
+      <DependentUpon>Dataset.xsd</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Events\DataModel.xml" />
+    <Content Include="Events\DataModel.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="HospitalDiversion\DataModel.xml" />
+    <Content Include="SupplementalInformation\DataModel.xml" />
+    <Content Include="Units\DataModel.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

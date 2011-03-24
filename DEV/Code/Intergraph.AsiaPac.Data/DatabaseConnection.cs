@@ -10,7 +10,7 @@ using Intergraph.AsiaPac.Utilities.Xml;
 
 namespace Intergraph.AsiaPac.Data
 {
-	using AsyncDBTask = AsyncTask<CadDataSet, DatabaseConnection.QueryDatabaseAsync>;
+	using AsyncDataSetTask = AsyncTask<DataSet, DatabaseConnection.QueryDatabaseAsync>;
 
 	public class DatabaseConnection : IDisposable
 	{
@@ -43,7 +43,7 @@ namespace Intergraph.AsiaPac.Data
 		/// <param name="sql"></param>
 		/// <param name="tableName"></param>
 		/// <returns></returns>
-		public delegate DataTable QueryDatabaseAsync( string sql, string tableName );
+		public delegate void QueryDatabaseAsync( string sql, DataTable table );
 
 		/// <summary>
 		/// 
@@ -57,37 +57,11 @@ namespace Intergraph.AsiaPac.Data
 
 			try
 			{
-				using ( OracleConnection oracle = new OracleConnection( ConnectionString ) )
-				{
-#if DEBUG
-					Stopwatch timer = new Stopwatch();
-					timer.Start();
-#endif
-
-					oracle.Open();
-
-					using ( OracleCommand command = new OracleCommand() )
-					{
-						command.Connection = oracle;
-						command.CommandText = sql;
-
-						using ( OracleDataAdapter adapter = new OracleDataAdapter( command ) )
-						{
-							dataTable = new DataTable( tableName );
-							adapter.Fill( dataTable );
-						}
-					}
-
-					oracle.Close();
-
-#if DEBUG
-					timer.Stop();
-					System.Diagnostics.Debug.Print( "{0}: {1} ({2})", timer.ElapsedMilliseconds, tableName, sql );
-#endif
-
-					return dataTable;
-				}
-
+				dataTable = new DataTable( tableName );
+				
+				Execute( sql, dataTable );
+				
+				return dataTable;
 			}
 			catch ( Exception )
 			{
@@ -96,6 +70,37 @@ namespace Intergraph.AsiaPac.Data
 					dataTable.Dispose();
 				}
 				throw;
+			}
+		}
+
+		public void Execute( string sql, DataTable result )
+		{
+			using ( OracleConnection oracle = new OracleConnection( ConnectionString ) )
+			{
+#if DEBUG
+				Stopwatch timer = new Stopwatch();
+				timer.Start();
+#endif
+
+				oracle.Open();
+
+				using ( OracleCommand command = new OracleCommand() )
+				{
+					command.Connection = oracle;
+					command.CommandText = sql;
+
+					using ( OracleDataAdapter adapter = new OracleDataAdapter( command ) )
+					{
+						adapter.Fill( result );
+					}
+				}
+
+				oracle.Close();
+
+#if DEBUG
+				timer.Stop();
+				System.Diagnostics.Debug.Print( "{0}: {1} ({2})", timer.ElapsedMilliseconds, result.TableName, sql );
+#endif
 			}
 		}
 
@@ -111,37 +116,11 @@ namespace Intergraph.AsiaPac.Data
 
 			try
 			{
-				using ( OracleConnection oracle = new OracleConnection( ConnectionString ) )
-				{
-#if DEBUG
-					Stopwatch timer = new Stopwatch();
-					timer.Start();
-#endif
+				dataTable = new DataTableType();
+				
+				Execute( sql, dataTable );
 
-					oracle.Open();
-
-					using ( OracleCommand command = new OracleCommand() )
-					{
-						command.Connection = oracle;
-						command.CommandText = sql;
-
-						using ( OracleDataAdapter adapter = new OracleDataAdapter( command ) )
-						{
-							dataTable = new DataTableType();
-							adapter.Fill( dataTable );
-						}
-
-					}
-
-					oracle.Close();
-
-#if DEBUG
-					timer.Stop();
-					System.Diagnostics.Debug.Print( "{0}: {1} ({2})", timer.ElapsedMilliseconds, dataTable.TableName, sql );
-#endif
-
-					return dataTable;
-				}
+				return dataTable;
 			}
 			catch ( Exception )
 			{
@@ -154,7 +133,7 @@ namespace Intergraph.AsiaPac.Data
 		}
 
 		/// <summary>
-		/// Fill a strongly typed datatable
+		/// Fill a strongly typed set
 		/// </summary>
 		/// <typeparam name="DataTableType"></typeparam>
 		/// <param name="sql"></param>
@@ -221,34 +200,64 @@ namespace Intergraph.AsiaPac.Data
 			DataTable dataTable = Execute( sql, tableName );
 
 			CadDataSet dataSet = new CadDataSet( dataSetName );
-			dataSet.Results.Tables.Add( dataTable );
+			dataSet.Tables.Add( dataTable );
 
 			return dataSet;
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="query"></param>
+		/// <param name="dataSetName"></param>
+		/// <returns></returns>
 		public CadDataSet Execute( DatabaseQuery query, string dataSetName )
 		{
 			return Execute( query.Sql, query.TableName, dataSetName );
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="queries"></param>
+		/// <param name="dataSetName"></param>
+		/// <returns></returns>
 		public CadDataSet Execute( DatabaseQuery[] queries, string dataSetName )
 		{
 			CadDataSet dataset = new CadDataSet( dataSetName );
 
-			// initiate the queries
+			Execute( queries, dataset );
+
+			return dataset;
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="queries"></param>
+		/// <param name="dataset"></param>
+		public void Execute( DatabaseQuery[] queries, DataSet dataset )
+		{
 			for ( int i = 0; i != queries.Length; ++i )
 			{
-				DatabaseQuery query = queries[i];
+				DatabaseQuery query = queries[ i ];
 
-				DataTable result = Execute( query.Sql, query.TableName );
+				DataTable table = dataset.Tables[ query.TableName ];
 
-				if ( result != null )
+				if ( table == null )
 				{
-					dataset.Results.Tables.Add( result );
+					table = Execute( query.Sql, query.TableName );
+
+					if ( table != null )
+					{
+						dataset.Tables.Add( table );
+					}
+				}
+				else
+				{
+					Execute( query.Sql, table );
 				}
 			}
-			
-			return dataset;
 		}
 
 		/// <summary>
@@ -261,36 +270,87 @@ namespace Intergraph.AsiaPac.Data
 		{
 			CadDataSet dataset = new CadDataSet( dataSetName );
 
+			ExecuteAsynch( queries, dataset );
+
+			return dataset;
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="queries"></param>
+		/// <param name="dataSetName"></param>
+		/// <returns></returns>
+		public void ExecuteAsynch( DatabaseQuery[] queries, DataSet dataset )
+		{
 			// create a new helpers list
-			AsyncDBTask[] tasks = new AsyncDBTask[ queries.Length ];
+			AsyncDataSetTask[] tasks = new AsyncDataSetTask[ queries.Length ];
 
 			// initiate the queries
 			for ( int i = 0; i != queries.Length; ++i )
 			{
 				DatabaseQuery q = queries[ i ];
+				
+				DataTable table = dataset.Tables[ q.TableName ];
 
+				if ( table == null )
+				{
+					table = new DataTable( q.TableName );
+					dataset.Tables.Add( table );
+				}
+								
 				// create a new query helper
-				tasks[ i ] = new AsyncDBTask();
+				tasks[ i ] = new AsyncDataSetTask();
 				tasks[ i ].Object = dataset;
 				tasks[ i ].Caller = Execute;
-				tasks[ i ].AsyncResult = tasks[ i ].Caller.BeginInvoke( q.Sql, q.TableName, null, null );
+				tasks[ i ].AsyncResult = tasks[ i ].Caller.BeginInvoke( q.Sql, table, null, null );
 			}
 
 			// get the results from the queries
-			foreach ( AsyncDBTask task in tasks )
+			foreach ( AsyncDataSetTask task in tasks )
 			{
-				DataTable result = task.Caller.EndInvoke( task.AsyncResult );
-
-				if ( result != null )
-				{
-					task.Object.Results.Tables.Add( result );
-				}
+				task.Caller.EndInvoke( task.AsyncResult );
 			}
-
-			return dataset;
 		}
 
+		/// <summary>
+		/// Get a raw Xml description of the specified tables
+		/// </summary>
+		/// <param name="schema"></param>
+		/// <param name="tables"></param>
+		/// <param name="result"></param>
+		public void GetTableDescription( string schema, string[] tables, Stream result )
+		{
+			CadDataSet dataset = TableDescription( schema, tables );
+
+			XslCompiledTransform xslTableToXsd = XsltHelper.Load( "DatabaseSchema.xslt", "Intergraph.AsiaPac.Data.Stylesheets" );
+
+			dataset.ToXml( result );
+		}
+
+		/// <summary>
+		/// Get an XSD schema document for the specified tables.
+		/// </summary>
+		/// <param name="schema"></param>
+		/// <param name="tables"></param>
+		/// <param name="result"></param>
 		public void GetTableSchema( string schema, string[] tables, Stream result )
+		{
+			CadDataSet dataset = TableDescription( schema, tables );
+
+			XslCompiledTransform xslTableToXsd = XsltHelper.Load( "DatabaseSchema.xslt", "Intergraph.AsiaPac.Data.Stylesheets" );
+
+			if ( xslTableToXsd != null )
+			{
+				dataset.ToXml( xslTableToXsd, null, result );
+			}
+			else
+			{
+				dataset.ToXml( result );
+			}
+		}
+
+		CadDataSet TableDescription( string schema, string[] tables )
 		{
 			//string desc = "SELECT TABLE_NAME, COLUMN_NAME, DATA_TYPE, DATA_LENGTH,"
 			//              + "DATA_PRECISION, DATA_SCALE, NULLABLE, DATA_DEFAULT, CHAR_LENGTH "
@@ -301,23 +361,11 @@ namespace Intergraph.AsiaPac.Data
 			string desc = "SELECT TABLE_NAME, COLUMN_NAME, DATA_TYPE, DATA_LENGTH,"
 							  + "DATA_PRECISION, DATA_SCALE, NULLABLE, DATA_DEFAULT, CHAR_LENGTH "
 							  + "FROM ALL_TAB_COLUMNS "
-							  + "WHERE UPPER( OWNER ) = '" + schema.ToUpper() + "' " 
+							  + "WHERE UPPER( OWNER ) = '" + schema.ToUpper() + "' "
 							  + "AND UPPER( TABLE_NAME ) IN ('" + string.Join( "', '", tables ).ToUpper() + "') "
 							  + "ORDER BY TABLE_NAME ASC, COLUMN_ID ASC";
 
-			CadDataSet dataset = Execute( desc, "COLUMN", "TABLE_COLUMNS" );
-
-			XslCompiledTransform xslTableToXsd = XsltHelper.Load( "DatabaseSchema.xslt", "Intergraph.AsiaPac.Data.Stylesheets" );
-
-			if ( xslTableToXsd != null )
-			{
-				dataset.ToXml( xslTableToXsd, null, result );
-				//dataset.ToXml().Save( @"c:\temp\dump.xml" );
-			}
-			else
-			{
-				dataset.ToXml( result );
-			}
+			return Execute( desc, "COLUMN", "TABLE_COLUMNS" );
 		}
 
 		/// <summary>
