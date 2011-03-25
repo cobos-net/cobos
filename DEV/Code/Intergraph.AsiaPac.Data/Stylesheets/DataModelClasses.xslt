@@ -291,18 +291,18 @@ namespace <xsl:value-of select="$codeNS"/>
 	<xsl:template match="cad:Object" mode="dataAdapter">
 	public class <xsl:value-of select="@className"/>DataAdapter
 	{
-		readonly DatabaseConnection _dbConnection;
+		readonly DatabaseAdapter _database;
 
-		public <xsl:value-of select="@className"/>DataAdapter( DatabaseConnection dbConnection )
+		public <xsl:value-of select="@className"/>DataAdapter( DatabaseAdapter database )
 		{
-			_dbConnection = dbConnection;
+			_database = database;
 		}
-			
+
 		const string _select = "<xsl:apply-templates select=".//cad:Property" mode="sqlSelect"/>";
 		
 		const string _from = "<xsl:value-of select="@dbTable"/>";
 		
-		static readonly string[] _innerJoin = <xsl:apply-templates mode="sqlInnerJoin" select="."/>;
+		static readonly string[] _innerJoin = <xsl:apply-templates mode="sqlJoin" select="."/>;
 
 		static readonly string[] _where = <xsl:apply-templates mode="sqlWhere" select="."/>;
 
@@ -363,7 +363,7 @@ namespace <xsl:value-of select="$codeNS"/>
 	</xsl:template>
 
 	<xsl:template name="executeStatement">
-		<xsl:text disable-output-escaping="yes"><![CDATA[_dbConnection.Execute<]]></xsl:text>
+		<xsl:text disable-output-escaping="yes"><![CDATA[_database.Execute<]]></xsl:text>
 		<xsl:value-of select="@datasetTableType"/>
 		<xsl:text disable-output-escaping="yes"><![CDATA[>]]></xsl:text>
 	</xsl:template>
@@ -385,18 +385,18 @@ namespace <xsl:value-of select="$codeNS"/>
 	</xsl:template>
 	
 	<!-- Find all inner join tables -->
-	<xsl:template match="cad:Object[ ./cad:Metadata//cad:Key ]" mode="sqlInnerJoin">
+	<xsl:template match="cad:Object[ ./cad:Metadata/cad:Joins/* ]" mode="sqlJoin">
 		<xsl:text>new string[]{ </xsl:text>
-		<xsl:apply-templates mode="sqlInnerJoin" select="./cad:Metadata//cad:Key"/>
+		<xsl:apply-templates mode="sqlJoin" select="./cad:Metadata/cad:Joins/*[ self::cad:InnerJoin | self::cad:OuterJoin ]"/>
 		<xsl:text> }</xsl:text>
 	</xsl:template>
 
-	<xsl:template match="cad:Object[ not( ./cad:Metadata//cad:Key ) ]" mode="sqlInnerJoin">
+	<xsl:template match="cad:Object[ not( ./cad:Metadata/cad:Joins/* ) ]" mode="sqlJoin">
 		<xsl:text>null</xsl:text>
 	</xsl:template>
 	
-	<!-- INNER JOIN clause -->
-	<xsl:template match="cad:Key" mode="sqlInnerJoin">
+	<!-- INNER JOIN and OUTER JOIN clauses -->
+	<xsl:template match="cad:InnerJoin | cad:OuterJoin" mode="sqlJoin">
 		<xsl:text>"</xsl:text>
 		<xsl:value-of select="@references"/>
 		<xsl:text> ON </xsl:text>

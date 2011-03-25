@@ -12,13 +12,22 @@ namespace Intergraph.AsiaPac.Data.Statements
 	/// </summary>
 	public class SqlSelect
 	{
+		/// <summary>
+		/// Immutable internal storage for statement clauses
+		/// </summary>
 		readonly string _select;
 		readonly string _from;
 		readonly string[] _innerJoin;
 		readonly string[] _where;
 		readonly string _groupBy;
 		readonly string _orderBy;
-		readonly string _statement;	// cache the basic ToString result
+		
+		/// <summary>
+		/// Cache the ToString result for the simple case.
+		/// Violates the immutability of the object but
+		/// this is carefully controlled.
+		/// </summary>
+		string _cachedToString;
 
 		public SqlSelect()
 		{
@@ -33,12 +42,16 @@ namespace Intergraph.AsiaPac.Data.Statements
 			_where = where;
 			_groupBy = groupBy;
 			_orderBy = orderBy;
-			_statement = ToStringInternal();
 		}
 
 		public override string ToString()
 		{
-			return _statement;
+			if ( string.IsNullOrEmpty( _cachedToString ) )
+			{
+				_cachedToString = ToStringInternal();
+			}
+
+			return _cachedToString;
 		}
 
 		string ToStringInternal()

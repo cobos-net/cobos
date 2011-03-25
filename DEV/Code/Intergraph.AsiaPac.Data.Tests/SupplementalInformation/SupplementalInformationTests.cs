@@ -16,11 +16,9 @@ namespace Intergraph.AsiaPac.Data.Tests.SupplementalInformation
 			Assert.DoesNotThrow(
 				delegate
 				{
-					using ( DatabaseConnection dbconn = new DatabaseConnection( TestManager.DatabaseConnection ) )
-					{
-						IncidentTimesDataAdapter adapter = new IncidentTimesDataAdapter( dbconn );
-						items = adapter.GetData( null, null, null );
-					}
+					DatabaseAdapter database = new DatabaseAdapter( TestManager.DatabaseConnection );
+					IncidentTimesDataAdapter adapter = new IncidentTimesDataAdapter( database );
+					items = adapter.GetData( null, null, null );
 				} );
 
 			//Assert.NotNull( items );
@@ -37,11 +35,9 @@ namespace Intergraph.AsiaPac.Data.Tests.SupplementalInformation
 			Assert.DoesNotThrow(
 				delegate
 				{
-					using ( DatabaseConnection dbconn = new DatabaseConnection( TestManager.DatabaseConnection ) )
-					{
-						PersonDataAdapter adapter = new PersonDataAdapter( dbconn );
-						items = adapter.GetData( null, null, null );
-					}
+					DatabaseAdapter database = new DatabaseAdapter( TestManager.DatabaseConnection );
+					PersonDataAdapter adapter = new PersonDataAdapter( database );
+					items = adapter.GetData( null, null, null );
 				} );
 
 			//Assert.NotNull( items );
@@ -58,11 +54,9 @@ namespace Intergraph.AsiaPac.Data.Tests.SupplementalInformation
 			Assert.DoesNotThrow(
 				delegate
 				{
-					using ( DatabaseConnection dbconn = new DatabaseConnection( TestManager.DatabaseConnection ) )
-					{
-						PropertyDataAdapter adapter = new PropertyDataAdapter( dbconn );
-						items = adapter.GetData( null, null, null );
-					}
+					DatabaseAdapter database = new DatabaseAdapter( TestManager.DatabaseConnection );
+					PropertyDataAdapter adapter = new PropertyDataAdapter( database );
+					items = adapter.GetData( null, null, null );
 				} );
 
 			//Assert.NotNull( items );
@@ -79,11 +73,9 @@ namespace Intergraph.AsiaPac.Data.Tests.SupplementalInformation
 			Assert.DoesNotThrow(
 				delegate
 				{
-					using ( DatabaseConnection dbconn = new DatabaseConnection( TestManager.DatabaseConnection ) )
-					{
-						TowVehicleDataAdapter adapter = new TowVehicleDataAdapter( dbconn );
-						items = adapter.GetData( null, null, null );
-					}
+					DatabaseAdapter database = new DatabaseAdapter( TestManager.DatabaseConnection );
+					TowVehicleDataAdapter adapter = new TowVehicleDataAdapter( database );
+					items = adapter.GetData( null, null, null );
 				} );
 
 			//Assert.NotNull( items );
@@ -100,11 +92,9 @@ namespace Intergraph.AsiaPac.Data.Tests.SupplementalInformation
 			Assert.DoesNotThrow(
 				delegate
 				{
-					using ( DatabaseConnection dbconn = new DatabaseConnection( TestManager.DatabaseConnection ) )
-					{
-						VehicleDataAdapter adapter = new VehicleDataAdapter( dbconn );
-						items = adapter.GetData( null, null, null );
-					}
+					DatabaseAdapter database = new DatabaseAdapter( TestManager.DatabaseConnection );
+					VehicleDataAdapter adapter = new VehicleDataAdapter( database );
+					items = adapter.GetData( null, null, null );
 				} );
 
 			//Assert.NotNull( items );

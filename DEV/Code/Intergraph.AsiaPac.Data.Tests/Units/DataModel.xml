@@ -16,16 +16,43 @@
 		<Property name="CommonEventId" dbColumn="eid"/>
 		<Property name="AgencyId" dbColumn="ag_id"/>
 		<Property name="DispatchGroup" dbColumn="dgroup"/>
-		<Object name="Type">
-			<Property name="Code" dbColumn="tycod"/>
-			<Property name="SubCode" dbColumn="sub_tycod"/>
-		</Object>
+		<Property name="UnitType" dbColumn="unityp"/>
 		<Property name="Status" dbColumn="unit_status"/>
 		<Property name="StatusChange" dbColumn="status_dts" stringFormat="CadDts"/>
 		<Property name="UnitHistoryComment" dbColumn="uhiscm"/>
 		<Metadata>
 			<Filters/>
-			<Keys/>
+			<Joins/>
+		</Metadata>
+	</Object>
+
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Unit Dispatch Assigned Detail
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<Object name="UnitDispatchAssignedDetail" dbTable="DISPASS_EVENT">
+		<Property name="UnitId" dbColumn="unid"/>
+		<Property name="CarId" dbColumn="carid" dbTable="CD_UNITS"/>
+		<Property name="MdtUnitId" dbColumn="mdtid" dbTable="CD_UNITS"/>
+		<Property name="Location" dbColumn="location" dbTable="CD_UNITS"/>
+		<Property name="AgencyEventId" dbColumn="num_1"/>
+		<Property name="CommonEventId" dbColumn="eid" dbTable="AEVEN"/>
+		<Property name="AgencyId" dbColumn="ag_id" dbTable="CD_UNITS"/>
+		<Property name="DispatchGroup" dbColumn="dgroup" dbTable="CD_UNITS"/>
+		<Property name="UnitType" dbColumn="unityp" dbTable="CD_UNITS"/>
+		<Property name="Status" dbColumn="unit_status"/>
+		<Property name="StatusChange" dbColumn="status_dts" dbTable="CD_UNITS" stringFormat="CadDts"/>
+		<Property name="UnitHistoryComment" dbColumn="uhiscm" dbTable="CD_UNITS"/>
+		<Metadata>
+			<Filters>
+				<Filter>AEVEN.open_and_curent = 'T' and AEVEN.curent in ('T', 'O')</Filter>
+			</Filters>
+			<Joins>
+				<InnerJoin foreignKey="unid" references="CD_UNITS" referenceKey="unid" />
+				<InnerJoin foreignKey="num_1" references="AEVEN" referenceKey="num_1" />
+			</Joins>
 		</Metadata>
 	</Object>
 
@@ -44,16 +71,12 @@
 		<Property name="CommonEventId" dbColumn="eid"/>
 		<Property name="AgencyId" dbColumn="ag_id"/>
 		<Property name="DispatchGroup" dbColumn="dgroup"/>
-		<Object name="Type">
-			<Property name="Code" dbColumn="tycod"/>
-			<Property name="SubCode" dbColumn="sub_tycod"/>
-		</Object>
 		<Property name="Status" dbColumn="unit_status"/>
 		<Property name="StatusChange" dbColumn="cdts" stringFormat="CadDts"/>
 		<Property name="UnitHistoryComment" dbColumn="uhiscm"/>
 		<Metadata>
 			<Filters/>
-			<Keys/>
+			<Joins/>
 		</Metadata>
 	</Object>
 
@@ -68,7 +91,7 @@
 		<Property name="AgencyId" dbColumn="ag_id"/>
 		<Metadata>
 			<Filters/>
-			<Keys/>
+			<Joins/>
 		</Metadata>
 	</Object>
 

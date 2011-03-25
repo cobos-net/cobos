@@ -47,7 +47,7 @@ echo ==========================================================================
 
 echo 1.1 Refresh the Xslt database variables
 echo ------------------------------------
-%db2xsd% /schema:eadev /output:%stylesheets%\CadDatabase.xsd AEVEN EVENT EVCOM CD_UNITS UN_HI EV_DISPO DIVERT INCIDENT_TRACKING VEHIC PERSO TOW_VEHIC CONT_NAME PROPT
+%db2xsd% /schema:eadev /output:%stylesheets%\CadDatabase.xsd AEVEN EVENT EVCOM CD_UNITS UN_HI DISPASS_EVENT EV_DISPO DIVERT INCIDENT_TRACKING VEHIC PERSO TOW_VEHIC CONT_NAME PROPT
 
 echo 1.2 Convert the database schema to Xslt variables
 echo ------------------------------------

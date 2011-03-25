@@ -34,16 +34,16 @@
 		<Object name="Timestamps" type="EventTimestamps"/>
 		<Object name="Caller" type="EventCaller"/>
 		<Object name="ChangeHistory" type="EventChangeHistory"/>
-		<Reference ref="EventComment" isCollection="true" name="Comments"/>
-		<Reference ref="Disposition"/>
+		<Reference ref="EventComment" isCollection="true" name="Comments" key="AgencyEventId" refer="AgencyEventId"/>
+		<Reference ref="Disposition" key="AgencyEventId" refer="AgencyEventId"/>
 		<Metadata>
 			<Filters>
 				<Filter>AEVEN.open_and_curent = 'T' and AEVEN.curent in ('T', 'O')</Filter>
 				<Filter>EVENT.curent in ('T', 'O')</Filter>
 			</Filters>
-			<Keys>
-				<Key foreignKey="eid" references="EVENT" referenceKey="eid"/>
-			</Keys>
+			<Joins>
+				<InnerJoin foreignKey="eid" references="EVENT" referenceKey="eid"/>
+			</Joins>
 		</Metadata>
 	</Object>
 
@@ -64,7 +64,7 @@
 			<Filters>
 				<Filter>AEVEN.open_and_curent = 'T' and AEVEN.curent in ('T', 'O')</Filter>
 			</Filters>
-			<Keys/>
+			<Joins/>
 		</Metadata>
 	</Object>
 
@@ -218,9 +218,9 @@
 			<Filters>
 				<Filter>AEVEN.open_and_curent = 'T' and AEVEN.curent in ('T', 'O')</Filter>
 			</Filters>
-			<Keys>
-				<Key foreignKey="eid" references="AEVEN" referenceKey="eid"/>
-			</Keys>
+			<Joins>
+				<InnerJoin foreignKey="eid" references="AEVEN" referenceKey="eid"/>
+			</Joins>
 		</Metadata>
 	</Object>
 
@@ -251,9 +251,9 @@
 				<Filter>EV_DISPO.curent = 'T'</Filter>
 				<Filter>AEVEN.open_and_curent = 'T' and AEVEN.curent in ('T', 'O')</Filter>
 			</Filters>
-			<Keys>
-				<Key foreignKey="num_1" references="AEVEN" referenceKey="num_1"/>
-			</Keys>
+			<Joins>
+				<InnerJoin foreignKey="num_1" references="AEVEN" referenceKey="num_1"/>
+			</Joins>
 		</Metadata>
 	</Object>
 
@@ -282,7 +282,7 @@
 		<Property name="AgencyId" dbColumn="ag_id"/>
 		<Metadata>
 			<Filters/>
-			<Keys/>
+			<Joins/>
 		</Metadata>
 	</Object>
 

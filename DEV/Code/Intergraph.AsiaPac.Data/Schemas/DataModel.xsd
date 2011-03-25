@@ -164,6 +164,20 @@
 				</xsd:documentation>
 			</xsd:annotation>
 		</xsd:attribute>
+		<xsd:attribute name="key" type="xsd:string">
+			<xsd:annotation>
+				<xsd:documentation>
+					The element in this type that acts as the unique key constraint.
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="refer" type="xsd:string">
+			<xsd:annotation>
+				<xsd:documentation>
+					The element in the ref type that acts as the foreign key constraint.
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
 	</xsd:complexType>
 	
 	<!--
@@ -345,7 +359,7 @@
 	<xsd:complexType name="TableMetadataType">
 		<xsd:sequence>
 			<xsd:element name="Filters" type="TableFiltersType" minOccurs="0"/>
-			<xsd:element name="Keys" type="TableKeysType" minOccurs="0"/>
+			<xsd:element name="Joins" type="TableJoinsType" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 
@@ -363,21 +377,39 @@
 
 	<!--
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	Table keys - used for joining tables.
+	Table joins.
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-	<xsd:complexType name="TableKeysType">
+	<xsd:complexType name="TableJoinsType">
 		<xsd:sequence>
-			<xsd:element name="Key" type="TableKeyType" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element ref="TableJoin" minOccurs="0" maxOccurs="unbounded"/>
 		</xsd:sequence>
 	</xsd:complexType>
 
-	<xsd:complexType name="TableKeyType">
+	<xsd:element name="TableJoin" type="TableJoinType"/>
+
+	<xsd:complexType name="TableJoinType" abstract="true">
 		<xsd:sequence/>
 		<xsd:attribute name="foreignKey" type="xsd:string"/>
 		<xsd:attribute name="references" type="xsd:string"/>
 		<xsd:attribute name="referenceKey" type="xsd:string"/>
 	</xsd:complexType>
-	
+
+	<xsd:element name="InnerJoin" type="InnerJoinType"/>
+
+	<xsd:complexType name="InnerJoinType">
+		<xsd:complexContent>
+			<xsd:extension base="TableJoinType"/>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:element name="OuterJoin" type="OuterJoinType"/>
+
+	<xsd:complexType name="OuterJoinType">
+		<xsd:complexContent>
+			<xsd:extension base="TableJoinType"/>
+		</xsd:complexContent>
+	</xsd:complexType>
+
 </xsd:schema>

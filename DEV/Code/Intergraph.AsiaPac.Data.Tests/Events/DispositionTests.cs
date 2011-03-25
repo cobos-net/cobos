@@ -16,11 +16,9 @@ namespace Intergraph.AsiaPac.Data.Tests.Events
 			Assert.DoesNotThrow( 
 				delegate
 				{
-					using ( DatabaseConnection dbconn = new DatabaseConnection( TestManager.DatabaseConnection ) )
-					{
-						DispositionDataAdapter adapter = new DispositionDataAdapter( dbconn );
-						dispo = adapter.GetData( null, null, null );
-					}
+					DatabaseAdapter database = new DatabaseAdapter( TestManager.DatabaseConnection );
+					DispositionDataAdapter adapter = new DispositionDataAdapter( database );
+					dispo = adapter.GetData( null, null, null );
 				} );
 
 			Assert.NotNull( dispo );

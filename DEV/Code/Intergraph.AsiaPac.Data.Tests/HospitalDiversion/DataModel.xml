@@ -8,7 +8,7 @@
 	-->
 
 	<Object name="HospitalDiversionMessage" dbTable="DIVERT">
-		<XsdProperty name="Action" type="xsd:string" minOccurs="1"/>
+		<XsdProperty name="Action" type="HosptialDiversionActionEnum" minOccurs="1"/>
 		<Property name="Open" dbColumn="open_record" stringFormat="CadBoolean"/>
 		<Property name="Location" dbColumn="location"/>
 		<Property name="Type" dbColumn="d_type" dbAlias="d_type_type" stringFormat="Separator" formatArgs="| 0"/>
@@ -23,5 +23,10 @@
 		<Property name="ClosedTerminal" dbColumn="xterm"/>
 		<Property name="ClosedTimestamp" dbColumn="xdts" stringFormat="CadDts"/>
 	</Object>
-		
+
+	<Enumeration name="HosptialDiversionActionEnum" base="xsd:string">
+		<Item>ADD</Item>
+		<Item>REMOVE</Item>
+	</Enumeration>
+	
 </DataModel>

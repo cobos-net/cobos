@@ -10,9 +10,9 @@ using Intergraph.AsiaPac.Utilities.Xml;
 
 namespace Intergraph.AsiaPac.Data
 {
-	using AsyncDataSetTask = AsyncTask<DataSet, DatabaseConnection.QueryDatabaseAsync>;
+	using AsyncDataSetTask = AsyncTask<DataSet, DatabaseAdapter.QueryDatabaseAsync>;
 
-	public class DatabaseConnection : IDisposable
+	public class DatabaseAdapter
 	{
 		#region Private data
 
@@ -20,7 +20,7 @@ namespace Intergraph.AsiaPac.Data
 
 		#region Construction
 
-		public DatabaseConnection( string connectionString )
+		public DatabaseAdapter( string connectionString )
 		{
 			ConnectionString = connectionString;
 		}
@@ -389,39 +389,5 @@ namespace Intergraph.AsiaPac.Data
 			}
 			// any other exceptions should not be ignored
 		}
-
-		#region IDisposable
-
-		~DatabaseConnection()
-		{
-			Dispose( false );
-		}
-
-		private bool _disposed = false;
-
-		public void Dispose()
-		{
-			Dispose( true );
-		}
-
-		protected void Dispose( bool disposing )
-		{
-			if ( _disposed )
-			{
-				return;
-			}
-
-			if ( disposing )
-			{
-				GC.SuppressFinalize( this );
-			}
-
-			// free non managed resources
-
-			_disposed = true;
-		}
-
-
-		#endregion
 	}
 }

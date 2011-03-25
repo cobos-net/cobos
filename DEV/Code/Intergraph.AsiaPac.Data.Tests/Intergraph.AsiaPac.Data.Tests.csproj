@@ -46,6 +46,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DatabaseAdapterTests.cs" />
     <Compile Include="Events\CommentsTests.cs" />
     <Compile Include="Events\DispositionTests.cs" />
     <Compile Include="Events\EventsTests.cs" />

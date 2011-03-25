@@ -12,7 +12,7 @@
 			<Filters>
 				<Filter>curent = 'T'</Filter>
 			</Filters>
-			<Keys/>
+			<Joins/>
 		</Metadata>
 	</TableObject>
 
@@ -27,7 +27,7 @@
 			<Filters>
 				<Filter>curent = 'T'</Filter>
 			</Filters>
-			<Keys/>
+			<Joins/>
 		</Metadata>
 	</TableObject>
 
@@ -42,7 +42,7 @@
 			<Filters>
 				<Filter>curent = 'T'</Filter>
 			</Filters>
-			<Keys/>
+			<Joins/>
 		</Metadata>
 	</TableObject>
 
@@ -57,7 +57,7 @@
 			<Filters>
 				<Filter>curent = 'T'</Filter>
 			</Filters>
-			<Keys/>
+			<Joins/>
 		</Metadata>
 	</TableObject>
 
@@ -72,7 +72,7 @@
 			<Filters>
 				<Filter>curent = 'T'</Filter>
 			</Filters>
-			<Keys/>
+			<Joins/>
 		</Metadata>
 	</TableObject>
 
@@ -87,7 +87,7 @@
 			<Filters>
 				<Filter>curent = 'T'</Filter>
 			</Filters>
-			<Keys/>
+			<Joins/>
 		</Metadata>
 	</TableObject>
 	

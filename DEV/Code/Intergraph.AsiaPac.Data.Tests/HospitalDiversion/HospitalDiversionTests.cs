@@ -16,11 +16,9 @@ namespace Intergraph.AsiaPac.Data.Tests.HospitalDiversion
 			Assert.DoesNotThrow(
 				delegate
 				{
-					using ( DatabaseConnection dbconn = new DatabaseConnection( TestManager.DatabaseConnection ) )
-					{
-						HospitalDiversionMessageDataAdapter adapter = new HospitalDiversionMessageDataAdapter( dbconn );
-						messages = adapter.GetData( null, null, null );
-					}
+					DatabaseAdapter database = new DatabaseAdapter( TestManager.DatabaseConnection );
+					HospitalDiversionMessageDataAdapter adapter = new HospitalDiversionMessageDataAdapter( database );
+					messages = adapter.GetData( null, null, null );
 				} );
 
 			Assert.NotNull( messages );
