@@ -240,23 +240,31 @@ namespace Intergraph.AsiaPac.Data
 		{
 			for ( int i = 0; i != queries.Length; ++i )
 			{
-				DatabaseQuery query = queries[ i ];
+				Execute( queries[ i ].Sql, queries[ i ].TableName, dataset );
+			}
+		}
 
-				DataTable table = dataset.Tables[ query.TableName ];
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="query"></param>
+		/// <param name="dataset"></param>
+		public void Execute( string sql, string tableName, DataSet dataset )
+		{
+			DataTable table = dataset.Tables[ tableName ];
 
-				if ( table == null )
+			if ( table == null )
+			{
+				table = Execute( sql, tableName );
+
+				if ( table != null )
 				{
-					table = Execute( query.Sql, query.TableName );
-
-					if ( table != null )
-					{
-						dataset.Tables.Add( table );
-					}
+					dataset.Tables.Add( table );
 				}
-				else
-				{
-					Execute( query.Sql, table );
-				}
+			}
+			else
+			{
+				Execute( sql, table );
 			}
 		}
 

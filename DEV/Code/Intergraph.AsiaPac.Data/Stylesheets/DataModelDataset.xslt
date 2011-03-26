@@ -144,10 +144,10 @@
 		<xsl:variable name="keyreffield">
 			<xsl:value-of select="/cad:DataModel/cad:Object[ current()/@ref ]/cad:Property[ current()/@refer ]/@dbColumn"/>
 		</xsl:variable>
-		<xsd:key name="{$keyName}Constraint">
+		<xsd:unique name="{$keyName}Constraint" msdata:PrimaryKey="true">
 			<xsd:selector xpath=".//{../@name}"/>
 			<xsd:field xpath="{$keyfield}"/>
-		</xsd:key>
+		</xsd:unique>
 		<xsd:keyref name="{$keyName}" refer="{$keyName}Constraint" codegen:typedParent="{../@name}" codegen:typedChildren="Get{@ref}">
 			<xsd:selector xpath=".//{@ref}"/>
 			<xsd:field xpath="{$keyreffield}"/>

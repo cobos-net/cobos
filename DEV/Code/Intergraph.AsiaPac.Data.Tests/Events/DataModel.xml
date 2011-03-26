@@ -221,6 +221,12 @@
 			<Joins>
 				<InnerJoin foreignKey="eid" references="AEVEN" referenceKey="eid"/>
 			</Joins>
+			<Order>
+				<By>Timestamp</By>
+				<By>Terminal</By>
+				<By>LineGroup</By>
+				<By>LineOrder</By>
+			</Order>
 		</Metadata>
 	</Object>
 

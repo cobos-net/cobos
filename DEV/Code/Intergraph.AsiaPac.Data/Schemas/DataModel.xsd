@@ -360,6 +360,8 @@
 		<xsd:sequence>
 			<xsd:element name="Filters" type="TableFiltersType" minOccurs="0"/>
 			<xsd:element name="Joins" type="TableJoinsType" minOccurs="0"/>
+			<xsd:element name="Order" type="OrderType" minOccurs="0"/>
+			<xsd:element name="Group" type="GroupType" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 
@@ -410,6 +412,39 @@
 		<xsd:complexContent>
 			<xsd:extension base="TableJoinType"/>
 		</xsd:complexContent>
+	</xsd:complexType>
+
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Column sorting.
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<xsd:complexType name="OrderType">
+		<xsd:sequence>
+			<xsd:element name="By" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+		<xsd:attribute name="type" type="SortOrderEnum" use="optional" default="Ascending"/>
+	</xsd:complexType>
+
+
+	<xsd:simpleType name="SortOrderEnum">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Ascending"/>
+			<xsd:enumeration value="Descending"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Column grouping.
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<xsd:complexType name="GroupType">
+		<xsd:sequence>
+			<xsd:element name="By" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
 	</xsd:complexType>
 
 </xsd:schema>

@@ -306,9 +306,9 @@ namespace <xsl:value-of select="$codeNS"/>
 
 		static readonly string[] _where = <xsl:apply-templates mode="sqlWhere" select="."/>;
 
-		const string _groupBy = null;
+		const string _groupBy = <xsl:apply-templates mode="sqlGroupBy" select="."/>;
 
-		const string _orderBy = null;
+		const string _orderBy = <xsl:apply-templates mode="sqlOrderBy" select="."/>;
 
 		public static readonly SqlSelect Select = new SqlSelect( _select, _from, _innerJoin, _where, _groupBy, _orderBy );
 
@@ -383,7 +383,13 @@ namespace <xsl:value-of select="$codeNS"/>
 		<xsl:text > AS </xsl:text>
 		<xsl:value-of select="@dbAlias"/>
 	</xsl:template>
-	
+
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	INNER/OUTER JOIN
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
 	<!-- Find all inner join tables -->
 	<xsl:template match="cad:Object[ ./cad:Metadata/cad:Joins/* ]" mode="sqlJoin">
 		<xsl:text>new string[]{ </xsl:text>
@@ -410,15 +416,23 @@ namespace <xsl:value-of select="$codeNS"/>
 		<xsl:text>"</xsl:text>
 		<xsl:if test="not( position() = last() )">, </xsl:if>
 	</xsl:template>
-	
-	<!-- Get all of the required where clauses -->
+
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	WHERE clause
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
 	<xsl:template match="cad:Object[ ./cad:Metadata//cad:Filter ]" mode="sqlWhere">
 		<xsl:text>new string[]{ </xsl:text>
 		<xsl:apply-templates select="./cad:Metadata//cad:Filter" mode="sqlWhere"/>
 		<xsl:text> }</xsl:text>
 	</xsl:template>
 
-	<!-- WHERE clause -->
+	<xsl:template match="cad:Object[ not( ./cad:Metadata//cad:Filter ) ]" mode="sqlWhere">
+		<xsl:text>null</xsl:text>
+	</xsl:template>
+
 	<xsl:template match="cad:Filter" mode="sqlWhere">
 		<xsl:text>"</xsl:text>
 		<xsl:value-of select="."/>
@@ -426,10 +440,52 @@ namespace <xsl:value-of select="$codeNS"/>
 		<xsl:if test="not( position() = last() )">, </xsl:if>
 	</xsl:template>
 
-	<xsl:template match="cad:Object[ not( ./cad:Metadata//cad:Filter ) ]" mode="sqlWhere">
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	ORDER BY clause
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<xsl:template match="cad:Object[ ./cad:Metadata/cad:Order/cad:By ]" mode="sqlOrderBy">
+		<xsl:text>"</xsl:text>
+		<xsl:apply-templates select="./cad:Metadata/cad:Order/cad:By"/>
+		<xsl:text>"</xsl:text>
+	</xsl:template>
+
+
+	<xsl:template match="cad:Object[ not( ./cad:Metadata/cad:Order/cad:By ) ]" mode="sqlOrderBy">
 		<xsl:text>null</xsl:text>
 	</xsl:template>
-					  
+
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	GROUP BY clause
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
 	
-	
+	<xsl:template match="cad:Object[ ./cad:Metadata/cad:Group/cad:By ]" mode="sqlGroupBy">
+		<xsl:text>"</xsl:text>
+		<xsl:apply-templates select="./cad:Metadata/cad:Group/cad:By"/>
+		<xsl:text>"</xsl:text>
+	</xsl:template>
+
+	<xsl:template match="cad:Object[ not( ./cad:Metadata/cad:Group/cad:By ) ]" mode="sqlGroupBy">
+		<xsl:text>null</xsl:text>
+	</xsl:template>
+
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	ORDER/GROUP BY value
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<xsl:template match="cad:By">
+		<xsl:variable name="property" select="ancestor::cad:Object[ 1 ]//cad:Property[ @name = current()/text() ]"/>
+		<xsl:value-of select="$property/@dbTable"/>
+		<xsl:text>.</xsl:text>
+		<xsl:value-of select="$property/@dbColumn"/>
+		<xsl:if test="not( position() = last() )">, </xsl:if>
+	</xsl:template>
+
+
 </xsl:stylesheet>

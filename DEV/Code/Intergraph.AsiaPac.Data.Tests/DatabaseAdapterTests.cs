@@ -42,6 +42,12 @@ namespace Intergraph.AsiaPac.Data.Tests
 		{
 			EventDataModel model = new EventDataModel();
 
+			// disable the contraints when performing asynchronous queries,
+			// otherwise, if the main table isn't filled, the child tables
+			// will violate the key constraints.
+			// this also improves performance.
+			model.EnforceConstraints = false;
+
 			DatabaseQuery[] queries = new DatabaseQuery[] 
 			{ 
 				new DatabaseQuery( AgencyEventDataAdapter.Select.ToString(), model.AgencyEvent.TableName ),
@@ -54,15 +60,39 @@ namespace Intergraph.AsiaPac.Data.Tests
 
 			DatabaseAdapter database = new DatabaseAdapter( TestManager.DatabaseConnection );
 			database.ExecuteAsynch( queries, model );
+			//database.Execute( queries, model );
 
 			timer.Stop();
 			Debug.Print( "Asynchronous queries took: " + timer.ElapsedMilliseconds.ToString() );
 
+			// get the first row in the comments, use this to find an event with comments
 			EventDataModel.EventCommentRow eventComment = model.EventComment[ 0 ];
 
+			// find the event that owns this comment
 			EventDataModel.AgencyEventRow agencyEvent = (EventDataModel.AgencyEventRow)model.AgencyEvent.Rows.Find( eventComment.AgencyEventId );
 
 			Assert.NotNull( agencyEvent );
+
+			EventDataModel.EventCommentRow[] comments = agencyEvent.GetEventComment();
+			Debug.Print( "Found " + comments.Length.ToString() + " comments for " + agencyEvent.AgencyEventId );
+
+			Assert.NotNull( comments );
+			Assert.NotEmpty( comments );
+			Assert.Contains<EventDataModel.EventCommentRow>( eventComment, comments );
+
+			// get the first row in the disposition, use this to find an event with disposition
+			EventDataModel.DispositionRow disposition = model.Disposition[ 0 ];
+
+			agencyEvent = (EventDataModel.AgencyEventRow)model.AgencyEvent.Rows.Find( disposition.AgencyEventId );
+
+			EventDataModel.DispositionRow[] dispositions = agencyEvent.GetDisposition();
+
+			Assert.NotNull( dispositions );
+			Assert.NotEmpty( dispositions );
+			Assert.Contains<EventDataModel.DispositionRow>( disposition, dispositions );
+			
+			// Disposition is a one-to-one relationship
+			Assert.Equal<int>( 1, dispositions.Length );
 		}
 	}
 }
