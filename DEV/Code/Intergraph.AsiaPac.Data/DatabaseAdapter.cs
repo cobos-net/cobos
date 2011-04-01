@@ -10,7 +10,7 @@ using Intergraph.AsiaPac.Utilities.Xml;
 
 namespace Intergraph.AsiaPac.Data
 {
-	using AsyncDataSetTask = AsyncTask<DataSet, DatabaseAdapter.QueryDatabaseAsync>;
+	using AsyncDataSetTask = AsyncTask<DataTable, DatabaseAdapter.QueryDatabaseAsync>;
 
 	public class DatabaseAdapter
 	{
@@ -29,11 +29,7 @@ namespace Intergraph.AsiaPac.Data
 
 		#region Database Connection
 
-		public string ConnectionString
-		{
-			get;
-			set;
-		}
+		public readonly string ConnectionString;
 
 		#endregion
 
@@ -208,27 +204,14 @@ namespace Intergraph.AsiaPac.Data
 		/// <summary>
 		/// 
 		/// </summary>
-		/// <param name="query"></param>
-		/// <param name="dataSetName"></param>
-		/// <returns></returns>
-		public CadDataSet Execute( DatabaseQuery query, string dataSetName )
-		{
-			return Execute( query.Sql, query.TableName, dataSetName );
-		}
-
-		/// <summary>
-		/// 
-		/// </summary>
 		/// <param name="queries"></param>
-		/// <param name="dataSetName"></param>
-		/// <returns></returns>
-		public CadDataSet Execute( DatabaseQuery[] queries, string dataSetName )
+		/// <param name="dataset"></param>
+		public void Execute( DatabaseQuery[] queries )
 		{
-			CadDataSet dataset = new CadDataSet( dataSetName );
-
-			Execute( queries, dataset );
-
-			return dataset;
+			for ( int q = 0; q != queries.Length; ++q )
+			{
+				Execute( queries[ q ].Sql, queries[ q ].Table );
+			}
 		}
 
 		/// <summary>
@@ -236,12 +219,9 @@ namespace Intergraph.AsiaPac.Data
 		/// </summary>
 		/// <param name="queries"></param>
 		/// <param name="dataset"></param>
-		public void Execute( DatabaseQuery[] queries, DataSet dataset )
+		public void Execute( DatabaseQuery query )
 		{
-			for ( int i = 0; i != queries.Length; ++i )
-			{
-				Execute( queries[ i ].Sql, queries[ i ].TableName, dataset );
-			}
+			Execute( query.Sql, query.Table );
 		}
 
 		/// <summary>
@@ -274,22 +254,7 @@ namespace Intergraph.AsiaPac.Data
 		/// <param name="queries"></param>
 		/// <param name="dataSetName"></param>
 		/// <returns></returns>
-		public CadDataSet ExecuteAsynch( DatabaseQuery[] queries, string dataSetName )
-		{
-			CadDataSet dataset = new CadDataSet( dataSetName );
-
-			ExecuteAsynch( queries, dataset );
-
-			return dataset;
-		}
-
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="queries"></param>
-		/// <param name="dataSetName"></param>
-		/// <returns></returns>
-		public void ExecuteAsynch( DatabaseQuery[] queries, DataSet dataset )
+		public void ExecuteAsynch( DatabaseQuery[] queries )
 		{
 			// create a new helpers list
 			AsyncDataSetTask[] tasks = new AsyncDataSetTask[ queries.Length ];
@@ -298,20 +263,12 @@ namespace Intergraph.AsiaPac.Data
 			for ( int i = 0; i != queries.Length; ++i )
 			{
 				DatabaseQuery q = queries[ i ];
-				
-				DataTable table = dataset.Tables[ q.TableName ];
-
-				if ( table == null )
-				{
-					table = new DataTable( q.TableName );
-					dataset.Tables.Add( table );
-				}
 								
 				// create a new query helper
 				tasks[ i ] = new AsyncDataSetTask();
-				tasks[ i ].Object = dataset;
+				tasks[ i ].Object = q.Table;
 				tasks[ i ].Caller = Execute;
-				tasks[ i ].AsyncResult = tasks[ i ].Caller.BeginInvoke( q.Sql, table, null, null );
+				tasks[ i ].AsyncResult = tasks[ i ].Caller.BeginInvoke( q.Sql, q.Table, null, null );
 			}
 
 			// get the results from the queries
@@ -360,12 +317,6 @@ namespace Intergraph.AsiaPac.Data
 
 		CadDataSet TableDescription( string schema, string[] tables )
 		{
-			//string desc = "SELECT TABLE_NAME, COLUMN_NAME, DATA_TYPE, DATA_LENGTH,"
-			//              + "DATA_PRECISION, DATA_SCALE, NULLABLE, DATA_DEFAULT, CHAR_LENGTH "
-			//              + "FROM ALL_TAB_COLUMNS "
-			//              + "WHERE OWNER='EADEV' AND TABLE_NAME IN ('AEVEN' ) "
-			//              + "ORDER BY TABLE_NAME ASC, COLUMN_ID ASC";
-
 			string desc = "SELECT TABLE_NAME, COLUMN_NAME, DATA_TYPE, DATA_LENGTH,"
 							  + "DATA_PRECISION, DATA_SCALE, NULLABLE, DATA_DEFAULT, CHAR_LENGTH "
 							  + "FROM ALL_TAB_COLUMNS "

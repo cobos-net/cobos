@@ -53,11 +53,14 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Statements\SqlSelect.cs" />
-    <Compile Include="Utilities\RowAggregator.cs" />
+    <Compile Include="Statements\SqlSelectTemplate.cs" />
+    <Compile Include="Utilities\DataColumnDescriptor.cs" />
+    <Compile Include="Utilities\DataRowColumnAggregator.cs" />
+    <Compile Include="Utilities\DataRowHelper.cs" />
     <Compile Include="Utilities\CADBoolean.cs" />
+    <Compile Include="Utilities\DataRowColumnComparer.cs" />
     <Compile Include="Utilities\DateFormatter.cs" />
-    <Compile Include="Utilities\StringSeparator.cs" />
+    <Compile Include="Utilities\IDataRowAggregator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Intergraph.AsiaPac.Utilities\Intergraph.AsiaPac.Utilities.csproj">
@@ -77,7 +80,9 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Stylesheets\DatabaseTypes.xslt" />
-    <EmbeddedResource Include="Stylesheets\DataModelClasses.xslt" />
+    <EmbeddedResource Include="Stylesheets\DataModelClasses.xslt">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Stylesheets\DataModelDataset.xslt" />
     <EmbeddedResource Include="Stylesheets\DataModelSchema.xslt" />
     <EmbeddedResource Include="Stylesheets\Enum.xslt" />

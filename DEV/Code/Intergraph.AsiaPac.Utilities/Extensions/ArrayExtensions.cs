@@ -32,6 +32,52 @@ namespace Intergraph.AsiaPac.Utilities.Extensions
 		}
 
 		/// <summary>
+		/// 
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="multi"></param>
+		/// <returns></returns>
+		public static T[] ConcatenateAll<T>( T[][] multi )
+		{
+			int totalLength = 0;
+
+			for ( int m = 0; m < multi.Length; ++m )
+			{
+				T[] current = multi[ m ];
+
+				if ( current != null )
+				{
+					totalLength += current.Length;
+				}
+			}
+
+			if ( totalLength == 0 )
+			{
+				return null;
+			}
+
+			T[] result = new T[ totalLength ];
+
+			int index = 0;
+
+			for ( int m = 0; m < multi.Length; ++m )
+			{
+				T[] current = multi[ m ]; 
+
+				if ( current != null )
+				{
+					int currentLength = current.Length;
+
+					Array.Copy( current, 0, result, index, currentLength );
+					
+					index += currentLength;
+				}
+			}
+
+			return result;
+		}
+
+		/// <summary>
 		/// Find the index of the specified object in the array
 		/// </summary>
 		/// <typeparam name="T"></typeparam>
@@ -186,5 +232,6 @@ namespace Intergraph.AsiaPac.Utilities.Extensions
 
 			return newArray;
 		}
+
 	}
 }

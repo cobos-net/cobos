@@ -141,6 +141,17 @@
 	<xsd:element name="Reference" type="ReferenceType"/>
 
 	<xsd:complexType name="ReferenceType">
+		<xsd:sequence>
+			<xsd:element name="Metadata" type="TableMetadataType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						This optional element can be used to define additional 
+						sql clauses when fetching data that are specific to this
+						object's use of the reference data.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
 		<xsd:attribute name="ref" type="xsd:string" use="required">
 			<xsd:annotation>
 				<xsd:documentation>
@@ -362,6 +373,7 @@
 			<xsd:element name="Joins" type="TableJoinsType" minOccurs="0"/>
 			<xsd:element name="Order" type="OrderType" minOccurs="0"/>
 			<xsd:element name="Group" type="GroupType" minOccurs="0"/>
+			<xsd:element name="StringAggregate" type="StringAggregateType" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 
@@ -444,6 +456,32 @@
 	<xsd:complexType name="GroupType">
 		<xsd:sequence>
 			<xsd:element name="By" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Custom string aggregator.
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<xsd:complexType name="StringAggregateType">
+		<xsd:sequence>
+			<xsd:element name="On" type="xsd:string"/>
+			<xsd:element name="Group">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="By" type="xsd:string" minOccurs="1" maxOccurs="unbounded"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="Order">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="By" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
 		</xsd:sequence>
 	</xsd:complexType>
 

@@ -11,20 +11,22 @@ namespace Intergraph.AsiaPac.Data.Tests.Events
 		[Fact]
 		public void Can_query_disposition_from_database()
 		{
+			// Strategy:
+			// ---------
+			// 1) Assert that we can query disposition data from the database using the typed data adapter.
+
 			List<Disposition> dispo = null;
 
 			Assert.DoesNotThrow( 
 				delegate
 				{
-					DatabaseAdapter database = new DatabaseAdapter( TestManager.DatabaseConnection );
-					DispositionDataAdapter adapter = new DispositionDataAdapter( database );
-					dispo = adapter.GetData( null, null, null );
+					dispo = DispositionDataAdapter.GetData( TestManager.DatabaseAdapter, null, null );
 				} );
 
 			Assert.NotNull( dispo );
 			Assert.NotEmpty( dispo );
 
-			Debug.Print( "Number of items found: " + dispo.Count.ToString() );
+			Console.WriteLine( "Number of items found: " + dispo.Count.ToString() );
 		}
 	}
 }

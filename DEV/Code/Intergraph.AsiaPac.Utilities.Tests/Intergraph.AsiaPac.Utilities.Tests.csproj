@@ -69,6 +69,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\ArrayExtensionsTests.cs" />
     <Compile Include="File\DriveMappingTests.cs" />
     <Compile Include="File\FileHandleTests.cs" />
     <Compile Include="File\FileUtilityTests.cs" />
@@ -77,6 +78,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestManager.cs" />
     <Compile Include="Text\MacroExpanderTests.cs" />
+    <Compile Include="Text\StringSeparatorTests.cs" />
     <Compile Include="Threading\ResourcePoolTests.cs" />
     <Compile Include="Win32\DesktopTests.cs" />
   </ItemGroup>

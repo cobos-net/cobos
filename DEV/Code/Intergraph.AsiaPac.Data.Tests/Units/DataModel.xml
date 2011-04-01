@@ -47,7 +47,7 @@
 		<Property name="UnitHistoryComment" dbColumn="uhiscm" dbTable="CD_UNITS"/>
 		<Metadata>
 			<Filters>
-				<Filter>AEVEN.open_and_curent = 'T' and AEVEN.curent in ('T', 'O')</Filter>
+				<Filter>AEVEN.curent in ('T', 'O')</Filter>
 			</Filters>
 			<Joins>
 				<InnerJoin foreignKey="unid" references="CD_UNITS" referenceKey="unid" />

@@ -148,7 +148,7 @@
 			<xsd:selector xpath=".//{../@name}"/>
 			<xsd:field xpath="{$keyfield}"/>
 		</xsd:unique>
-		<xsd:keyref name="{$keyName}" refer="{$keyName}Constraint" codegen:typedParent="{../@name}" codegen:typedChildren="Get{@ref}">
+		<xsd:keyref name="{$keyName}" refer="{$keyName}Constraint" codegen:typedParent="{../@name}" codegen:typedChildren="Get{@name}">
 			<xsd:selector xpath=".//{@ref}"/>
 			<xsd:field xpath="{$keyreffield}"/>
 		</xsd:keyref>

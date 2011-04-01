@@ -11,96 +11,106 @@ namespace Intergraph.AsiaPac.Data.Tests.SupplementalInformation
 		[Fact]
 		public void Can_query_IncidentTimes()
 		{
+			// Strategy:
+			// ---------
+			// 1) Assert that we can query incident times supp info from the database using the typed data adapter.
+
 			List<IncidentTimes> items = null;
 
 			Assert.DoesNotThrow(
 				delegate
 				{
-					DatabaseAdapter database = new DatabaseAdapter( TestManager.DatabaseConnection );
-					IncidentTimesDataAdapter adapter = new IncidentTimesDataAdapter( database );
-					items = adapter.GetData( null, null, null );
+					items = IncidentTimesDataAdapter.GetData( TestManager.DatabaseAdapter, null, null );
 				} );
 
 			//Assert.NotNull( items );
 			//Assert.NotEmpty( items );
 
-			Debug.Print( "Number of incident times found: " + items.Count.ToString() );
+			Console.WriteLine( "Number of incident times found: " + items.Count.ToString() );
 		}
 
 		[Fact]
 		public void Can_query_Person()
 		{
+			// Strategy:
+			// ---------
+			// 1) Assert that we can query person supp info from the database using the typed data adapter.
+			
 			List<Person> items = null;
 
 			Assert.DoesNotThrow(
 				delegate
 				{
-					DatabaseAdapter database = new DatabaseAdapter( TestManager.DatabaseConnection );
-					PersonDataAdapter adapter = new PersonDataAdapter( database );
-					items = adapter.GetData( null, null, null );
+					items = PersonDataAdapter.GetData( TestManager.DatabaseAdapter, null, null );
 				} );
 
 			//Assert.NotNull( items );
 			//Assert.NotEmpty( items );
 
-			Debug.Print( "Number of person items found: " + items.Count.ToString() );
+			Console.WriteLine( "Number of person items found: " + items.Count.ToString() );
 		}
 
 		[Fact]
 		public void Can_query_Propt()
 		{
+			// Strategy:
+			// ---------
+			// 1) Assert that we can query property supp info from the database using the typed data adapter.
+
 			List<Property> items = null;
 
 			Assert.DoesNotThrow(
 				delegate
 				{
-					DatabaseAdapter database = new DatabaseAdapter( TestManager.DatabaseConnection );
-					PropertyDataAdapter adapter = new PropertyDataAdapter( database );
-					items = adapter.GetData( null, null, null );
+					items = PropertyDataAdapter.GetData( TestManager.DatabaseAdapter, null, null );
 				} );
 
 			//Assert.NotNull( items );
 			//Assert.NotEmpty( items );
 
-			Debug.Print( "Number of property items found: " + items.Count.ToString() );
+			Console.WriteLine( "Number of property items found: " + items.Count.ToString() );
 		}
 
 		[Fact]
 		public void Can_query_TowVehicle()
 		{
+			// Strategy:
+			// ---------
+			// 1) Assert that we can query tow vehicle supp info from the database using the typed data adapter.
+
 			List<TowVehicle> items = null;
 
 			Assert.DoesNotThrow(
 				delegate
 				{
-					DatabaseAdapter database = new DatabaseAdapter( TestManager.DatabaseConnection );
-					TowVehicleDataAdapter adapter = new TowVehicleDataAdapter( database );
-					items = adapter.GetData( null, null, null );
+					items = TowVehicleDataAdapter.GetData( TestManager.DatabaseAdapter, null, null );
 				} );
 
 			//Assert.NotNull( items );
 			//Assert.NotEmpty( items );
 
-			Debug.Print( "Number of tow vehicle items found: " + items.Count.ToString() );
+			Console.WriteLine( "Number of tow vehicle items found: " + items.Count.ToString() );
 		}
 
 		[Fact]
 		public void Can_query_Vehicle()
 		{
+			// Strategy:
+			// ---------
+			// 1) Assert that we can query vehicle supp info from the database using the typed data adapter.
+
 			List<Vehicle> items = null;
 
 			Assert.DoesNotThrow(
 				delegate
 				{
-					DatabaseAdapter database = new DatabaseAdapter( TestManager.DatabaseConnection );
-					VehicleDataAdapter adapter = new VehicleDataAdapter( database );
-					items = adapter.GetData( null, null, null );
+					items = VehicleDataAdapter.GetData( TestManager.DatabaseAdapter, null, null );
 				} );
 
 			//Assert.NotNull( items );
 			//Assert.NotEmpty( items );
 
-			Debug.Print( "Number of vehicle items found: " + items.Count.ToString() );
+			Console.WriteLine( "Number of vehicle items found: " + items.Count.ToString() );
 		}
 	}
 }

@@ -9,22 +9,24 @@ namespace Intergraph.AsiaPac.Data.Tests.HospitalDiversion
 	public class HospitalDiversionTests
 	{
 		[Fact]
-		public void Can_query_comments_from_database()
+		public void Can_query_hospital_diversion_warnings_from_database()
 		{
+			// Strategy:
+			// ---------
+			// 1) Assert that we can query hospital diversion warnings from the database using the typed data adapter.
+
 			List<HospitalDiversionMessage> messages = null;
 
 			Assert.DoesNotThrow(
 				delegate
 				{
-					DatabaseAdapter database = new DatabaseAdapter( TestManager.DatabaseConnection );
-					HospitalDiversionMessageDataAdapter adapter = new HospitalDiversionMessageDataAdapter( database );
-					messages = adapter.GetData( null, null, null );
+					messages = HospitalDiversionMessageDataAdapter.GetData( TestManager.DatabaseAdapter, null, null );
 				} );
 
 			Assert.NotNull( messages );
 			Assert.NotEmpty( messages );
 
-			Debug.Print( "Number of messages found: " + messages.Count.ToString() );
+			Console.WriteLine( "Number of messages found: " + messages.Count.ToString() );
 		}
 	}
 }

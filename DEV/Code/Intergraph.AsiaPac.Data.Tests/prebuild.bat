@@ -39,6 +39,11 @@ set suppout=.\SupplementalInformation\Generated
 set unitout=.\Units\Generated
 set hewsout=.\HospitalDiversion\Generated
 
+IF NOT EXIST %eventout% MKDIR %eventout%
+IF NOT EXIST %suppout% MKDIR %suppout%
+IF NOT EXIST %unitout% MKDIR %unitout%
+IF NOT EXIST %hewsout% MKDIR %hewsout%
+
 @echo on
 
 echo ==========================================================================

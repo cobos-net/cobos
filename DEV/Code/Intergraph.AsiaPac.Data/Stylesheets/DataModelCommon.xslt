@@ -25,6 +25,14 @@
 	<xsl:include href="CadDatabase.xslt"/>
 	<xsl:include href="Utilities.xslt"/>
 
+	<!-- useful for formatting text output -->
+	<xsl:variable name="newline" select="string('&#xD;&#xA;')"/>
+	<xsl:variable name="tab" select="string('&#9;')"/>
+	<xsl:variable name="newlineTab" select="concat( $newline, $tab )"/>
+	<xsl:variable name="newlineTab2" select="concat( $newline, $tab, $tab )"/>
+	<xsl:variable name="newlineTab3" select="concat( $newline, $tab, $tab, $tab )"/>
+	<xsl:variable name="newlineTab4" select="concat( $newline, $tab, $tab, $tab, $tab )"/>
+
 	<!--
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	Expand the class hierarchy, reference types are inlined into the nodeset
@@ -80,7 +88,11 @@
 
 	<!-- match a reference type -->
 	<xsl:template match="cad:Reference" mode="classHierarchy">
-		<xsl:copy-of select="."/>
+		<xsl:element name="Reference">
+			<xsl:apply-templates mode="classHierarchyDatasetDefinition" select="/cad:DataModel/cad:Object[ @name = current()/@ref ]"/>
+			<xsl:copy-of select="@*"/>
+			<xsl:copy-of select="./cad:Metadata"/>
+		</xsl:element>
 	</xsl:template>
 
 	<!-- tag only the top level object with the derived DataRow id -->
@@ -91,12 +103,18 @@
 		<xsl:variable name="datasetName">
 			<xsl:apply-templates mode="className" select="/cad:DataModel"/>
 		</xsl:variable>
+		<xsl:attribute name="dataModelType">
+			<xsl:value-of select="$datasetName"/>
+		</xsl:attribute> 
 		<xsl:attribute name="datasetRowType">
 			<xsl:value-of select="$datasetName"/>.<xsl:value-of select="$className"/><xsl:text>Row</xsl:text>
 		</xsl:attribute>
 		<xsl:attribute name="datasetTableType">
 			<xsl:value-of select="$datasetName"/>.<xsl:value-of select="$className"/><xsl:text>DataTable</xsl:text>
-		</xsl:attribute>		
+		</xsl:attribute>
+		<xsl:attribute name="datasetTableName">
+			<xsl:value-of select="$className"/>
+		</xsl:attribute>
 	</xsl:template>
 
 	<xsl:template match="cad:Object[ not(parent::node()[ self::cad:DataModel ]) ]" mode="classHierarchyDatasetDefinition"/>
