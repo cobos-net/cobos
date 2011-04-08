@@ -103,7 +103,6 @@ namespace <xsl:value-of select="$codeNS"/>
 
 	<!-- output class body for a concrete object or a type -->
 	<xsl:template match="cad:Object" mode="classBody">
-
 		<xsl:variable name="datasetRowType">
 			<xsl:apply-templates mode="datasetRowType" select="."/>
 		</xsl:variable>
@@ -111,11 +110,9 @@ namespace <xsl:value-of select="$codeNS"/>
 		readonly <xsl:value-of select="$datasetRowType"/> _dataRow;
 
 		<xsl:apply-templates select="cad:Reference" mode="classMemberDecl"/>
-
 		public <xsl:value-of select="@className"/>( <xsl:value-of select="$datasetRowType"/> dataRow )
 		{
 			_dataRow = dataRow;
-			
 			<xsl:apply-templates select="cad:Reference" mode="classConstructorBody"/>
 		}
 
@@ -140,8 +137,7 @@ namespace <xsl:value-of select="$codeNS"/>
 		<xsl:value-of select="@name"/>
 		<xsl:text>;</xsl:text>
 		<xsl:if test="not( position() = last() )">
-			<xsl:text>
-			</xsl:text>
+			<xsl:value-of select="$newlineTab2"/>
 		</xsl:if>
 	</xsl:template>
 
@@ -152,8 +148,7 @@ namespace <xsl:value-of select="$codeNS"/>
 		<xsl:value-of select="@name"/>
 		<xsl:text>;</xsl:text>
 		<xsl:if test="not( position() = last() )">
-			<xsl:text>
-		</xsl:text>
+			<xsl:value-of select="$newlineTab2"/>
 		</xsl:if>
 	</xsl:template>
 
@@ -172,16 +167,13 @@ namespace <xsl:value-of select="$codeNS"/>
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 	<xsl:template match="cad:Reference[ not( @isCollection ) ]" mode="classConstructorBody">
+			<xsl:value-of select="$newlineTab3"/>
 			<xsl:value-of select="@datasetRowType"/>[] child<xsl:value-of select="@name"/> = _dataRow.Get<xsl:value-of select="@name"/>();
 
 			if ( <xsl:apply-templates select="." mode="classConstructorBodyChildRowCheck"/> )
 			{
 				_<xsl:value-of select="@name"/> = new <xsl:value-of select="@ref"/>( child<xsl:value-of select="@name"/>[ 0 ] );
 			}
-			<xsl:if test="not( position() = last() )">
-				<xsl:text>
-			</xsl:text>
-			</xsl:if>
 	</xsl:template>
 
 	<!-- 
@@ -216,8 +208,7 @@ namespace <xsl:value-of select="$codeNS"/>
 				}
 			}
 			<xsl:if test="not( position() = last() )">
-				<xsl:text>
-			</xsl:text>
+				<xsl:value-of select="$newlineTab3"/>
 			</xsl:if>
 	</xsl:template>
 
@@ -258,7 +249,7 @@ namespace <xsl:value-of select="$codeNS"/>
 		[DataMember(Order=<xsl:value-of select="position() - 1"/>)]
 		public <xsl:apply-templates select="." mode="propertyType"/> <xsl:apply-templates select="." mode="propertyDefinitionName"/>
 		{
-		<xsl:apply-templates select="." mode="propertyBody"/>
+			<xsl:apply-templates select="." mode="propertyBody"/>
 		}
 	</xsl:template>
 
@@ -344,50 +335,64 @@ namespace <xsl:value-of select="$codeNS"/>
 	-->
 
 	<xsl:template match="cad:Property[ @minOccurs = 1 ]|cad:Reference" mode="propertyBody">
-			get 
-			{ 
-				<xsl:apply-templates select="." mode="propertyReturn"/> 
-			}
-			set { }
+		<xsl:text>get { </xsl:text>
+		<xsl:apply-templates select="." mode="propertyReturn"/>
+		<xsl:text> }
+			set { }</xsl:text>
 	</xsl:template>
 
 	<xsl:template match="cad:Property[ @minOccurs = 0 ]" mode="propertyBody">
-			get
-			{
+		<xsl:text>get
+			{</xsl:text>
 				if ( _dataRow.Is<xsl:apply-templates mode="qualifiedName" select="."/>Null() )
 				{
 					return null;
 				}
 				<xsl:apply-templates select="." mode="propertyReturn"/>
+		<xsl:text> 
 			}
-			set { }
+			set { }</xsl:text>
 	</xsl:template>
 
 	<!-- basic return type -->
 	<xsl:template match="cad:Property[ not( @stringFormat ) ]" mode="propertyReturn">
-				return _dataRow.<xsl:apply-templates mode="qualifiedName" select="."/>;
+		<xsl:variable name="columnName">
+			<xsl:apply-templates mode="qualifiedName" select="."/>
+		</xsl:variable>
+		<xsl:value-of select="concat( 'return _dataRow.', $columnName, ';' )"/>
 	</xsl:template>
 
 	<xsl:template match="cad:Property[ @stringFormat = 'CadDts' ]" mode="propertyReturn">
-				return DateFormatter.ConvertFromDTS( _dataRow.<xsl:apply-templates mode="qualifiedName" select="."/> );
+		<xsl:variable name="columnName">
+			<xsl:apply-templates mode="qualifiedName" select="."/>
+		</xsl:variable>
+		<xsl:value-of select="concat( 'return DateFormatter.ConvertFromDTS( _dataRow.', $columnName, ' );' )"/>
 	</xsl:template>
 
 	<xsl:template match="cad:Property[ @stringFormat = 'CadBoolean' ]" mode="propertyReturn">
-				return CADBoolean.ParseString( _dataRow.<xsl:apply-templates mode="qualifiedName" select="."/> );
+		<xsl:variable name="columnName">
+			<xsl:apply-templates mode="qualifiedName" select="."/>
+		</xsl:variable>
+		<xsl:value-of select="concat( 'return CADBoolean.ParseString( _dataRow.', $columnName, ' );' )"/>
 	</xsl:template>
 
 	<xsl:template match="cad:Property[ @stringFormat = 'Separator' ]" mode="propertyReturn">
 		<xsl:variable name="separator">
+			<xsl:text>'</xsl:text>
 			<xsl:value-of select="substring-before( @formatArgs, ' ' )"/>
+			<xsl:text>'</xsl:text>
 		</xsl:variable>
 		<xsl:variable name="index">
 			<xsl:value-of select="substring-after( @formatArgs, ' ' )"/>
 		</xsl:variable>
-				return StringSeparator.GetTokenAt( _dataRow.<xsl:apply-templates mode="qualifiedName" select="."/>, '<xsl:value-of select="$separator"/>', <xsl:value-of select="$index"/> );
+		<xsl:variable name="columnName">
+			<xsl:apply-templates mode="qualifiedName" select="."/>
+		</xsl:variable>
+		<xsl:value-of select="concat( 'return StringSeparator.GetTokenAt( _dataRow.', $columnName, ', ', $separator, ', ', $index, ' );' )"/>
 	</xsl:template>
 
 	<xsl:template match="cad:Reference" mode="propertyReturn">
-				return _<xsl:value-of select="@name"/>;
+		<xsl:value-of select="concat( 'return _', @name, ';' )"/>
 	</xsl:template>
 
 	<!--
@@ -411,7 +416,7 @@ namespace <xsl:value-of select="$codeNS"/>
 
 		const string _orderBy = <xsl:apply-templates mode="sqlOrderBy" select="."/>;
 
-		public static readonly SqlSelectTemplate Select = new SqlSelectTemplate( _select, _from, _innerJoin, _where, _groupBy, _orderBy );
+		public static readonly SqlSelectTemplate Select = new SqlSelectTemplate( _select, _from, _innerJoin, _where, _groupBy, _orderBy, true );
 
 		<xsl:apply-templates select="./cad:Metadata/cad:StringAggregate" mode="aggregatorDecl"/>
 
@@ -780,7 +785,7 @@ namespace <xsl:value-of select="$codeNS"/>
 		<xsl:variable name="relationName" select="concat( 'relation', ../@className, @ref )"/>
 
 		<xsl:value-of select="$newlineTab3"/>
-		<xsl:value-of select="concat( 'DataRelation ', $relationName, ' = new DataRelation( &quot;', $relationName, '&quot;, ',  
+		<xsl:value-of select="concat( 'DataRelation ', $relationName, ' = new DataRelation( &quot;', ../@className, @ref, '&quot;, ',  
 																														'table', ../@className, '.', @key, 'Column, ',
 																														'table', @ref, '.', @refer, 'Column, false );' )" />
 		<xsl:value-of select="$newlineTab3"/>

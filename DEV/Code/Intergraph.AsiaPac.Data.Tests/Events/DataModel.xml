@@ -290,7 +290,7 @@
 		<Property name="CommonEventId" dbColumn="eid"/>
 		<Property name="DispositionCode" dbColumn="dispo"/>
 		<Property name="CreateTerminal" dbColumn="cterm"/>
-		<Property name="EmployeeUnit" dbColumn="row_num"/>
+		<Property name="EmployeeUnit" dbColumn="member_id"/>
 		<Object name="ResultCodes">
 			<Property name="Qualifier1" dbColumn="qual1"/>
 			<Property name="Qualifier2" dbColumn="qual2"/>

@@ -21,14 +21,20 @@ namespace Intergraph.AsiaPac.Data.Statements
 		readonly string[] _where;
 		readonly string _groupBy;
 		readonly string _orderBy;
-		//readonly string _ToString;
+		readonly string _buffered;
 
 		public SqlSelectTemplate()
 		{
 		}
 
-		public SqlSelectTemplate( string select, string from, string[] innerJoin, 
+		public SqlSelectTemplate( string select, string from, string[] innerJoin,
 								string[] where, string groupBy, string orderBy )
+			: this( select, from, innerJoin, where, groupBy, orderBy, false )
+		{
+		}
+
+		public SqlSelectTemplate( string select, string from, string[] innerJoin, 
+								string[] where, string groupBy, string orderBy, bool buffered )
 		{
 			_select = select;
 			_from = from;
@@ -37,7 +43,10 @@ namespace Intergraph.AsiaPac.Data.Statements
 			_groupBy = groupBy;
 			_orderBy = orderBy;
 
-			//_ToString = ToStringInternal();
+			if ( buffered )
+			{
+				_buffered = ToStringInternal();
+			}
 		}
 
 		/// <summary>
@@ -46,7 +55,14 @@ namespace Intergraph.AsiaPac.Data.Statements
 		/// <returns></returns>
 		public override string ToString()
 		{
-			return ToStringInternal();
+			if ( _buffered != null )
+			{
+				return _buffered;
+			}
+			else
+			{
+				return ToStringInternal();
+			}
 		}
 
 		/// <summary>
@@ -248,14 +264,32 @@ namespace Intergraph.AsiaPac.Data.Statements
 		/// Augment the statement with the most common clauses that are usually needed
 		/// </summary>
 		/// <param name="where"></param>
+		/// <param name="orderBy"></param>
+		/// <returns></returns>
+		public string ToString( string[] where, string orderBy )
+		{
+			if ( (where == null || where.Length == 0) && orderBy == null )
+			{
+				return ToString(); // return the buffered result if available
+			}
+			else
+			{
+				return ToString( null, null, null, where, null, orderBy );
+			}
+		}
+
+		/// <summary>
+		/// Augment the statement with the most common clauses that are usually needed
+		/// </summary>
+		/// <param name="where"></param>
 		/// <param name="groupBy"></param>
 		/// <param name="orderBy"></param>
 		/// <returns></returns>
 		public string ToString( string[] where, string groupBy, string orderBy )
 		{
-			if ( where == null && groupBy == null && orderBy == null )
+			if ( (where == null || where.Length == 0) && groupBy == null && orderBy == null )
 			{
-				return ToString(); // return the cached result
+				return ToString(); // return the buffered result if available
 			}
 			else
 			{
@@ -270,13 +304,13 @@ namespace Intergraph.AsiaPac.Data.Statements
 		/// <returns></returns>
 		public string ToString( string[] where )
 		{
-			if ( where != null )
+			if ( where != null && where.Length != 0)
 			{
 				return ToString( null, null, null, where, null, null );
 			}
 			else
 			{
-				return ToString(); // return the cached result
+				return ToString(); // return the buffered result if available
 			}
 		}
 

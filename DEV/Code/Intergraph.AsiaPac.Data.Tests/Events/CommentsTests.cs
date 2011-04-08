@@ -10,50 +10,47 @@ namespace Intergraph.AsiaPac.Data.Tests.Events
 {
 	public class CommentsTests
 	{
-		/// <summary>
-		/// Helper function to construct a comment aggregator
-		/// </summary>
-		/// <param name="table"></param>
-		/// <returns></returns>
-		DataRowColumnAggregator GetCommentAggregator( EventDataModel.EventCommentDataTable table )
-		{
-			DataColumn aggregateOn = table.TextColumn;
-
-			DataColumn[] groupBy = new DataColumn[] 
-			{ 
-				table.CreatedTimestampColumn, 
-				table.CreatedTerminalColumn,
-				table.LineGroupColumn
-			};
-
-			DataColumn[] sortBy = new DataColumn[] 
-			{ 
-				table.LineOrderColumn 
-			};
-
-			DataRowColumnComparer comparer = new DataRowColumnComparer( sortBy );
-
-			return new DataRowColumnAggregator( aggregateOn, groupBy, comparer );
-		}
-
-
 		[Fact]
 		public void Can_query_comments_from_database()
 		{
 			// Strategy:
 			// ---------
 			// 1) Assert that we can query comments from the database using the typed data adapter.
+			// 2) Assert that the comments have been automatically aggregated by confirming there
+			//		are no duplicate groups.
 
 			List<EventComment> comments = null;
 
 			Assert.DoesNotThrow(
 				delegate
 				{
+					Stopwatch timer = new Stopwatch();
+					timer.Start();
+
 					comments = EventCommentDataAdapter.GetData( TestManager.DatabaseAdapter, EventsTests.OpenEventFilter, null );
+
+					timer.Stop();
+					Console.WriteLine( "Comments took: " + timer.ElapsedMilliseconds.ToString() );
 				} );
 
 			Assert.NotNull( comments );
 			Assert.NotEmpty( comments );
+
+			//HashSet<string> set = new HashSet<string>(); 
+
+			//foreach ( EventComment comment in comments )
+			//{
+			//   string key = comment.Created.Timestamp.ToString( "s" ) 
+			//               + "," + comment.Created.Terminal
+			//               + "," + comment.Created.EmployeeId;
+
+			//   bool isNew = set.Add( key );
+
+			//   if ( !isNew )
+			//   {
+			//      Console.WriteLine( "Duplicate key: " + key );
+			//   }
+			//}
 
 			Console.WriteLine( "Number of comments found: " + comments.Count.ToString() );
 		}
@@ -263,6 +260,51 @@ namespace Intergraph.AsiaPac.Data.Tests.Events
 			Assert.Equal<string>( expectedAggregatedText, grouped[ 0 ].Text );
 
 			Console.WriteLine( "Aggregated text: " + grouped[ 0 ].Text );
+
+			// finally, get the agency event from the adapter and confirm that the 
+			// adapter is aggregating the comment correctly
+			List<AgencyEvent> events = AgencyEventDataAdapter.GetData( database, new string[]{ "AEVEN.NUM_1 = '" + agencyEvent.AgencyEventId + "'" }, null );
+
+			Assert.NotNull( events );
+			Assert.Equal<int>( 1, events.Count );
+
+			List<EventComment> commentsForAgencyEventOnly = events[ 0 ].Comments;
+
+			// so far the comments we have fetched are not agency event specific.
+			// when querying an agency event we only get those comments that 
+			int numberCommentsForAgencyEventOnly = 0;
+			string agencyId = events[ 0 ].Agency.AgencyId;
+
+			foreach ( EventDataModel.EventCommentRow row in commentsForEvent )
+			{
+				if ( row.IsScopeNull() || row.Scope == agencyId )
+				{
+					++numberCommentsForAgencyEventOnly;
+				}
+			}
+
+			Assert.Equal<int>( numberCommentsForAgencyEventOnly, commentsForAgencyEventOnly.Count );
+
+			// Finally confirm that the aggregated comment is as expected when queried
+			// via the agency event data adapter.
+			List<EventComment> expectedAgencyEventComment = new List<EventComment>();
+
+			foreach ( EventComment comment in commentsForAgencyEventOnly )
+			{
+				if ( comment.Created.Timestamp == IPS.Utility.DateFormatter.ConvertFromDTS( referenceTimestamp )
+					&& comment.Created.Terminal == referenceTerminal )
+				{
+					expectedAgencyEventComment.Add( comment );
+				}
+			}
+
+			// NOTE: we may not match correctly, since we don't expose the LineGroup
+			// value through the object interface, so there is a small chance that
+			// we might match more than one comment based on timestamp and 
+			// terminal alone.  This is unlikely but could happen.
+
+			Assert.Equal<int>( 1, expectedAgencyEventComment.Count );
+			Assert.Equal<string>( expectedAggregatedText, expectedAgencyEventComment[ 0 ].Text );
 		}
 
 		DataSet CreateEventDataSet( EventDataModel.AgencyEventDataTable tableAgencyEvent, EventDataModel.EventCommentDataTable tableEventComment, EventDataModel.DispositionDataTable tableDisposition )
@@ -273,18 +315,18 @@ namespace Intergraph.AsiaPac.Data.Tests.Events
 			dataset.Tables.Add( tableEventComment );
 			dataset.Tables.Add( tableDisposition );
 
-			DataRelation relationAgencyEventEventComment = new global::System.Data.DataRelation( "AgencyEventEventComment", 
-																																tableAgencyEvent.AgencyEventIdColumn, 
-																																tableEventComment.AgencyEventIdColumn, false );
+			DataRelation relationAgencyEventEventComment = new DataRelation( "AgencyEventEventComment", 
+																									tableAgencyEvent.AgencyEventIdColumn, 
+																									tableEventComment.AgencyEventIdColumn, false );
 			
 			relationAgencyEventEventComment.ExtendedProperties.Add( "typedChildren", "GetComments" );
 			relationAgencyEventEventComment.ExtendedProperties.Add( "typedParent", "AgencyEvent" );
 			
 			dataset.Relations.Add( relationAgencyEventEventComment );
 			
-			DataRelation relationAgencyEventDisposition = new global::System.Data.DataRelation( "AgencyEventDisposition", 
-																															tableAgencyEvent.AgencyEventIdColumn, 
-																															tableDisposition.AgencyEventIdColumn, false );
+			DataRelation relationAgencyEventDisposition = new DataRelation( "AgencyEventDisposition", 
+																									tableAgencyEvent.AgencyEventIdColumn, 
+																									tableDisposition.AgencyEventIdColumn, false );
 			
 			relationAgencyEventDisposition.ExtendedProperties.Add( "typedChildren", "GetDisposition" );
 			relationAgencyEventDisposition.ExtendedProperties.Add( "typedParent", "AgencyEvent" );
@@ -294,37 +336,32 @@ namespace Intergraph.AsiaPac.Data.Tests.Events
 			return dataset;
 		}
 
-		[Fact]
-		public void Test_data_model_construction_time()
+		/// <summary>
+		/// Helper function to construct a comment aggregator
+		/// </summary>
+		/// <param name="table"></param>
+		/// <returns></returns>
+		DataRowColumnAggregator GetCommentAggregator( EventDataModel.EventCommentDataTable table )
 		{
-			Stopwatch timer = new Stopwatch();
+			DataColumn aggregateOn = table.TextColumn;
 
-			EventDataModel model = null;
+			DataColumn[] groupBy = new DataColumn[] 
+			{ 
+				table.CreatedTimestampColumn, 
+				table.CreatedTerminalColumn,
+				table.LineGroupColumn
+			};
 
-			timer.Start();
+			DataColumn[] sortBy = new DataColumn[] 
+			{ 
+				table.LineOrderColumn 
+			};
 
-			model = test( model );
+			DataRowColumnComparer comparer = new DataRowColumnComparer( sortBy );
 
-			timer.Stop();
-
-			double average = (double)timer.ElapsedMilliseconds / 10000.0;
-
-			Console.WriteLine( "Total time: " + timer.ElapsedMilliseconds );
-			Console.WriteLine( "Average construction time: " + average.ToString() );
+			return new DataRowColumnAggregator( aggregateOn, groupBy, comparer );
 		}
 
-		public EventDataModel test( EventDataModel model )
-		{
-			int test = 0;
 
-			for ( int i = 0; i < 10000; ++i )
-			{
-				test = i;
-				model = new EventDataModel();
-				test = i + test;
-			}
-
-			return model;
-		}
 	}
 }

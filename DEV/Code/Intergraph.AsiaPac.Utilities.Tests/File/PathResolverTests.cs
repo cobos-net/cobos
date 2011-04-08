@@ -4,7 +4,7 @@ using Intergraph.AsiaPac.Utilities.File;
 
 namespace Intergraph.AsiaPac.Utilities.Tests.File
 {
-	class PathResolverTests
+	public class PathResolverTests
 	{
 		[Fact]
 		public void Construction_with_valid_folders_works()

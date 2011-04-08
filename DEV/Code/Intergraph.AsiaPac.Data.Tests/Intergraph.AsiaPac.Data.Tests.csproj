@@ -100,6 +100,7 @@
     </Compile>
     <Compile Include="Units\UnitsTests.cs" />
     <Compile Include="Utilities\DataRowColumnAggregatorTests.cs" />
+    <Compile Include="Utilities\DateTimeRangeTests.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

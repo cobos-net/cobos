@@ -12,38 +12,46 @@ namespace Intergraph.AsiaPac.Data.Tests.Statements
 		[Fact]
 		public void Invalid_parameters_throws_exception()
 		{
-			SqlSelectTemplate select = new SqlSelectTemplate();
+			Assert.DoesNotThrow(
+				delegate
+				{
+					new SqlSelectTemplate();
+				} );
 
 			Assert.Throws<InvalidOperationException>(
 				delegate
 				{
-					select.ToString();
+					new SqlSelectTemplate().ToString();
 				} );
 
 
 			Assert.Throws<InvalidOperationException>(
 				delegate
 				{
-					select.ToString( null, null, null, null, null, null );
+					new SqlSelectTemplate().ToString( null, null, null, null, null, null );
+				} );
+
+			Assert.Throws<InvalidOperationException>(
+				delegate
+				{
+					new SqlSelectTemplate( null, null, null, null, null, null, true );
 				} );
 		}
 
 		[Fact]
 		public void Simple_select_succeeds()
 		{
-			SqlSelectTemplate select = new SqlSelectTemplate( "COL", null, null, null, null, null );
 
 			Assert.DoesNotThrow(
 				delegate
 				{
+					SqlSelectTemplate select = new SqlSelectTemplate( "COL", null, null, null, null, null );
 					select.ToString();
-				} );
-
-			select = new SqlSelectTemplate();
-
-			Assert.DoesNotThrow(
-				delegate
-				{
+					select.ToString( null );
+					select.ToString( null, null );
+					select.ToString( null, null, null );
+					
+					select = new SqlSelectTemplate();
 					select.ToString( "COL", null, null, null, null, null );
 				} );
 		}
@@ -117,6 +125,11 @@ namespace Intergraph.AsiaPac.Data.Tests.Statements
 			Assert.Equal<string>( "SELECT COL WHERE (CLAUSE1) AND (CLAUSE2) AND (CLAUSE3)", select.ToString( null, null, null, whereClause2, null, null ) );
 			Assert.Equal<string>( "SELECT COL WHERE (CLAUSE1) AND (CLAUSE4) AND (CLAUSE5) AND (CLAUSE6)", select.ToString( null, null, null, whereClause3, null, null ) );
 
+			// test the shortcut methods
+			Assert.Equal<string>( "SELECT COL WHERE (CLAUSE1) AND (CLAUSE1)", select.ToString( whereClause1, null, null ) );
+			Assert.Equal<string>( "SELECT COL WHERE (CLAUSE1) AND (CLAUSE1)", select.ToString( whereClause1, null ) );
+			Assert.Equal<string>( "SELECT COL WHERE (CLAUSE1) AND (CLAUSE1)", select.ToString( whereClause1 ) );
+
 			select = new SqlSelectTemplate( "COL", null, null, whereClause2, null, null );
 
 			Assert.Equal<string>( "SELECT COL WHERE (CLAUSE2) AND (CLAUSE3)", select.ToString() );
@@ -141,8 +154,10 @@ namespace Intergraph.AsiaPac.Data.Tests.Statements
 			Assert.Equal<string>( "SELECT COL GROUP BY GROUPCOL, GROUPCOL2", select.ToString( null, null, null, null, "GROUPCOL2", null ) );
 
 			select = new SqlSelectTemplate();
-
 			Assert.Equal<string>( "SELECT COL GROUP BY GROUPCOL", select.ToString( "COL", null, null, null, "GROUPCOL", null ) );
+
+			select = new SqlSelectTemplate( "COL", null, null, null, null, null );
+			Assert.Equal<string>( "SELECT COL GROUP BY GROUPCOL", select.ToString( null, "GROUPCOL", null ) );
 		}
 
 		[Fact]
@@ -154,8 +169,11 @@ namespace Intergraph.AsiaPac.Data.Tests.Statements
 			Assert.Equal<string>( "SELECT COL ORDER BY ORDERCOL, ORDERCOL2", select.ToString( null, null, null, null, null, "ORDERCOL2" ) );
 
 			select = new SqlSelectTemplate();
-
 			Assert.Equal<string>( "SELECT COL ORDER BY ORDERCOL", select.ToString( "COL", null, null, null, null, "ORDERCOL" ) );
+
+			select = new SqlSelectTemplate( "COL", null, null, null, null, null );
+			Assert.Equal<string>( "SELECT COL ORDER BY ORDERCOL", select.ToString( null, null, "ORDERCOL" ) );
+			Assert.Equal<string>( "SELECT COL ORDER BY ORDERCOL", select.ToString( null, "ORDERCOL" ) );
 		}
 
 		[Fact]
@@ -209,12 +227,10 @@ namespace Intergraph.AsiaPac.Data.Tests.Statements
 				delegate
 				{
 					select.ToString();
-				} );
-
-			Assert.DoesNotThrow(
-				delegate
-				{
 					select.ToString( null, null, empty, empty, null, null );
+					select.ToString( empty );
+					select.ToString( empty, null );
+					select.ToString( empty, null, null );
 				} );
 
 			Assert.Equal<string>( "SELECT COL", select.ToString() );
@@ -225,5 +241,18 @@ namespace Intergraph.AsiaPac.Data.Tests.Statements
 
 			Assert.Equal<string>( "SELECT COL INNER JOIN JOIN1 INNER JOIN JOIN2 WHERE (CLAUSE1) AND (CLAUSE2)", select.ToString( null, null, empty, empty, null, null ) );
 		}
+
+		[Fact]
+		public void Buffered_query_returns_same_result()
+		{
+			string[] innerJoin = new string[] { "JOIN1", "JOIN2" };
+			string[] whereClause = new string[] { "CLAUSE1", "CLAUSE2" };
+
+			SqlSelectTemplate select = new SqlSelectTemplate( "COL", "TABLE1", innerJoin, whereClause, "GROUPCOL", "ORDERCOL" );
+			SqlSelectTemplate buffered = new SqlSelectTemplate( "COL", "TABLE1", innerJoin, whereClause, "GROUPCOL", "ORDERCOL", true );
+
+			Assert.Equal<string>( buffered.ToString(), select.ToString() );
+		}
+
 	}
 }

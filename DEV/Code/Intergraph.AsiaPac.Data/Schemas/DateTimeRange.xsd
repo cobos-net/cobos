@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema id="DateTimeRange"
+targetNamespace="http://schemas.intergraph.com/asiapac/cad/datamodel/1.0.0"
+xmlns="http://schemas.intergraph.com/asiapac/cad/datamodel/1.0.0"
+xmlns:cad="http://schemas.intergraph.com/asiapac/cad/datamodel/1.0.0"
+xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+attributeFormDefault="qualified" elementFormDefault="qualified"
+>
+
+	<xsd:element name="DateTimeRange">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="StartDate" type="xsd:dateTime" minOccurs="0"/>
+				<xsd:element name="EndDate" type="xsd:dateTime" minOccurs="0"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	
+</xsd:schema>

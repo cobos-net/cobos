@@ -60,6 +60,8 @@
     <Compile Include="Utilities\CADBoolean.cs" />
     <Compile Include="Utilities\DataRowColumnComparer.cs" />
     <Compile Include="Utilities\DateFormatter.cs" />
+    <Compile Include="Utilities\DateTimeRange.cs" />
+    <Compile Include="Utilities\Generated\DateTimeRange.cs" />
     <Compile Include="Utilities\IDataRowAggregator.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -73,9 +75,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Stylesheets\CadDatabase.xslt">
+    <None Include="Stylesheets\CadDatabase.xslt">
       <SubType>Designer</SubType>
-    </EmbeddedResource>
+    </None>
     <EmbeddedResource Include="Stylesheets\DatabaseSchema.xslt">
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -95,11 +97,22 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="prebuild.bat" />
     <None Include="Schemas\DataModel.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Schemas\DateTimeRange.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Stylesheets\CadDatabase.xsd">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>$(ProjectDir)prebuild.bat $(ProjectDir)</PreBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
