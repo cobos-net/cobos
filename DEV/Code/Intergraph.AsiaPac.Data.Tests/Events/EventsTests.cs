@@ -8,7 +8,7 @@ namespace Intergraph.AsiaPac.Data.Tests.Events
 {
 	public class EventsTests
 	{
-		const string OpenEventClause = "AEVEN.open_and_curent = 'T'";
+		public const string OpenEventClause = "AEVEN.open_and_curent = 'T'";
 
 		public static readonly string[] OpenEventFilter = new string[] { OpenEventClause };
 

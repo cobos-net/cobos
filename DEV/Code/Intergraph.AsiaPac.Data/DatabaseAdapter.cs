@@ -12,7 +12,7 @@ namespace Intergraph.AsiaPac.Data
 {
 	using AsyncDataSetTask = AsyncTask<DataTable, DatabaseAdapter.QueryDatabaseAsync>;
 
-	public class DatabaseAdapter
+	public class DatabaseAdapter : IDatabaseAdapter
 	{
 		#region Private data
 

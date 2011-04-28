@@ -26,13 +26,7 @@
 		<Object name="Timestamps" type="EventTimestamps"/>
 		<Object name="Caller" type="EventCaller"/>
 		<Object name="ChangeHistory" type="EventChangeHistory"/>
-		<Reference ref="EventComment" name="Comments" isCollection="true" key="AgencyEventId" refer="AgencyEventId">
-			<Metadata>
-				<Filters>
-					<Filter>EVCOM.comm_scope is null or EVCOM.comm_scope = AEVEN.ag_id</Filter>
-				</Filters>
-			</Metadata>
-		</Reference>
+		<Reference ref="AgencyEventComment" name="Comments" isCollection="true" key="AgencyEventId" refer="AgencyEventId"/>
 		<Reference ref="Disposition" name="Disposition" key="AgencyEventId" refer="AgencyEventId"/>
 		<Metadata>
 			<Filters>
@@ -232,8 +226,41 @@
 
 	<Object name="EventComment" type="EventCommentType">
 		<Metadata>
+			<Filters/>
+			<Joins/>
+			<StringAggregate>
+				<On>Text</On>
+				<Group>
+					<By>Timestamp</By>
+					<By>Terminal</By>
+					<By>LineGroup</By>
+				</Group>
+				<Order>
+					<By>LineOrder</By>
+				</Order>
+			</StringAggregate>
+		</Metadata>
+	</Object>
+
+	<Type name="EventCommentType" dbTable="EVCOM">
+		<Property name="Text" dbColumn="comm"/>
+		<Property name="CommonEventId" dbColumn="eid"/>
+		<Property name="Scope" dbColumn="comm_scope"/>
+		<Property name="SystemMessageNumber" dbColumn="comm_key"/>
+		<Property name="LineGroup" dbColumn="lin_grp" hidden="true"/>
+		<Property name="LineOrder" dbColumn="lin_ord" hidden="true"/>
+		<Object name="Created">
+			<Property name="Timestamp" dbColumn="cdts" stringFormat="CadDts"/>
+			<Property name="EmployeeId" dbColumn="cpers"/>
+			<Property name="Terminal" dbColumn="cterm"/>
+		</Object>
+	</Type>
+
+	<Object name="AgencyEventComment" type="AgencyEventCommentType">
+		<Metadata>
 			<Filters>
 				<Filter>AEVEN.curent in ('T', 'O')</Filter>
+				<Filter>EVCOM.comm_scope is null or EVCOM.comm_scope = AEVEN.ag_id</Filter>
 			</Filters>
 			<Joins>
 				<InnerJoin foreignKey="eid" references="AEVEN" referenceKey="eid"/>
@@ -252,10 +279,10 @@
 		</Metadata>
 	</Object>
 
-	<Type name="EventCommentType" dbTable="EVCOM">
+	<Type name="AgencyEventCommentType" dbTable="EVCOM">
 		<Property name="AgencyEventId" dbColumn="num_1" dbTable="AEVEN" hidden="true"/>
-		<Property name="CommonEventId" dbColumn="eid" hidden="true"/>
 		<Property name="Text" dbColumn="comm"/>
+		<Property name="CommonEventId" dbColumn="eid"/>
 		<Property name="Scope" dbColumn="comm_scope"/>
 		<Property name="SystemMessageNumber" dbColumn="comm_key"/>
 		<Property name="LineGroup" dbColumn="lin_grp" hidden="true"/>
@@ -296,6 +323,7 @@
 			<Property name="Qualifier2" dbColumn="qual2"/>
 			<Property name="Qualifier3" dbColumn="qual3"/>
 		</Object>
+		<Property name="RowNumber" dbColumn="row_num"/>
 		<Property name="UnitId" dbColumn="unit_id"/>
 	</Type>
 

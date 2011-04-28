@@ -62,7 +62,7 @@ namespace Intergraph.AsiaPac.Data.Tests
 			DatabaseQuery[] queries = new DatabaseQuery[] 
 			{ 
 				AgencyEventDataAdapter.GetQuery( model.AgencyEvent, null, null ),
-				EventCommentDataAdapter.GetQuery( model.EventComment, null, null ),
+				AgencyEventCommentDataAdapter.GetQuery( model.AgencyEventComment, null, null ),
 				DispositionDataAdapter.GetQuery( model.Disposition, null, null )
 			};
 
@@ -76,19 +76,19 @@ namespace Intergraph.AsiaPac.Data.Tests
 			Console.WriteLine( "Asynchronous queries took: " + timer.ElapsedMilliseconds.ToString() );
 
 			// get the first row in the comments, use this to find an event with comments
-			EventDataModel.EventCommentRow eventComment = model.EventComment[ 0 ];
+			EventDataModel.AgencyEventCommentRow eventComment = model.AgencyEventComment[ 0 ];
 
 			// find the event that owns this comment
 			EventDataModel.AgencyEventRow agencyEvent = model.AgencyEvent.FindByAgencyEventId( eventComment.AgencyEventId );
 
 			Assert.NotNull( agencyEvent );
 
-			EventDataModel.EventCommentRow[] comments = agencyEvent.GetComments();
+			EventDataModel.AgencyEventCommentRow[] comments = agencyEvent.GetComments();
 			Console.WriteLine( "Found " + comments.Length.ToString() + " comments for " + agencyEvent.AgencyEventId );
 
 			Assert.NotNull( comments );
 			Assert.NotEmpty( comments );
-			Assert.Contains<EventDataModel.EventCommentRow>( eventComment, comments );
+			Assert.Contains<EventDataModel.AgencyEventCommentRow>( eventComment, comments );
 
 			// get the first row in the disposition, use this to find an event with disposition
 			EventDataModel.DispositionRow disposition = model.Disposition[ 0 ];
