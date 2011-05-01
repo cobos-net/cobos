@@ -16,6 +16,8 @@ namespace Intergraph.AsiaPac.Data
 		DataSetType Execute<DataSetType>( string sql, string tableName ) where DataSetType : DataSet, new();
 
 		void Execute( string sql, string tableName, DataSet dataset );
+		
+		void Execute( DatabaseQuery query );
 
 		void Execute( DatabaseQuery[] queries );
 

@@ -74,7 +74,7 @@
     <Content Include="Logger\Template.htm" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="prebuild.bat" />
+    <None Include="BUILD\prebuild.bat" />
     <None Include="Schemas\LogFile.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -87,7 +87,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>$(ProjectDir)\prebuild.bat $(ProjectDir)</PreBuildEvent>
+    <PreBuildEvent>$(ProjectDir)\BUILD\prebuild.bat $(ProjectDir)</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

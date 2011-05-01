@@ -9,6 +9,5 @@ namespace Intergraph.AsiaPac.Data.Tests
 		public readonly static string ConnectionString = "Data Source=VEA795DB2.WORLD;User Id=eadev;Password=eadev";
 
 		public readonly static DatabaseAdapter DatabaseAdapter = new DatabaseAdapter( ConnectionString );
-
 	}
 }

@@ -31,7 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Oracle.DataAccess, Version=10.2.0.100, Culture=neutral, PublicKeyToken=89b483f429c47342" />
+    <Reference Include="Oracle.DataAccess">
+      <HintPath>..\..\..\..\..\oracle\product\10.2.0\client_1\BIN\Oracle.DataAccess.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -83,9 +85,6 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Stylesheets\DatabaseTypes.xslt" />
-    <EmbeddedResource Include="Stylesheets\DataModelClasses.xslt">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Stylesheets\DataModelDataset.xslt" />
     <EmbeddedResource Include="Stylesheets\DataModelSchema.xslt" />
     <EmbeddedResource Include="Stylesheets\Enum.xslt" />
@@ -98,7 +97,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="prebuild.bat" />
+    <None Include="BUILD\prebuild.bat" />
     <None Include="Schemas\DataModel.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -112,7 +111,7 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>$(ProjectDir)prebuild.bat $(ProjectDir)</PreBuildEvent>
+    <PreBuildEvent>$(ProjectDir)\BUILD\prebuild.bat $(ProjectDir)</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
