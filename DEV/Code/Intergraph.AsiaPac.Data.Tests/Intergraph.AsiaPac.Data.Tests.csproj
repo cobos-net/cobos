@@ -51,7 +51,6 @@
     <Compile Include="Statements\SqlSelectTemplateTests.cs" />
     <Compile Include="TestManager.cs" />
     <Compile Include="Utilities\DataRowColumnAggregatorTests.cs" />
-    <Compile Include="Utilities\DateTimeRangeTests.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

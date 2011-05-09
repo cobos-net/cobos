@@ -67,6 +67,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\DateExtensions.cs" />
     <Compile Include="File\DriveMapping.cs" />
     <Compile Include="Diagnostics\DateTimePrecise.cs" />
     <Compile Include="Extensions\ArrayExtensions.cs" />
@@ -80,6 +81,13 @@
     <Compile Include="File\NormalisedPath.cs" />
     <Compile Include="File\PathResolver.cs" />
     <Compile Include="Text\StringSeparator.cs" />
+    <Compile Include="Threading\Resource\IResource.cs" />
+    <Compile Include="Threading\Resource\IResourceAllocator.cs" />
+    <Compile Include="Threading\Resource\IResourcePool.cs" />
+    <Compile Include="Threading\Resource\ResourceHandle.cs" />
+    <Compile Include="Threading\Resource\ResourcePoolImpl.cs" />
+    <Compile Include="Threading\Resource\ResourcePoolSettings.cs" />
+    <Compile Include="Threading\Resource\ResourcePoolStatistics.cs" />
     <Compile Include="Win32\Win32File.cs" />
     <Compile Include="Text\GuidHelper.cs" />
     <Compile Include="Win32\Desktop.cs" />
@@ -88,7 +96,7 @@
     <Compile Include="Text\MacroExpander.cs" />
     <Compile Include="Text\Md5Utility.cs" />
     <Compile Include="Text\RegExHelper.cs" />
-    <Compile Include="Threading\ResourcePool.cs" />
+    <Compile Include="Threading\Resource\ResourcePool.cs" />
     <Compile Include="Wrappers\Singleton.cs" />
     <Compile Include="Wrappers\SingletonException.cs" />
     <Compile Include="Xml\XmlHelper.cs" />

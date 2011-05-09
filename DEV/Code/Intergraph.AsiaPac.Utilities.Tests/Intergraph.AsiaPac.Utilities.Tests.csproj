@@ -79,7 +79,8 @@
     <Compile Include="TestManager.cs" />
     <Compile Include="Text\MacroExpanderTests.cs" />
     <Compile Include="Text\StringSeparatorTests.cs" />
-    <Compile Include="Threading\ResourcePoolTests.cs" />
+    <Compile Include="Threading\Resource\ResourcePoolTests.cs" />
+    <Compile Include="Threading\Resource\TestResource.cs" />
     <Compile Include="Win32\DesktopTests.cs" />
   </ItemGroup>
   <ItemGroup>

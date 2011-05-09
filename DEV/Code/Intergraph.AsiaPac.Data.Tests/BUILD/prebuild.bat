@@ -21,7 +21,7 @@ set schemas=.\Schemas
 
 set xsd="C:\Program Files\Microsoft SDKs\Windows\v6.0A\bin\xsd.exe"
 set xsltjs=%stylesheets%\xslt.js
-set db2xsd="\Projects\Intergraph.AsiaPac.DevTools\release build folder\db2xsd\db2xsd.exe"
+set db2xsd="\Projects\Intergraph.AsiaPac.DevTools\RELEASE\Intergraph.AsiaPac.DatabaseToXsd\bin\Intergraph.AsiaPac.DatabaseToXsd.exe"
 
 REM Input data
 REM ===========================================================================

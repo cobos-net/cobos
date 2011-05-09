@@ -60,11 +60,7 @@
     <Compile Include="Utilities\DataColumnDescriptor.cs" />
     <Compile Include="Utilities\DataRowColumnAggregator.cs" />
     <Compile Include="Utilities\DataRowHelper.cs" />
-    <Compile Include="Utilities\CADBoolean.cs" />
     <Compile Include="Utilities\DataRowColumnComparer.cs" />
-    <Compile Include="Utilities\DateFormatter.cs" />
-    <Compile Include="Utilities\DateTimeRange.cs" />
-    <Compile Include="Utilities\Generated\DateTimeRange.cs" />
     <Compile Include="Utilities\IDataRowAggregator.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -97,11 +93,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="BUILD\prebuild.bat" />
     <None Include="Schemas\DataModel.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Schemas\DateTimeRange.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Stylesheets\CadDatabase.xsd">
@@ -111,7 +103,8 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>$(ProjectDir)\BUILD\prebuild.bat $(ProjectDir)</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

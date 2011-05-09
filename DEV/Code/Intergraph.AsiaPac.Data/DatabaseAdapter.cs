@@ -42,6 +42,15 @@ namespace Intergraph.AsiaPac.Data
 		public delegate void QueryDatabaseAsync( string sql, DataTable table );
 
 		/// <summary>
+		/// Ignored for straight Oracle connections.
+		/// </summary>
+		public bool ReadOnly
+		{
+			get;
+			private set;
+		}
+
+		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="sql"></param>

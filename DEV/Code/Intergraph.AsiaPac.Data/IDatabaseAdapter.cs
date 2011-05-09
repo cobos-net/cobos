@@ -7,6 +7,17 @@ namespace Intergraph.AsiaPac.Data
 {
 	public interface IDatabaseAdapter
 	{
+		/// <summary>
+		/// In some situations this may result in performance 
+		/// improvements, if read-write access is not required.
+		/// Set via the connection string. 
+		/// Not supported on all platforms.
+		/// </summary>
+		bool ReadOnly
+		{
+			get;
+		}
+
 		DataTable Execute( string sql, string tableName );
 
 		void Execute( string sql, DataTable result );
