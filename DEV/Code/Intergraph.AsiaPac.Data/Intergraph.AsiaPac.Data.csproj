@@ -84,7 +84,9 @@
     <EmbeddedResource Include="Stylesheets\DataModelDataset.xslt" />
     <EmbeddedResource Include="Stylesheets\DataModelSchema.xslt" />
     <EmbeddedResource Include="Stylesheets\Enum.xslt" />
-    <EmbeddedResource Include="Stylesheets\Utilities.xslt" />
+    <EmbeddedResource Include="Stylesheets\Utilities.xslt">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Stylesheets\xslt.js" />
   </ItemGroup>
   <ItemGroup>
@@ -100,7 +102,9 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Stylesheets\DataModelExpand.xslt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

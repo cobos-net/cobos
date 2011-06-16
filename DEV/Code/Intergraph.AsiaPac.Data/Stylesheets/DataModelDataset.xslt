@@ -53,7 +53,7 @@
 				<xsl:attribute name="msdata:IsDataSet">true</xsl:attribute>
 				<xsd:complexType>
 					<xsd:choice maxOccurs="unbounded">
-						<xsl:apply-templates select="cad:Object|cad:TableObject" mode="expandTopLevel"/>
+						<xsl:apply-templates select="cad:Object"/>
 					</xsd:choice>
 				</xsd:complexType>
 				<xsl:apply-templates select="//cad:Reference"/>
@@ -69,15 +69,6 @@
 	Process a top level object 
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
-
-	<!-- Match a top level object and expand the object hierarchy -->
-	<xsl:template match="cad:Object|cad:TableObject" mode="expandTopLevel">
-		<xsl:variable name="classHierarchy">
-			<xsl:apply-templates select="." mode="classHierarchy"/>
-		</xsl:variable>
-		<xsl:variable name="classHierarchyNodeset" select="msxsl:node-set( $classHierarchy )"/>
-		<xsl:apply-templates select="$classHierarchyNodeset"/>
-	</xsl:template>
 
 	<!-- Match a processed object -->
 	<xsl:template match="cad:Object">
