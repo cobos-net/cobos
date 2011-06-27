@@ -4,7 +4,6 @@
 					 xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 					 xmlns="http://schemas.intergraph.com/asiapac/cad/datamodel/1.0.0"
 					 xmlns:cad="http://schemas.intergraph.com/asiapac/cad/datamodel/1.0.0"
-					 exclude-result-prefixes="cad"
 >
 	<xsl:output method="xml" indent="yes" encoding="utf-8"/>
 
@@ -16,8 +15,8 @@
 	Created by:	N.Davis						Date: 2010-08-10
 	Updated by:									Date:
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	Notes: Takes a schema as an input and creates a merging Xslt for further 
-	processing
+	Notes: Takes a schema as an input and creates a merging Xslt that can be
+	included in other Xslts.  
 	
 	============================================================================
 	-->
@@ -65,11 +64,20 @@
 
 			<xsl:element name="xsl:variable">
 				<xsl:attribute name="name">databaseTables</xsl:attribute>
-				<xsl:copy-of select="xsd:element" />
+				<xsl:copy-of select="xsd:element/xsd:complexType/xsd:sequence/xsd:element" />
 			</xsl:element>
 			<xsl:element name="xsl:variable">
 				<xsl:attribute name="name">databaseTablesNodeSet</xsl:attribute>
 				<xsl:attribute name="select">msxsl:node-set( $databaseTables )</xsl:attribute>
+			</xsl:element>
+
+			<xsl:element name="xsl:variable">
+				<xsl:attribute name="name">databaseConstraints</xsl:attribute>
+				<xsl:copy-of select="xsd:element//*[ self::xsd:key | self::xsd:unique | self::xsd:keyref ]" />
+			</xsl:element>
+			<xsl:element name="xsl:variable">
+				<xsl:attribute name="name">databaseConstraintsNodeSet</xsl:attribute>
+				<xsl:attribute name="select">msxsl:node-set( $databaseConstraints )</xsl:attribute>
 			</xsl:element>
 		</xsl:element>
 

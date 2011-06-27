@@ -26,6 +26,8 @@
 
 	<xsl:include href="DataModelCommon.xslt"/>
 
+	<xsl:key name="dbTableKey" match="cad:Object|cad:Property" use="@dbTable"/>
+
 	<!--
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	Process the data model into a dataset schema
@@ -56,6 +58,9 @@
 						<xsl:apply-templates select="cad:Object"/>
 					</xsd:choice>
 				</xsd:complexType>
+				<!-- copy the key constraints that apply to the tables referenced by this data model -->
+				<xsl:apply-templates select="cad:Object" mode="constraints"/>
+				<!-- generate unique and keyref constraints for the reference objects -->
 				<xsl:apply-templates select="//cad:Reference"/>
 			</xsl:element>
 			<!-- copy the database type definitions -->
@@ -143,6 +148,43 @@
 			<xsd:selector xpath=".//{@ref}"/>
 			<xsd:field xpath="{$keyreffield}"/>
 		</xsd:keyref>
+	</xsl:template>
+
+
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Process a top level object's constraints
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<xsl:template match="cad:Object" mode="constraints">
+		<xsl:variable name="object" select="."/>
+		
+		<xsl:for-each select="$databaseConstraintsNodeSet/*[ self::xsd:key | self::xsd:unique | self::xsd:keyref ][ contains( xsd:selector/@xpath, $object/@dbTable ) ]">
+			
+			<xsl:element name="{name()}">
+				<xsl:attribute name="name">
+					<xsl:value-of select="concat( $object/@name, '_', @name )"/>
+				</xsl:attribute>
+				<xsl:apply-templates select="." mode="constraintAttributes"/>
+				<xsd:selector xpath=".//{$object/@name}"/>
+				<xsl:copy-of select="xsd:field"/>
+			</xsl:element>
+
+		</xsl:for-each>
+	
+	</xsl:template>
+	
+	<!-- Add extra dataset processing attributes to key constraints -->
+
+	<xsl:template match="xsd:key" mode="constraintAttributes">
+		<xsl:attribute name="msdata:PrimaryKey">true</xsl:attribute>
+	</xsl:template>
+
+	<xsl:template match="xsd:unique" mode="constraintAttributes">
+	</xsl:template>
+
+	<xsl:template match="xsd:keyref" mode="constraintAttributes">
 	</xsl:template>
 
 </xsl:stylesheet>

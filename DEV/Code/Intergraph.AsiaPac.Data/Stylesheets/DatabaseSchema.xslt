@@ -28,13 +28,16 @@
 
 	<!--
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	Key for building the XSD string types using a length restriction
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~3
+	Keys for grouping metadata elements
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
+	<!-- string length data types -->
 	<xsl:key name="stringLengths" match="COLUMN[./DATA_TYPE = 'VARCHAR2']" use="CHAR_LENGTH"/>
+	<!-- raw field length data types -->
 	<xsl:key name="rawLengths" match="COLUMN[./DATA_TYPE = 'RAW']" use="DATA_LENGTH"/>
-	<xsl:key name="tableNames" match="COLUMN" use="TABLE_NAME"/>
+	<!-- constraint names -->
+	<xsl:key name="constraintNames" match="CONSTRAINT" use="CONSTRAINT_NAME"/>
 	
 	<!--
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -42,7 +45,7 @@
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~3
 	-->
 
-	<xsl:template match="/TABLE_COLUMNS">
+	<xsl:template match="/TABLE_METADATA">
 
 		<xsl:call-template name="generatedXmlWarning"/>
 
@@ -81,23 +84,49 @@
 				</xsd:simpleType>
 			</xsl:for-each>
 
-			<xsl:for-each select="//COLUMN[generate-id() = generate-id(key('tableNames',TABLE_NAME)[1])]">
-				<xsl:variable name="tableName" select="TABLE_NAME"/>
-				<xsd:element name="{TABLE_NAME}">
-					<xsd:complexType>
-						<xsd:sequence>
-							<xsl:apply-templates select="//COLUMN[./TABLE_NAME = $tableName]"/>
-						</xsd:sequence>
-					</xsd:complexType>
-				</xsd:element>
-			</xsl:for-each>
-		
+			<xsd:element name="Tables">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsl:apply-templates select="TABLE" mode="column"/>
+					</xsd:sequence>
+				</xsd:complexType>
+				<xsl:apply-templates select="TABLE" mode="constraint"/>
+			</xsd:element>
 		</xsd:schema>
 
 	</xsl:template>
 
 	<!--
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Match a table - table column definition
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<xsl:template match="TABLE" mode="column">
+		<xsd:element name="{NAME}">
+			<xsd:complexType>
+				<xsd:sequence>
+					<xsl:apply-templates select="COLUMN"/>
+				</xsd:sequence>
+			</xsd:complexType>
+		</xsd:element>
+	</xsl:template>
+
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Match a table - table constraint definition
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<xsl:template match="TABLE" mode="constraint">
+		<xsl:for-each select="CONSTRAINT[generate-id() = generate-id(key('constraintNames',CONSTRAINT_NAME)[1])]">
+			<xsl:apply-templates select="."/>
+		</xsl:for-each>
+	</xsl:template>
+
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Match a table column
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
@@ -158,5 +187,44 @@
 	<xsl:template match="NULLABLE[. = 'N']">
 		<xsl:text>1</xsl:text>
 	</xsl:template>
+
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Match a constraint
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<!-- primary key -->
+	<xsl:template match="CONSTRAINT[ CONSTRAINT_TYPE = 'P' ]">
+		<xsd:key name="{CONSTRAINT_NAME}">
+			<xsd:selector xpath=".//{../NAME}"/>
+			<xsl:apply-templates select=".
+													| preceding-sibling::CONSTRAINT[ CONSTRAINT_NAME = current()/CONSTRAINT_NAME ]
+													| following-sibling::CONSTRAINT[ CONSTRAINT_NAME = current()/CONSTRAINT_NAME ]" 
+										mode="field"/>
+		</xsd:key>
+	</xsl:template>
+
+	<!-- unique key -->
+	<xsl:template match="CONSTRAINT[ CONSTRAINT_TYPE = 'U' ]">
+		<xsd:unique name="{CONSTRAINT_NAME}">
+			<xsd:selector xpath=".//{../NAME}"/>
+			<xsl:apply-templates select=".
+													| preceding-sibling::CONSTRAINT[ CONSTRAINT_NAME = current()/CONSTRAINT_NAME ]
+													| following-sibling::CONSTRAINT[ CONSTRAINT_NAME = current()/CONSTRAINT_NAME ]"
+										mode="field"/>
+		</xsd:unique>
+	</xsl:template>
+
+	<!-- foreign key -->
+	<xsl:template match="CONSTRAINT[ CONSTRAINT_TYPE = 'R' ]">
+		<!-- not yet supported -->
+	</xsl:template>
+
+	<!-- field element -->
+	<xsl:template match="CONSTRAINT" mode="field">
+		<xsd:field xpath ="{COLUMN_NAME}"/>
+	</xsl:template>
+
 
 </xsl:stylesheet>

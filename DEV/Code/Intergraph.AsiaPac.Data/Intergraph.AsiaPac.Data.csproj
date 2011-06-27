@@ -56,7 +56,10 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Statements\SqlDeleteTemplate.cs" />
+    <Compile Include="Statements\SqlInsertTemplate.cs" />
     <Compile Include="Statements\SqlSelectTemplate.cs" />
+    <Compile Include="Statements\SqlUpdateTemplate.cs" />
     <Compile Include="Utilities\DataColumnDescriptor.cs" />
     <Compile Include="Utilities\DataRowColumnAggregator.cs" />
     <Compile Include="Utilities\DataRowHelper.cs" />
@@ -104,6 +107,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Stylesheets\DataModelExpand.xslt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="BUILD\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

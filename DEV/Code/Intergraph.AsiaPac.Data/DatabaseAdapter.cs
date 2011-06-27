@@ -293,9 +293,9 @@ namespace Intergraph.AsiaPac.Data
 		/// <param name="schema"></param>
 		/// <param name="tables"></param>
 		/// <param name="result"></param>
-		public void GetTableDescription( string schema, string[] tables, Stream result )
+		public void GetTableMetadata( string schema, string[] tables, Stream result )
 		{
-			CadDataSet dataset = TableDescription( schema, tables );
+			CadDataSet dataset = TableMetadata( schema, tables );
 
 			XslCompiledTransform xslTableToXsd = XsltHelper.Load( "DatabaseSchema.xslt", "Intergraph.AsiaPac.Data.Stylesheets" );
 
@@ -310,7 +310,7 @@ namespace Intergraph.AsiaPac.Data
 		/// <param name="result"></param>
 		public void GetTableSchema( string schema, string[] tables, Stream result )
 		{
-			CadDataSet dataset = TableDescription( schema, tables );
+			CadDataSet dataset = TableMetadata( schema, tables );
 
 			XslCompiledTransform xslTableToXsd = XsltHelper.Load( "DatabaseSchema.xslt", "Intergraph.AsiaPac.Data.Stylesheets" );
 
@@ -324,16 +324,51 @@ namespace Intergraph.AsiaPac.Data
 			}
 		}
 
-		CadDataSet TableDescription( string schema, string[] tables )
+		CadDataSet TableMetadata( string schema, string[] tables )
 		{
-			string desc = "SELECT TABLE_NAME, COLUMN_NAME, DATA_TYPE, DATA_LENGTH,"
-							  + "DATA_PRECISION, DATA_SCALE, NULLABLE, DATA_DEFAULT, CHAR_LENGTH "
-							  + "FROM ALL_TAB_COLUMNS "
-							  + "WHERE UPPER( OWNER ) = '" + schema.ToUpper() + "' "
-							  + "AND UPPER( TABLE_NAME ) IN ('" + string.Join( "', '", tables ).ToUpper() + "') "
-							  + "ORDER BY TABLE_NAME ASC, COLUMN_ID ASC";
+			CadDataSet result = new CadDataSet( "TABLE_METADATA" );
 
-			return Execute( desc, "COLUMN", "TABLE_COLUMNS" );
+			DataTable table = new DataTable( "TABLE" );
+			table.Columns.Add( new DataColumn( "NAME", Type.GetType("System.String") ) );
+
+			foreach ( string t in tables )
+			{
+				DataRow row = table.NewRow();
+				row[ "NAME" ] = t;
+				table.Rows.Add( row );
+			}
+
+			result.Tables.Add( table );
+
+			string columns = @"SELECT table_name, column_name, data_type, data_length, "
+							  + "data_precision, data_scale, nullable, data_default, char_length "
+							  + "FROM all_tab_columns "
+							  + "WHERE UPPER( owner ) = '" + schema.ToUpper() + "' "
+							  + "AND UPPER( table_name ) IN ('" + string.Join( "', '", tables ).ToUpper() + "') "
+							  + "ORDER BY table_name ASC, column_id ASC";
+
+			Execute( columns, "COLUMN", result );
+
+			string constraints = "SELECT cols.table_name, cols.column_name, cols.position, cons.constraint_type, cons.constraint_name, cons.status "
+										+ "FROM all_constraints cons, all_cons_columns cols "
+										+ "WHERE cols.table_name IN ('" + string.Join( "', '", tables ).ToUpper() + "') "
+										+ "AND cons.constraint_type IN ('P', 'R', 'U') "
+										+ "AND cons.constraint_name = cols.constraint_name "
+										+ "AND cons.owner = '" + schema.ToUpper() + "' "
+										+ "AND cons.owner = cols.owner "
+										+ "ORDER BY cols.table_name, cols.position";
+
+			Execute( constraints, "CONSTRAINT", result );
+
+			CadDataSet.Relationship[] relations = new CadDataSet.Relationship[]
+			{
+				new CadDataSet.Relationship( "COLUMNS", "TABLE", "NAME", "COLUMN", "TABLE_NAME" ),
+				new CadDataSet.Relationship( "CONTSTRAINTS", "TABLE", "NAME", "CONSTRAINT", "TABLE_NAME" )
+			};
+
+			result.CreateRelationships( relations );
+
+			return result;
 		}
 
 		/// <summary>

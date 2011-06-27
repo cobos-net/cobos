@@ -65,6 +65,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="BUILD\prebuild.bat" />
+    <None Include="TestData\eadev.xsd">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

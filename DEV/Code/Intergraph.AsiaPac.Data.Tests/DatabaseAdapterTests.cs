@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Text;
 using Xunit;
 
@@ -103,5 +104,39 @@ namespace Intergraph.AsiaPac.Data.Tests
 		//   // Disposition is a one-to-one relationship
 		//   Assert.Equal<int>( 1, dispositions.Length );
 		//}
+
+		[Fact]
+		public void Can_query_table_metadata()
+		{
+			DatabaseAdapter database = new DatabaseAdapter( TestManager.ConnectionString );
+
+			string output = TestManager.TestFiles + "metadata.xml";
+
+			Assert.DoesNotThrow(
+				delegate
+				{
+					using ( FileStream fstream = new FileStream( output, FileMode.Create ) )
+					{
+						database.GetTableMetadata( "EADEV", new string[] { "AEVEN", "LINEUP", "CD_UNITS", "DISPASS_EVENT" }, fstream );
+					}
+				} );
+		}
+
+		[Fact]
+		public void Can_query_table_schema()
+		{
+			DatabaseAdapter database = new DatabaseAdapter( TestManager.ConnectionString );
+
+			string output = TestManager.TestFiles + "dbschema.xml";
+
+			Assert.DoesNotThrow(
+				delegate
+				{
+					using ( FileStream fstream = new FileStream( output, FileMode.Create ) )
+					{
+						database.GetTableSchema( "EADEV", new string[] { "AEVEN", "LINEUP", "CD_UNITS" }, fstream );
+					}
+				} );
+		}
 	}
 }
