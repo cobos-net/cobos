@@ -160,7 +160,7 @@
 	<xsl:template match="cad:Object" mode="constraints">
 		<xsl:variable name="object" select="."/>
 		
-		<xsl:for-each select="$databaseConstraintsNodeSet/*[ self::xsd:key | self::xsd:unique | self::xsd:keyref ][ contains( xsd:selector/@xpath, $object/@dbTable ) ]">
+		<xsl:for-each select="$databaseConstraintsNodeSet/*[ self::xsd:key | self::xsd:unique | self::xsd:keyref ][ xsd:selector/@xpath = concat( './/', $object/@dbTable ) ]">
 			
 			<xsl:element name="{name()}">
 				<xsl:attribute name="name">
