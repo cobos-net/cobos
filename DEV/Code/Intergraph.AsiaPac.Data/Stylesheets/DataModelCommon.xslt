@@ -38,28 +38,28 @@
 	-->
 
 	<!-- class name for the datamodel -->
-	<xsl:template match="cad:DataModel|cad:TableObject" mode="className">
+	<xsl:template match="cad:DataModel|cad:TableObject|cad:Interface" mode="className">
 		<xsl:call-template name="tokensToClassName">
 			<xsl:with-param name="tokens" select="@name"/>
 		</xsl:call-template>
 	</xsl:template>
 
 	<!-- class name for concrete object type -->
-	<xsl:template match="cad:Object[ parent::node()[ self::cad:DataModel ] ]" mode="className">
+	<xsl:template match="cad:Object[ parent::cad:DataModel ]" mode="className">
 		<xsl:call-template name="tokensToClassName">
 			<xsl:with-param name="tokens" select="@name"/>
 		</xsl:call-template>
 	</xsl:template>
 
 	<!-- class name for a type reference -->
-	<xsl:template match="cad:Object[ @type ][ not(parent::node()[ self::cad:DataModel ]) ]" mode="className">
+	<xsl:template match="cad:Object[ @type ][ not( parent::cad:DataModel ) ]" mode="className">
 		<xsl:call-template name="tokensToClassName">
 			<xsl:with-param name="tokens" select="@type"/>
 		</xsl:call-template>
 	</xsl:template>
 
 	<!-- class name for an anonymous nested type, make it up based on the parent name -->
-	<xsl:template match="cad:Object[ not( @type ) ][ not(parent::node()[ self::cad:DataModel ]) ]" mode="className">
+	<xsl:template match="cad:Object[ not( @type ) ][ not( parent::cad:DataModel ) ]" mode="className">
 		<xsl:call-template name="tokensToClassName">
 			<xsl:with-param name="tokens" select="concat( ../@name, ' ', @name )"/>
 		</xsl:call-template>
@@ -75,12 +75,40 @@
 
 	<!--
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Class names - qualified names
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<xsl:template match="cad:Object" mode="qualifiedName">
+		<xsl:apply-templates select="ancestor::*[ self::cad:Object | self::cad:Interface ]" mode="qualifiedNameForClass"/>
+		<xsl:call-template name="titleCaseName">
+			<xsl:with-param name="name">
+				<xsl:value-of select="@name"/>
+			</xsl:with-param>
+		</xsl:call-template>
+		<xsl:text>Type</xsl:text>
+	</xsl:template>
+
+	<xsl:template match="cad:Object|cad:Interface" mode="qualifiedNameForClass">
+		<xsl:call-template name="titleCaseName">
+			<xsl:with-param name="name">
+				<xsl:value-of select="@name"/>
+			</xsl:with-param>
+		</xsl:call-template>
+		<xsl:if test="not( position() = 1 )">
+			<xsl:text>Type</xsl:text>
+		</xsl:if>
+		<xsl:text>.</xsl:text>
+	</xsl:template>
+
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	Property names - nested types are flattened in our DB model
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
 	<xsl:template match="cad:Property" mode="qualifiedName">
-		<xsl:apply-templates select="ancestor::cad:Object[ not( position() = last() ) ]" mode="qualifiedName"/>
+		<xsl:apply-templates select="ancestor::cad:Object[ not( position() = last() ) ]" mode="qualifiedNameForProperty"/>
 		<xsl:call-template name="titleCaseName">
 			<xsl:with-param name="name">
 				<xsl:value-of select="@name"/>
@@ -88,7 +116,7 @@
 		</xsl:call-template>
 	</xsl:template>
 
-	<xsl:template match="cad:Object" mode="qualifiedName">
+	<xsl:template match="cad:Object" mode="qualifiedNameForProperty">
 		<xsl:call-template name="titleCaseName">
 			<xsl:with-param name="name">
 				<xsl:value-of select="@name"/>

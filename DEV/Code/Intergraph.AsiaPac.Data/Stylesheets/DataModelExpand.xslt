@@ -35,7 +35,7 @@
 		<xsl:call-template name="generatedXmlWarning"/>
 		<xsl:element name="DataModel">
 			<xsl:apply-templates mode="copyAttributesAndNamespace" select="."/>
-			<xsl:apply-templates select="cad:Object|cad:TableObject" mode="classHierarchy"/>
+			<xsl:apply-templates select="cad:Object|cad:Interface|cad:TableObject" mode="classHierarchy"/>
 		</xsl:element>
 	</xsl:template>
 
@@ -59,6 +59,15 @@
 			<xsl:apply-templates mode="classHierarchyDatasetDefinition" select="."/>
 			<xsl:apply-templates select="child::*" mode="classHierarchy"/>
 			<xsl:copy-of select="./cad:Metadata"/>
+		</xsl:element>
+	</xsl:template>
+
+	<!-- match an interface -->
+	<xsl:template match="cad:Interface" mode="classHierarchy">
+		<xsl:element name="Interface">
+			<xsl:apply-templates mode="copyAttributesAndNamespace" select="."/>
+			<xsl:apply-templates mode="classHierarchyClassName" select="."/>
+			<xsl:apply-templates select="child::*" mode="classHierarchy"/>
 		</xsl:element>
 	</xsl:template>
 
@@ -137,6 +146,7 @@
 	<xsl:template match="cad:Property" mode="classHierarchy">
 		<xsl:element name="Property">
 			<xsl:apply-templates mode="copyAttributesAndNamespace" select="."/>
+			<xsl:apply-templates mode="classHierarchyPropertyName" select="."/>
 			<xsl:variable name="dbTable">
 				<xsl:apply-templates mode="getDbTable" select="."/>
 			</xsl:variable>
@@ -152,7 +162,7 @@
 
 	<!-- apply the dbTable attribute from either this node or an ancestor that defines it -->
 	<xsl:template match="cad:Object|cad:Type|cad:Property" mode="getDbTable">
-		<xsl:value-of select="ancestor-or-self::*[ self::cad:Object | self::cad:Type | self::cad:Property ][ @dbTable ][ 1 ]/@dbTable"/>
+		<xsl:value-of select="ancestor-or-self::*[ self::cad:Object | self::cad:Interface | self::cad:Type | self::cad:Property ][ @dbTable ][ 1 ]/@dbTable"/>
 	</xsl:template>
 
 	<!-- Copy the database type and mulitplicity to the expanded property -->
@@ -186,31 +196,59 @@
 	-->
 
 	<!-- class name for the datamodel -->
-	<xsl:template match="cad:DataModel|cad:TableObject" mode="classHierarchyClassName">
+	<xsl:template match="cad:DataModel|cad:TableObject|cad:Interface" mode="classHierarchyClassName">
 		<xsl:attribute name="className">
 			<xsl:apply-templates mode="className" select="."/>
 		</xsl:attribute>
 	</xsl:template>
 
 	<!-- class name for concrete object type -->
-	<xsl:template match="cad:Object[ parent::node()[ self::cad:DataModel ] ]" mode="classHierarchyClassName">
+	<xsl:template match="cad:Object[ parent::cad:DataModel ]" mode="classHierarchyClassName">
 		<xsl:attribute name="className">
 			<xsl:apply-templates mode="className" select="."/>
+		</xsl:attribute>
+		<xsl:attribute name="typeName">
+			<xsl:value-of select="@name"/>
 		</xsl:attribute>
 	</xsl:template>
 
 	<!-- class name for a type reference -->
-	<xsl:template match="cad:Object[ @type ][ not(parent::node()[ self::cad:DataModel ]) ]" mode="classHierarchyClassName">
+	<xsl:template match="cad:Object[ @type ][ not( parent::cad:DataModel ) ]" mode="classHierarchyClassName">
 		<xsl:attribute name="className">
 			<xsl:apply-templates mode="className" select="."/>
+		</xsl:attribute>
+		<xsl:attribute name="typeName">
+			<xsl:value-of select="concat( @name, 'Type' )"/>
+		</xsl:attribute>
+		<xsl:attribute name="qualifiedName">
+			<xsl:apply-templates mode="qualifiedName" select="."/>
 		</xsl:attribute>
 	</xsl:template>
 
 	<!-- class name for an anonymous nested type, make it up based on the parent name -->
-	<xsl:template match="cad:Object[ not( @type ) ][ not(parent::node()[ self::cad:DataModel ]) ]" mode="classHierarchyClassName">
+	<xsl:template match="cad:Object[ not( @type ) ][ not( parent::cad:DataModel ) ]" mode="classHierarchyClassName">
 		<xsl:attribute name="className">
 			<xsl:apply-templates mode="className" select="."/>
 		</xsl:attribute>
+		<xsl:attribute name="typeName">
+			<xsl:value-of select="concat( @name, 'Type' )"/>
+		</xsl:attribute>
+		<xsl:attribute name="qualifiedName">
+			<xsl:apply-templates mode="qualifiedName" select="."/>
+		</xsl:attribute>
 	</xsl:template>
+	
+	<!-- qualified name for a property -->
+	<xsl:template match="cad:Property" mode="classHierarchyPropertyName">
+		<xsl:attribute name="qualifiedName">
+			<xsl:apply-templates select="ancestor::*[ self::cad:Object | self::cad:Interface ]" mode="qualifiedNameForClass"/>
+			<xsl:call-template name="titleCaseName">
+				<xsl:with-param name="name">
+					<xsl:value-of select="@name"/>
+				</xsl:with-param>
+			</xsl:call-template>
+		</xsl:attribute>
+	</xsl:template>
+	
 
 </xsl:stylesheet>

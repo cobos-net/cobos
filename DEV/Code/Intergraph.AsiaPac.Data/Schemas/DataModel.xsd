@@ -47,7 +47,87 @@
 	</xsd:complexType>
 
 	<xsd:element name="DataModelComponent" type="DataModelComponentType"/>
-	
+
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Interface definition
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<xsd:element name="Interface" type="InterfaceType" substitutionGroup="DataModelComponent">
+		<xsd:annotation>
+			<xsd:documentation>
+				Represents either an interface or abstract class definition.  If objects
+				in your model share common functionality then they can implement this interface
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+
+	<xsd:complexType name="InterfaceType">
+		<xsd:complexContent>
+			<xsd:extension base="DataModelComponentType">
+				<xsd:sequence>
+					<xsd:choice minOccurs="0" maxOccurs="unbounded">
+						<xsd:element ref="Object"/>
+						<xsd:element ref="Property"/>
+						<xsd:element ref="Reference"/>
+					</xsd:choice>
+				</xsd:sequence>
+				<xsd:attribute name="name" type="xsd:string" use="required">
+					<xsd:annotation>
+						<xsd:documentation>
+							The name of the object to be published.
+							This defines the class and dataset names for the
+							processed objects.
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="isAbstractClass" type="xsd:boolean" use="optional" default="false">
+					<xsd:annotation>
+						<xsd:documentation>
+							Indicates whether this is declared as an interface or abstract class.
+							Use an abstract class if you want to define common functionality.
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="dbTable" type="xsd:string" use="optional">
+					<xsd:annotation>
+						<xsd:documentation>
+							The database table that this object's properties
+							are retrieved from.  If omitted this is inherited
+							from the ancestor that defines the table.
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="type" type="xsd:string" use="optional">
+					<xsd:annotation>
+						<xsd:documentation>
+							Indicates that the object is a common type, defined
+							at the top level of the data model.
+							The type declaration is inlined into the object
+							hierarchy for processing.
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="reference" type="xsd:string" use="optional">
+					<xsd:annotation>
+						<xsd:documentation>
+							Indicates a relationship between top level objects.
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="isCollection" type="xsd:boolean" use="optional" default="false">
+					<xsd:annotation>
+						<xsd:documentation>
+							Indicates a one to many relationship between top level objects.
+							Implemented as a List&lt;T&gt; type.
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
 	<!--
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	Data object
@@ -110,6 +190,15 @@
 							Indicates a one to many relationship between top level objects.
 							Implemented as a DataSet relationship in the dataset model.
 							Implemented as a List&lt;T&gt; type.
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="implements" type="xsd:string" use="optional">
+					<xsd:annotation>
+						<xsd:documentation>
+							If a number of objects in the same data model share common
+							characteristics then you can set this attribute to indicate
+							which Interface object this class implements.
 						</xsd:documentation>
 					</xsd:annotation>
 				</xsd:attribute>

@@ -84,7 +84,9 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Stylesheets\DatabaseTypes.xslt" />
-    <EmbeddedResource Include="Stylesheets\DataModelDataset.xslt" />
+    <EmbeddedResource Include="Stylesheets\DataModelDataset.xslt">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Stylesheets\DataModelSchema.xslt" />
     <EmbeddedResource Include="Stylesheets\Enum.xslt" />
     <EmbeddedResource Include="Stylesheets\Utilities.xslt">
@@ -106,7 +108,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Stylesheets\DataModelExpand.xslt" />
+    <Content Include="Stylesheets\DataModelExpand.xslt">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="BUILD\" />
