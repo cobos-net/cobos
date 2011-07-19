@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6906B107-C149-4682-AF7B-FEF9F697FE36}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Cobos.Data</RootNamespace>
+    <AssemblyName>Cobos.Data</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;INTERGRAPH_BRANDING</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Oracle.DataAccess">
+      <HintPath>..\..\..\..\..\oracle\product\10.2.0\client_1\BIN\Oracle.DataAccess.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AsyncTask.cs" />
+    <Compile Include="CadDataSet.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DatabaseAdapter.cs" />
+    <Compile Include="DatabaseQuery.cs" />
+    <Compile Include="IDatabaseAdapter.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <DependentUpon>Resources.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Statements\SqlDeleteTemplate.cs" />
+    <Compile Include="Statements\SqlInsertTemplate.cs" />
+    <Compile Include="Statements\SqlSelectTemplate.cs" />
+    <Compile Include="Statements\SqlUpdateTemplate.cs" />
+    <Compile Include="Utilities\DataColumnDescriptor.cs" />
+    <Compile Include="Utilities\DataRowColumnAggregator.cs" />
+    <Compile Include="Utilities\DataRowHelper.cs" />
+    <Compile Include="Utilities\DataRowColumnComparer.cs" />
+    <Compile Include="Utilities\IDataRowAggregator.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Cobos.Utilities\Cobos.Utilities.csproj">
+      <Project>{5EC3C9B9-DAE8-481C-8495-2A0A737D87A3}</Project>
+      <Name>Cobos.Utilities</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="Stylesheets\CadDatabase.xslt">
+      <SubType>Designer</SubType>
+    </None>
+    <EmbeddedResource Include="Stylesheets\DatabaseSchema.xslt">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Stylesheets\DatabaseTypes.xslt" />
+    <EmbeddedResource Include="Stylesheets\DataModelDataset.xslt">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Stylesheets\DataModelSchema.xslt" />
+    <EmbeddedResource Include="Stylesheets\Enum.xslt" />
+    <EmbeddedResource Include="Stylesheets\Utilities.xslt">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Stylesheets\xslt.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Stylesheets\DataModelCommon.xslt">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Schemas\DataModel.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Stylesheets\CadDatabase.xsd">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Stylesheets\DataModelExpand.xslt">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="BUILD\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
