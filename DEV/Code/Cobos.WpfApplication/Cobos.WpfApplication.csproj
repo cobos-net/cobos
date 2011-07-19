@@ -8,8 +8,8 @@
     <ProjectGuid>{C2E7C2CC-133E-42A6-A49F-A73DFA79BB91}</ProjectGuid>
     <OutputType>library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Intergraph.AsiaPac.WpfApplication</RootNamespace>
-    <AssemblyName>Intergraph.AsiaPac.WpfApplication</AssemblyName>
+    <RootNamespace>Cobos.WpfApplication</RootNamespace>
+    <AssemblyName>Cobos.WpfApplication</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
@@ -175,9 +175,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Intergraph.AsiaPac.Core\Intergraph.AsiaPac.Core.csproj">
+    <ProjectReference Include="..\Cobos.Core\Cobos.Core.csproj">
       <Project>{79555902-5B9F-469C-B89F-488C408C99DF}</Project>
-      <Name>Intergraph.AsiaPac.Core</Name>
+      <Name>Cobos.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

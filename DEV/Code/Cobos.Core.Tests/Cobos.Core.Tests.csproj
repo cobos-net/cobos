@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{45697D04-D665-448A-BB4B-939F8F3E66FF}</ProjectGuid>
+    <ProjectGuid>{A3D7E394-8A58-4A09-816E-E75F1948EDE1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Intergraph.AsiaPac.Data.Tests</RootNamespace>
-    <AssemblyName>Intergraph.AsiaPac.Data.Tests</AssemblyName>
+    <RootNamespace>Cobos.Core.Tests</RootNamespace>
+    <AssemblyName>Cobos.Core.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -33,9 +33,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.ServiceModel" />
-    <Reference Include="System.ServiceModel.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -46,33 +43,31 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DatabaseAdapterTests.cs" />
+    <Compile Include="Logger\LogFileTests.cs" />
+    <Compile Include="Plugin\PluginClientTests.cs" />
+    <Compile Include="Plugin\PluginHostTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Statements\SqlSelectTemplateTests.cs" />
     <Compile Include="TestManager.cs" />
-    <Compile Include="Utilities\DataRowColumnAggregatorTests.cs" />
+    <Compile Include="UI\CurrentCursorTest.cs" />
+    <Compile Include="UI\CurrentUserTest.cs" />
+    <Compile Include="UI\MessageHandlerTest.cs" />
+    <Compile Include="UI\PhoneViewApplicationTest.cs" />
+    <Compile Include="UI\ProgressBarTest.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\Intergraph.AsiaPac.Data\Intergraph.AsiaPac.Data.csproj">
-      <Project>{6906B107-C149-4682-AF7B-FEF9F697FE36}</Project>
-      <Name>Intergraph.AsiaPac.Data</Name>
+    <ProjectReference Include="..\Cobos.Core\Cobos.Core.csproj">
+      <Project>{79555902-5B9F-469C-B89F-488C408C99DF}</Project>
+      <Name>Cobos.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Intergraph.AsiaPac.Utilities\Intergraph.AsiaPac.Utilities.csproj">
+    <ProjectReference Include="..\Cobos.Utilities\Cobos.Utilities.csproj">
       <Project>{5EC3C9B9-DAE8-481C-8495-2A0A737D87A3}</Project>
-      <Name>Intergraph.AsiaPac.Utilities</Name>
+      <Name>Cobos.Utilities</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="BUILD\prebuild.bat" />
-    <None Include="TestData\eadev.xsd">
-      <SubType>Designer</SubType>
-    </None>
+    <Folder Include="TestFiles\LogFiles\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PreBuildEvent>$(ProjectDir)\BUILD\prebuild.bat $(ProjectDir)</PreBuildEvent>
-  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

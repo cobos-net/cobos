@@ -8,8 +8,8 @@
     <ProjectGuid>{891CDC60-F542-47A2-B3E7-F656AB9F4CD8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Intergraph.AsiaPac.Utilities.Tests</RootNamespace>
-    <AssemblyName>Intergraph.AsiaPac.Utilities.Tests</AssemblyName>
+    <RootNamespace>Cobos.Utilities.Tests</RootNamespace>
+    <AssemblyName>Cobos.Utilities.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
@@ -18,7 +18,7 @@
     </UpgradeBackupLocation>
     <OldToolsVersion>3.5</OldToolsVersion>
     <TargetFrameworkProfile />
-    <PublishUrl>http://localhost/Intergraph.AsiaPac.Utilities.Tests/</PublishUrl>
+    <PublishUrl>http://localhost/Cobos.Utilities.Tests/</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Web</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
@@ -103,9 +103,9 @@
     <None Include="TestFiles\TestProject\Cad Referral Client Module.vcproj" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Intergraph.AsiaPac.Utilities\Intergraph.AsiaPac.Utilities.csproj">
+    <ProjectReference Include="..\Cobos.Utilities\Cobos.Utilities.csproj">
       <Project>{5EC3C9B9-DAE8-481C-8495-2A0A737D87A3}</Project>
-      <Name>Intergraph.AsiaPac.Utilities</Name>
+      <Name>Cobos.Utilities</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
