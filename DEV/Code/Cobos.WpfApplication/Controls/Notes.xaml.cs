@@ -12,7 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Intergraph.AsiaPac.WpfApplication.Controls
+namespace Cobos.WpfApplication.Controls
 {
 	/// <summary>
 	/// Interaction logic for Notes.xaml

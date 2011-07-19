@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Data;
 
-namespace Intergraph.AsiaPac.WpfApplication.Converters
+namespace Cobos.WpfApplication.Converters
 {
     public class DateTimeConverter : IValueConverter
     {

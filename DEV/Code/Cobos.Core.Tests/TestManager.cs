@@ -2,7 +2,7 @@
 using System.Text;
 using System.Reflection;
 
-namespace Intergraph.AsiaPac.Core.Tests
+namespace Cobos.Core.Tests
 {
 	public static class TestManager
 	{
@@ -13,7 +13,7 @@ namespace Intergraph.AsiaPac.Core.Tests
 				if ( _testFilesFolder == null )
 				{
 					// should somehow automate this
-					_testFilesFolder = @"D:\Projects\Intergraph.AsiaPac.Core\DEV\Code\Intergraph.AsiaPac.Core.Tests\TestFiles";
+					_testFilesFolder = @"C:\Projects\Cobos.Core\DEV\Code\Cobos.Core.Tests\TestFiles";
 				}
 				return _testFilesFolder;
 			}

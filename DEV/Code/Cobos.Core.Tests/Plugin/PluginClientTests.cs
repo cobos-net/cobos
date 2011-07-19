@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Intergraph.AsiaPac.Core.Plugin;
+using Cobos.Core.Plugin;
 using Xunit;
 
-namespace Intergraph.AsiaPac.Core.Plugin.Test
+namespace Cobos.Core.Plugin.Test
 {
 	[PluginAttribute]
 	public class TestPluginClient1 : IPluginClient

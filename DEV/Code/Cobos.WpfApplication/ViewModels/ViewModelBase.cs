@@ -6,7 +6,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Input;
 
-namespace Intergraph.AsiaPac.WpfApplication.ViewModels
+namespace Cobos.WpfApplication.ViewModels
 {
     /// <summary>
     /// Provides common functionality for ViewModel classes

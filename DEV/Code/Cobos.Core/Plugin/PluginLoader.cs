@@ -6,7 +6,7 @@ using System.IO;
 using System.Reflection;
 using System.Security.Permissions;
 
-namespace Intergraph.AsiaPac.Core.Plugin
+namespace Cobos.Core.Plugin
 {
 	/// <summary>
 	/// Plugin Loader utility class

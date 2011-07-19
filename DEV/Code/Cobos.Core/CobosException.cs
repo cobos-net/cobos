@@ -1,18 +1,18 @@
 ﻿using System;
 
-namespace Intergraph.AsiaPac.Core
+namespace Cobos.Core
 {
 	/// <summary>
 	/// 
 	/// </summary>
-	public class IntergraphException : System.Exception
+	public class CobosException : System.Exception
 	{
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="message"></param>
 		/// <param name="category"></param>
-		public IntergraphException( string message, MessageCategory category )
+		public CobosException( string message, MessageCategory category )
 			: base( message )
 		{
 			Category = category;
@@ -47,14 +47,14 @@ namespace Intergraph.AsiaPac.Core
 	/// <summary>
 	/// 
 	/// </summary>
-	public class IntergraphInformation : IntergraphException
+	public class CobosInformation : CobosException
 	{
-		public IntergraphInformation( string message )
+		public CobosInformation( string message )
 			: base( message, MessageCategory.Information )
 		{
 		}
 
-		public IntergraphInformation( string format, params object[] args )
+		public CobosInformation( string format, params object[] args )
 			: base ( string.Format( format, args ), MessageCategory.Information )
 		{
 		}
@@ -63,14 +63,14 @@ namespace Intergraph.AsiaPac.Core
 	/// <summary>
 	/// 
 	/// </summary>
-	public class IntergraphWarning : IntergraphException
+	public class CobosWarning : CobosException
 	{
-		public IntergraphWarning( string message )
+		public CobosWarning( string message )
 			: base( message, MessageCategory.Warning )
 		{
 		}
 		
-		public IntergraphWarning( string format, params object[] args )
+		public CobosWarning( string format, params object[] args )
 			: base ( string.Format( format, args ), MessageCategory.Warning )
 		{
 		}
@@ -80,14 +80,14 @@ namespace Intergraph.AsiaPac.Core
 	/// <summary>
 	/// 
 	/// </summary>
-	public class IntergraphError : IntergraphException
+	public class CobosError : CobosException
 	{
-		public IntergraphError( string message )
+		public CobosError( string message )
 			: base( message, MessageCategory.Error )
 		{
 		}
 
-		public IntergraphError( string format, params object[] args )
+		public CobosError( string format, params object[] args )
 			: base ( string.Format( format, args ), MessageCategory.Error )
 		{
 		}
@@ -96,14 +96,14 @@ namespace Intergraph.AsiaPac.Core
 	/// <summary>
 	/// 
 	/// </summary>
-	public class IntergraphDebug : IntergraphException
+	public class CobosDebug : CobosException
 	{
-		public IntergraphDebug( string message )
+		public CobosDebug( string message )
 			: base( message, MessageCategory.Debug )
 		{
 		}
 
-		public IntergraphDebug( string format, params object[] args )
+		public CobosDebug( string format, params object[] args )
 			: base ( string.Format( format, args ), MessageCategory.Debug )
 		{
 		}

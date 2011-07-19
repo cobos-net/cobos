@@ -1,11 +1,11 @@
 ﻿using System;
-using Intergraph.AsiaPac.Utilities.File;
+using Cobos.Utilities.File;
 using Xunit;
 using System.IO;
 
 using SysFile = System.IO.File;
 
-namespace Intergraph.AsiaPac.Utilities.Tests.File
+namespace Cobos.Utilities.Tests.File
 {
 	public class DriveMappingTests
 	{

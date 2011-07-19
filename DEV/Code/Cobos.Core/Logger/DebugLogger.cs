@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Intergraph.AsiaPac.Core.Logger
+namespace Cobos.Core.Logger
 {
 	/// <summary>
 	/// Debug logger for use by unit tests
@@ -34,7 +34,7 @@ namespace Intergraph.AsiaPac.Core.Logger
 		/// 
 		/// </summary>
 		/// <param name="e"></param>
-		public void Log( IntergraphException e )
+		public void Log( CobosException e )
 		{
 			Log( e.Message, e.Category, e.Timestamp );
 		}

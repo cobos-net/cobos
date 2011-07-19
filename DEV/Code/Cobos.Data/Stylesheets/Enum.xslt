@@ -2,8 +2,8 @@
 <xsl:stylesheet version="1.0"
 					 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 					 xmlns:msxsl="urn:schemas-microsoft-com:xslt"
-					 xmlns:cad="http://www.intergraph.com/asiapac/cad/datamodel"
-					 xmlns="http://www.intergraph.com/asiapac/cad/datamodel"
+					 xmlns:cobos="http://schemas.cobos.co.uk/datamodel"
+					 xmlns="http://schemas.cobos.co.uk/datamodel"
 					 xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 					 exclude-result-prefixes="msxsl">
 	

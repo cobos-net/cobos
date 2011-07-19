@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	 xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="msxsl"
-					 xmlns:igr="http://www.intergraph.com/asiapac/core/logger"
+					 xmlns:cobos="http://www.cobos.co.uk/core/logger"
 >
 	<xsl:output method="html" indent="yes"/>
 
@@ -245,7 +245,7 @@
 
 					<p class="metadata">
 						<table class="metadata" cellpadding="0px" cellspacing="1px">
-							<xsl:apply-templates select="/igr:LogFile/igr:Metadata" mode="createMetadataTable" />
+							<xsl:apply-templates select="/cobos:LogFile/cobos:Metadata" mode="createMetadataTable" />
 						</table>
 					</p>
 
@@ -276,7 +276,7 @@
 	</xsl:template>
 
 	<!-- match log information entry -->
-	<xsl:template match="igr:Information">
+	<xsl:template match="cobos:Information">
 		<tr class="information">
 			<td class="messageType">
 				Information
@@ -291,7 +291,7 @@
 	</xsl:template>
 
 	<!-- match log warning entry -->
-	<xsl:template match="igr:Warning">
+	<xsl:template match="cobos:Warning">
 		<tr class="warning">
 			<td class="messageType">
 				Warning
@@ -306,7 +306,7 @@
 	</xsl:template>
 
 	<!-- match log error entry -->
-	<xsl:template match="igr:Error">
+	<xsl:template match="cobos:Error">
 		<tr class="error">
 			<td class="messageType">
 				Error
@@ -321,7 +321,7 @@
 	</xsl:template>
 
 	<!-- match log error entry -->
-	<xsl:template match="igr:Debug">
+	<xsl:template match="cobos:Debug">
 		<tr class="debug">
 			<td class="messageType">
 				Debug
@@ -336,17 +336,17 @@
 	</xsl:template>
 
 	<!-- default match for metadata should ignore the elements -->
-	<xsl:template match ="igr:Metadata">
+	<xsl:template match ="cobos:Metadata">
 	</xsl:template>
 
 	<!-- create metadata table seperately from the logging table -->
-	<xsl:template match ="igr:Metadata" mode="createMetadataTable">
+	<xsl:template match ="cobos:Metadata" mode="createMetadataTable">
 		<tr>
 			<td class="name">
-				<xsl:value-of select="./igr:Name/text()"/>:
+				<xsl:value-of select="./cobos:Name/text()"/>:
 			</td>
 			<td class="value">
-				<xsl:value-of select="./igr:Value/text()"/>
+				<xsl:value-of select="./cobos:Value/text()"/>
 			</td>
 		</tr>
 	</xsl:template>

@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	 xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="msxsl igr"
-					 xmlns:igr="http://www.intergraph.com/asiapac/core/logger"
+	 xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="msxsl cobos"
+					 xmlns:cobos="http://www.intergraph.com/asiapac/core/logger"
 >
 	<xsl:output method="html" indent="yes" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"/>
 
-	<xsl:template match="/igr:LogFile">
+	<xsl:template match="/cobos:LogFile">
 		<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 			<head>
 				<title>Log File</title>
@@ -134,9 +134,9 @@
 					<![CDATA[
 		var _xslt = "<xsl:stylesheet version=\"1.0\" " +
 							"xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" " +
-							"xmlns:msxsl=\"urn:schemas-microsoft-com:xslt\" exclude-result-prefixes=\"msxsl igr\" " +
+							"xmlns:msxsl=\"urn:schemas-microsoft-com:xslt\" exclude-result-prefixes=\"msxsl cobos\" " +
 							"xmlns:xhtml=\"http://www.w3.org/1999/xhtml\" " +
-							"xmlns:igr=\"http://www.intergraph.com/asiapac/core/logger\">" +
+							"xmlns:cobos=\"http://www.intergraph.com/asiapac/core/logger\">" +
 									
 							"<xsl:output method=\"html\" indent=\"yes\"/>" +
 
@@ -215,7 +215,7 @@
 			{
 				if ( _isIE || _isWebKit )
 				{
-					filter.push( ".//igr:" + _levels[ i ] );
+					filter.push( ".//cobos:" + _levels[ i ] );
 				}
 				else if ( _isGecko || _isPresto )
 				{
@@ -256,13 +256,13 @@
 
 		if ( _isIE )
 		{
-			rootMatch = "igr:LogFile";
-			nodeMatch = "igr:error|igr:information|igr:warning|igr:debug";
+			rootMatch = "cobos:LogFile";
+			nodeMatch = "cobos:error|cobos:information|cobos:warning|cobos:debug";
 		}
 		else if ( _isWebKit )
 		{
-			rootMatch = "igr:logfile";
-			nodeMatch = "igr:error|igr:information|igr:warning|igr:debug";
+			rootMatch = "cobos:logfile";
+			nodeMatch = "cobos:error|cobos:information|cobos:warning|cobos:debug";
 		}
 		else if ( _isGecko )
 		{
@@ -383,7 +383,7 @@
 				<form id="main" action="">
 
 					<table class="metadata" cellpadding="0px" cellspacing="1px">
-						<xsl:apply-templates select="//igr:metadata"/>
+						<xsl:apply-templates select="//cobos:metadata"/>
 					</table>
 
 					<p class="filters">
@@ -416,13 +416,13 @@
 		  </xsl:copy>
 	 </xsl:template>
 
-	<xsl:template match="igr:metadata">
+	<xsl:template match="cobos:metadata">
 		<tr>
 			<td class="name">
-				<xsl:value-of select="./igr:name/text()"/>:
+				<xsl:value-of select="./cobos:name/text()"/>:
 			</td>
 			<td class="value">
-				<xsl:value-of select="./igr:value/text()"/>
+				<xsl:value-of select="./cobos:value/text()"/>
 			</td>
 		</tr>
 	</xsl:template>

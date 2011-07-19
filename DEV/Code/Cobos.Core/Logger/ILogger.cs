@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Intergraph.AsiaPac.Core.Logger
+namespace Cobos.Core.Logger
 {
 	public interface ILogger
 	{
@@ -17,7 +17,7 @@ namespace Intergraph.AsiaPac.Core.Logger
 		/// 
 		/// </summary>
 		/// <param name="e"></param>
-		void Log( IntergraphException e );
+		void Log( CobosException e );
 
 		/// <summary>
 		/// 

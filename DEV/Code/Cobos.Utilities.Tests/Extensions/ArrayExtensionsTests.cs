@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Xunit;
-using Intergraph.AsiaPac.Utilities.Extensions;
+using Cobos.Utilities.Extensions;
 
-namespace Intergraph.AsiaPac.Utilities.Tests.Extensions
+namespace Cobos.Utilities.Tests.Extensions
 {
 	public class ArrayExtensionsTests
 	{

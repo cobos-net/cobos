@@ -16,12 +16,12 @@ cd %1
 REM Build tools & processing stylesheets
 REM ===========================================================================
 
-set stylesheets=..\Intergraph.AsiaPac.Data\Stylesheets
+set stylesheets=..\Cobos.Data\Stylesheets
 set schemas=.\Schemas
 
 set xsd="C:\Program Files\Microsoft SDKs\Windows\v6.0A\bin\xsd.exe"
 set xsltjs=%stylesheets%\xslt.js
-set db2xsd="\Projects\Intergraph.AsiaPac.DevTools\RELEASE\Intergraph.AsiaPac.DatabaseToXsd\bin\Intergraph.AsiaPac.DatabaseToXsd.exe"
+set db2xsd="\Projects\Cobos.DevTools\RELEASE\Cobos.DatabaseToXsd\bin\Cobos.DatabaseToXsd.exe"
 
 REM Input data
 REM ===========================================================================

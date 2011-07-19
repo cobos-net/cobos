@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Xunit;
-using Intergraph.AsiaPac.Core.Logger;
-using Intergraph.AsiaPac.Utilities.File;
+using Cobos.Core.Logger;
+using Cobos.Utilities.File;
 using System.IO;
 using System.Threading;
 
-namespace Intergraph.AsiaPac.Core.Tests.Logger
+namespace Cobos.Core.Tests.Logger
 {
 	public class LogFileTest
 	{

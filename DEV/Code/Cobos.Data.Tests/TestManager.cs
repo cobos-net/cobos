@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Intergraph.AsiaPac.Data.Tests
+namespace Cobos.Data.Tests
 {
 	public static class TestManager
 	{
@@ -10,6 +10,6 @@ namespace Intergraph.AsiaPac.Data.Tests
 
 		public readonly static DatabaseAdapter DatabaseAdapter = new DatabaseAdapter( ConnectionString );
 
-		public readonly static string TestFiles = @"\Projects\Intergraph.AsiaPac.Core\DEV\Code\Intergraph.AsiaPac.Data.Tests\TestData\";
+		public readonly static string TestFiles = @"\Projects\Cobos.Core\DEV\Code\Cobos.Data.Tests\TestData\";
 	}
 }

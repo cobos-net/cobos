@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
-using Intergraph.AsiaPac.Core.UI;
+using Cobos.Core.UI;
 
-namespace Intergraph.AsiaPac.Core.Tests.UI
+namespace Cobos.Core.Tests.UI
 {
 	public class MessageHandlerTest : IMessageHandler 
 	{

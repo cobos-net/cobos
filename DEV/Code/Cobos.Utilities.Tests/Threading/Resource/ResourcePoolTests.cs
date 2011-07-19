@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using Xunit;
-using Intergraph.AsiaPac.Utilities.Threading.Resource;
+using Cobos.Utilities.Threading.Resource;
 
-namespace Intergraph.AsiaPac.Utilities.Tests.Threading.Resource
+namespace Cobos.Utilities.Tests.Threading.Resource
 {
 	public class TestResourcePool
 	{

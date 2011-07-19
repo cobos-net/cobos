@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	 xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="msxsl"
-					 xmlns:igr="http://www.intergraph.com/asiapac/core/logger"
+					 xmlns:cobos="http://www.intergraph.com/asiapac/core/logger"
 >
 	<xsl:output method="html" indent="yes"/>
 
-	<xsl:template match="/igr:LogFile">
+	<xsl:template match="/cobos:LogFile">
 
 		<html>
 			<head>
@@ -137,7 +137,7 @@
 
 					<p class="metadata">
 						<table class="metadata" cellpadding="0px" cellspacing="1px">
-							<xsl:apply-templates select="//igr:Metadata"/>
+							<xsl:apply-templates select="//cobos:Metadata"/>
 						</table>
 					</p>
 
@@ -159,7 +159,7 @@
 					</p>
 
 					<table id="tblLogFile" class="logFile" cellpadding="0px" cellspacing="0px">
-						<xsl:apply-templates select="(//igr:Error|//igr:Warning)[contains( ./text(), 'test message' )]" />
+						<xsl:apply-templates select="(//cobos:Error|//cobos:Warning)[contains( ./text(), 'test message' )]" />
 					</table>
 				</form>
 			</body>
@@ -167,7 +167,7 @@
 
 	</xsl:template>
 
-	<xsl:template match="igr:Error|igr:Warning|igr:Information|igr:Debug">
+	<xsl:template match="cobos:Error|cobos:Warning|cobos:Information|cobos:Debug">
 		<tr class="{name()}">
 			<td class="messageType">
 				<xsl:value-of select="name()"/>
@@ -181,13 +181,13 @@
 		</tr>
 	</xsl:template>
 
-	<xsl:template match="igr:Metadata">
+	<xsl:template match="cobos:Metadata">
 		<tr>
 			<td class="name">
-				<xsl:value-of select="./igr:Name/text()"/>:
+				<xsl:value-of select="./cobos:Name/text()"/>:
 			</td>
 			<td class="value">
-				<xsl:value-of select="./igr:Value/text()"/>
+				<xsl:value-of select="./cobos:Value/text()"/>
 			</td>
 		</tr>
 	</xsl:template>

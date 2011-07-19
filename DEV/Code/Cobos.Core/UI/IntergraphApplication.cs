@@ -1,30 +1,30 @@
 ﻿using System;
 using System.IO;
-using Intergraph.AsiaPac.Core.Logger;
+using Cobos.Core.Logger;
 
-namespace Intergraph.AsiaPac.Core.UI
+namespace Cobos.Core.UI
 {
-	public class IntergraphApplication
+	public class CobosApplication
 	{
 		#region Singleton Instance
 
-		private static IntergraphApplication _current = null;
+		private static CobosApplication _current = null;
 
-		private IntergraphApplication()
+		private CobosApplication()
 		{
 		}
 
-		public static IntergraphApplication Current
+		public static CobosApplication Current
 		{
 			get
 			{
 				if ( _current ==  null )
 				{
-					_current = new IntergraphApplication();
+					_current = new CobosApplication();
 				}
 				else if ( _current._disposed )
 				{
-					throw new ObjectDisposedException( "Intergraph.AsiaPac.Core.UI.PhoneViewApplication", "The application has already been disposed." );
+					throw new ObjectDisposedException( "Cobos.Core.UI.PhoneViewApplication", "The application has already been disposed." );
 				}
 				return _current;
 			}
@@ -34,7 +34,7 @@ namespace Intergraph.AsiaPac.Core.UI
 
 		#region IDisposable
 
-		~IntergraphApplication()
+		~CobosApplication()
 		{
 			Dispose( false );
 		}

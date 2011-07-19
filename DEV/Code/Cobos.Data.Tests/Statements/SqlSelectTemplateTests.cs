@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Xunit;
-using Intergraph.AsiaPac.Data.Statements;
+using Cobos.Data.Statements;
 
-namespace Intergraph.AsiaPac.Data.Tests.Statements
+namespace Cobos.Data.Tests.Statements
 {
 	public class SqlSelectTemplateTests
 	{

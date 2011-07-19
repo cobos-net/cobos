@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Intergraph.AsiaPac.WpfApplication.UI
+namespace Cobos.WpfApplication.UI
 {
 	public class CommandLineArgs
 	{

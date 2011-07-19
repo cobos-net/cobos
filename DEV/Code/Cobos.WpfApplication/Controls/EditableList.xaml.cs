@@ -11,9 +11,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Intergraph.AsiaPac.WpfApplication.Views;
+using Cobos.WpfApplication.Views;
 
-namespace Intergraph.AsiaPac.WpfApplication.Controls
+namespace Cobos.WpfApplication.Controls
 {
 	/// <summary>
 	/// Interaction logic for EditableList.xaml

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Intergraph.AsiaPac.Core.UI;
+using Cobos.Core.UI;
 
-namespace Intergraph.AsiaPac.WpfApplication.UI
+namespace Cobos.WpfApplication.UI
 {
 	public static class PhoneViewWpfApplication
 	{
@@ -23,7 +23,7 @@ namespace Intergraph.AsiaPac.WpfApplication.UI
 				home = AppDomain.CurrentDomain.BaseDirectory;
 			}
 
-			IntergraphApplication.Current.Initialise( new CurrentCursor(), new MessageBoxHandler(), new ProgressDialog(), new CurrentUser(), home );
+			CobosApplication.Current.Initialise( new CurrentCursor(), new MessageBoxHandler(), new ProgressDialog(), new CurrentUser(), home );
 		}
 
 		/// <summary>
@@ -31,7 +31,7 @@ namespace Intergraph.AsiaPac.WpfApplication.UI
 		/// </summary>
 		public static void Terminate()
 		{
-			IntergraphApplication.Current.Dispose();
+			CobosApplication.Current.Dispose();
 		}
 	}
 }

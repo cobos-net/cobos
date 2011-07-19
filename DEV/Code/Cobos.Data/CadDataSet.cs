@@ -51,15 +51,9 @@ using Cobos.Utilities.Xml;
 namespace Cobos.Data
 #endif
 {
-#if INTERGRAPH_BRANDING
-	using AsyncDBTask = AsyncTask<CadDataSet, DatabaseAdapter.QueryDatabaseAsync>;
-
-	public class CadDataSet : DataSet
-#else
 	using AsyncDBTask = AsyncTask<CobosDataSet, DatabaseAdapter.QueryDatabaseAsync>;
 
 	public class CobosDataSet : DataSet
-#endif
 	{
 		/// <summary>
 		/// 
@@ -86,11 +80,7 @@ namespace Cobos.Data
 		/// 
 		/// </summary>
 		/// <param name="dataSetName"></param>
-#if INTERGRAPH_BRANDING
-		public CadDataSet( string dataSetName )
-#else
 		public CobosDataSet( string dataSetName )
-#endif
 			: base( dataSetName )
 		{
 		}
@@ -99,11 +89,7 @@ namespace Cobos.Data
 		/// 
 		/// </summary>
 		/// <param name="dataSet"></param>
-#if INTERGRAPH_BRANDING
-		public CadDataSet()
-#else
 		public CobosDataSet()
-#endif
 			: base()
 		{
 		}

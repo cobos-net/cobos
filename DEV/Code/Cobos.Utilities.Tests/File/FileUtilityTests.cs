@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using Intergraph.AsiaPac.Utilities.File;
+using Cobos.Utilities.File;
 using Xunit;
 
-namespace Intergraph.AsiaPac.Utilities.Tests.File
+namespace Cobos.Utilities.Tests.File
 {
 	public class FileUtilityTests
 	{

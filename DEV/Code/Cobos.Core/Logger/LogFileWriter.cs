@@ -6,10 +6,10 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Xml;
-using Intergraph.AsiaPac.Utilities.Xml;
-using Intergraph.AsiaPac.Utilities.File;
+using Cobos.Utilities.Xml;
+using Cobos.Utilities.File;
 
-namespace Intergraph.AsiaPac.Core.Logger
+namespace Cobos.Core.Logger
 {
 	public class LogFileWriter : IDisposable, ILogger
 	{
@@ -125,7 +125,7 @@ namespace Intergraph.AsiaPac.Core.Logger
 		{
 #if LOG_FILE_XML_FORMAT
 			writer.WriteLine( "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" );
-			writer.WriteLine( "<LogFile xmlns=\"http://www.intergraph.com/asiapac/core/logger\">" );
+			writer.WriteLine( "<LogFile xmlns=\"http://www.cobos.co.uk/core/logger\">" );
 #else
 			writer.WriteLine( "*********************************************" );
 			writer.WriteLine( String.Format( "** Log started {0}", DateTime.Now.ToString( "s" ) ) );
@@ -235,7 +235,7 @@ namespace Intergraph.AsiaPac.Core.Logger
 		/// 
 		/// </summary>
 		/// <param name="e"></param>
-		public void Log( IntergraphException e )
+		public void Log( CobosException e )
 		{
 			Log( e.Message, e.Category, e.Timestamp );
 		}
@@ -436,7 +436,7 @@ namespace Intergraph.AsiaPac.Core.Logger
 			{
 				WriteToFile( tmpname );
 
-				XsltHelper.Transform( "Intergraph.AsiaPac.Core.Logger.LogFile.xslt", tmpname, path );
+				XsltHelper.Transform( "Cobos.Core.Logger.LogFile.xslt", tmpname, path );
 			}
 			catch ( System.Exception e )
 			{
@@ -463,7 +463,7 @@ namespace Intergraph.AsiaPac.Core.Logger
 
 				using ( XmlReader xmlReader = new XmlTextReader( tmpname ) )
 				{
-					XsltHelper.Transform( "Intergraph.AsiaPac.Core.Logger.LogFile.xslt", xmlReader, output );
+					XsltHelper.Transform( "Cobos.Core.Logger.LogFile.xslt", xmlReader, output );
 				}
 			}
 			catch ( System.Exception )

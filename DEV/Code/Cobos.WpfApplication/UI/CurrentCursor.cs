@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Windows.Input;
-using Intergraph.AsiaPac.Core.UI;
+using Cobos.Core.UI;
 
-using PhoneViewCursorType = Intergraph.AsiaPac.Core.UI.CursorType;
+using PhoneViewCursorType = Cobos.Core.UI.CursorType;
 using WindowsCursors = System.Windows.Input.Cursors;
 
-namespace Intergraph.AsiaPac.WpfApplication.UI
+namespace Cobos.WpfApplication.UI
 {
 	public class CurrentCursor : ICurrentCursor 
 	{

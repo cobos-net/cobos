@@ -38,11 +38,14 @@ using System.IO;
 using System.Runtime.InteropServices;
 using Microsoft.Win32.SafeHandles;
 using System.Runtime.CompilerServices;
-using Intergraph.AsiaPac.Utilities.Win32;
 
 #if INTERGRAPH_BRANDING
+using Intergraph.AsiaPac.Utilities.Win32;
+
 namespace Intergraph.AsiaPac.Utilities.File
 #else
+using Cobos.Utilities.Win32;
+
 namespace Cobos.Utilities.File
 #endif
 {

@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Text;
 using Xunit;
-using Intergraph.AsiaPac.Core.UI;
+using Cobos.Core.UI;
 
-using PVCursor = Intergraph.AsiaPac.Core.UI.CursorType;
+using PVCursor = Cobos.Core.UI.CursorType;
 
-namespace Intergraph.AsiaPac.Core.Tests.UI
+namespace Cobos.Core.Tests.UI
 {
-	public class IntergraphApplicationTest : IDisposable
+	public class CobosApplicationTest : IDisposable
 	{
-		public IntergraphApplicationTest()
+		public CobosApplicationTest()
 		{
 			InitialiseTest();
 		}
@@ -21,7 +21,7 @@ namespace Intergraph.AsiaPac.Core.Tests.UI
 
 		public static void InitialiseTest()
 		{
-			IntergraphApplication theApp = IntergraphApplication.Current;
+			CobosApplication theApp = CobosApplication.Current;
 			theApp.Initialise( new CurrentCursorTest(),
 										new MessageHandlerTest(),
 										new ProgressBarTest(),
@@ -31,14 +31,14 @@ namespace Intergraph.AsiaPac.Core.Tests.UI
 
 		public static void DisposeTest()
 		{
-			IntergraphApplication.Current.Dispose();
+			CobosApplication.Current.Dispose();
 		}
 
 		[Fact]
 		public void Invalid_startup_parameters_throw_exception()
 		{
-			Assert.DoesNotThrow( delegate { IntergraphApplication.Current.Dispose(); } );
-			IntergraphApplication theApp = IntergraphApplication.Current;
+			Assert.DoesNotThrow( delegate { CobosApplication.Current.Dispose(); } );
+			CobosApplication theApp = CobosApplication.Current;
 
 			Assert.Throws<Exception>( delegate { theApp.Initialise( null, null, null, null, null ); } );
 
@@ -64,7 +64,7 @@ namespace Intergraph.AsiaPac.Core.Tests.UI
 		[Fact]
 		public void Cursor_type_can_be_changed()
 		{
-			IntergraphApplication theApp = IntergraphApplication.Current;
+			CobosApplication theApp = CobosApplication.Current;
 
 			theApp.Cursor.Type = CursorType.SizeWE;
 			Assert.Equal( ((CurrentCursorTest)theApp.Cursor).CurrentCursorValue, "SizeWE" );
@@ -76,7 +76,7 @@ namespace Intergraph.AsiaPac.Core.Tests.UI
 		[Fact]
 		public void User_can_logon()
 		{
-			IntergraphApplication theApp = IntergraphApplication.Current;
+			CobosApplication theApp = CobosApplication.Current;
 			CurrentUserTest theUser = (CurrentUserTest)theApp.User;
 			bool? res; 
 
@@ -102,7 +102,7 @@ namespace Intergraph.AsiaPac.Core.Tests.UI
 		[Fact]
 		public void Message_handler_works()
 		{
-			IntergraphApplication theApp = IntergraphApplication.Current;
+			CobosApplication theApp = CobosApplication.Current;
 			MessageHandlerTest theMessage = (MessageHandlerTest)theApp.Message;
 
 			Assert.DoesNotThrow( delegate { theApp.Message.ShowError( "This is an error", "Test error" ); } );
@@ -138,7 +138,7 @@ namespace Intergraph.AsiaPac.Core.Tests.UI
 		[Fact]
 		public void Progress_bar_works()
 		{
-			IntergraphApplication theApp = IntergraphApplication.Current;
+			CobosApplication theApp = CobosApplication.Current;
 			ProgressBarTest theProgress = (ProgressBarTest)theApp.ProgressBar;
 
 			theProgress.Maximum = 10;

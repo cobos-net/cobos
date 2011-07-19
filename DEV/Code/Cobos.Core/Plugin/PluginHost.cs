@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Intergraph.AsiaPac.Core.Plugin
+namespace Cobos.Core.Plugin
 {
 	/// <summary>
 	/// 

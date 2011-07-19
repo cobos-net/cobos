@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Intergraph.AsiaPac.Core.UI;
+using Cobos.Core.UI;
 
-namespace Intergraph.AsiaPac.WpfApplication.UI
+namespace Cobos.WpfApplication.UI
 {
 	class CurrentUser : ICurrentUser
 	{

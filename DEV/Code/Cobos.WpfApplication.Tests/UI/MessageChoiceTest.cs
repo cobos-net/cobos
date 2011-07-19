@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Intergraph.AsiaPac.WpfApplication.UI;
+using Cobos.WpfApplication.UI;
 using Xunit;
 
-namespace Intergraph.AsiaPac.WpfApplication.Tests.UI
+namespace Cobos.WpfApplication.Tests.UI
 {
 	public class MessageChoiceTest
 	{

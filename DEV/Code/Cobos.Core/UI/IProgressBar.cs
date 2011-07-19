@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Intergraph.AsiaPac.Core.UI
+namespace Cobos.Core.UI
 {
 	public interface IProgressBar
 	{

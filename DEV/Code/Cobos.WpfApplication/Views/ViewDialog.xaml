@@ -1,4 +1,4 @@
-﻿<Window x:Class="Intergraph.AsiaPac.WpfApplication.Views.ViewDialog"
+﻿<Window x:Class="Cobos.WpfApplication.Views.ViewDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     Title="View Dialog" Height="500" Width="500" ShowInTaskbar="False">

@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xs:schema id="LogFile"
-    targetNamespace="http://www.intergraph.com/asiapac/core/logger"
+    targetNamespace="http://www.cobos.co.uk/core/logger"
     elementFormDefault="qualified"
-    xmlns="http://www.intergraph.com/asiapac/core/logger"
-    xmlns:igr="http://www.intergraph.com/asiapac/core/logger"
+    xmlns="http://www.cobos.co.uk/core/logger"
+    xmlns:cobos="http://www.cobos.co.uk/core/logger"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
 >
 

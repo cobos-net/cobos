@@ -37,11 +37,14 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
-using Intergraph.AsiaPac.Utilities.Extensions;
 
 #if INTERGRAPH_BRANDING
+using Intergraph.AsiaPac.Utilities.Extensions;
+
 namespace Intergraph.AsiaPac.Utilities.Threading.Resource
 #else
+using Cobos.Utilities.Extensions;
+
 namespace Cobos.Utilities.Threading.Resource
 #endif
 {

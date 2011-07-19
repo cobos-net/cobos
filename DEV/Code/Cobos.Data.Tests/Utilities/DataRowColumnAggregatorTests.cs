@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
-using Intergraph.AsiaPac.Data.Utilities;
+using Cobos.Data.Utilities;
 using Xunit;
 
-namespace Intergraph.AsiaPac.Data.Tests.Utilities
+namespace Cobos.Data.Tests.Utilities
 {
 	public class DataRowColumnAggregatorTests
 	{

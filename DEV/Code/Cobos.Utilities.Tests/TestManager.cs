@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Intergraph.AsiaPac.Utilities.Tests
+namespace Cobos.Utilities.Tests
 {
 	public static class TestManager
 	{
@@ -12,7 +12,7 @@ namespace Intergraph.AsiaPac.Utilities.Tests
 		/// Given time, this should be implemented as configuration.
 		/// </summary>
 
-		public const string TestFilesLocation = @"D:\Projects\Intergraph.AsiaPac.Core\DEV\Code\Intergraph.AsiaPac.Utilities.Tests\TestFiles";
+		public const string TestFilesLocation = @"C:\Projects\Cobos.Core\DEV\Code\Cobos.Utilities.Tests\TestFiles";
 
 		public const string UncSharedFolder = @"\\ap-sgisourcectrl\cad_795\include";
 	}

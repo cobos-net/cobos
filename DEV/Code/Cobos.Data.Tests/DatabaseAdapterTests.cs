@@ -5,7 +5,7 @@ using System.IO;
 using System.Text;
 using Xunit;
 
-namespace Intergraph.AsiaPac.Data.Tests
+namespace Cobos.Data.Tests
 {
 	public class DatabaseAdapterTests
 	{

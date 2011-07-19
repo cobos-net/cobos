@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Intergraph.AsiaPac.WpfApplication.Controls.TriState"
+﻿<UserControl x:Class="Cobos.WpfApplication.Controls.TriState"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     Height="24" Width="180">

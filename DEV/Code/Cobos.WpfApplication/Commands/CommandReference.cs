@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Input;
 
-namespace Intergraph.AsiaPac.WpfApplication.Commands
+namespace Cobos.WpfApplication.Commands
 {
     /// <summary>
     /// This class facilitates associating a key binding in XAML markup to a command

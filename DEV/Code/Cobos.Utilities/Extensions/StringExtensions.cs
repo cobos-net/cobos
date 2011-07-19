@@ -40,11 +40,14 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Security;
-using Intergraph.AsiaPac.Utilities.Text;
 
 #if INTERGRAPH_BRANDING
+using Intergraph.AsiaPac.Utilities.Text;
+
 namespace Intergraph.AsiaPac.Utilities.Extensions
 #else
+using Cobos.Utilities.Text;
+
 namespace Cobos.Utilities.Extensions
 #endif
 {

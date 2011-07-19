@@ -2,8 +2,8 @@
 						xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 						xmlns:msxsl="urn:schemas-microsoft-com:xslt"
 						exclude-result-prefixes="msxsl"
-						xmlns="http://schemas.intergraph.com/asiapac/cad/datamodel/1.0.0"
-						xmlns:cad="http://schemas.intergraph.com/asiapac/cad/datamodel/1.0.0"
+						xmlns="http://schemas.cobos.co.uk/datamodel/1.0.0"
+						xmlns:cobos="http://schemas.cobos.co.uk/datamodel/1.0.0"
 						xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 >
 	<xsl:output method="xml" indent="yes"/>
@@ -55,14 +55,14 @@
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-	<xsl:template match="/cad:DataModel">
+	<xsl:template match="/cobos:DataModel">
 
 		<xsl:call-template name="generatedXmlWarning"/>
 
-		<xsd:schema targetNamespace="http://schemas.intergraph.com/asiapac/cad/datamodel/1.0.0"
+		<xsd:schema targetNamespace="http://schemas.cobos.co.uk/datamodel/1.0.0"
 				elementFormDefault="qualified"
-				xmlns="http://schemas.intergraph.com/asiapac/cad/datamodel/1.0.0"
-				xmlns:cad="http://schemas.intergraph.com/asiapac/cad/datamodel/1.0.0"
+				xmlns="http://schemas.cobos.co.uk/datamodel/1.0.0"
+				xmlns:cobos="http://schemas.cobos.co.uk/datamodel/1.0.0"
 				xmlns:xsd="http://www.w3.org/2001/XMLSchema">
 
 			<xsl:choose>
@@ -73,19 +73,19 @@
 						</xsl:attribute>
 						<xsl:element name="xsd:complexType">
 							<xsl:element name="xsd:sequence">
-								<xsl:apply-templates select="child::cad:Object|child::cad:TableObject"/>
+								<xsl:apply-templates select="child::cobos:Object|child::cobos:TableObject"/>
 							</xsl:element>
 						</xsl:element>
 					</xsl:element>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:apply-templates select="child::cad:Object|child::cad:TableObject"/>
+					<xsl:apply-templates select="child::cobos:Object|child::cobos:TableObject"/>
 				</xsl:otherwise>
 			</xsl:choose>
 
-			<xsl:apply-templates select="child::cad:Type"/>
+			<xsl:apply-templates select="child::cobos:Type"/>
 
-			<xsl:apply-templates select="child::cad:Enumeration"/>
+			<xsl:apply-templates select="child::cobos:Enumeration"/>
 
 			<!-- copy the database type definitions -->
 			<xsl:copy-of select="$databaseTypesNodeSet"/>
@@ -94,7 +94,7 @@
 
 	</xsl:template>
 
-	<xsl:template match="cad:Object[ not( parent::cad:DataModel ) ]" mode="minOccurs">
+	<xsl:template match="cobos:Object[ not( parent::cobos:DataModel ) ]" mode="minOccurs">
 		<xsl:attribute name="minOccurs">
 			<xsl:choose>
 				<xsl:when test="$multiplicityMode = 'optional'">
@@ -111,7 +111,7 @@
 		</xsl:attribute>
 	</xsl:template>
 
-	<xsl:template match="cad:Object[ parent::cad:DataModel ]|cad:TableObject" mode="minOccurs">
+	<xsl:template match="cobos:Object[ parent::cobos:DataModel ]|cobos:TableObject" mode="minOccurs">
 		<xsl:if test="$rootNodeName != ''">
 			<xsl:attribute name="minOccurs">0</xsl:attribute>
 		</xsl:if>
@@ -123,7 +123,7 @@
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-	<xsl:template match="cad:Object[ not( @type ) ]">
+	<xsl:template match="cobos:Object[ not( @type ) ]">
 		<xsl:element name="xsd:element">
 			<xsl:attribute name="name">
 				<xsl:value-of select="@name"/>
@@ -131,7 +131,7 @@
 			<xsl:apply-templates select="." mode="minOccurs"/>
 			<xsl:element name="xsd:complexType">
 				<xsl:element name="xsd:sequence">
-					<xsl:apply-templates select="child::cad:Object | child::cad:Property[ not( @hidden ) ] | child::cad:Reference | child::cad:XsdProperty"/>
+					<xsl:apply-templates select="child::cobos:Object | child::cobos:Property[ not( @hidden ) ] | child::cobos:Reference | child::cobos:XsdProperty"/>
 				</xsl:element>
 			</xsl:element>
 		</xsl:element>
@@ -143,7 +143,7 @@
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-	<xsl:template match="cad:Object[ @type ]">
+	<xsl:template match="cobos:Object[ @type ]">
 		<xsl:element name="xsd:element">
 			<xsl:attribute name="name">
 				<xsl:value-of select="@name"/>
@@ -161,10 +161,10 @@
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-	<xsl:template match="cad:Type">
+	<xsl:template match="cobos:Type">
 		<xsd:complexType name="{@name}">
 			<xsd:sequence>
-				<xsl:apply-templates select="child::cad:Object | child::cad:Property[ not( @hidden ) ] | child::cad:XsdProperty"/>
+				<xsl:apply-templates select="child::cobos:Object | child::cobos:Property[ not( @hidden ) ] | child::cobos:XsdProperty"/>
 			</xsd:sequence>
 		</xsd:complexType>
 	</xsl:template>
@@ -175,7 +175,7 @@
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-	<xsl:template match="cad:TableObject">
+	<xsl:template match="cobos:TableObject">
 		<xsl:element name="xsd:element">
 			<xsl:attribute name="name">
 				<xsl:value-of select="@name"/>
@@ -196,11 +196,11 @@
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-	<xsl:template match="cad:Reference[ not( @isCollection ) ]">
+	<xsl:template match="cobos:Reference[ not( @isCollection ) ]">
 		<xsd:element ref="{@ref}" minOccurs="0" maxOccurs="1"/>
 	</xsl:template>
 
-	<xsl:template match="cad:Reference[ @isCollection ]">
+	<xsl:template match="cobos:Reference[ @isCollection ]">
 		<xsd:element name="{@name}">
 			<xsd:complexType>
 				<xsd:sequence>
@@ -216,7 +216,7 @@
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-	<xsl:template match="cad:Property">
+	<xsl:template match="cobos:Property">
 		<xsl:element name="xsd:element">
 			<xsl:attribute name="name">
 				<xsl:value-of select="@name"/>
@@ -226,7 +226,7 @@
 	</xsl:template>
 
 	<!-- Set the data attributes for a standard type (i.e. not string encoded data) -->
-	<xsl:template match="cad:Property[ not( @stringFormat ) ]" mode="setDataAttributes">
+	<xsl:template match="cobos:Property[ not( @stringFormat ) ]" mode="setDataAttributes">
 		<xsl:variable name="dbTable">
 			<xsl:apply-templates mode="getDbTable" select="."/>
 		</xsl:variable>
@@ -235,22 +235,22 @@
 									mode="copyDbAttributes"/>
 	</xsl:template>
 
-	<xsl:template match="cad:Property[ @stringFormat = 'CadDts' ]" mode="setDataAttributes">
+	<xsl:template match="cobos:Property[ @stringFormat = 'CadDts' ]" mode="setDataAttributes">
 		<xsl:attribute name="type">xsd:dateTime</xsl:attribute>
 		<xsl:apply-templates select="." mode="setDataMultiplicity"/>
 	</xsl:template>
 
-	<xsl:template match="cad:Property[ @stringFormat = 'CadBoolean' ]" mode="setDataAttributes">
+	<xsl:template match="cobos:Property[ @stringFormat = 'CadBoolean' ]" mode="setDataAttributes">
 		<xsl:attribute name="type">xsd:boolean</xsl:attribute>
 		<xsl:apply-templates select="." mode="setDataMultiplicity"/>
 	</xsl:template>
 
-	<xsl:template match="cad:Property[ @stringFormat = 'Separator' ]" mode="setDataAttributes">
+	<xsl:template match="cobos:Property[ @stringFormat = 'Separator' ]" mode="setDataAttributes">
 		<xsl:attribute name="type">xsd:string</xsl:attribute>
 		<xsl:apply-templates select="." mode="setDataMultiplicity"/>
 	</xsl:template>
 
-	<xsl:template match="cad:Property" mode="setDataMultiplicity">
+	<xsl:template match="cobos:Property" mode="setDataMultiplicity">
 		<xsl:choose>
 			<xsl:when test="$multiplicityMode = 'optional'">
 				<xsl:attribute name="minOccurs">0</xsl:attribute>
@@ -270,7 +270,7 @@
 
 	</xsl:template>
 
-	<xsl:template match="cad:XsdProperty">
+	<xsl:template match="cobos:XsdProperty">
 		<xsl:element name="xsd:element">
 			<xsl:copy-of select="@*"/>
 		</xsl:element>
@@ -317,15 +317,15 @@
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-	<xsl:template match="cad:Enumeration">
+	<xsl:template match="cobos:Enumeration">
 		<xsd:simpleType name="{@name}">
 			<xsd:restriction base="{@base}">
-				<xsl:apply-templates select="cad:Item"/>
+				<xsl:apply-templates select="cobos:Item"/>
 			</xsd:restriction>
 		</xsd:simpleType>
 	</xsl:template>
 
-	<xsl:template match="cad:Item">
+	<xsl:template match="cobos:Item">
 		<xsd:enumeration value="{text()}"/>
 	</xsl:template>
 	

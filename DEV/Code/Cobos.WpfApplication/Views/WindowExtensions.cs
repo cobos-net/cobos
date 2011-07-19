@@ -5,7 +5,7 @@ using System.Text;
 using System.Windows;
 using System.Runtime.InteropServices;
 
-namespace Intergraph.AsiaPac.WpfApplication.Views
+namespace Cobos.WpfApplication.Views
 {
 	public static class WindowExtensions
 	{

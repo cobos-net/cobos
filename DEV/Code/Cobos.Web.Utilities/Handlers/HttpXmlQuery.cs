@@ -41,11 +41,14 @@ using System.Xml.Serialization;
 using System.IO;
 using System.Threading;
 using System.Xml;
-using Intergraph.AsiaPac.Utilities.Xml;
 
 #if INTERGRAPH_BRANDING
+using Intergraph.AsiaPac.Utilities.Xml;
+
 namespace Intergraph.AsiaPac.Web.Utilities.Handlers
 #else
+using Cobos.Utilities.Xml;
+
 namespace Cobos.Web.Utilities.Handlers
 #endif
 {

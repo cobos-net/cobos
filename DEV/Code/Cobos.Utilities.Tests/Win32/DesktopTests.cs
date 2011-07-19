@@ -1,8 +1,8 @@
 ﻿using System;
 using Xunit;
-using Intergraph.AsiaPac.Utilities.Win32;
+using Cobos.Utilities.Win32;
 
-namespace Intergraph.AsiaPac.Utilities.Tests.Win32
+namespace Cobos.Utilities.Tests.Win32
 {
 	public class DesktopTests
 	{

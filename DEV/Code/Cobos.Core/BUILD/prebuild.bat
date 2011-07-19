@@ -27,4 +27,4 @@ set logfile=%schemas%\LogFile.xsd
 
 @echo on
 
-%xsd% /classes /n:Intergraph.AsiaPac.Core.Logger %logfile% /out:%out%
+%xsd% /classes /n:Cobos.Core.Logger %logfile% /out:%out%

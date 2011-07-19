@@ -3,8 +3,8 @@
 						xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 						xmlns:msxsl="urn:schemas-microsoft-com:xslt"
 						exclude-result-prefixes="msxsl util"
-						xmlns="http://schemas.intergraph.com/asiapac/cad/datamodel/1.0.0"
-						xmlns:cad="http://schemas.intergraph.com/asiapac/cad/datamodel/1.0.0"
+						xmlns="http://schemas.cobos.co.uk/datamodel/1.0.0"
+						xmlns:cobos="http://schemas.cobos.co.uk/datamodel/1.0.0"
 						xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 						xmlns:util="http://schemas.phoneview.com/casemanagement/utilities"
 >
@@ -49,9 +49,9 @@
 
 		<xsl:call-template name="generatedXmlWarning"/>
 
-		<xsd:schema targetNamespace="http://schemas.intergraph.com/asiapac/cad/datamodel/1.0.0"
+		<xsd:schema targetNamespace="http://schemas.cobos.co.uk/datamodel/1.0.0"
 				elementFormDefault="qualified"
-				xmlns="http://schemas.intergraph.com/asiapac/cad/datamodel/1.0.0"
+				xmlns="http://schemas.cobos.co.uk/datamodel/1.0.0"
 				xmlns:xsd="http://www.w3.org/2001/XMLSchema">
 
 			<xsd:simpleType name="char">

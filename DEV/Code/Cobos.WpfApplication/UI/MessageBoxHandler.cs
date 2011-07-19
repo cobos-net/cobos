@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Windows;
-using Intergraph.AsiaPac.Core.UI;
-using Intergraph.AsiaPac.WpfApplication.Controls;
+using Cobos.Core.UI;
+using Cobos.WpfApplication.Controls;
 
-namespace Intergraph.AsiaPac.WpfApplication.UI
+namespace Cobos.WpfApplication.UI
 {
 	class MessageBoxHandler : IMessageHandler 
 	{

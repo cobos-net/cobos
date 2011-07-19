@@ -10,10 +10,10 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using Intergraph.AsiaPac.WpfApplication.Controls;
-using Intergraph.AsiaPac.WpfApplication.Views;
+using Cobos.WpfApplication.Controls;
+using Cobos.WpfApplication.Views;
 
-namespace Intergraph.AsiaPac.WpfApplication.UI
+namespace Cobos.WpfApplication.UI
 {
 	/// <summary>
 	/// Interaction logic for Logon.xaml

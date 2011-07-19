@@ -38,11 +38,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web.Script.Serialization;
-using Intergraph.AsiaPac.Utilities.Extensions;
 
 #if INTERGRAPH_BRANDING
+using Intergraph.AsiaPac.Utilities.Extensions;
+
 namespace Intergraph.AsiaPac.Web.Utilities.Extensions
 #else
+using Cobos.Utilities.Extensions;
+
 namespace Cobos.Web.Utilities.Extensions
 #endif
 {

@@ -2,8 +2,8 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 					 xmlns:msxsl="urn:schemas-microsoft-com:xslt"
 					 xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-					 xmlns="http://schemas.intergraph.com/asiapac/cad/datamodel/1.0.0"
-					 xmlns:cad="http://schemas.intergraph.com/asiapac/cad/datamodel/1.0.0"
+					 xmlns="http://schemas.cobos.co.uk/datamodel/1.0.0"
+					 xmlns:cobos="http://schemas.cobos.co.uk/datamodel/1.0.0"
 >
 	<xsl:output method="xml" indent="yes" encoding="utf-8"/>
 
@@ -26,8 +26,8 @@
 	<xsl:template name="nsdecl">
 		<xsl:variable name="nsdecl">
 			<nsdecl xmlns:msxsl="urn:schemas-microsoft-com:xslt"
-						xmlns="http://schemas.intergraph.com/asiapac/cad/datamodel/1.0.0"
-						xmlns:cad="http://schemas.intergraph.com/asiapac/cad/datamodel/1.0.0"
+						xmlns="http://schemas.cobos.co.uk/datamodel/1.0.0"
+						xmlns:cobos="http://schemas.cobos.co.uk/datamodel/1.0.0"
 						xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
 		</xsl:variable>
 		<xsl:apply-templates mode="copyAttributesAndNamespace" select="msxsl:node-set($nsdecl)"/>

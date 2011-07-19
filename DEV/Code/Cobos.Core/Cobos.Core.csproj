@@ -40,8 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CobosException.cs" />
     <Compile Include="Generated\LogFile.cs" />
-    <Compile Include="IntergraphException.cs" />
     <Compile Include="Logger\DebugLogger.cs" />
     <Compile Include="Logger\ILogger.cs" />
     <Compile Include="Logger\LogFileWriter.cs" />

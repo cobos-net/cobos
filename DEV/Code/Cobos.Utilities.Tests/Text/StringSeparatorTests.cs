@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 using Xunit;
-using Intergraph.AsiaPac.Utilities.Text;
+using Cobos.Utilities.Text;
 
-namespace Intergraph.AsiaPac.Utilities.Tests.Text
+namespace Cobos.Utilities.Tests.Text
 {
 	public class StringSeparatorTests
 	{

@@ -1,4 +1,4 @@
-﻿<Window x:Class="Intergraph.AsiaPac.WpfApplication.UI.ProgressDialog"
+﻿<Window x:Class="Cobos.WpfApplication.UI.ProgressDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     Title="Progress" Height="130" Width="350" ShowInTaskbar="False" ResizeMode="NoResize">

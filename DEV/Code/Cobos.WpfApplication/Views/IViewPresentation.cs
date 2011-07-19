@@ -5,7 +5,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Intergraph.AsiaPac.WpfApplication.Views
+namespace Cobos.WpfApplication.Views
 {
 	public interface IViewPresentation
 	{

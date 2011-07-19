@@ -10,9 +10,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using Intergraph.AsiaPac.WpfApplication.ViewModels;
+using Cobos.WpfApplication.ViewModels;
 
-namespace Intergraph.AsiaPac.WpfApplication.Views
+namespace Cobos.WpfApplication.Views
 {
 	/// <summary>
 	/// Interaction logic for PresentationWindow.xaml

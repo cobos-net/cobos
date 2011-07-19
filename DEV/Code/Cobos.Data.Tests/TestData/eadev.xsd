@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<xsd:schema targetNamespace="http://schemas.intergraph.com/asiapac/cad/datamodel" elementFormDefault="qualified" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.intergraph.com/asiapac/cad/datamodel" xmlns:cad="http://schemas.intergraph.com/asiapac/cad/datamodel">
+<xsd:schema targetNamespace="http://schemas.cobos.co.uk/datamodel" elementFormDefault="qualified" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.cobos.co.uk/datamodel" xmlns:cobos="http://schemas.cobos.co.uk/datamodel">
   <xsd:simpleType name="char">
     <xsd:restriction base="xsd:string">
       <xsd:maxLength value="1" />

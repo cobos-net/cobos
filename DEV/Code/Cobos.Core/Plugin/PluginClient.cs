@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Intergraph.AsiaPac.Utilities.File;
+using Cobos.Utilities.File;
 
-namespace Intergraph.AsiaPac.Core.Plugin
+namespace Cobos.Core.Plugin
 {
 	public interface IPluginClient
 	{

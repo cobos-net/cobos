@@ -3,8 +3,8 @@
 						xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 						xmlns:msxsl="urn:schemas-microsoft-com:xslt"
 						exclude-result-prefixes="msxsl"
-						xmlns="http://schemas.intergraph.com/asiapac/cad/datamodel/1.0.0"
-						xmlns:cad="http://schemas.intergraph.com/asiapac/cad/datamodel/1.0.0"
+						xmlns="http://schemas.cobos.co.uk/datamodel/1.0.0"
+						xmlns:cobos="http://schemas.cobos.co.uk/datamodel/1.0.0"
 						xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 >
 
@@ -31,11 +31,11 @@
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-	<xsl:template match="/cad:DataModel">
+	<xsl:template match="/cobos:DataModel">
 		<xsl:call-template name="generatedXmlWarning"/>
 		<xsl:element name="DataModel">
 			<xsl:apply-templates mode="copyAttributesAndNamespace" select="."/>
-			<xsl:apply-templates select="cad:Object|cad:Interface|cad:TableObject" mode="classHierarchy"/>
+			<xsl:apply-templates select="cobos:Object|cobos:Interface|cobos:TableObject" mode="classHierarchy"/>
 		</xsl:element>
 	</xsl:template>
 
@@ -47,7 +47,7 @@
 	-->
 
 	<!-- match a concrete type -->
-	<xsl:template match="cad:Object[ not( @type ) ]" mode="classHierarchy">
+	<xsl:template match="cobos:Object[ not( @type ) ]" mode="classHierarchy">
 		<xsl:element name="Object">
 			<xsl:apply-templates mode="copyAttributesAndNamespace" select="."/>
 			<xsl:if test="not( @dbTable )">
@@ -58,12 +58,12 @@
 			<xsl:apply-templates mode="classHierarchyClassName" select="."/>
 			<xsl:apply-templates mode="classHierarchyDatasetDefinition" select="."/>
 			<xsl:apply-templates select="child::*" mode="classHierarchy"/>
-			<xsl:copy-of select="./cad:Metadata"/>
+			<xsl:copy-of select="./cobos:Metadata"/>
 		</xsl:element>
 	</xsl:template>
 
 	<!-- match an interface -->
-	<xsl:template match="cad:Interface" mode="classHierarchy">
+	<xsl:template match="cobos:Interface" mode="classHierarchy">
 		<xsl:element name="Interface">
 			<xsl:apply-templates mode="copyAttributesAndNamespace" select="."/>
 			<xsl:apply-templates mode="classHierarchyClassName" select="."/>
@@ -72,18 +72,18 @@
 	</xsl:template>
 
 	<!-- match a reference type -->
-	<xsl:template match="cad:Object[ @type ]" mode="classHierarchy">
+	<xsl:template match="cobos:Object[ @type ]" mode="classHierarchy">
 		<xsl:element name="Object">
 			<xsl:apply-templates mode="copyAttributesAndNamespace" select="."/>
 			<xsl:apply-templates mode="classHierarchyClassName" select="."/>
 			<xsl:apply-templates mode="classHierarchyDatasetDefinition" select="."/>
-			<xsl:apply-templates select="//cad:Type[ @name = current()/@type ]" mode="classHierarchy"/>
-			<xsl:copy-of select="./cad:Metadata"/>
+			<xsl:apply-templates select="//cobos:Type[ @name = current()/@type ]" mode="classHierarchy"/>
+			<xsl:copy-of select="./cobos:Metadata"/>
 		</xsl:element>
 	</xsl:template>
 
 	<!-- match a table type -->
-	<xsl:template match="cad:TableObject" mode="classHierarchy">
+	<xsl:template match="cobos:TableObject" mode="classHierarchy">
 		<xsl:element name="Object">
 			<xsl:apply-templates mode="copyAttributesAndNamespace" select="."/>
 			<xsl:apply-templates mode="classHierarchyClassName" select="."/>
@@ -97,26 +97,26 @@
 					</xsl:attribute>
 				</xsl:element>
 			</xsl:for-each>
-			<xsl:copy-of select="./cad:Metadata"/>
+			<xsl:copy-of select="./cobos:Metadata"/>
 		</xsl:element>
 	</xsl:template>
 
 	<!-- match a reference type -->
-	<xsl:template match="cad:Reference" mode="classHierarchy">
+	<xsl:template match="cobos:Reference" mode="classHierarchy">
 		<xsl:element name="Reference">
-			<xsl:apply-templates mode="classHierarchyDatasetDefinition" select="/cad:DataModel/cad:Object[ @name = current()/@ref ]"/>
+			<xsl:apply-templates mode="classHierarchyDatasetDefinition" select="/cobos:DataModel/cobos:Object[ @name = current()/@ref ]"/>
 			<xsl:copy-of select="@*"/>
-			<xsl:copy-of select="./cad:Metadata"/>
+			<xsl:copy-of select="./cobos:Metadata"/>
 		</xsl:element>
 	</xsl:template>
 
 	<!-- tag only the top level object with the derived DataRow id -->
-	<xsl:template match="cad:TableObject|cad:Object[ parent::node()[ self::cad:DataModel ] ]" mode="classHierarchyDatasetDefinition">
+	<xsl:template match="cobos:TableObject|cobos:Object[ parent::node()[ self::cobos:DataModel ] ]" mode="classHierarchyDatasetDefinition">
 		<xsl:variable name="className">
 			<xsl:apply-templates mode="className" select="."/>
 		</xsl:variable>
 		<xsl:variable name="datasetName">
-			<xsl:apply-templates mode="className" select="/cad:DataModel"/>
+			<xsl:apply-templates mode="className" select="/cobos:DataModel"/>
 		</xsl:variable>
 		<xsl:attribute name="dataModelType">
 			<xsl:value-of select="$datasetName"/>
@@ -132,10 +132,10 @@
 		</xsl:attribute>
 	</xsl:template>
 
-	<xsl:template match="cad:Object[ not(parent::node()[ self::cad:DataModel ]) ]" mode="classHierarchyDatasetDefinition"/>
+	<xsl:template match="cobos:Object[ not(parent::node()[ self::cobos:DataModel ]) ]" mode="classHierarchyDatasetDefinition"/>
 
 	<!-- Expand a type reference into the hierarchy -->
-	<xsl:template match="cad:Type" mode="classHierarchy">
+	<xsl:template match="cobos:Type" mode="classHierarchy">
 		<xsl:attribute name="dbTable">
 			<xsl:apply-templates mode="getDbTable" select="."/>
 		</xsl:attribute>
@@ -143,7 +143,7 @@
 	</xsl:template>
 
 	<!-- Copy the property over including the database attributes -->
-	<xsl:template match="cad:Property" mode="classHierarchy">
+	<xsl:template match="cobos:Property" mode="classHierarchy">
 		<xsl:element name="Property">
 			<xsl:apply-templates mode="copyAttributesAndNamespace" select="."/>
 			<xsl:apply-templates mode="classHierarchyPropertyName" select="."/>
@@ -161,8 +161,8 @@
 	</xsl:template>
 
 	<!-- apply the dbTable attribute from either this node or an ancestor that defines it -->
-	<xsl:template match="cad:Object|cad:Type|cad:Property" mode="getDbTable">
-		<xsl:value-of select="ancestor-or-self::*[ self::cad:Object | self::cad:Interface | self::cad:Type | self::cad:Property ][ @dbTable ][ 1 ]/@dbTable"/>
+	<xsl:template match="cobos:Object|cobos:Type|cobos:Property" mode="getDbTable">
+		<xsl:value-of select="ancestor-or-self::*[ self::cobos:Object | self::cobos:Interface | self::cobos:Type | self::cobos:Property ][ @dbTable ][ 1 ]/@dbTable"/>
 	</xsl:template>
 
 	<!-- Copy the database type and mulitplicity to the expanded property -->
@@ -196,14 +196,14 @@
 	-->
 
 	<!-- class name for the datamodel -->
-	<xsl:template match="cad:DataModel|cad:TableObject|cad:Interface" mode="classHierarchyClassName">
+	<xsl:template match="cobos:DataModel|cobos:TableObject|cobos:Interface" mode="classHierarchyClassName">
 		<xsl:attribute name="className">
 			<xsl:apply-templates mode="className" select="."/>
 		</xsl:attribute>
 	</xsl:template>
 
 	<!-- class name for concrete object type -->
-	<xsl:template match="cad:Object[ parent::cad:DataModel ]" mode="classHierarchyClassName">
+	<xsl:template match="cobos:Object[ parent::cobos:DataModel ]" mode="classHierarchyClassName">
 		<xsl:attribute name="className">
 			<xsl:apply-templates mode="className" select="."/>
 		</xsl:attribute>
@@ -213,7 +213,7 @@
 	</xsl:template>
 
 	<!-- class name for a type reference -->
-	<xsl:template match="cad:Object[ @type ][ not( parent::cad:DataModel ) ]" mode="classHierarchyClassName">
+	<xsl:template match="cobos:Object[ @type ][ not( parent::cobos:DataModel ) ]" mode="classHierarchyClassName">
 		<xsl:attribute name="className">
 			<xsl:apply-templates mode="className" select="."/>
 		</xsl:attribute>
@@ -226,7 +226,7 @@
 	</xsl:template>
 
 	<!-- class name for an anonymous nested type, make it up based on the parent name -->
-	<xsl:template match="cad:Object[ not( @type ) ][ not( parent::cad:DataModel ) ]" mode="classHierarchyClassName">
+	<xsl:template match="cobos:Object[ not( @type ) ][ not( parent::cobos:DataModel ) ]" mode="classHierarchyClassName">
 		<xsl:attribute name="className">
 			<xsl:apply-templates mode="className" select="."/>
 		</xsl:attribute>
@@ -239,9 +239,9 @@
 	</xsl:template>
 	
 	<!-- qualified name for a property -->
-	<xsl:template match="cad:Property" mode="classHierarchyPropertyName">
+	<xsl:template match="cobos:Property" mode="classHierarchyPropertyName">
 		<xsl:attribute name="qualifiedName">
-			<xsl:apply-templates select="ancestor::*[ self::cad:Object | self::cad:Interface ]" mode="qualifiedNameForClass"/>
+			<xsl:apply-templates select="ancestor::*[ self::cobos:Object | self::cobos:Interface ]" mode="qualifiedNameForClass"/>
 			<xsl:call-template name="titleCaseName">
 				<xsl:with-param name="name">
 					<xsl:value-of select="@name"/>

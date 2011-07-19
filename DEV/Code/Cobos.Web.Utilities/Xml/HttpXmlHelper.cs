@@ -36,11 +36,14 @@
 using System;
 using System.Text;
 using System.Web;
-using Intergraph.AsiaPac.Utilities.Xml;
 
 #if INTERGRAPH_BRANDING
+using Intergraph.AsiaPac.Utilities.Xml;
+
 namespace Intergraph.AsiaPac.Web.Utilities.Xml
 #else
+using Cobos.Utilities.Xml;
+
 namespace Cobos.Web.Utilities.Xml
 #endif
 {

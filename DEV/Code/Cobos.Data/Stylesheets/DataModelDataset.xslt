@@ -2,8 +2,8 @@
 						xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 						xmlns:msxsl="urn:schemas-microsoft-com:xslt"
 						exclude-result-prefixes="msxsl"
-						xmlns="http://schemas.intergraph.com/asiapac/cad/datamodel/1.0.0"
-						xmlns:cad="http://schemas.intergraph.com/asiapac/cad/datamodel/1.0.0"
+						xmlns="http://schemas.cobos.co.uk/datamodel/1.0.0"
+						xmlns:cobos="http://schemas.cobos.co.uk/datamodel/1.0.0"
 						xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 						xmlns:msdata="urn:schemas-microsoft-com:xml-msdata"
 						xmlns:codegen="urn:schemas-microsoft-com:xml-msprop"
@@ -26,7 +26,7 @@
 
 	<xsl:include href="DataModelCommon.xslt"/>
 
-	<xsl:key name="dbTableKey" match="cad:Object|cad:Property" use="@dbTable"/>
+	<xsl:key name="dbTableKey" match="cobos:Object|cobos:Property" use="@dbTable"/>
 
 	<!--
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -34,7 +34,7 @@
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-	<xsl:template match="/cad:DataModel">
+	<xsl:template match="/cobos:DataModel">
 
 		<xsl:call-template name="generatedXmlWarning"/>
 
@@ -42,10 +42,10 @@
 			<xsl:apply-templates select="." mode="className"/>
 		</xsl:variable>
 
-		<xsd:schema targetNamespace="http://schemas.intergraph.com/asiapac/cad/datamodel/1.0.0"
+		<xsd:schema targetNamespace="http://schemas.cobos.co.uk/datamodel/1.0.0"
 				elementFormDefault="qualified" 
-				xmlns="http://schemas.intergraph.com/asiapac/cad/datamodel/1.0.0"
-				xmlns:cad="http://schemas.intergraph.com/asiapac/cad/datamodel/1.0.0"
+				xmlns="http://schemas.cobos.co.uk/datamodel/1.0.0"
+				xmlns:cobos="http://schemas.cobos.co.uk/datamodel/1.0.0"
 				xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 				xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
 			<xsl:element name="xsd:element">
@@ -55,13 +55,13 @@
 				<xsl:attribute name="msdata:IsDataSet">true</xsl:attribute>
 				<xsd:complexType>
 					<xsd:choice maxOccurs="unbounded">
-						<xsl:apply-templates select="cad:Object"/>
+						<xsl:apply-templates select="cobos:Object"/>
 					</xsd:choice>
 				</xsd:complexType>
 				<!-- copy the key constraints that apply to the tables referenced by this data model -->
-				<xsl:apply-templates select="cad:Object" mode="constraints"/>
+				<xsl:apply-templates select="cobos:Object" mode="constraints"/>
 				<!-- generate unique and keyref constraints for the reference objects -->
-				<xsl:apply-templates select="//cad:Reference"/>
+				<xsl:apply-templates select="//cobos:Reference"/>
 			</xsl:element>
 			<!-- copy the database type definitions -->
 			<xsl:copy-of select="$databaseTypesNodeSet"/>
@@ -76,7 +76,7 @@
 	-->
 
 	<!-- Match a processed object -->
-	<xsl:template match="cad:Object">
+	<xsl:template match="cobos:Object">
 		<xsl:element name="xsd:element">
 			<xsl:attribute name="name">
 				<xsl:value-of select="@className"/>
@@ -88,7 +88,7 @@
 			-->
 			<xsd:complexType>
 				<xsd:sequence>
-					<xsl:apply-templates select=".//cad:Property"/>
+					<xsl:apply-templates select=".//cobos:Property"/>
 				</xsd:sequence>
 			</xsd:complexType>
 		</xsl:element>
@@ -100,7 +100,7 @@
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-	<xsl:template match="cad:Property">
+	<xsl:template match="cobos:Property">
 		
 		<xsl:element name="xsd:element">
 			<xsl:variable name="qualifiedName">
@@ -129,16 +129,16 @@
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-	<xsl:template match="cad:Reference">
+	<xsl:template match="cobos:Reference">
 		<xsl:variable name="keyName">
 			<xsl:value-of select="../@name"/>
 			<xsl:value-of select="@ref"/>
 		</xsl:variable>
 		<xsl:variable name="keyfield">
-			<xsl:value-of select="../cad:Property[ current()/@key ]/@dbColumn"/>
+			<xsl:value-of select="../cobos:Property[ current()/@key ]/@dbColumn"/>
 		</xsl:variable>
 		<xsl:variable name="keyreffield">
-			<xsl:value-of select="/cad:DataModel/cad:Object[ current()/@ref ]/cad:Property[ current()/@refer ]/@dbColumn"/>
+			<xsl:value-of select="/cobos:DataModel/cobos:Object[ current()/@ref ]/cobos:Property[ current()/@refer ]/@dbColumn"/>
 		</xsl:variable>
 		<xsd:unique name="{$keyName}Constraint" msdata:PrimaryKey="true">
 			<xsd:selector xpath=".//{../@name}"/>
@@ -157,7 +157,7 @@
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-	<xsl:template match="cad:Object" mode="constraints">
+	<xsl:template match="cobos:Object" mode="constraints">
 		<xsl:variable name="object" select="."/>
 		
 		<xsl:for-each select="$databaseConstraintsNodeSet/*[ self::xsd:key | self::xsd:unique | self::xsd:keyref ][ xsd:selector/@xpath = concat( './/', $object/@dbTable ) ]">

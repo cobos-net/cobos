@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using Xunit;
-using Intergraph.AsiaPac.WpfApplication.UI;
-using Intergraph.AsiaPac.Core.UI;
+using Cobos.WpfApplication.UI;
+using Cobos.Core.UI;
 
-namespace Intergraph.AsiaPac.WpfApplication.Tests.UI
+namespace Cobos.WpfApplication.Tests.UI
 {
 	public class ProgressDialogTest
 	{

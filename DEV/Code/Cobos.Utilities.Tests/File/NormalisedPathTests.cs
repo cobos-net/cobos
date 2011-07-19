@@ -1,8 +1,8 @@
 ﻿using System;
 using Xunit;
-using Intergraph.AsiaPac.Utilities.File;
+using Cobos.Utilities.File;
 
-namespace Intergraph.AsiaPac.Utilities.Tests.File
+namespace Cobos.Utilities.Tests.File
 {
 	public class NormalisedPathTests
 	{

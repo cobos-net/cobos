@@ -10,9 +10,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using Intergraph.AsiaPac.Core.UI;
+using Cobos.Core.UI;
 
-namespace Intergraph.AsiaPac.WpfApplication.UI
+namespace Cobos.WpfApplication.UI
 {
 	/// <summary>
 	/// Interaction logic for ProgressDialog.xaml

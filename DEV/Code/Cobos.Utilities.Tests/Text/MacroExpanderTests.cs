@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
-using Intergraph.AsiaPac.Utilities.Text;
+using Cobos.Utilities.Text;
 using Xunit;
 
-namespace Intergraph.AsiaPac.Utilities.Tests.Text
+namespace Cobos.Utilities.Tests.Text
 {
 	public class MacroExpanderTests
 	{

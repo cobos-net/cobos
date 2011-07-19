@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<LogFile xmlns="http://www.intergraph.com/asiapac/core/logger">
+<LogFile xmlns="http://www.cobos.co.uk/core/logger">
 	<metadata>
 		<name>Description</name>
 		<value>WMS Manager Log File</value>

@@ -50,7 +50,7 @@ namespace Intergraph.AsiaPac.Data
 using Cobos.Utilities;
 using Cobos.Utilities.Xml;
 
-//namespace Cobos.Data
+namespace Cobos.Data
 #endif
 {
 	using AsyncDataSetTask = AsyncTask<DataTable, DatabaseAdapter.QueryDatabaseAsync>;
@@ -243,11 +243,11 @@ using Cobos.Utilities.Xml;
 		/// <param name="tableName"></param>
 		/// <param name="dataSetName"></param>
 		/// <returns></returns>
-		public CadDataSet Execute( string sql, string tableName, string dataSetName )
+		public CobosDataSet Execute( string sql, string tableName, string dataSetName )
 		{
 			DataTable dataTable = Execute( sql, tableName );
 
-			CadDataSet dataSet = new CadDataSet( dataSetName );
+			CobosDataSet dataSet = new CobosDataSet( dataSetName );
 			dataSet.Tables.Add( dataTable );
 
 			return dataSet;
@@ -338,10 +338,13 @@ using Cobos.Utilities.Xml;
 		/// <param name="result"></param>
 		public void GetTableMetadata( string schema, string[] tables, Stream result )
 		{
-			CadDataSet dataset = TableMetadata( schema, tables );
+			CobosDataSet dataset = TableMetadata( schema, tables );
 
+#if INTERGRAPH_BRANDING
 			XslCompiledTransform xslTableToXsd = XsltHelper.Load( "DatabaseSchema.xslt", "Intergraph.AsiaPac.Data.Stylesheets" );
-
+#else
+			XslCompiledTransform xslTableToXsd = XsltHelper.Load( "DatabaseSchema.xslt", "Cobos.Data.Stylesheets" );
+#endif
 			dataset.ToXml( result );
 		}
 
@@ -353,10 +356,13 @@ using Cobos.Utilities.Xml;
 		/// <param name="result"></param>
 		public void GetTableSchema( string schema, string[] tables, Stream result )
 		{
-			CadDataSet dataset = TableMetadata( schema, tables );
+			CobosDataSet dataset = TableMetadata( schema, tables );
 
+#if INTERGRAPH_BRANDING
 			XslCompiledTransform xslTableToXsd = XsltHelper.Load( "DatabaseSchema.xslt", "Intergraph.AsiaPac.Data.Stylesheets" );
-
+#else
+			XslCompiledTransform xslTableToXsd = XsltHelper.Load( "DatabaseSchema.xslt", "Cobos.Data.Stylesheets" );
+#endif
 			if ( xslTableToXsd != null )
 			{
 				dataset.ToXml( xslTableToXsd, null, result );
@@ -367,9 +373,9 @@ using Cobos.Utilities.Xml;
 			}
 		}
 
-		CadDataSet TableMetadata( string schema, string[] tables )
+		CobosDataSet TableMetadata( string schema, string[] tables )
 		{
-			CadDataSet result = new CadDataSet( "TABLE_METADATA" );
+			CobosDataSet result = new CobosDataSet( "TABLE_METADATA" );
 
 			DataTable table = new DataTable( "TABLE" );
 			table.Columns.Add( new DataColumn( "NAME", Type.GetType("System.String") ) );
@@ -403,10 +409,10 @@ using Cobos.Utilities.Xml;
 
 			Execute( constraints, "CONSTRAINT", result );
 
-			CadDataSet.Relationship[] relations = new CadDataSet.Relationship[]
+			CobosDataSet.Relationship[] relations = new CobosDataSet.Relationship[]
 			{
-				new CadDataSet.Relationship( "COLUMNS", "TABLE", "NAME", "COLUMN", "TABLE_NAME" ),
-				new CadDataSet.Relationship( "CONTSTRAINTS", "TABLE", "NAME", "CONSTRAINT", "TABLE_NAME" )
+				new CobosDataSet.Relationship( "COLUMNS", "TABLE", "NAME", "COLUMN", "TABLE_NAME" ),
+				new CobosDataSet.Relationship( "CONTSTRAINTS", "TABLE", "NAME", "CONSTRAINT", "TABLE_NAME" )
 			};
 
 			result.CreateRelationships( relations );

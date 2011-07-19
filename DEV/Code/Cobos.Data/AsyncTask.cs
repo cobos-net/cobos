@@ -41,7 +41,7 @@ using System.Text;
 #if INTERGRAPH_BRANDING
 namespace Intergraph.AsiaPac.Data
 #else
-//namespace Cobos.Data
+namespace Cobos.Data
 #endif
 {
 	/// <summary>
