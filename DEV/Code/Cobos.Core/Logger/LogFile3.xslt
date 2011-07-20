@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	 xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="msxsl cobos"
-					 xmlns:cobos="http://www.intergraph.com/asiapac/core/logger"
+					 xmlns:cobos="http://www.cobos.co.uk/core/logger"
 >
 	<xsl:output method="html" indent="yes" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"/>
 
@@ -136,7 +136,7 @@
 							"xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" " +
 							"xmlns:msxsl=\"urn:schemas-microsoft-com:xslt\" exclude-result-prefixes=\"msxsl cobos\" " +
 							"xmlns:xhtml=\"http://www.w3.org/1999/xhtml\" " +
-							"xmlns:cobos=\"http://www.intergraph.com/asiapac/core/logger\">" +
+							"xmlns:cobos=\"http://www.cobos.co.uk/core/logger\">" +
 									
 							"<xsl:output method=\"html\" indent=\"yes\"/>" +
 

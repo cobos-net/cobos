@@ -18,7 +18,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug_Intergraph\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;INTERGRAPH_BRANDING</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -51,7 +51,7 @@
     <Compile Include="Xml\HttpXmlHelper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Intergraph.AsiaPac.Utilities\Intergraph.AsiaPac.Utilities.csproj">
+    <ProjectReference Include="..\Cobos.Utilities\Intergraph.AsiaPac.Utilities.csproj">
       <Project>{5EC3C9B9-DAE8-481C-8495-2A0A737D87A3}</Project>
       <Name>Intergraph.AsiaPac.Utilities</Name>
     </ProjectReference>

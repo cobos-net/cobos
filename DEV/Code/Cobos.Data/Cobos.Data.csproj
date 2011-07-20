@@ -44,7 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AsyncTask.cs" />
-    <Compile Include="CadDataSet.cs">
+    <Compile Include="CobosDataSet.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="DatabaseAdapter.cs" />

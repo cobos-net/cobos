@@ -55,7 +55,7 @@
     <Compile Include="UI\ICurrentUser.cs" />
     <Compile Include="UI\IMessageHandler.cs" />
     <Compile Include="UI\IProgressBar.cs" />
-    <Compile Include="UI\IntergraphApplication.cs" />
+    <Compile Include="UI\CobosApplication.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Logger\LogFile.xslt">

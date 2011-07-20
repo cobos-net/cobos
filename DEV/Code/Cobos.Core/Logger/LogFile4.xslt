@@ -1,4 +1,4 @@
-﻿<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="msxsl cobos" xmlns:cobos="http://www.intergraph.com/asiapac/core/logger">
+﻿<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="msxsl cobos" xmlns:cobos="http://www.cobos.co.uk/core/logger">
 	<xsl:output method="html" indent="yes"/>
 	<xsl:template match="/cobos:LogFile">
 		<table class="logFile" cellpadding="0px" cellspacing="0px">

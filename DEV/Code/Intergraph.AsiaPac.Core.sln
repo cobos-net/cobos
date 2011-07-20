@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intergraph.AsiaPac.Data", "Cobos.Data\Intergraph.AsiaPac.Data.csproj", "{6906B107-C149-4682-AF7B-FEF9F697FE36}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intergraph.AsiaPac.Utilities", "Cobos.Utilities\Intergraph.AsiaPac.Utilities.csproj", "{5EC3C9B9-DAE8-481C-8495-2A0A737D87A3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intergraph.AsiaPac.Web.Utilities", "Cobos.Web.Utilities\Intergraph.AsiaPac.Web.Utilities.csproj", "{D5196DEE-1711-4AD3-97C8-5215BE26264C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Installer", "Installer", "{E1977A65-A7D4-4F02-AC3C-E8656218718D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6906B107-C149-4682-AF7B-FEF9F697FE36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6906B107-C149-4682-AF7B-FEF9F697FE36}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6906B107-C149-4682-AF7B-FEF9F697FE36}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6906B107-C149-4682-AF7B-FEF9F697FE36}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5EC3C9B9-DAE8-481C-8495-2A0A737D87A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5EC3C9B9-DAE8-481C-8495-2A0A737D87A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5EC3C9B9-DAE8-481C-8495-2A0A737D87A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5EC3C9B9-DAE8-481C-8495-2A0A737D87A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5196DEE-1711-4AD3-97C8-5215BE26264C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5196DEE-1711-4AD3-97C8-5215BE26264C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5196DEE-1711-4AD3-97C8-5215BE26264C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5196DEE-1711-4AD3-97C8-5215BE26264C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
