@@ -68,7 +68,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Stylesheets\CadDatabase.xslt">
+    <None Include="Stylesheets\DatabaseVariables.xslt">
       <SubType>Designer</SubType>
     </None>
     <EmbeddedResource Include="Stylesheets\DatabaseSchema.xslt">
@@ -94,7 +94,7 @@
     <None Include="Schemas\DataModel.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Stylesheets\CadDatabase.xsd">
+    <None Include="Stylesheets\DatabaseSchema.xsd">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>

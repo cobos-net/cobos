@@ -9,6 +9,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intergraph.AsiaPac.Web.Util
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Installer", "Installer", "{E1977A65-A7D4-4F02-AC3C-E8656218718D}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Cobos.Core.SDK", "Installer\Cobos.Core.SDK\Cobos.Core.SDK.vdproj", "{2FE4D2E6-4428-4CBB-92AB-09176BE15EE4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6906B107-C149-4682-AF7B-FEF9F697FE36} = {6906B107-C149-4682-AF7B-FEF9F697FE36}
+		{5EC3C9B9-DAE8-481C-8495-2A0A737D87A3} = {5EC3C9B9-DAE8-481C-8495-2A0A737D87A3}
+		{D5196DEE-1711-4AD3-97C8-5215BE26264C} = {D5196DEE-1711-4AD3-97C8-5215BE26264C}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,8 +34,14 @@ Global
 		{D5196DEE-1711-4AD3-97C8-5215BE26264C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D5196DEE-1711-4AD3-97C8-5215BE26264C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D5196DEE-1711-4AD3-97C8-5215BE26264C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2FE4D2E6-4428-4CBB-92AB-09176BE15EE4}.Debug|Any CPU.ActiveCfg = Debug
+		{2FE4D2E6-4428-4CBB-92AB-09176BE15EE4}.Release|Any CPU.ActiveCfg = Release
+		{2FE4D2E6-4428-4CBB-92AB-09176BE15EE4}.Release|Any CPU.Build.0 = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{2FE4D2E6-4428-4CBB-92AB-09176BE15EE4} = {E1977A65-A7D4-4F02-AC3C-E8656218718D}
 	EndGlobalSection
 EndGlobal

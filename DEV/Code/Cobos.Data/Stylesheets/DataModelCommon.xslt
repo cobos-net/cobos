@@ -20,7 +20,7 @@
 	-->
 
 	<!-- include the generated database schema variables -->
-	<xsl:include href="CadDatabase.xslt"/>
+	<xsl:include href="DatabaseVariables.xslt"/>
 	<xsl:include href="Utilities.xslt"/>
 
 	<!-- useful for formatting text output -->
