@@ -43,11 +43,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Adapters\OracleDatabaseAdapter.cs" />
+    <Compile Include="Adapters\SqlDatabaseAdapter.cs" />
     <Compile Include="AsyncTask.cs" />
     <Compile Include="CobosDataSet.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="DatabaseAdapter.cs" />
+    <Compile Include="DatabaseAdapterFactory.cs" />
     <Compile Include="DatabaseQuery.cs" />
     <Compile Include="IDatabaseAdapter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -68,42 +71,15 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Stylesheets\DatabaseVariables.xslt">
-      <SubType>Designer</SubType>
-    </None>
-    <EmbeddedResource Include="Stylesheets\DatabaseSchema.xslt">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Stylesheets\DatabaseTypes.xslt" />
-    <EmbeddedResource Include="Stylesheets\DataModelDataset.xslt">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Stylesheets\DataModelSchema.xslt" />
-    <EmbeddedResource Include="Stylesheets\Enum.xslt" />
-    <EmbeddedResource Include="Stylesheets\Utilities.xslt">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Stylesheets\xslt.js" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Stylesheets\DataModelCommon.xslt">
-      <SubType>Designer</SubType>
+    <EmbeddedResource Include="..\Cobos.Codegen\stylesheets\utilities.xslt">
+      <Link>Stylesheets\utilities.xslt</Link>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Schemas\DataModel.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Stylesheets\DatabaseSchema.xsd">
-      <SubType>Designer</SubType>
-    </None>
+    <EmbeddedResource Include="..\Cobos.Codegen\stylesheets\database\oracle\databaseschema.xslt">
+      <Link>Stylesheets\Database\Oracle\databaseschema.xslt</Link>
+    </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="Stylesheets\DataModelExpand.xslt">
-      <SubType>Designer</SubType>
-    </Content>
-  </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

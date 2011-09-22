@@ -35,11 +35,11 @@
 
 using System;
 using System.Data;
+using System.Data.Common;
 using System.Xml;
 using System.Xml.Xsl;
 using System.IO;
 using System.Diagnostics;
-using Oracle.DataAccess.Client;
 
 #if INTERGRAPH_BRANDING
 using Intergraph.AsiaPac.Utilities;
@@ -53,9 +53,10 @@ using Cobos.Utilities.Xml;
 namespace Cobos.Data
 #endif
 {
-	using AsyncDataSetTask = AsyncTask<DataTable, DatabaseAdapter.QueryDatabaseAsync>;
-
-	public class DatabaseAdapter : IDatabaseAdapter
+	public abstract class DatabaseAdapter<ConnectionType, CommandType, DataAdapterType> : IDatabaseAdapter
+		where ConnectionType : IDbConnection, new()
+		where CommandType : IDbCommand, new()
+		where DataAdapterType : DbDataAdapter, IDbDataAdapter, new()
 	{
 		#region Private data
 
@@ -85,12 +86,12 @@ namespace Cobos.Data
 		public delegate void QueryDatabaseAsync( string sql, DataTable table );
 
 		/// <summary>
-		/// Ignored for straight Oracle connections.
+		/// Can be ignored for most DB connection types.
 		/// </summary>
 		public bool ReadOnly
 		{
 			get;
-			private set;
+			protected set;
 		}
 
 		/// <summary>
@@ -99,7 +100,7 @@ namespace Cobos.Data
 		/// <param name="sql"></param>
 		/// <param name="tableName"></param>
 		/// <returns></returns>
-		public DataTable Execute( string sql, string tableName )
+		public DataTable Fill( string sql, string tableName )
 		{
 			DataTable dataTable = null;
 
@@ -107,7 +108,7 @@ namespace Cobos.Data
 			{
 				dataTable = new DataTable( tableName );
 				
-				Execute( sql, dataTable );
+				Fill( sql, dataTable );
 				
 				return dataTable;
 			}
@@ -121,34 +122,26 @@ namespace Cobos.Data
 			}
 		}
 
-		public void Execute( string sql, DataTable result )
+		public void Fill( string sql, DataTable result )
 		{
-			using ( OracleConnection oracle = new OracleConnection( ConnectionString ) )
+			using ( ConnectionType connection = new ConnectionType() )
 			{
-#if DEBUG
-				Stopwatch timer = new Stopwatch();
-				timer.Start();
-#endif
+				connection.ConnectionString = ConnectionString;
+				connection.Open();
 
-				oracle.Open();
-
-				using ( OracleCommand command = new OracleCommand() )
+				using ( CommandType command = new CommandType() )
 				{
-					command.Connection = oracle;
+					command.Connection = connection;
 					command.CommandText = sql;
 
-					using ( OracleDataAdapter adapter = new OracleDataAdapter( command ) )
+					using ( DataAdapterType adapter = new DataAdapterType() )
 					{
+						((IDbDataAdapter)adapter).SelectCommand = command;
 						adapter.Fill( result );
 					}
 				}
 
-				oracle.Close();
-
-#if DEBUG
-				timer.Stop();
-				System.Diagnostics.Debug.Print( "{0}: {1} ({2})", timer.ElapsedMilliseconds, result.TableName, sql );
-#endif
+				connection.Close();
 			}
 		}
 
@@ -158,7 +151,7 @@ namespace Cobos.Data
 		/// <typeparam name="DataTableType"></typeparam>
 		/// <param name="sql"></param>
 		/// <returns></returns>
-		public DataTableType Execute<DataTableType>( string sql ) where DataTableType : DataTable, new()
+		public DataTableType Fill<DataTableType>( string sql ) where DataTableType : DataTable, new()
 		{
 			DataTableType dataTable = default( DataTableType );
 
@@ -166,7 +159,7 @@ namespace Cobos.Data
 			{
 				dataTable = new DataTableType();
 				
-				Execute( sql, dataTable );
+				Fill( sql, dataTable );
 
 				return dataTable;
 			}
@@ -186,40 +179,32 @@ namespace Cobos.Data
 		/// <typeparam name="DataTableType"></typeparam>
 		/// <param name="sql"></param>
 		/// <returns></returns>
-		public DataSetType Execute<DataSetType>( string sql, string tableName ) where DataSetType : DataSet, new()
+		public DataSetType Fill<DataSetType>( string sql, string tableName ) where DataSetType : DataSet, new()
 		{
 			DataSetType dataSet = default( DataSetType );
 
 			try
 			{
-				using ( OracleConnection oracle = new OracleConnection( ConnectionString ) )
+				using ( ConnectionType connection = new ConnectionType() )
 				{
-#if DEBUG
-					Stopwatch timer = new Stopwatch();
-					timer.Start();
-#endif
+					connection.ConnectionString = ConnectionString;
+					connection.Open();
 
-					oracle.Open();
-
-					using ( OracleCommand command = new OracleCommand() )
+					using ( CommandType command = new CommandType() )
 					{
-						command.Connection = oracle;
+						command.Connection = connection;
 						command.CommandText = sql;
 
-						using ( OracleDataAdapter adapter = new OracleDataAdapter( command ) )
+						using ( DataAdapterType adapter = new DataAdapterType() )
 						{
+							((IDbDataAdapter)adapter).SelectCommand = command;
 							dataSet = new DataSetType();
 							adapter.Fill( dataSet, tableName );
 						}
 
 					}
 
-					oracle.Close();
-
-#if DEBUG
-					timer.Stop();
-					System.Diagnostics.Debug.Print( "{0}: {1} ({2})", timer.ElapsedMilliseconds, tableName, sql );
-#endif
+					connection.Close();
 
 					return dataSet;
 				}
@@ -234,8 +219,6 @@ namespace Cobos.Data
 			}
 		}
 
-
-
 		/// <summary>
 		/// 
 		/// </summary>
@@ -243,9 +226,9 @@ namespace Cobos.Data
 		/// <param name="tableName"></param>
 		/// <param name="dataSetName"></param>
 		/// <returns></returns>
-		public CobosDataSet Execute( string sql, string tableName, string dataSetName )
+		public CobosDataSet Fill( string sql, string tableName, string dataSetName )
 		{
-			DataTable dataTable = Execute( sql, tableName );
+			DataTable dataTable = Fill( sql, tableName );
 
 			CobosDataSet dataSet = new CobosDataSet( dataSetName );
 			dataSet.Tables.Add( dataTable );
@@ -258,11 +241,11 @@ namespace Cobos.Data
 		/// </summary>
 		/// <param name="queries"></param>
 		/// <param name="dataset"></param>
-		public void Execute( DatabaseQuery[] queries )
+		public void Fill( DatabaseQuery[] queries )
 		{
 			for ( int q = 0; q != queries.Length; ++q )
 			{
-				Execute( queries[ q ].Sql, queries[ q ].Table );
+				Fill( queries[ q ].Sql, queries[ q ].Table );
 			}
 		}
 
@@ -271,9 +254,9 @@ namespace Cobos.Data
 		/// </summary>
 		/// <param name="queries"></param>
 		/// <param name="dataset"></param>
-		public void Execute( DatabaseQuery query )
+		public void Fill( DatabaseQuery query )
 		{
-			Execute( query.Sql, query.Table );
+			Fill( query.Sql, query.Table );
 		}
 
 		/// <summary>
@@ -281,13 +264,13 @@ namespace Cobos.Data
 		/// </summary>
 		/// <param name="query"></param>
 		/// <param name="dataset"></param>
-		public void Execute( string sql, string tableName, DataSet dataset )
+		public void Fill( string sql, string tableName, DataSet dataset )
 		{
 			DataTable table = dataset.Tables[ tableName ];
 
 			if ( table == null )
 			{
-				table = Execute( sql, tableName );
+				table = Fill( sql, tableName );
 
 				if ( table != null )
 				{
@@ -296,7 +279,7 @@ namespace Cobos.Data
 			}
 			else
 			{
-				Execute( sql, table );
+				Fill( sql, table );
 			}
 		}
 
@@ -306,10 +289,10 @@ namespace Cobos.Data
 		/// <param name="queries"></param>
 		/// <param name="dataSetName"></param>
 		/// <returns></returns>
-		public void ExecuteAsynch( DatabaseQuery[] queries )
+		public void FillAsynch( DatabaseQuery[] queries )
 		{
 			// create a new helpers list
-			AsyncDataSetTask[] tasks = new AsyncDataSetTask[ queries.Length ];
+			AsyncTask<DataTable, DatabaseAdapter<ConnectionType, CommandType, DataAdapterType>.QueryDatabaseAsync>[] tasks = new AsyncTask<DataTable, DatabaseAdapter<ConnectionType, CommandType, DataAdapterType>.QueryDatabaseAsync>[ queries.Length ];
 
 			// initiate the queries
 			for ( int i = 0; i != queries.Length; ++i )
@@ -317,14 +300,14 @@ namespace Cobos.Data
 				DatabaseQuery q = queries[ i ];
 								
 				// create a new query helper
-				tasks[ i ] = new AsyncDataSetTask();
+				tasks[ i ] = new AsyncTask<DataTable, DatabaseAdapter<ConnectionType, CommandType, DataAdapterType>.QueryDatabaseAsync>();
 				tasks[ i ].Object = q.Table;
-				tasks[ i ].Caller = Execute;
+				tasks[ i ].Caller = Fill;
 				tasks[ i ].AsyncResult = tasks[ i ].Caller.BeginInvoke( q.Sql, q.Table, null, null );
 			}
 
 			// get the results from the queries
-			foreach ( AsyncDataSetTask task in tasks )
+			foreach ( AsyncTask<DataTable, DatabaseAdapter<ConnectionType, CommandType, DataAdapterType>.QueryDatabaseAsync> task in tasks )
 			{
 				task.Caller.EndInvoke( task.AsyncResult );
 			}
@@ -339,12 +322,6 @@ namespace Cobos.Data
 		public void GetTableMetadata( string schema, string[] tables, Stream result )
 		{
 			CobosDataSet dataset = TableMetadata( schema, tables );
-
-#if INTERGRAPH_BRANDING
-			XslCompiledTransform xslTableToXsd = XsltHelper.Load( "DatabaseSchema.xslt", "Intergraph.AsiaPac.Data.Stylesheets" );
-#else
-			XslCompiledTransform xslTableToXsd = XsltHelper.Load( "DatabaseSchema.xslt", "Cobos.Data.Stylesheets" );
-#endif
 			dataset.ToXml( result );
 		}
 
@@ -359,9 +336,9 @@ namespace Cobos.Data
 			CobosDataSet dataset = TableMetadata( schema, tables );
 
 #if INTERGRAPH_BRANDING
-			XslCompiledTransform xslTableToXsd = XsltHelper.Load( "DatabaseSchema.xslt", "Intergraph.AsiaPac.Data.Stylesheets" );
+			XslCompiledTransform xslTableToXsd = XsltHelper.Load( "Database/Oracle/databaseschema.xslt", "Intergraph.AsiaPac.Data.Stylesheets" );
 #else
-			XslCompiledTransform xslTableToXsd = XsltHelper.Load( "DatabaseSchema.xslt", "Cobos.Data.Stylesheets" );
+			XslCompiledTransform xslTableToXsd = XsltHelper.Load( "Database/Oracle/databaseschema.xslt", "Cobos.Data.Stylesheets" );
 #endif
 			if ( xslTableToXsd != null )
 			{
@@ -373,52 +350,14 @@ namespace Cobos.Data
 			}
 		}
 
-		CobosDataSet TableMetadata( string schema, string[] tables )
-		{
-			CobosDataSet result = new CobosDataSet( "TABLE_METADATA" );
-
-			DataTable table = new DataTable( "TABLE" );
-			table.Columns.Add( new DataColumn( "NAME", Type.GetType("System.String") ) );
-
-			foreach ( string t in tables )
-			{
-				DataRow row = table.NewRow();
-				row[ "NAME" ] = t;
-				table.Rows.Add( row );
-			}
-
-			result.Tables.Add( table );
-
-			string columns = @"SELECT table_name, column_name, data_type, data_length, "
-							  + "data_precision, data_scale, nullable, data_default, char_length "
-							  + "FROM all_tab_columns "
-							  + "WHERE UPPER( owner ) = '" + schema.ToUpper() + "' "
-							  + "AND UPPER( table_name ) IN ('" + string.Join( "', '", tables ).ToUpper() + "') "
-							  + "ORDER BY table_name ASC, column_id ASC";
-
-			Execute( columns, "COLUMN", result );
-
-			string constraints = "SELECT cols.table_name, cols.column_name, cols.position, cons.constraint_type, cons.constraint_name, cons.status "
-										+ "FROM all_constraints cons, all_cons_columns cols "
-										+ "WHERE cols.table_name IN ('" + string.Join( "', '", tables ).ToUpper() + "') "
-										+ "AND cons.constraint_type IN ('P', 'R', 'U') "
-										+ "AND cons.constraint_name = cols.constraint_name "
-										+ "AND cons.owner = '" + schema.ToUpper() + "' "
-										+ "AND cons.owner = cols.owner "
-										+ "ORDER BY cols.table_name, cols.position";
-
-			Execute( constraints, "CONSTRAINT", result );
-
-			CobosDataSet.Relationship[] relations = new CobosDataSet.Relationship[]
-			{
-				new CobosDataSet.Relationship( "COLUMNS", "TABLE", "NAME", "COLUMN", "TABLE_NAME" ),
-				new CobosDataSet.Relationship( "CONTSTRAINTS", "TABLE", "NAME", "CONSTRAINT", "TABLE_NAME" )
-			};
-
-			result.CreateRelationships( relations );
-
-			return result;
-		}
+		/// <summary>
+		/// Querying metadata varies between platforms, each platform specific derived class must provide
+		/// its own implementation of this method.
+		/// </summary>
+		/// <param name="schema"></param>
+		/// <param name="tables"></param>
+		/// <returns></returns>
+		protected abstract CobosDataSet TableMetadata( string schema, string[] tables );
 
 		/// <summary>
 		/// Test that a connection to the database can be made
@@ -428,18 +367,18 @@ namespace Cobos.Data
 		{
 			try
 			{
-				using ( OracleConnection oracle = new OracleConnection( ConnectionString ) )
+				using ( ConnectionType connection = new ConnectionType() )
 				{
-					oracle.Open();
-					oracle.Close();
+					connection.ConnectionString = ConnectionString;
+					connection.Open();
+					connection.Close();
 					return true;
 				}
 			}
-			catch ( OracleException )
+			catch ( Exception )
 			{
 				return false;
 			}
-			// any other exceptions should not be ignored
 		}
 	}
 }

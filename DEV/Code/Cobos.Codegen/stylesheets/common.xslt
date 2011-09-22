@@ -8,7 +8,7 @@
 >
 	<!-- 
 	=============================================================================
-	Filename: datamodelcommon.xslt
+	Filename: common.xslt
 	Description: XSLT for common data model functionality
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	Created by: N.Davis                        Date: 2010-04-09
@@ -20,16 +20,20 @@
 	-->
 
 	<!-- include the generated database schema variables -->
-	<xsl:include href="DatabaseVariables.xslt"/>
-	<xsl:include href="Utilities.xslt"/>
+	<xsl:include href="./database/schema.xslt"/>
+	<xsl:include href="utilities.xslt"/>
 
 	<!-- useful for formatting text output -->
-	<xsl:variable name="newline" select="string('&#xD;&#xA;')"/>
-	<xsl:variable name="tab" select="string('&#9;')"/>
+	<xsl:variable name="newline" select="string( '&#xD;&#xA;' )"/>
+	<xsl:variable name="tab" select="string( '&#9;' )"/>
 	<xsl:variable name="newlineTab" select="concat( $newline, $tab )"/>
 	<xsl:variable name="newlineTab2" select="concat( $newline, $tab, $tab )"/>
 	<xsl:variable name="newlineTab3" select="concat( $newline, $tab, $tab, $tab )"/>
 	<xsl:variable name="newlineTab4" select="concat( $newline, $tab, $tab, $tab, $tab )"/>
+	
+	<!-- XML reserved characters for use in concat function -->
+	<xsl:variable name="apos">'</xsl:variable>
+	<xsl:variable name="quot">"</xsl:variable>
 
 	<!--
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -86,7 +90,6 @@
 				<xsl:value-of select="@name"/>
 			</xsl:with-param>
 		</xsl:call-template>
-		<xsl:text>Type</xsl:text>
 	</xsl:template>
 
 	<xsl:template match="cobos:Object|cobos:Interface" mode="qualifiedNameForClass">
@@ -95,11 +98,50 @@
 				<xsl:value-of select="@name"/>
 			</xsl:with-param>
 		</xsl:call-template>
-		<xsl:if test="not( position() = 1 )">
-			<xsl:text>Type</xsl:text>
-		</xsl:if>
 		<xsl:text>.</xsl:text>
 	</xsl:template>
+
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Type names - for objects and types
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+	<xsl:template match="cobos:DataModel|cobos:TableObject|cobos:Interface|cobos:Object[ parent::cobos:DataModel ]" mode="typeName">
+		<xsl:value-of select="@name"/>
+	</xsl:template>
+
+	<xsl:template match="cobos:Object[ not( @type ) and not( parent::cobos:DataModel ) ]" mode="typeName">
+		<xsl:value-of select="concat( ../@name, @name )"/>
+	</xsl:template>
+
+	<xsl:template match="cobos:Object[ @type and not( parent::cobos:DataModel ) ]" mode="typeName">
+		<xsl:value-of select="concat( parent::cobos:Object/@name, @name )"/>
+	</xsl:template>
+
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Qualified type names
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<xsl:template match="cobos:Object" mode="qualifiedTypeName">
+		<xsl:apply-templates select="ancestor::*[ self::cobos:Object | self::cobos:Interface ]" mode="qualifiedTypeNameForClass"/>
+		<xsl:call-template name="titleCaseName">
+			<xsl:with-param name="name">
+				<xsl:apply-templates select="." mode="typeName"/>
+			</xsl:with-param>
+		</xsl:call-template>
+	</xsl:template>
+
+	<xsl:template match="cobos:Object|cobos:Interface" mode="qualifiedTypeNameForClass">
+		<xsl:call-template name="titleCaseName">
+			<xsl:with-param name="name">
+				<xsl:apply-templates select="." mode="typeName"/>
+			</xsl:with-param>
+		</xsl:call-template>
+		<xsl:text>.</xsl:text>
+	</xsl:template>
+
 
 	<!--
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

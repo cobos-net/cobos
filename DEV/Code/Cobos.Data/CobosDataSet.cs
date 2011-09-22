@@ -51,8 +51,6 @@ using Cobos.Utilities.Xml;
 namespace Cobos.Data
 #endif
 {
-	using AsyncDBTask = AsyncTask<CobosDataSet, DatabaseAdapter.QueryDatabaseAsync>;
-
 	public class CobosDataSet : DataSet
 	{
 		/// <summary>
@@ -140,19 +138,8 @@ namespace Cobos.Data
 		/// <returns></returns>
 		public XmlDocument ToXml()
 		{
-#if DEBUG
-			Stopwatch timer = new Stopwatch();
-			timer.Start();
-#endif
-
 			XmlDocument doc = new XmlDocument();
 			doc.LoadXml( GetXml() );
-
-#if DEBUG
-			timer.Stop();
-			Debug.Print( "Dataset to Xml: {0}", timer.ElapsedMilliseconds );
-#endif
-
 			return doc;
 		}
 
@@ -182,21 +169,10 @@ namespace Cobos.Data
 				xsltArgs = new XsltArgumentList();
 			}
 
-			// add the layer name
-			//xsltArgs.AddParam( "layername", "", m_layerName );
-			//xsltArgs.AddParam( "layerdescription", "", m_description );
+			//xsltArgs.AddParam( "dummy", "", dummy );
 
-#if DEBUG
-			Stopwatch timer = new Stopwatch();
-			timer.Start();
-#endif
-			//Do the transform
+			// do the transform
 			xslt.Transform( doc.CreateNavigator(), xsltArgs, results );
-
-#if DEBUG
-			timer.Stop();
-			Debug.Print( "Xslt Transform: {0}", timer.ElapsedMilliseconds );
-#endif
 		}
 
 		/// <summary>
@@ -217,8 +193,7 @@ namespace Cobos.Data
 				xsltArgs = new XsltArgumentList();
 			}
 
-			//xsltArgs.AddParam( "layername", "", m_layerName );
-			//xsltArgs.AddParam( "layerdescription", "", m_description );
+			//xsltArgs.AddParam( "dummy", "", dummy );
 
 			using ( MemoryStream stream = new MemoryStream() )
 			{

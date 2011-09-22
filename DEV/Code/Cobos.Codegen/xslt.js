@@ -67,12 +67,12 @@ try
 
       if (xmlDoc.load(xml) == false)
       {
-         throw new Error("Could not load XML document " + xmlDoc.parseError.reason);
+         throw new Error("Could not load XML document (" + xml + "): " + xmlDoc.parseError.reason);
       }
 
       if (xslDoc.load(xsl) == false)
       {
-         throw new Error("Could not load XSL document " + xslDoc.parseError.reason);
+         throw new Error("Could not load XSL document (" + xsl + "): "  + xslDoc.parseError.reason);
       }
       
       //var xmlTemplate = new ActiveXObject( "Msxml2.XSLTemplate.6.0" );
@@ -97,6 +97,8 @@ try
 
       //xmlDoc.transformNodeToObject(xslDoc, outDoc);
       outDoc.SaveToFile(out, adSaveCreateOverWrite);
+      
+      WScript.Echo("Saved output file: " + out);
    }
 }
 catch (e)

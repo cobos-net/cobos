@@ -1,7 +1,7 @@
 ﻿<xsl:stylesheet version="1.0"
 						xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 						xmlns:msxsl="urn:schemas-microsoft-com:xslt"
-						exclude-result-prefixes="msxsl"
+						exclude-result-prefixes="msxsl cobos"
 						xmlns="http://schemas.cobos.co.uk/datamodel/1.0.0"
 						xmlns:cobos="http://schemas.cobos.co.uk/datamodel/1.0.0"
 						xmlns:xsd="http://www.w3.org/2001/XMLSchema"
@@ -11,7 +11,7 @@
 
 	<!-- 
 	=============================================================================
-	Filename: datamodelschema.xslt
+	Filename: schema.xslt
 	Description: XSLT for creation of Xsd definitions from data model
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	Created by: N.Davis                        Date: 2010-04-09
@@ -24,7 +24,21 @@
 	-->
 
 	<!-- include the generated database schema variables -->
-	<xsl:include href="DataModelCommon.xslt"/>
+	<xsl:include href="../common.xslt"/>
+
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Default namespace for the generated schema.
+	Dynamically add the user specified namespace to a dummy element so that
+	we can copy the xmlns: attributes for copying to the output nodes.
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+	<xsl:param name="xmlNamespace"/>
+
+	<xsl:variable name="ns-uri" select="string( $xmlNamespace )"/>
+	<xsl:variable name="ns-container">
+		<xsl:element name="dummy" namespace="{$ns-uri}"/>
+	</xsl:variable>
 
 	<!--
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -44,7 +58,7 @@
 	<!--
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	Set the root node name if you want to contain all of the top level elements 
-	within a 
+	within a containing element.
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 	<xsl:param name="rootNodeName"/>
@@ -59,11 +73,14 @@
 
 		<xsl:call-template name="generatedXmlWarning"/>
 
-		<xsd:schema targetNamespace="http://schemas.cobos.co.uk/datamodel/1.0.0"
-				elementFormDefault="qualified"
-				xmlns="http://schemas.cobos.co.uk/datamodel/1.0.0"
-				xmlns:cobos="http://schemas.cobos.co.uk/datamodel/1.0.0"
-				xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+		<xsl:element name="xsd:schema">
+
+			<xsl:copy-of select="msxsl:node-set( $ns-container )/*/namespace::*[ . = $ns-uri ]" />
+
+			<xsl:attribute name="targetNamespace">
+				<xsl:value-of select="$xmlNamespace"/>
+			</xsl:attribute>
+			<xsl:attribute name="elementFormDefault">qualified</xsl:attribute>
 
 			<xsl:choose>
 				<xsl:when test="$rootNodeName != ''">
@@ -90,7 +107,7 @@
 			<!-- copy the database type definitions -->
 			<xsl:copy-of select="$databaseTypesNodeSet"/>
 
-		</xsd:schema>
+		</xsl:element>
 
 	</xsl:template>
 

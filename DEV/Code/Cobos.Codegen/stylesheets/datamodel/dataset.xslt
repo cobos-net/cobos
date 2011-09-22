@@ -24,7 +24,7 @@
 	============================================================================
 	-->
 
-	<xsl:include href="DataModelCommon.xslt"/>
+	<xsl:include href="../common.xslt"/>
 
 	<xsl:key name="dbTableKey" match="cobos:Object|cobos:Property" use="@dbTable"/>
 
@@ -140,7 +140,7 @@
 		<xsl:variable name="keyreffield">
 			<xsl:value-of select="/cobos:DataModel/cobos:Object[ current()/@ref ]/cobos:Property[ current()/@refer ]/@dbColumn"/>
 		</xsl:variable>
-		<xsd:unique name="{$keyName}Constraint" msdata:PrimaryKey="true">
+		<xsd:unique name="{$keyName}Constraint">
 			<xsd:selector xpath=".//{../@name}"/>
 			<xsd:field xpath="{$keyfield}"/>
 		</xsd:unique>

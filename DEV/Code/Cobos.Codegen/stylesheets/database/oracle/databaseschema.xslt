@@ -2,17 +2,16 @@
 <xsl:stylesheet version="1.0"
 						xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 						xmlns:msxsl="urn:schemas-microsoft-com:xslt"
-						exclude-result-prefixes="msxsl util"
+						exclude-result-prefixes="msxsl"
 						xmlns="http://schemas.cobos.co.uk/datamodel/1.0.0"
 						xmlns:cobos="http://schemas.cobos.co.uk/datamodel/1.0.0"
 						xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-						xmlns:util="http://schemas.phoneview.com/casemanagement/utilities"
 >
 	<xsl:output method="xml" indent="yes"/>
 
 	<!-- 
 	=============================================================================
-	Filename: DBSchema.xslt
+	Filename: databaseschema.xslt
 	Description: XSLT for creation of Xsd from DB Schema
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	Created by: N.Davis                        Date: 2010-04-09
@@ -24,7 +23,7 @@
 	============================================================================
 	-->
 
-	<xsl:include href="Utilities.xslt"/>
+	<xsl:include href="../../utilities.xslt"/>
 
 	<!--
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

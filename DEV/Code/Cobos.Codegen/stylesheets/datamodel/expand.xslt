@@ -10,8 +10,8 @@
 
 	<!-- 
 	=============================================================================
-	Filename: datamodelexpand.xslt
-	Description: XSLT for common data model functionality
+	Filename: expand.xslt
+	Description: Expands a data model inlining nested types.
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	Created by: N.Davis                        Date: 2010-06-16
 	Modified by:                               Date:
@@ -23,7 +23,7 @@
 	============================================================================
 	-->
 
-	<xsl:include href="DataModelCommon.xslt"/>
+	<xsl:include href="../common.xslt"/>
 
 	<!--
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -200,6 +200,9 @@
 		<xsl:attribute name="className">
 			<xsl:apply-templates mode="className" select="."/>
 		</xsl:attribute>
+		<xsl:attribute name="typeName">
+			<xsl:apply-templates mode="typeName" select="."/>
+		</xsl:attribute>
 	</xsl:template>
 
 	<!-- class name for concrete object type -->
@@ -208,33 +211,39 @@
 			<xsl:apply-templates mode="className" select="."/>
 		</xsl:attribute>
 		<xsl:attribute name="typeName">
-			<xsl:value-of select="@name"/>
+			<xsl:apply-templates mode="typeName" select="."/>
 		</xsl:attribute>
 	</xsl:template>
 
 	<!-- class name for a type reference -->
-	<xsl:template match="cobos:Object[ @type ][ not( parent::cobos:DataModel ) ]" mode="classHierarchyClassName">
+	<xsl:template match="cobos:Object[ @type and not( parent::cobos:DataModel ) ]" mode="classHierarchyClassName">
 		<xsl:attribute name="className">
 			<xsl:apply-templates mode="className" select="."/>
 		</xsl:attribute>
 		<xsl:attribute name="typeName">
-			<xsl:value-of select="concat( @name, 'Type' )"/>
+			<xsl:apply-templates mode="typeName" select="."/>
 		</xsl:attribute>
 		<xsl:attribute name="qualifiedName">
 			<xsl:apply-templates mode="qualifiedName" select="."/>
+		</xsl:attribute>
+		<xsl:attribute name="qualifiedTypeName">
+			<xsl:apply-templates mode="qualifiedTypeName" select="."/>
 		</xsl:attribute>
 	</xsl:template>
 
 	<!-- class name for an anonymous nested type, make it up based on the parent name -->
-	<xsl:template match="cobos:Object[ not( @type ) ][ not( parent::cobos:DataModel ) ]" mode="classHierarchyClassName">
+	<xsl:template match="cobos:Object[ not( @type ) and not( parent::cobos:DataModel ) ]" mode="classHierarchyClassName">
 		<xsl:attribute name="className">
 			<xsl:apply-templates mode="className" select="."/>
 		</xsl:attribute>
 		<xsl:attribute name="typeName">
-			<xsl:value-of select="concat( @name, 'Type' )"/>
+			<xsl:apply-templates mode="typeName" select="."/>
 		</xsl:attribute>
 		<xsl:attribute name="qualifiedName">
 			<xsl:apply-templates mode="qualifiedName" select="."/>
+		</xsl:attribute>
+		<xsl:attribute name="qualifiedTypeName">
+			<xsl:apply-templates mode="qualifiedTypeName" select="."/>
 		</xsl:attribute>
 	</xsl:template>
 	

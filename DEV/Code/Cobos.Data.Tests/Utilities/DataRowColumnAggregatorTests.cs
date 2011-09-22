@@ -81,7 +81,10 @@ namespace Cobos.Data.Tests.Utilities
 			Assert.Equal<string>( "String1 String2 String3 String4", (string)aggregated.Rows[ 0 ][ "Col1" ] );
 			Assert.Equal<string>( "String5 String6 String7 String8", (string)aggregated.Rows[ 1 ][ "Col1" ] );
 
-			//// try case sensitive grouping - NO LONGER SUPPORTED.
+			// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+			// NO LONGER SUPPORTED.
+			// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+			//// try case sensitive grouping - 
 			//aggregator = new DataRowColumnAggregator( aggregateOn, groupBy, null, true );
 
 			//aggregated = aggregator.Process( table );
@@ -96,6 +99,7 @@ namespace Cobos.Data.Tests.Utilities
 			//Assert.Equal<string>( "String6 String7",	(string)aggregated.Rows[ 4 ][ "Col1" ] );
 			//// if an aggregation results in a single row, the row is copied, so no trimming of input
 			//Assert.Equal<string>( "  String8  ",		(string)aggregated.Rows[ 5 ][ "Col1" ] );
+			// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		}
 
 		[Fact]

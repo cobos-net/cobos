@@ -9,19 +9,20 @@
 
 	<!-- 
 	============================================================================
-	Filename: Xsd2Variables.xslt
-	Description: Creates another Xslt for merging a schema.
+	Filename: merge.xslt
+	Description: Merge a database schema document into an XSLT.
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	Created by:	N.Davis						Date: 2010-08-10
 	Updated by:									Date:
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	Notes: Takes a schema as an input and creates a merging Xslt that can be
-	included in other Xslts.  
+	Notes: The output XSLT includes variables containing the elements in the
+	input schema.  This is used when processing other XML documents, since
+	the XSLT can be included.
 	
 	============================================================================
 	-->
 
-	<xsl:include href="Utilities.xslt"/>
+	<xsl:include href="../../utilities.xslt"/>
 
 	<xsl:template name="nsdecl">
 		<xsl:variable name="nsdecl">

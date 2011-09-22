@@ -34,9 +34,8 @@
 // Rebranded from "Cobos" to "Intergraph.AsiaPac" in preparation for use in the Generic CAD Interoperability project
 
 using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Text;
+using System.IO;
 
 #if INTERGRAPH_BRANDING
 namespace Intergraph.AsiaPac.Data
@@ -57,20 +56,24 @@ namespace Cobos.Data
 			get;
 		}
 
-		DataTable Execute( string sql, string tableName );
+		DataTable Fill( string sql, string tableName );
 
-		void Execute( string sql, DataTable result );
+		void Fill( string sql, DataTable result );
 
-		DataTableType Execute<DataTableType>( string sql ) where DataTableType : DataTable, new();
+		DataTableType Fill<DataTableType>( string sql ) where DataTableType : DataTable, new();
 
-		DataSetType Execute<DataSetType>( string sql, string tableName ) where DataSetType : DataSet, new();
+		DataSetType Fill<DataSetType>( string sql, string tableName ) where DataSetType : DataSet, new();
 
-		void Execute( string sql, string tableName, DataSet dataset );
-		
-		void Execute( DatabaseQuery query );
+		void Fill( string sql, string tableName, DataSet dataset );
 
-		void Execute( DatabaseQuery[] queries );
+		void Fill( DatabaseQuery query );
 
-		void ExecuteAsynch( DatabaseQuery[] queries );
+		void Fill( DatabaseQuery[] queries );
+
+		void FillAsynch( DatabaseQuery[] queries );
+
+		void GetTableMetadata( string schema, string[] tables, Stream result );
+
+		void GetTableSchema( string schema, string[] tables, Stream result );
 	}
 }

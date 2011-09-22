@@ -8,7 +8,7 @@ try
 
    if (args.length < 3)
    {
-      WScript.Echo("Usage: xslt.js file.xml file.xsl output.txt mode:name param=value ...");
+      WScript.Echo("Usage: xsl.js file.xml file.xsl output.txt mode:name param=value ...");
       WScript.Quit(1);
    }
    else
@@ -19,7 +19,7 @@ try
 
       // parse the rest of the command line for optional statup mode and parameters
       var regMode = /mode\:(.*)/i;
-      var regParam = /(.*)=(.*)/;
+      var regParam = /(.*)=(.*)/
 
       var mode = null;
       var params = [];
@@ -31,20 +31,26 @@ try
          if ( result != null )
          {
             mode = result[ 1 ];
+            WScript.Echo( "Xslt mode: " +  mode );
             continue;
          }         
          
          result = regParam.exec( args( a ) );
          if ( result != null )
          {
+            WScript.Echo( "Xslt Parameter: " + result[ 1 ] + " = " + result[ 2 ] );
             params.push( { name: result[ 1 ], value: result[ 2 ] } );
             continue;
          }         
       }
       
-      // NOTE: there appears to be a bug in MSXML 6.0 pre SP3.
-      // MSXML 6.0 SP3 is only widely available in Windows 7, Windows XP SP3 and Vista
-      // include SP2 only.  The fix is to use MSXML 3.0 objects.
+      // NOTE: there appears to be a bug in MSXML 6.0 pre SP3:
+      //
+      // xmlTemplate.stylesheet = xslDoc; // fails in 6.0
+      //
+      // MSXML 6.0 SP3 is only widely available in Windows 7. 
+      // Windows XP SP3 and Vista include SP2 only.  
+      // The fix is to use MSXML 3.0 objects.
 
       //var xmlDoc = new ActiveXObject("Msxml2.DOMDocument.6.0");
       var xmlDoc = new ActiveXObject("Msxml2.DOMDocument.3.0");
@@ -61,12 +67,12 @@ try
 
       if (xmlDoc.load(xml) == false)
       {
-         throw new Error("Could not load XML document " + xmlDoc.parseError.reason);
+         throw new Error("Could not load XML document (" + xml + "): " + xmlDoc.parseError.reason);
       }
 
       if (xslDoc.load(xsl) == false)
       {
-         throw new Error("Could not load XSL document " + xslDoc.parseError.reason);
+         throw new Error("Could not load XSL document (" + xsl + "): "  + xslDoc.parseError.reason);
       }
       
       //var xmlTemplate = new ActiveXObject( "Msxml2.XSLTemplate.6.0" );
@@ -91,6 +97,8 @@ try
 
       //xmlDoc.transformNodeToObject(xslDoc, outDoc);
       outDoc.SaveToFile(out, adSaveCreateOverWrite);
+      
+      WScript.Echo("Saved output file: " + out);
    }
 }
 catch (e)

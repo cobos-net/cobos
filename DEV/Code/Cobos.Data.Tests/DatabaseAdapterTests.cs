@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 using Xunit;
+using Cobos.Data.Adapters;
 
 namespace Cobos.Data.Tests
 {
@@ -108,9 +109,13 @@ namespace Cobos.Data.Tests
 		[Fact]
 		public void Can_query_table_metadata()
 		{
-			DatabaseAdapter database = new DatabaseAdapter( TestManager.ConnectionString );
+			// Strategy:
+			// 1. Query the database metadata without generating an exception.
+			// 2. Confirm that the data appears to be written to the file properly.
 
-			string output = TestManager.TestFiles + "metadata.xml";
+			IDatabaseAdapter database = DatabaseAdapterFactory.GetOracleAdapter( TestManager.ConnectionString );
+
+			string output = TestManager.TestFiles + "dbmetadata.xml";
 
 			Assert.DoesNotThrow(
 				delegate
@@ -120,12 +125,20 @@ namespace Cobos.Data.Tests
 						database.GetTableMetadata( "EADEV", new string[] { "AEVEN", "LINEUP", "CD_UNITS", "DISPASS_EVENT" }, fstream );
 					}
 				} );
+
+			FileInfo info = new FileInfo( output );
+			Assert.True( info.Exists );
+			Assert.NotEqual( 0, info.Length );
 		}
 
 		[Fact]
 		public void Can_query_table_schema()
 		{
-			DatabaseAdapter database = new DatabaseAdapter( TestManager.ConnectionString );
+			// Strategy:
+			// 1. Query the database metadata without generating an exception.
+			// 2. Confirm that the data appears to be written to the file properly.
+
+			IDatabaseAdapter database = DatabaseAdapterFactory.GetOracleAdapter( TestManager.ConnectionString );
 
 			string output = TestManager.TestFiles + "dbschema.xml";
 
@@ -137,6 +150,10 @@ namespace Cobos.Data.Tests
 						database.GetTableSchema( "EADEV", new string[] { "AEVEN", "LINEUP", "CD_UNITS" }, fstream );
 					}
 				} );
+
+			FileInfo info = new FileInfo( output );
+			Assert.True( info.Exists );
+			Assert.NotEqual( 0, info.Length );
 		}
 	}
 }

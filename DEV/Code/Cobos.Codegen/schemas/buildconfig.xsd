@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema id="BuildConfig"
+	targetNamespace="http://schemas.cobos.co.uk/buildconfig/1.0.0"
+	elementFormDefault="qualified"
+	xmlns="http://schemas.cobos.co.uk/buildconfig/1.0.0"
+	xmlns:cobos="http://schemas.cobos.co.uk/buildconfig/1.0.0"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+>
+	<!-- 
+	=============================================================================
+	Filename: BuildConfig.xsd
+	Description: Build configuration file schema definition
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Created by: N.Davis                        Date: 2010-02-09
+	Modified by:                               Date:
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Notes: Used to define the build process for automated code generation.
+
+
+	============================================================================
+	-->
+
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Root build configuration definition
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<xsd:element name="BuildConfiguration" type="BuildConfigurationType"/>
+
+	<xsd:complexType name="BuildConfigurationType">
+		<xsd:sequence>
+			<xsd:element name="Folders" type="BuildFoldersType"/>
+			<xsd:element name="Definitions" type="BuildDefinitionsType"/>
+			<xsd:element name="Database" type="BuildDatabaseType" minOccurs="0"/>
+			<xsd:element name="DataModels" type="BuildDataModelsType"/>
+		</xsd:sequence>
+		<xsd:attribute name="version" type="xsd:string" use="required"/>
+	</xsd:complexType>
+
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Folder definitions
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<xsd:complexType name="BuildFoldersType">
+		<xsd:sequence>
+			<xsd:element name="Codegen" type="xsd:string" default="C:\Program Files\Cobos\CoreSDK\0.1\codegen">
+				<xsd:annotation>
+					<xsd:documentation>The installation path for the Cobos code generator.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Build" type="xsd:string" default=".\~build">
+				<xsd:annotation>
+					<xsd:documentation>The local folder build folder where the code generator stylesheets are copied to and intermediate build artefacts are generated.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="CustomStylesheets" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>The folder containing custom stylesheets that are plugged into the code generation.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Build definitions
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<xsd:complexType name="BuildDefinitionsType">
+		<xsd:sequence>
+			<xsd:element name="Language" type="BuildDefinitionLanguageEnum"/>
+			<xsd:element name="Namespaces" type="BuildDefinitionsNamespacesType"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:simpleType name="BuildDefinitionLanguageEnum">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="CSharp"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:complexType name="BuildDefinitionsNamespacesType">
+		<xsd:sequence>
+			<xsd:element name="Code" type="xsd:string"/>
+			<xsd:element name="Xml" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Database definition
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<xsd:complexType name="BuildDatabaseType">
+		<xsd:sequence>
+			<xsd:element name="Platform" type="BuildDatabasePlatformEnum"/>
+			<xsd:element name="ConnectionString" type="xsd:string"/>
+			<xsd:element name="Schema" type="xsd:string"/>
+			<xsd:element name="Tables" type="BuildDatabaseTablesType"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:simpleType name="BuildDatabasePlatformEnum">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Oracle"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:complexType name="BuildDatabaseTablesType">
+		<xsd:sequence>
+			<xsd:element name="Table" type="xsd:string" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Data Model definitions
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<xsd:complexType name="BuildDataModelsType">
+		<xsd:sequence>
+			<xsd:element name="DataModel" type="BuildDataModelType" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="BuildDataModelType">
+		<xsd:sequence>
+			<xsd:element name="Id" type="xsd:string"/>
+			<xsd:element name="ModelFilename" type="xsd:string"/>
+			<xsd:element name="Folder" type="xsd:string"/>
+			<xsd:element name="SchemaOptions" type="BuildDataModelSchemaOptionsType" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:attribute name="generateCode" type="xsd:boolean" use="optional" default="true"/>
+		<xsd:attribute name="generateSchema" type="xsd:boolean" use="optional" default="true"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="BuildDataModelSchemaOptionsType">
+		<xsd:sequence>
+			<xsd:element name="RootNodeName" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="MultiplicityMode" type="BuildDataModelSchemaMultiplicityModeEnum" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:simpleType name="BuildDataModelSchemaMultiplicityModeEnum">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Strict"/>
+			<xsd:enumeration value="Optional"/>
+			<xsd:enumeration value="Mandatory"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+</xsd:schema>
