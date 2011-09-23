@@ -175,13 +175,13 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\edit_find.png" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Cobos.Core\Cobos.Core.csproj">
       <Project>{79555902-5B9F-469C-B89F-488C408C99DF}</Project>
       <Name>Cobos.Core</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\edit_find.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
