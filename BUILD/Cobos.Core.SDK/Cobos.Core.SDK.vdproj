@@ -57,6 +57,18 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_06D7FF93033FA95959070D5DD5F28E68"
+        "OwnerKey" = "8:_0A29048658885B597A9D93BE5B8256B8"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_06D7FF93033FA95959070D5DD5F28E68"
+        "OwnerKey" = "8:_53F9C9E7B5B24783AEB651B84F9028A4"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_07B77A0822E24E09955CC7401048FBD5"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -81,6 +93,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_0D491166587F4B869056CB57D055B5F2"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_11946F9B154E40898602D1BF0BE2BC43"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -88,6 +106,12 @@
         "Entry"
         {
         "MsmKey" = "8:_13ABE3EE4E214EA1AD4642D18DE3C623"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_161C96D7341E4A709AAA5A1DABEFA4AB"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -339,6 +363,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_5AF583C106B04D9082C8E771222EE8AA"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_5D96669276E3458181CD82D4D527B58B"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -399,6 +429,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_6B57C18BF84FE7BB3C42B3D6CC3CA099"
+        "OwnerKey" = "8:_161C96D7341E4A709AAA5A1DABEFA4AB"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_6E19DDCD862B455A89698DBE3011FDAA"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -425,24 +461,6 @@
         {
         "MsmKey" = "8:_72CED6D173654A3B847A0648EA767AD3"
         "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_72E3B4E1F47766328C1507B091D3937D"
-        "OwnerKey" = "8:_C60500655A9E47E1B7304EBFC834E7E3"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_72E3B4E1F47766328C1507B091D3937D"
-        "OwnerKey" = "8:_0A29048658885B597A9D93BE5B8256B8"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_72E3B4E1F47766328C1507B091D3937D"
-        "OwnerKey" = "8:_53F9C9E7B5B24783AEB651B84F9028A4"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -483,6 +501,36 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_80FD85BE49EECE15A14D1147D3F6DA76"
+        "OwnerKey" = "8:_0A29048658885B597A9D93BE5B8256B8"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_80FD85BE49EECE15A14D1147D3F6DA76"
+        "OwnerKey" = "8:_88FF955B7CB24D36A07E3F4C6A61DE26"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_80FD85BE49EECE15A14D1147D3F6DA76"
+        "OwnerKey" = "8:_6B57C18BF84FE7BB3C42B3D6CC3CA099"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_80FD85BE49EECE15A14D1147D3F6DA76"
+        "OwnerKey" = "8:_C60500655A9E47E1B7304EBFC834E7E3"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_80FD85BE49EECE15A14D1147D3F6DA76"
+        "OwnerKey" = "8:_53F9C9E7B5B24783AEB651B84F9028A4"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_820D43CF1C9344059FE2F0CFB835A322"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -496,6 +544,12 @@
         "Entry"
         {
         "MsmKey" = "8:_84AC08D10EE94A71AB380CC436D48915"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_88FF955B7CB24D36A07E3F4C6A61DE26"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -527,18 +581,6 @@
         {
         "MsmKey" = "8:_8D11CA4295CF48A9B196932F5D5FD147"
         "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_8F6086962F2CD03A4E6A03220D28CDAB"
-        "OwnerKey" = "8:_53F9C9E7B5B24783AEB651B84F9028A4"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_8F6086962F2CD03A4E6A03220D28CDAB"
-        "OwnerKey" = "8:_0A29048658885B597A9D93BE5B8256B8"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -831,6 +873,18 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_F23D6F344F68465499DD892DB9782C89"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_F3D95900584140E2A3B520ADBEBA26C3"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_F6A6F8643C2B402E93366AD378C9445F"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -862,6 +916,42 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_88FF955B7CB24D36A07E3F4C6A61DE26"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_161C96D7341E4A709AAA5A1DABEFA4AB"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_6B57C18BF84FE7BB3C42B3D6CC3CA099"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_5AF583C106B04D9082C8E771222EE8AA"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_C60500655A9E47E1B7304EBFC834E7E3"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_53F9C9E7B5B24783AEB651B84F9028A4"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_07E0E718907B449E961D0FCC357EA085"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -880,25 +970,13 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_53F9C9E7B5B24783AEB651B84F9028A4"
+        "OwnerKey" = "8:_06D7FF93033FA95959070D5DD5F28E68"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_8F6086962F2CD03A4E6A03220D28CDAB"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_C60500655A9E47E1B7304EBFC834E7E3"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_72E3B4E1F47766328C1507B091D3937D"
+        "OwnerKey" = "8:_80FD85BE49EECE15A14D1147D3F6DA76"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -1146,6 +1224,37 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_06D7FF93033FA95959070D5DD5F28E68"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Oracle.DataAccess, Version=10.2.0.100, Culture=neutral, PublicKeyToken=89b483f429c47342"
+                "ScatterAssemblies"
+                {
+                    "_06D7FF93033FA95959070D5DD5F28E68"
+                    {
+                    "Name" = "8:Oracle.DataAccess.DLL"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Oracle.DataAccess.DLL"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_D7216B49F2664469ABE8D4A96DDDA9BA"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_07B77A0822E24E09955CC7401048FBD5"
             {
             "SourcePath" = "8:..\\..\\DEV\\Code\\Cobos.Utilities\\Cobos.Utilities.csproj"
@@ -1248,6 +1357,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0D491166587F4B869056CB57D055B5F2"
+            {
+            "SourcePath" = "8:..\\..\\DEV\\Code\\Cobos.Web.Proxy\\Global.asax"
+            "TargetName" = "8:Global.asax"
+            "Tag" = "8:"
+            "Folder" = "8:_C10FFB81911D4022A5B40D8883AFD26B"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_11946F9B154E40898602D1BF0BE2BC43"
             {
             "SourcePath" = "8:..\\..\\DEV\\Code\\Cobos.Utilities.Tests\\TestFiles\\TestCpp\\include\\stdExtensions.h"
@@ -1274,6 +1403,37 @@
             "TargetName" = "8:ObjectExtensions.cs"
             "Tag" = "8:"
             "Folder" = "8:_3DEC8626BD6741D59E584C2A935A7EC6"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_161C96D7341E4A709AAA5A1DABEFA4AB"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Cobos.Web.Proxy, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_161C96D7341E4A709AAA5A1DABEFA4AB"
+                    {
+                    "Name" = "8:Cobos.Web.Proxy.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:..\\..\\DEV\\Code\\Cobos.Web.Proxy\\bin\\Cobos.Web.Proxy.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_746928FE63524ACAA17596B20F053452"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -2130,6 +2290,37 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_5AF583C106B04D9082C8E771222EE8AA"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Cobos.Utilities, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_5AF583C106B04D9082C8E771222EE8AA"
+                    {
+                    "Name" = "8:Cobos.Utilities.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:..\\..\\DEV\\Code\\Cobos.Web.Proxy\\bin\\Cobos.Utilities.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_746928FE63524ACAA17596B20F053452"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5D96669276E3458181CD82D4D527B58B"
             {
             "SourcePath" = "8:..\\..\\DEV\\Code\\Cobos.Utilities\\Text\\GuidHelper.cs"
@@ -2341,6 +2532,37 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_6B57C18BF84FE7BB3C42B3D6CC3CA099"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Cobos.Web.Utilities, Version=0.1.1.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_6B57C18BF84FE7BB3C42B3D6CC3CA099"
+                    {
+                    "Name" = "8:Cobos.Web.Utilities.DLL"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Cobos.Web.Utilities.DLL"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_746928FE63524ACAA17596B20F053452"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6E19DDCD862B455A89698DBE3011FDAA"
             {
             "SourcePath" = "8:..\\..\\DEV\\Code\\Cobos.Web.Utilities\\Properties\\AssemblyInfo.cs"
@@ -2439,37 +2661,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_72E3B4E1F47766328C1507B091D3937D"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Cobos.Utilities, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_72E3B4E1F47766328C1507B091D3937D"
-                    {
-                    "Name" = "8:Cobos.Utilities.DLL"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:Cobos.Utilities.DLL"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_D7216B49F2664469ABE8D4A96DDDA9BA"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:TRUE"
-            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_76BB7D40872644F0954651043578F9CA"
@@ -2592,6 +2783,37 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_80FD85BE49EECE15A14D1147D3F6DA76"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Cobos.Utilities, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_80FD85BE49EECE15A14D1147D3F6DA76"
+                    {
+                    "Name" = "8:Cobos.Utilities.DLL"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Cobos.Utilities.DLL"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_D7216B49F2664469ABE8D4A96DDDA9BA"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:TRUE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_820D43CF1C9344059FE2F0CFB835A322"
             {
             "SourcePath" = "8:..\\..\\DEV\\Code\\Cobos.Utilities\\File\\FileVersionHelper.cs"
@@ -2638,6 +2860,37 @@
             "TargetName" = "8:ArrayExtensionsTests.cs"
             "Tag" = "8:"
             "Folder" = "8:_2025B34EABFE474BADF7D8D471383018"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_88FF955B7CB24D36A07E3F4C6A61DE26"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Cobos.Web.Utilities, Version=0.1.1.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_88FF955B7CB24D36A07E3F4C6A61DE26"
+                    {
+                    "Name" = "8:Cobos.Web.Utilities.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:..\\..\\DEV\\Code\\Cobos.Web.Proxy\\bin\\Cobos.Web.Utilities.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_746928FE63524ACAA17596B20F053452"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -2750,37 +3003,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_8F6086962F2CD03A4E6A03220D28CDAB"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Oracle.DataAccess, Version=10.2.0.100, Culture=neutral, PublicKeyToken=89b483f429c47342"
-                "ScatterAssemblies"
-                {
-                    "_8F6086962F2CD03A4E6A03220D28CDAB"
-                    {
-                    "Name" = "8:Oracle.DataAccess.DLL"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:Oracle.DataAccess.DLL"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_D7216B49F2664469ABE8D4A96DDDA9BA"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_90762F4B347643D98ABE5F65E64C7EBA"
@@ -3754,6 +3976,46 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F23D6F344F68465499DD892DB9782C89"
+            {
+            "SourcePath" = "8:..\\..\\DEV\\Code\\Cobos.Web.Proxy\\Proxy.aspx"
+            "TargetName" = "8:Proxy.aspx"
+            "Tag" = "8:"
+            "Folder" = "8:_C10FFB81911D4022A5B40D8883AFD26B"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F3D95900584140E2A3B520ADBEBA26C3"
+            {
+            "SourcePath" = "8:..\\..\\DEV\\Code\\Cobos.Web.Proxy\\Web.config"
+            "TargetName" = "8:Web.config"
+            "Tag" = "8:"
+            "Folder" = "8:_C10FFB81911D4022A5B40D8883AFD26B"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F6A6F8643C2B402E93366AD378C9445F"
             {
             "SourcePath" = "8:..\\..\\DEV\\Code\\Cobos.Utilities\\File\\FileHandle.cs"
@@ -4398,6 +4660,39 @@
                                     }
                                 }
                             }
+                            "{9EF0B969-E518-4E46-987F-47570745A589}:_C10FFB81911D4022A5B40D8883AFD26B"
+                            {
+                            "Name" = "8:Cobos.Web.Proxy"
+                            "AlwaysCreate" = "11:FALSE"
+                            "Condition" = "8:"
+                            "Transitive" = "11:FALSE"
+                            "Property" = "8:_B40F26F28B8B4C76B2179FEDFCE5B709"
+                                "Folders"
+                                {
+                                    "{9EF0B969-E518-4E46-987F-47570745A589}:_746928FE63524ACAA17596B20F053452"
+                                    {
+                                    "Name" = "8:bin"
+                                    "AlwaysCreate" = "11:FALSE"
+                                    "Condition" = "8:"
+                                    "Transitive" = "11:FALSE"
+                                    "Property" = "8:_F7618772B65F410D8EBC1301E89B6713"
+                                        "Folders"
+                                        {
+                                        }
+                                    }
+                                    "{9EF0B969-E518-4E46-987F-47570745A589}:_C969A24AAFD145A19B0D211308D521BF"
+                                    {
+                                    "Name" = "8:App_Data"
+                                    "AlwaysCreate" = "11:FALSE"
+                                    "Condition" = "8:"
+                                    "Transitive" = "11:FALSE"
+                                    "Property" = "8:_FDAB36A1BDAF477DBAE6E2D4A8397024"
+                                        "Folders"
+                                        {
+                                        }
+                                    }
+                                }
+                            }
                             "{9EF0B969-E518-4E46-987F-47570745A589}:_C4DBEBEF85B940D7908CFB650CD013FA"
                             {
                             "Name" = "8:Cobos.Web.Utilities"
@@ -4584,7 +4879,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Cobos CoreSDK"
         "ProductCode" = "8:{7642CD9E-4934-4162-9DB4-E3726322FACF}"
-        "PackageCode" = "8:{ED97CCC2-8A9A-4457-8797-243EF33D4689}"
+        "PackageCode" = "8:{8401FD30-9856-4418-A2E8-E57E0E564863}"
         "UpgradeCode" = "8:{9ACD8332-1562-4BE0-ABCB-E1DAF44A9F32}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"

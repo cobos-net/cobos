@@ -18,7 +18,7 @@ REM		stylesheets_folder:	source & destination path for the processing stylesheet
 REM 	platform:			the database platform e.g. Oracle
 REM		db_connection:		the database connection string (enclosed in quotes)
 REM		db_schema:			the database schema containing the tables for processing.
-REM		table_args:			optional list of parameters for processing database/../schema.xslt.
+REM		table_args:			optional list of parameters for processing Database/../Schema.xslt.
 REM
 REM Example:
 REM		database.bat .\Stylesheets Oracle myschema TABLE_1 TABLE_2 TABLE_3
@@ -38,22 +38,13 @@ REM Input data
 REM ---------------------------------------------------------------------------
 
 set stylesheets_folder=%1
-shift
-set db_platform=%1
-shift
-set db_connection=%1
-shift
-set db_schema=%1
-shift
+set db_platform=%2
+set db_connection=%3
+set db_schema=%4
 
-set table_args=
-
-:LOOP
-	if "%1"=="" goto :END_LOOP
-	set table_args=%table_args% %1
-	shift
-	goto :LOOP
-:END_LOOP
+pushd "%codegen%"
+call var_args 4 %*
+popd
 
 REM ==========================================================================
 REM Process the database schemas
@@ -63,12 +54,33 @@ echo --------------------------------------------------------------------------
 echo Refreshing the Xsd database schema...
 echo --------------------------------------------------------------------------
 
-%db2xsd% /connection:%db_connection% /schema:%db_schema% /output:%stylesheets_folder%\database\schema.xsd %table_args%
+%db2xsd% /connection:%db_connection% /schema:%db_schema% /output:%stylesheets_folder%\Database\Schema.xsd %var_args%
+
+if %errorlevel% neq 0 (
+	set error_message="Failed to generate the Database schema.  Check the database connection and parameters."
+	goto BUILD_EVENT_FAILED
+)
 
 echo --------------------------------------------------------------------------
 echo Converting the database schema to Xslt variables...
 echo --------------------------------------------------------------------------
 
-%xslt% %stylesheets_folder%\database\schema.xsd %stylesheets_folder%\database\%db_platform%\merge.xslt %stylesheets_folder%\database\schema.xslt
+%xslt% %stylesheets_folder%\database\schema.xsd %stylesheets_folder%\Database\%db_platform%\Merge.xslt %stylesheets_folder%\Database\Schema.xslt
 
+if %errorlevel% neq 0 (
+	set error_message="Failed to generate the Database schema variables stylesheet."
+	goto BUILD_EVENT_FAILED
+)
+
+REM ==========================================================================
+REM Done processing the Database schemas.
+REM ==========================================================================
+
+goto BUILD_EVENT_OK
+
+:BUILD_EVENT_FAILED
+echo ERROR: %error_message%
+exit 1
+
+:BUILD_EVENT_OK
 endlocal

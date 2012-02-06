@@ -38,23 +38,13 @@ REM Input data
 REM ---------------------------------------------------------------------------
 
 set data_model=%1
-shift
-set output_folder=%1
-shift
-set stylesheets_folder=%1
-shift
-set xml_namespace=%1
-shift
+set output_folder=%2
+set stylesheets_folder=%3
+set xml_namespace=%4
 
-set xslt_args=
-
-:LOOP
-	if "%~1"=="" goto :END_LOOP
-	set xslt_args=%xslt_args% %~1
-	shift
-	goto :LOOP
-:END_LOOP
-
+pushd "%codegen%"
+call var_args 4 %*
+popd
 
 REM ---------------------------------------------------------------------------
 REM Pre-processing
@@ -62,10 +52,46 @@ REM ---------------------------------------------------------------------------
 
 if not exist %output_folder% mkdir %output_folder%
 
+set output_schema="%output_folder%"\DataModel.xsd
+
+if not exist %output_schema% goto START_BUILD
+
+set build_working_dir=%CD%
+
+pushd "%codegen%"
+call filetime_cmp %build_working_dir%\%data_model% %build_working_dir%\%output_schema%
+popd
+
+if %filetime_cmp% equ 1 (
+	echo WARNING: Detected changes to the data model, starting schema generation...
+	goto START_BUILD
+) else (
+	echo WARNING: No changes detected to the data model, skipping schema generation...
+	goto BUILD_EVENT_OK
+)
+
+:START_BUILD
+
 echo --------------------------------------------------------------------------
 echo Creating the data model schema...
 echo --------------------------------------------------------------------------
 
-%xslt% %data_model% %stylesheets_folder%\datamodel\schema.xslt %output_folder%\DataModel.xsd xmlNamespace=%xml_namespace% %xslt_args%
+%xslt% %data_model% %stylesheets_folder%\Datamodel\Schema.xslt %output_schema% xmlNamespace=%xml_namespace% %var_args%
 
+if %errorlevel% neq 0 (
+	set error_message="Failed to generate the data model schema."
+	goto BUILD_EVENT_FAILED
+)
+
+REM ==========================================================================
+REM Done processing the data model schemas.
+REM ==========================================================================
+
+goto BUILD_EVENT_OK
+
+:BUILD_EVENT_FAILED
+echo ERROR: %error_message%
+exit 1
+
+:BUILD_EVENT_OK
 endlocal

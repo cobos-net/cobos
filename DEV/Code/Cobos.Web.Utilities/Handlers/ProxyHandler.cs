@@ -55,18 +55,26 @@ namespace Intergraph.AsiaPac.Web.Utilities.Handlers
 namespace Cobos.Web.Utilities.Handlers
 #endif
 {
-	public static class ProxyHandler
+	public class ProxyHandler : IHttpHandler
 	{
-		static public void Process( Page page, string key )
+		public bool IsReusable
 		{
-			HttpResponse pageResponse = page.Response;
-			HttpRequest pageRequest = page.Request;
-			HttpSessionState Session = page.Session;
-			key = key + "_SessionID";
+			get
+			{
+				return true;
+			}
+		}
+
+		public void ProcessRequest( HttpContext context )
+		{
+			HttpResponse pageResponse = context.Response;
+			HttpRequest pageRequest = context.Request;
+			HttpSessionState Session = context.Session;
+			string key = "CobosProxyHandler_SessionID";
 
 			try
 			{
-				Uri url = new Uri( pageRequest[ "url" ] );
+				Uri url = new Uri( ParseUrl( context.Request.Url.AbsoluteUri ) );
 
 				HttpWebRequest proxyrequest = (HttpWebRequest)HttpWebRequest.Create( url );
 				
@@ -81,7 +89,6 @@ namespace Cobos.Web.Utilities.Handlers
 					proxyrequest.CookieContainer.Add( url, new Cookie( "ASP.NET_SessionId", sessionid ) );
 				}
 
-				//proxyrequest.Headers[ "SOAPAction" ] = pageRequest.Headers[ "SOAPAction" ];
 				CopyHeaders( proxyrequest, pageRequest );
 
 				if ( pageRequest.RequestType.ToUpper() == "POST" )
@@ -93,8 +100,9 @@ namespace Cobos.Web.Utilities.Handlers
 					requeststream.Close();
 				}
 
-				//Get the data
+				// Get the data
 				HttpWebResponse proxyresponse = (HttpWebResponse)proxyrequest.GetResponse();
+
 				try
 				{
 					pageResponse.ContentType = proxyresponse.ContentType;
@@ -102,7 +110,7 @@ namespace Cobos.Web.Utilities.Handlers
 					pageResponse.Cache.SetNoStore();
 					pageResponse.Cache.SetCacheability( HttpCacheability.NoCache );
 
-					//Get the session id
+					// Get the session id
 					Cookie sessioncookie = proxyresponse.Cookies[ "ASP.NET_SessionId" ];
 					if ( sessioncookie != null )
 					{
@@ -123,7 +131,7 @@ namespace Cobos.Web.Utilities.Handlers
 					BinaryReader reader2 = new BinaryReader( proxyresponse.GetResponseStream() );
 					BinaryWriter writer2 = new BinaryWriter( pageResponse.OutputStream );
 
-					//Copy from one stream to the other
+					// Copy from one stream to the other
 					writer2.Write( reader2.ReadBytes( (int)proxyresponse.ContentLength ) );
 					reader2.Close();
 
@@ -144,6 +152,20 @@ namespace Cobos.Web.Utilities.Handlers
 				pageResponse.StatusCode = 500;
 				pageResponse.StatusDescription = String.Format( "InternalServerError: {0}\n{1}", ex.Message, pageRequest[ "url" ] );
 				//pageResponse.Close();
+			}
+		}
+
+		public string ParseUrl( string url )
+		{
+			int pos = url.ToLower().IndexOf( "__proxy__" );
+
+			if ( pos > 0 )
+			{
+				return url.Substring( pos ).Replace( "__proxy__", "http:/" );
+			}
+			else
+			{
+				return url;
 			}
 		}
 
