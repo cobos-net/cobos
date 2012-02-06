@@ -29,7 +29,7 @@ REM Build tools
 REM ---------------------------------------------------------------------------
 
 set xsd="C:\Program Files\Microsoft SDKs\Windows\v6.0A\bin\xsd.exe"
-set codegen="C:\Program Files\Cobos\CoreSDK\0.1\codegen"
+set codegen="C:\Program Files\Cobos\CoreSDK\%COBOS_VERSION%\codegen"
 set xslt=%codegen%\xslt.js
 
 REM ---------------------------------------------------------------------------

@@ -29,8 +29,8 @@ REM ---------------------------------------------------------------------------
 REM Build tools & processing stylesheets
 REM ---------------------------------------------------------------------------
 
-set db2xsd="C:\Program Files\Cobos\CoreSDK\0.1\bin\Cobos.DatabaseToXsd.exe"
-set codegen="C:\Program Files\Cobos\CoreSDK\0.1\codegen"
+set db2xsd="C:\Program Files\Cobos\CoreSDK\%COBOS_VERSION%\bin\Cobos.DatabaseToXsd.exe"
+set codegen="C:\Program Files\Cobos\CoreSDK\%COBOS_VERSION%\codegen"
 set xslt=%codegen%\xslt.js
 
 REM ---------------------------------------------------------------------------

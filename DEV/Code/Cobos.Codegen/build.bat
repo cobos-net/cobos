@@ -21,11 +21,13 @@ REM		build.bat c:\demo\project .\BUILD\build.config
 REM
 REM ===========================================================================
 
+set COBOS_VERSION=0.2
+
 REM ---------------------------------------------------------------------------
 REM Build tools
 REM ---------------------------------------------------------------------------
 
-set codegen="C:\Program Files\Cobos\CoreSDK\0.1\codegen"
+set codegen="C:\Program Files\Cobos\CoreSDK\%COBOS_VERSION%\codegen"
 set xslt=%codegen%\xslt.js
 
 REM ---------------------------------------------------------------------------

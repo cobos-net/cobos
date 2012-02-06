@@ -20,6 +20,8 @@
 	============================================================================
 	-->
 
+	<xsl:include href="Version.xslt"/>
+	
 	<!--
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	Root build configuration definition
@@ -46,7 +48,7 @@
 
 	<xsd:complexType name="BuildFoldersType">
 		<xsd:sequence>
-			<xsd:element name="Codegen" type="xsd:string" default="C:\Program Files\Cobos\CoreSDK\0.1\codegen">
+			<xsd:element name="Codegen" type="xsd:string" default="concat( 'C:\Program Files\Cobos\CoreSDK\', $COBOS_VERSION, '\codegen' )">
 				<xsd:annotation>
 					<xsd:documentation>The installation path for the Cobos code generator.</xsd:documentation>
 				</xsd:annotation>
