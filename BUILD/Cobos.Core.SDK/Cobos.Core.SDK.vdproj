@@ -429,6 +429,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_6039E7B8DB7F48E4BD202DD82396355C"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_609D89E01E1048DFBF0397ECF86DDA11"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -496,12 +502,6 @@
         "Entry"
         {
         "MsmKey" = "8:_7006E233D52843AA909498922BF91059"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_70422827C16D46C9B85B775991F6F902"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -1011,12 +1011,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_EAB560AAE0F4419EA1FA70F723783646"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_EE499EC9814E4C508BE9C71F98501404"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -1066,6 +1060,12 @@
         "Entry"
         {
         "MsmKey" = "8:_F899B260956C4741B90FD17A88A82AAD"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_F9FCA6E0BBCA4EC3B1EFEF6E49880D3F"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -2701,6 +2701,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6039E7B8DB7F48E4BD202DD82396355C"
+            {
+            "SourcePath" = "8:..\\..\\DEV\\Code\\Cobos.Codegen\\Schemas\\BuildConfig.xsd"
+            "TargetName" = "8:BuildConfig.xsd"
+            "Tag" = "8:"
+            "Folder" = "8:_42772EF9F93444D6BCB0C43D69EC4187"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_609D89E01E1048DFBF0397ECF86DDA11"
             {
             "SourcePath" = "8:..\\..\\DEV\\Code\\Cobos.Data\\DatabaseQuery.cs"
@@ -2949,26 +2969,6 @@
             "TargetName" = "8:OracleDatabaseAdapter.cs"
             "Tag" = "8:"
             "Folder" = "8:_45F88D9D14384B8A97629553F41C19B8"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_70422827C16D46C9B85B775991F6F902"
-            {
-            "SourcePath" = "8:..\\..\\DEV\\Code\\Cobos.Codegen\\Schemas\\datamodel.xsd"
-            "TargetName" = "8:datamodel.xsd"
-            "Tag" = "8:"
-            "Folder" = "8:_42772EF9F93444D6BCB0C43D69EC4187"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -4616,26 +4616,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_EAB560AAE0F4419EA1FA70F723783646"
-            {
-            "SourcePath" = "8:..\\..\\DEV\\Code\\Cobos.Codegen\\Schemas\\buildconfig.xsd"
-            "TargetName" = "8:buildconfig.xsd"
-            "Tag" = "8:"
-            "Folder" = "8:_42772EF9F93444D6BCB0C43D69EC4187"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_EE499EC9814E4C508BE9C71F98501404"
             {
             "SourcePath" = "8:..\\..\\DEV\\Code\\Cobos.Utilities\\File\\PathResolver.cs"
@@ -4802,6 +4782,26 @@
             "TargetName" = "8:var_args.bat"
             "Tag" = "8:"
             "Folder" = "8:_83B0E01F1BBD48F1A0A3626B7067FD80"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F9FCA6E0BBCA4EC3B1EFEF6E49880D3F"
+            {
+            "SourcePath" = "8:..\\..\\DEV\\Code\\Cobos.Codegen\\Schemas\\DataModel.xsd"
+            "TargetName" = "8:DataModel.xsd"
+            "Tag" = "8:"
+            "Folder" = "8:_42772EF9F93444D6BCB0C43D69EC4187"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -5703,7 +5703,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Cobos CoreSDK v0.2"
         "ProductCode" = "8:{FE243F94-2C72-40D6-B207-5DAED8B0C838}"
-        "PackageCode" = "8:{59ADC0ED-F3DE-43C7-B44F-A48B773F29B6}"
+        "PackageCode" = "8:{32C273B7-F46A-4343-A3E1-006AC74EE6EC}"
         "UpgradeCode" = "8:{9ACD8332-1562-4BE0-ABCB-E1DAF44A9F32}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"

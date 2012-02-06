@@ -19,8 +19,6 @@
 
 	============================================================================
 	-->
-
-	<xsl:include href="Version.xslt"/>
 	
 	<!--
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -48,11 +46,6 @@
 
 	<xsd:complexType name="BuildFoldersType">
 		<xsd:sequence>
-			<xsd:element name="Codegen" type="xsd:string" default="concat( 'C:\Program Files\Cobos\CoreSDK\', $COBOS_VERSION, '\codegen' )">
-				<xsd:annotation>
-					<xsd:documentation>The installation path for the Cobos code generator.</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
 			<xsd:element name="Build" type="xsd:string" default=".\~build">
 				<xsd:annotation>
 					<xsd:documentation>The local folder build folder where the code generator stylesheets are copied to and intermediate build artefacts are generated.</xsd:documentation>

@@ -51,7 +51,11 @@ set hour=%filetime:~11,2%
 set min=%filetime:~14,2%
 set period=%filetime:~17,2%
 
-if "%period%" == "PM" set /a hour=%hour% + 12
+if "%period%" == "PM" (
+	if "%hour%" lss "12" (
+		set /a hour=%hour% + 12
+	)
+)
 
 ::return value
 @endlocal & set filetime_iso8601=%year%-%month%-%day%T%hour%:%min%
