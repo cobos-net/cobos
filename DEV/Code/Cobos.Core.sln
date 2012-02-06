@@ -27,56 +27,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cobos.Codgen", "Cobos.Codge
 		Cobos.Codegen\filetime_cmp.bat = Cobos.Codegen\filetime_cmp.bat
 		Cobos.Codegen\filetime_iso8601.bat = Cobos.Codegen\filetime_iso8601.bat
 		Cobos.Codegen\schema.bat = Cobos.Codegen\schema.bat
+		Cobos.Codegen\var_args.bat = Cobos.Codegen\var_args.bat
 		Cobos.Codegen\xslt.js = Cobos.Codegen\xslt.js
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.DatabaseToXsd", "Cobos.DatabaseToXsd\Cobos.DatabaseToXsd.csproj", "{3E75163B-131A-4D6F-856E-211504B14A68}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "schemas", "schemas", "{822CBF39-2EDF-434A-B7FB-E4AD2A0C0A15}"
-	ProjectSection(SolutionItems) = preProject
-		Cobos.Codegen\schemas\buildconfig.xsd = Cobos.Codegen\schemas\buildconfig.xsd
-		Cobos.Codegen\schemas\datamodel.xsd = Cobos.Codegen\schemas\datamodel.xsd
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "stylesheets", "stylesheets", "{B1C40454-6577-4859-963B-77A99C823FC3}"
-	ProjectSection(SolutionItems) = preProject
-		Cobos.Codegen\stylesheets\common.xslt = Cobos.Codegen\stylesheets\common.xslt
-		Cobos.Codegen\stylesheets\utilities.xslt = Cobos.Codegen\stylesheets\utilities.xslt
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{8A6C244B-BD76-4A0B-9BD8-7A7BCD62A771}"
-	ProjectSection(SolutionItems) = preProject
-		Cobos.Codegen\stylesheets\build\buildconfig.xslt = Cobos.Codegen\stylesheets\build\buildconfig.xslt
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "classes", "classes", "{027F4294-864C-4B4D-AB50-AD33A056886E}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "database", "database", "{E800C041-10C6-4770-9A53-A886C4301EDE}"
-	ProjectSection(SolutionItems) = preProject
-		Cobos.Codegen\stylesheets\database\schema.xsd = Cobos.Codegen\stylesheets\database\schema.xsd
-		Cobos.Codegen\stylesheets\database\schema.xslt = Cobos.Codegen\stylesheets\database\schema.xslt
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "datamodel", "datamodel", "{EFEEF057-22E5-4F05-ABAB-B9C36E92FD88}"
-	ProjectSection(SolutionItems) = preProject
-		Cobos.Codegen\stylesheets\datamodel\dataset.xslt = Cobos.Codegen\stylesheets\datamodel\dataset.xslt
-		Cobos.Codegen\stylesheets\datamodel\expand.xslt = Cobos.Codegen\stylesheets\datamodel\expand.xslt
-		Cobos.Codegen\stylesheets\datamodel\schema.xslt = Cobos.Codegen\stylesheets\datamodel\schema.xslt
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "oracle", "oracle", "{A4799AF5-31B3-47DA-A2A6-37AAED8E9BAB}"
-	ProjectSection(SolutionItems) = preProject
-		Cobos.Codegen\stylesheets\database\oracle\databaseschema.xslt = Cobos.Codegen\stylesheets\database\oracle\databaseschema.xslt
-		Cobos.Codegen\stylesheets\database\oracle\merge.xslt = Cobos.Codegen\stylesheets\database\oracle\merge.xslt
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "csharp", "csharp", "{722FAD57-7010-4590-8A51-2579D653C781}"
-	ProjectSection(SolutionItems) = preProject
-		Cobos.Codegen\stylesheets\classes\csharp\classes.xslt = Cobos.Codegen\stylesheets\classes\csharp\classes.xslt
-		Cobos.Codegen\stylesheets\classes\csharp\custom.xslt = Cobos.Codegen\stylesheets\classes\csharp\custom.xslt
-		Cobos.Codegen\stylesheets\classes\csharp\enum.xslt = Cobos.Codegen\stylesheets\classes\csharp\enum.xslt
-		Cobos.Codegen\stylesheets\classes\csharp\test.xslt = Cobos.Codegen\stylesheets\classes\csharp\test.xslt
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Installer", "Installer", "{FB0EE68F-7546-4BBE-B39E-95FBF1517F77}"
 EndProject
@@ -91,6 +46,95 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.Codegen.Tests", "Cobos.Codegen.Tests\Cobos.Codegen.Tests.csproj", "{AB2BFBE4-62CE-4BB7-BC37-E3F8AAF789C0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.Web.Proxy", "Cobos.Web.Proxy\Cobos.Web.Proxy.csproj", "{43F23355-0E22-493E-A376-1CB04D2141EC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Schemas", "Schemas", "{6EDA8BED-1F3E-4A58-ADDB-A4096FC394DD}"
+	ProjectSection(SolutionItems) = preProject
+		Cobos.Codegen\Schemas\BuildConfig.xsd = Cobos.Codegen\Schemas\BuildConfig.xsd
+		Cobos.Codegen\Schemas\DataModel.xsd = Cobos.Codegen\Schemas\DataModel.xsd
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Stylesheets", "Stylesheets", "{734596B3-3329-4336-B41D-A0804C78B745}"
+	ProjectSection(SolutionItems) = preProject
+		Cobos.Codegen\Stylesheets\Common.xslt = Cobos.Codegen\Stylesheets\Common.xslt
+		Cobos.Codegen\Stylesheets\Utilities.xslt = Cobos.Codegen\Stylesheets\Utilities.xslt
+		Cobos.Codegen\Stylesheets\Version.xslt = Cobos.Codegen\Stylesheets\Version.xslt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{98897FB0-F4F2-4EC7-A52B-C33A794825C0}"
+	ProjectSection(SolutionItems) = preProject
+		Cobos.Codegen\Stylesheets\Build\BuildConfig.xslt = Cobos.Codegen\Stylesheets\Build\BuildConfig.xslt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataModel", "DataModel", "{AA03B289-390E-4A38-93A7-B4E9856B769D}"
+	ProjectSection(SolutionItems) = preProject
+		Cobos.Codegen\Stylesheets\DataModel\Dataset.xslt = Cobos.Codegen\Stylesheets\DataModel\Dataset.xslt
+		Cobos.Codegen\Stylesheets\DataModel\Expand.xslt = Cobos.Codegen\Stylesheets\DataModel\Expand.xslt
+		Cobos.Codegen\Stylesheets\DataModel\Schema.xslt = Cobos.Codegen\Stylesheets\DataModel\Schema.xslt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{431A7087-1C7A-4C5E-8619-3FE737D0C75C}"
+	ProjectSection(SolutionItems) = preProject
+		Cobos.Codegen\Stylesheets\Database\Schema.xsd = Cobos.Codegen\Stylesheets\Database\Schema.xsd
+		Cobos.Codegen\Stylesheets\Database\Schema.xslt = Cobos.Codegen\Stylesheets\Database\Schema.xslt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Oracle", "Oracle", "{0C8EFEDC-4DEB-4890-8BF9-B9E00B321FA6}"
+	ProjectSection(SolutionItems) = preProject
+		Cobos.Codegen\Stylesheets\Database\Oracle\DatabaseSchema.xslt = Cobos.Codegen\Stylesheets\Database\Oracle\DatabaseSchema.xslt
+		Cobos.Codegen\Stylesheets\Database\Oracle\Merge.xslt = Cobos.Codegen\Stylesheets\Database\Oracle\Merge.xslt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Classes", "Classes", "{6B8454F6-62C2-4A7F-A6A7-C3B9246836D2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CSharp", "CSharp", "{B9BB1932-D08F-4904-A8FC-A5F0AC25644A}"
+	ProjectSection(SolutionItems) = preProject
+		Cobos.Codegen\Stylesheets\Classes\CSharp\Classes.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\Classes.xslt
+		Cobos.Codegen\Stylesheets\Classes\CSharp\Custom.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\Custom.xslt
+		Cobos.Codegen\Stylesheets\Classes\CSharp\Enum.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\Enum.xslt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Class", "Class", "{150D932B-1FB2-49B0-8FC0-C94A3711DBA9}"
+	ProjectSection(SolutionItems) = preProject
+		Cobos.Codegen\Stylesheets\Classes\CSharp\Class\Body.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\Class\Body.xslt
+		Cobos.Codegen\Stylesheets\Classes\CSharp\Class\Class.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\Class\Class.xslt
+		Cobos.Codegen\Stylesheets\Classes\CSharp\Class\Constructor.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\Class\Constructor.xslt
+		Cobos.Codegen\Stylesheets\Classes\CSharp\Class\IDisposable.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\Class\IDisposable.xslt
+		Cobos.Codegen\Stylesheets\Classes\CSharp\Class\Members.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\Class\Members.xslt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Properties", "Properties", "{7472F69A-82C6-4544-8FDC-346852767FD4}"
+	ProjectSection(SolutionItems) = preProject
+		Cobos.Codegen\Stylesheets\Classes\CSharp\Properties\Body.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\Properties\Body.xslt
+		Cobos.Codegen\Stylesheets\Classes\CSharp\Properties\Properties.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\Properties\Properties.xslt
+		Cobos.Codegen\Stylesheets\Classes\CSharp\Properties\Types.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\Properties\Types.xslt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TableAdapter", "TableAdapter", "{817CAAB0-318E-420E-9F0F-1992469613F1}"
+	ProjectSection(SolutionItems) = preProject
+		Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Changes.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Changes.xslt
+		Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Delegates.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Delegates.xslt
+		Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Delete.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Delete.xslt
+		Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Find.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Find.xslt
+		Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Insert.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Insert.xslt
+		Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\New.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\New.xslt
+		Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Select.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Select.xslt
+		Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\TableAdapter.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\TableAdapter.xslt
+		Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Update.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Update.xslt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sql", "Sql", "{3C69F362-12AD-45E1-B98B-9F52CDAC6254}"
+	ProjectSection(SolutionItems) = preProject
+		Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Sql\Delete.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Sql\Delete.xslt
+		Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Sql\GroupBy.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Sql\GroupBy.xslt
+		Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Sql\Having.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Sql\Having.xslt
+		Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Sql\Insert.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Sql\Insert.xslt
+		Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Sql\Join.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Sql\Join.xslt
+		Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Sql\OrderBy.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Sql\OrderBy.xslt
+		Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Sql\Select.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Sql\Select.xslt
+		Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Sql\Sql.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Sql\Sql.xslt
+		Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Sql\Update.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Sql\Update.xslt
+		Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Sql\Where.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Sql\Where.xslt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -238,14 +282,18 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{822CBF39-2EDF-434A-B7FB-E4AD2A0C0A15} = {F563C737-98D0-42B5-B2FF-CC9143347784}
-		{B1C40454-6577-4859-963B-77A99C823FC3} = {F563C737-98D0-42B5-B2FF-CC9143347784}
-		{8A6C244B-BD76-4A0B-9BD8-7A7BCD62A771} = {B1C40454-6577-4859-963B-77A99C823FC3}
-		{027F4294-864C-4B4D-AB50-AD33A056886E} = {B1C40454-6577-4859-963B-77A99C823FC3}
-		{E800C041-10C6-4770-9A53-A886C4301EDE} = {B1C40454-6577-4859-963B-77A99C823FC3}
-		{EFEEF057-22E5-4F05-ABAB-B9C36E92FD88} = {B1C40454-6577-4859-963B-77A99C823FC3}
-		{722FAD57-7010-4590-8A51-2579D653C781} = {027F4294-864C-4B4D-AB50-AD33A056886E}
-		{A4799AF5-31B3-47DA-A2A6-37AAED8E9BAB} = {E800C041-10C6-4770-9A53-A886C4301EDE}
+		{6EDA8BED-1F3E-4A58-ADDB-A4096FC394DD} = {F563C737-98D0-42B5-B2FF-CC9143347784}
+		{734596B3-3329-4336-B41D-A0804C78B745} = {F563C737-98D0-42B5-B2FF-CC9143347784}
 		{CC47102A-EC00-4B3D-9561-BFC17D91099C} = {FB0EE68F-7546-4BBE-B39E-95FBF1517F77}
+		{98897FB0-F4F2-4EC7-A52B-C33A794825C0} = {734596B3-3329-4336-B41D-A0804C78B745}
+		{AA03B289-390E-4A38-93A7-B4E9856B769D} = {734596B3-3329-4336-B41D-A0804C78B745}
+		{431A7087-1C7A-4C5E-8619-3FE737D0C75C} = {734596B3-3329-4336-B41D-A0804C78B745}
+		{6B8454F6-62C2-4A7F-A6A7-C3B9246836D2} = {734596B3-3329-4336-B41D-A0804C78B745}
+		{0C8EFEDC-4DEB-4890-8BF9-B9E00B321FA6} = {431A7087-1C7A-4C5E-8619-3FE737D0C75C}
+		{B9BB1932-D08F-4904-A8FC-A5F0AC25644A} = {6B8454F6-62C2-4A7F-A6A7-C3B9246836D2}
+		{150D932B-1FB2-49B0-8FC0-C94A3711DBA9} = {B9BB1932-D08F-4904-A8FC-A5F0AC25644A}
+		{7472F69A-82C6-4544-8FDC-346852767FD4} = {B9BB1932-D08F-4904-A8FC-A5F0AC25644A}
+		{817CAAB0-318E-420E-9F0F-1992469613F1} = {B9BB1932-D08F-4904-A8FC-A5F0AC25644A}
+		{3C69F362-12AD-45E1-B98B-9F52CDAC6254} = {817CAAB0-318E-420E-9F0F-1992469613F1}
 	EndGlobalSection
 EndGlobal
