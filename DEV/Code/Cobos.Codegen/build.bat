@@ -47,7 +47,7 @@ echo ==========================================================================
 echo Processing the build configuration...
 echo ==========================================================================
 
-%xslt% %build_config% %codegen%\Stylesheets\Build\BuildConfig.xslt %output_folder%\~build-unicode.bat targetdir=%output_folder%
+%xslt% %build_config% %codegen%\Stylesheets\Build\BuildConfig.xslt %output_folder%\~build-unicode.bat targetdir=%output_folder% codegen=%codegen%
 
 if %errorlevel% neq 0 (
 	set error_message="Failed to generate the build script from the build configuration."

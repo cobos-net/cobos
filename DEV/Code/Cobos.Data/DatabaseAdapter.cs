@@ -336,9 +336,9 @@ namespace Cobos.Data
 			CobosDataSet dataset = TableMetadata( schema, tables );
 
 #if INTERGRAPH_BRANDING
-			XslCompiledTransform xslTableToXsd = XsltHelper.Load( "Database/Oracle/databaseschema.xslt", "Intergraph.AsiaPac.Data.Stylesheets" );
+			XslCompiledTransform xslTableToXsd = XsltHelper.Load( "Database/Oracle/DatabaseSchema.xslt", "Intergraph.AsiaPac.Data.Stylesheets" );
 #else
-			XslCompiledTransform xslTableToXsd = XsltHelper.Load( "Database/Oracle/databaseschema.xslt", "Cobos.Data.Stylesheets" );
+			XslCompiledTransform xslTableToXsd = XsltHelper.Load( "Database/Oracle/DatabaseSchema.xslt", "Cobos.Data.Stylesheets" );
 #endif
 			if ( xslTableToXsd != null )
 			{

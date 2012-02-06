@@ -5703,7 +5703,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Cobos CoreSDK v0.2"
         "ProductCode" = "8:{FE243F94-2C72-40D6-B207-5DAED8B0C838}"
-        "PackageCode" = "8:{748FB3F2-1618-4700-A470-C2C7E3BD1CCC}"
+        "PackageCode" = "8:{59ADC0ED-F3DE-43C7-B44F-A48B773F29B6}"
         "UpgradeCode" = "8:{9ACD8332-1562-4BE0-ABCB-E1DAF44A9F32}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"

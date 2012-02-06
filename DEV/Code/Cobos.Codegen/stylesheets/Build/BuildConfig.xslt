@@ -24,6 +24,7 @@
 	-->
 
 	<xsl:param name="targetdir"/>
+	<xsl:param name="codegen"/>
 
 	<xsl:template match="/c:BuildConfiguration">
 @echo off
@@ -46,7 +47,7 @@ REM --------------------------------------------------------------------------
 REM Build tools and processing stylesheets
 REM --------------------------------------------------------------------------
 
-set codegen="<xsl:value-of select="c:Folders/c:Codegen"/>"
+set codegen="<xsl:value-of select="$codegen"/>"
 set build_folder="<xsl:value-of select="c:Folders/c:Build"/>"
 
 REM --------------------------------------------------------------------------

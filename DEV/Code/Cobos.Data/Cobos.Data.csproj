@@ -71,13 +71,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="..\Cobos.Codegen\stylesheets\utilities.xslt">
-      <Link>Stylesheets\utilities.xslt</Link>
+    <EmbeddedResource Include="..\Cobos.Codegen\Stylesheets\Database\Oracle\DatabaseSchema.xslt">
+      <Link>Stylesheets\Database\Oracle\DatabaseSchema.xslt</Link>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="..\Cobos.Codegen\stylesheets\database\oracle\databaseschema.xslt">
-      <Link>Stylesheets\Database\Oracle\databaseschema.xslt</Link>
+    <EmbeddedResource Include="..\Cobos.Codegen\Stylesheets\Utilities.xslt">
+      <Link>Stylesheets\Utilities.xslt</Link>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
