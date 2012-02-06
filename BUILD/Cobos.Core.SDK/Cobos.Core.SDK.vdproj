@@ -574,25 +574,25 @@
         "Entry"
         {
         "MsmKey" = "8:_80FD85BE49EECE15A14D1147D3F6DA76"
-        "OwnerKey" = "8:_53F9C9E7B5B24783AEB651B84F9028A4"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_80FD85BE49EECE15A14D1147D3F6DA76"
         "OwnerKey" = "8:_C60500655A9E47E1B7304EBFC834E7E3"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_80FD85BE49EECE15A14D1147D3F6DA76"
-        "OwnerKey" = "8:_6B57C18BF84FE7BB3C42B3D6CC3CA099"
+        "OwnerKey" = "8:_88FF955B7CB24D36A07E3F4C6A61DE26"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_80FD85BE49EECE15A14D1147D3F6DA76"
-        "OwnerKey" = "8:_88FF955B7CB24D36A07E3F4C6A61DE26"
+        "OwnerKey" = "8:_53F9C9E7B5B24783AEB651B84F9028A4"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_80FD85BE49EECE15A14D1147D3F6DA76"
+        "OwnerKey" = "8:_6B57C18BF84FE7BB3C42B3D6CC3CA099"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -694,6 +694,12 @@
         "Entry"
         {
         "MsmKey" = "8:_9BC397434C4F4EE286FDB64F7ADD4275"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_9BF24E3845634EB38C2D058D10DD856D"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -1090,43 +1096,13 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_80FD85BE49EECE15A14D1147D3F6DA76"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_06D7FF93033FA95959070D5DD5F28E68"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_0A29048658885B597A9D93BE5B8256B8"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_6146598502B686825F5EBB8BF3A60F21"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_07E0E718907B449E961D0FCC357EA085"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_53F9C9E7B5B24783AEB651B84F9028A4"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_C60500655A9E47E1B7304EBFC834E7E3"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_88FF955B7CB24D36A07E3F4C6A61DE26"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -1138,7 +1114,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_6B57C18BF84FE7BB3C42B3D6CC3CA099"
+        "OwnerKey" = "8:_53F9C9E7B5B24783AEB651B84F9028A4"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -1150,7 +1126,37 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_88FF955B7CB24D36A07E3F4C6A61DE26"
+        "OwnerKey" = "8:_6B57C18BF84FE7BB3C42B3D6CC3CA099"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_07E0E718907B449E961D0FCC357EA085"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_6146598502B686825F5EBB8BF3A60F21"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_0A29048658885B597A9D93BE5B8256B8"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_06D7FF93033FA95959070D5DD5F28E68"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_80FD85BE49EECE15A14D1147D3F6DA76"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -1405,6 +1411,11 @@
             "AssemblyAsmDisplayName" = "8:Oracle.DataAccess, Version=10.2.0.100, Culture=neutral, PublicKeyToken=89b483f429c47342"
                 "ScatterAssemblies"
                 {
+                    "_06D7FF93033FA95959070D5DD5F28E68"
+                    {
+                    "Name" = "8:Oracle.DataAccess.DLL"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:Oracle.DataAccess.DLL"
             "TargetName" = "8:"
@@ -1502,6 +1513,11 @@
             "AssemblyAsmDisplayName" = "8:Cobos.Data, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_0A29048658885B597A9D93BE5B8256B8"
+                    {
+                    "Name" = "8:Cobos.Data.DLL"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:Cobos.Data.DLL"
             "TargetName" = "8:"
@@ -2712,6 +2728,11 @@
             "AssemblyAsmDisplayName" = "8:NDesk.Options, Version=0.2.1.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_6146598502B686825F5EBB8BF3A60F21"
+                    {
+                    "Name" = "8:NDesk.Options.DLL"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:NDesk.Options.DLL"
             "TargetName" = "8:"
@@ -2858,6 +2879,11 @@
             "AssemblyAsmDisplayName" = "8:Cobos.Web.Utilities, Version=0.1.1.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_6B57C18BF84FE7BB3C42B3D6CC3CA099"
+                    {
+                    "Name" = "8:Cobos.Web.Utilities.DLL"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:Cobos.Web.Utilities.DLL"
             "TargetName" = "8:"
@@ -3164,6 +3190,11 @@
             "AssemblyAsmDisplayName" = "8:Cobos.Utilities, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_80FD85BE49EECE15A14D1147D3F6DA76"
+                    {
+                    "Name" = "8:Cobos.Utilities.DLL"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:Cobos.Utilities.DLL"
             "TargetName" = "8:"
@@ -3520,6 +3551,26 @@
             "TargetName" = "8:Select.xslt"
             "Tag" = "8:"
             "Folder" = "8:_92206243B3D843DB8743BFDBEC0D25DE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9BF24E3845634EB38C2D058D10DD856D"
+            {
+            "SourcePath" = "8:..\\..\\DEV\\Code\\Cobos.Codegen\\Stylesheets\\Version.xslt"
+            "TargetName" = "8:Version.xslt"
+            "Tag" = "8:"
+            "Folder" = "8:_C849108DB1CC45509F6A09DBDDCC04D7"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -4855,7 +4906,7 @@
             }
             "{3C67513D-01DD-4637-8A68-80971EB9504F}:_9B405416B4074F3EBBA0DCAA6D83E67B"
             {
-            "DefaultLocation" = "8:[ProgramFilesFolder][Manufacturer]\\CoreSDK\\0.1"
+            "DefaultLocation" = "8:[ProgramFilesFolder][Manufacturer]\\CoreSDK\\0.2"
             "Name" = "8:#1925"
             "AlwaysCreate" = "11:FALSE"
             "Condition" = "8:"
@@ -5650,16 +5701,16 @@
         "Product"
         {
         "Name" = "8:Microsoft Visual Studio"
-        "ProductName" = "8:Cobos CoreSDK"
-        "ProductCode" = "8:{19AE4356-0923-4D12-938A-2AD8E148B8DF}"
-        "PackageCode" = "8:{FE516896-D882-42E8-B58B-6A905B4C550C}"
+        "ProductName" = "8:Cobos CoreSDK v0.2"
+        "ProductCode" = "8:{FE243F94-2C72-40D6-B207-5DAED8B0C838}"
+        "PackageCode" = "8:{748FB3F2-1618-4700-A470-C2C7E3BD1CCC}"
         "UpgradeCode" = "8:{9ACD8332-1562-4BE0-ABCB-E1DAF44A9F32}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:0.1.1"
+        "ProductVersion" = "8:0.2"
         "Manufacturer" = "8:Cobos"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
