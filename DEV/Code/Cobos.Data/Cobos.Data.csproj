@@ -46,7 +46,7 @@
     <Compile Include="Adapters\OracleDatabaseAdapter.cs" />
     <Compile Include="Adapters\SqlDatabaseAdapter.cs" />
     <Compile Include="AsyncTask.cs" />
-    <Compile Include="CobosDataSet.cs">
+    <Compile Include="SimpleDataSet.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="DatabaseAdapter.cs" />

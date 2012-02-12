@@ -50,6 +50,8 @@
 			if ( disposing )
 			{
 				ObjectDataRow.Delete();
+				
+				GC.SuppressFinalize( this );
 			}
 			
 			_disposed = true;

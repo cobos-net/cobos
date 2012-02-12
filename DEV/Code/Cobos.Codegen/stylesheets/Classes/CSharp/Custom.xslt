@@ -24,7 +24,7 @@
 	Add your own namespace declarations here
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
-	<xsl:template name="userNamespaceDeclarations">
+	<xsl:template name="customNamespaceDeclarations">
 	</xsl:template>
 
 	<!-- 
@@ -50,38 +50,11 @@
 	
 	<!--
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	Implement these templates to provide a new default implementation 
-	for objects and interfaces.
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	-->
-	
-	<!--
-	<xsl:template match="cobos:Object" mode="classDefinition">
-	</xsl:template>
-
-	<xsl:template match="cobos:Interface" mode="classDefinition">
-	</xsl:template>
-	-->
-	
-	<!--
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	Implement this templates to provide a new default implementation 
-	for objects and interfaces.
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	-->
-	
-	<!--
-	<xsl:template match="cobos:Object" mode="tableAdapter">
-	</xsl:template>
-	-->
-	
-	<!--
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	Add your own data object extensions here
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-	<xsl:template match="cobos:Object" mode="userDataObjectExtensions">
+	<xsl:template match="cobos:Object" mode="customDataObjectExtensions">
 	</xsl:template>
 
 	<!--
@@ -90,7 +63,7 @@
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-	<xsl:template match="cobos:Object" mode="userTableAdapterExtensions">
+	<xsl:template match="cobos:Object" mode="customTableAdapterExtensions">
 	</xsl:template>
 
 	<!--
@@ -99,7 +72,7 @@
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-	<xsl:template match="cobos:Object" mode="userCustomCodeExtensions">
+	<xsl:template match="cobos:Object" mode="customCustomCodeExtensions">
 	</xsl:template>
 
 	<!--

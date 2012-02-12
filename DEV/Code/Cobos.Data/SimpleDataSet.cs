@@ -51,7 +51,7 @@ using Cobos.Utilities.Xml;
 namespace Cobos.Data
 #endif
 {
-	public class CobosDataSet : DataSet
+	public class SimpleDataSet : DataSet
 	{
 		/// <summary>
 		/// 
@@ -78,7 +78,7 @@ namespace Cobos.Data
 		/// 
 		/// </summary>
 		/// <param name="dataSetName"></param>
-		public CobosDataSet( string dataSetName )
+		public SimpleDataSet( string dataSetName )
 			: base( dataSetName )
 		{
 		}
@@ -87,7 +87,7 @@ namespace Cobos.Data
 		/// 
 		/// </summary>
 		/// <param name="dataSet"></param>
-		public CobosDataSet()
+		public SimpleDataSet()
 			: base()
 		{
 		}

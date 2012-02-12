@@ -81,6 +81,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_2EAC76DF1FBF490187181E6579BC9F9B"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_2FD6B624EAA2E908C9ED43AD391C4DDC"
         "OwnerKey" = "8:_236D22690C0947E0BE164DC115FB777C"
         "MsmSig" = "8:_UNDEFINED"
@@ -297,12 +303,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_A06DF8ED480449AEBF5FE032652B7A5D"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_A3C58D65C50349CD8D5B40F049239EB3"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -511,6 +511,27 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.0,Profile=Client"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4 Client Profile (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.0,Profile=Client"
+                    }
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Windows.Installer.3.1"
+                    {
+                    "Name" = "8:Windows Installer 3.1"
+                    "ProductCode" = "8:Microsoft.Windows.Installer.3.1"
+                    }
+                }
+            }
         }
         "Release"
         {
@@ -527,6 +548,27 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.0,Profile=Client"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4 Client Profile (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.0,Profile=Client"
+                    }
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Windows.Installer.3.1"
+                    {
+                    "Name" = "8:Windows Installer 3.1"
+                    "ProductCode" = "8:Microsoft.Windows.Installer.3.1"
+                    }
+                }
+            }
         }
     }
     "Deployable"
@@ -784,6 +826,26 @@
             "TargetName" = "8:SqlInsertTemplate.cs"
             "Tag" = "8:"
             "Folder" = "8:_49C86130A8A148AAA9AE5AAD44951DF8"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2EAC76DF1FBF490187181E6579BC9F9B"
+            {
+            "SourcePath" = "8:..\\..\\DEV\\Code\\Cobos.Data\\SimpleDataSet.cs"
+            "TargetName" = "8:SimpleDataSet.cs"
+            "Tag" = "8:"
+            "Folder" = "8:_E3555430C6A74C76AF4FD560675B1387"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1506,26 +1568,6 @@
             "TargetName" = "8:SqlUpdateTemplate.cs"
             "Tag" = "8:"
             "Folder" = "8:_49C86130A8A148AAA9AE5AAD44951DF8"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A06DF8ED480449AEBF5FE032652B7A5D"
-            {
-            "SourcePath" = "8:..\\..\\DEV\\Code\\Cobos.Data\\CobosDataSet.cs"
-            "TargetName" = "8:CobosDataSet.cs"
-            "Tag" = "8:"
-            "Folder" = "8:_E3555430C6A74C76AF4FD560675B1387"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -2476,9 +2518,9 @@
         "Product"
         {
         "Name" = "8:Microsoft Visual Studio"
-        "ProductName" = "8:Intergraph AsiaPac CoreSDK"
+        "ProductName" = "8:Intergraph AsiaPac CoreSDK v0.1"
         "ProductCode" = "8:{D52C4218-D2E0-4E69-BF9D-50CA518D8930}"
-        "PackageCode" = "8:{57C66454-137C-4270-A12B-2322DB01CE00}"
+        "PackageCode" = "8:{008E953E-B14D-4637-8A4A-EA9E797913C6}"
         "UpgradeCode" = "8:{860C01CB-649A-4E64-8010-066D7E429EBB}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -2493,7 +2535,7 @@
         "Subject" = "8:"
         "ARPCONTACT" = "8:Nicholas Davis"
         "Keywords" = "8:"
-        "ARPCOMMENTS" = "8:Rebranded Cobos.Core.SDK"
+        "ARPCOMMENTS" = "8:Core Software Development Kit"
         "ARPURLINFOABOUT" = "8:"
         "ARPPRODUCTICON" = "8:"
         "ARPIconIndex" = "3:0"

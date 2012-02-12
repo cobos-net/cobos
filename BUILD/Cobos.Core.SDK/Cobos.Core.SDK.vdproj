@@ -279,6 +279,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_3917BB4932404857A17158DC5568744F"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_3A417889A5FA4DA29B46C42D5CA3E295"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -364,6 +370,12 @@
         "Entry"
         {
         "MsmKey" = "8:_4E923677879D411C8746A3F10115FF7A"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_4ED7C717D4CC4C12BDCB12A77D9C7AC0"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -483,12 +495,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_6B57C18BF84FE7BB3C42B3D6CC3CA099"
-        "OwnerKey" = "8:_161C96D7341E4A709AAA5A1DABEFA4AB"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_6E19DDCD862B455A89698DBE3011FDAA"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -591,12 +597,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_80FD85BE49EECE15A14D1147D3F6DA76"
-        "OwnerKey" = "8:_6B57C18BF84FE7BB3C42B3D6CC3CA099"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_820D43CF1C9344059FE2F0CFB835A322"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -688,6 +688,12 @@
         "Entry"
         {
         "MsmKey" = "8:_978C2D7F4CEE4D0E813BA53F54C03368"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_9AB1112338684877BDB55172D84EAEE3"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -820,12 +826,6 @@
         "Entry"
         {
         "MsmKey" = "8:_B7A837B45B7F4E4EBBD945C819E411C4"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_B7ED9D71F5B84067BA3BAA7664C748DA"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -1029,12 +1029,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_F23D6F344F68465499DD892DB9782C89"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_F3D95900584140E2A3B520ADBEBA26C3"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -1121,12 +1115,6 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_161C96D7341E4A709AAA5A1DABEFA4AB"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_6B57C18BF84FE7BB3C42B3D6CC3CA099"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -2179,6 +2167,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3917BB4932404857A17158DC5568744F"
+            {
+            "SourcePath" = "8:..\\..\\DEV\\Code\\Cobos.Data\\SimpleDataSet.cs"
+            "TargetName" = "8:SimpleDataSet.cs"
+            "Tag" = "8:"
+            "Folder" = "8:_385A405C029449C292CDB308F7D7DFBE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3A417889A5FA4DA29B46C42D5CA3E295"
             {
             "SourcePath" = "8:..\\..\\DEV\\Code\\Cobos.Data\\IDatabaseAdapter.cs"
@@ -2465,6 +2473,26 @@
             "TargetName" = "8:GroupBy.xslt"
             "Tag" = "8:"
             "Folder" = "8:_996939BF52B24A3F8CA75725F16F3900"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4ED7C717D4CC4C12BDCB12A77D9C7AC0"
+            {
+            "SourcePath" = "8:..\\..\\DEV\\Code\\Cobos.Codegen\\VisualStudio\\Codegen.Clean.VS2010.targets"
+            "TargetName" = "8:Codegen.Clean.VS2010.targets"
+            "Tag" = "8:"
+            "Folder" = "8:_06288015F85A4EA781F86FD7E9E582B9"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -2890,37 +2918,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_6B57C18BF84FE7BB3C42B3D6CC3CA099"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Cobos.Web.Utilities, Version=0.1.1.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_6B57C18BF84FE7BB3C42B3D6CC3CA099"
-                    {
-                    "Name" = "8:Cobos.Web.Utilities.DLL"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:Cobos.Web.Utilities.DLL"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_746928FE63524ACAA17596B20F053452"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6E19DDCD862B455A89698DBE3011FDAA"
@@ -3545,6 +3542,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9AB1112338684877BDB55172D84EAEE3"
+            {
+            "SourcePath" = "8:..\\..\\DEV\\Code\\Cobos.Codegen\\VisualStudio\\Codegen.Clean.VS2008.targets"
+            "TargetName" = "8:Codegen.Clean.VS2008.targets"
+            "Tag" = "8:"
+            "Folder" = "8:_06288015F85A4EA781F86FD7E9E582B9"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9BC397434C4F4EE286FDB64F7ADD4275"
             {
             "SourcePath" = "8:..\\..\\DEV\\Code\\Cobos.Codegen\\Stylesheets\\Classes\\CSharp\\TableAdapter\\Select.xslt"
@@ -3971,26 +3988,6 @@
             "TargetName" = "8:DesktopTests.cs"
             "Tag" = "8:"
             "Folder" = "8:_1B686B2ABFAA4F4198FD973A6BE05531"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B7ED9D71F5B84067BA3BAA7664C748DA"
-            {
-            "SourcePath" = "8:..\\..\\DEV\\Code\\Cobos.Data\\CobosDataSet.cs"
-            "TargetName" = "8:CobosDataSet.cs"
-            "Tag" = "8:"
-            "Folder" = "8:_385A405C029449C292CDB308F7D7DFBE"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -4662,26 +4659,6 @@
             "TargetName" = "8:StringSeparator.cs"
             "Tag" = "8:"
             "Folder" = "8:_EAEE941132B44F7387E947FE765C935A"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F23D6F344F68465499DD892DB9782C89"
-            {
-            "SourcePath" = "8:..\\..\\DEV\\Code\\Cobos.Web.Proxy\\Proxy.aspx"
-            "TargetName" = "8:Proxy.aspx"
-            "Tag" = "8:"
-            "Folder" = "8:_C10FFB81911D4022A5B40D8883AFD26B"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -5539,6 +5516,17 @@
                     "Property" = "8:_F3B78B4BF7514AA18F3A64D0DBE82B6B"
                         "Folders"
                         {
+                            "{9EF0B969-E518-4E46-987F-47570745A589}:_06288015F85A4EA781F86FD7E9E582B9"
+                            {
+                            "Name" = "8:VisualStudio"
+                            "AlwaysCreate" = "11:FALSE"
+                            "Condition" = "8:"
+                            "Transitive" = "11:FALSE"
+                            "Property" = "8:_344FB5E76F264EEF85F6ABC38DF66879"
+                                "Folders"
+                                {
+                                }
+                            }
                             "{9EF0B969-E518-4E46-987F-47570745A589}:_42772EF9F93444D6BCB0C43D69EC4187"
                             {
                             "Name" = "8:Schemas"
@@ -5703,7 +5691,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Cobos CoreSDK v0.2"
         "ProductCode" = "8:{FE243F94-2C72-40D6-B207-5DAED8B0C838}"
-        "PackageCode" = "8:{32C273B7-F46A-4343-A3E1-006AC74EE6EC}"
+        "PackageCode" = "8:{8DB92779-E8A1-4EBD-8707-F3E7BA1B3BFF}"
         "UpgradeCode" = "8:{9ACD8332-1562-4BE0-ABCB-E1DAF44A9F32}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"

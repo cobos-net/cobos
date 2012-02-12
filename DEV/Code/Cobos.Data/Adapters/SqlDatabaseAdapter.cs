@@ -50,12 +50,50 @@ namespace Cobos.Data.Adapters
 		}
 
 		/// <summary>
+		/// Test the connection with a simple query.
+		/// </summary>
+		/// <returns></returns>
+		public override bool TestConnection()
+		{
+			bool result = false;
+
+			try
+			{
+				using ( SqlConnection connection = GetConnection() )
+				{
+					connection.Open();
+
+					using ( SqlCommand command = GetCommand( connection ) )
+					{
+						command.CommandText = "select 1";
+
+						object @object = command.ExecuteScalar();
+
+						if ( @object != null && @object.GetType() == typeof( int ) )
+						{
+							result = (int)@object == 1;
+						}
+					}
+
+					connection.Close();
+
+					return result;
+				}
+			}
+			catch ( Exception )
+			{
+				return false;
+			}
+		}
+
+
+		/// <summary>
 		/// SqlServer specific implementation of the metadata query.
 		/// </summary>
 		/// <param name="schema"></param>
 		/// <param name="tables"></param>
 		/// <returns></returns>
-		protected override CobosDataSet TableMetadata( string schema, string[] tables )
+		protected override SimpleDataSet TableMetadata( string schema, string[] tables )
 		{
 			throw new NotImplementedException();
 		}

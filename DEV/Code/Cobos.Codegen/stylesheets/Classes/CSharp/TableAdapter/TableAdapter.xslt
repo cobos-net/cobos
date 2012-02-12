@@ -119,9 +119,9 @@
 
 		#endregion
 
-		#region User extensions
+		#region Custom extensions
 
-		<xsl:apply-templates select="." mode="userTableAdapterExtensions"/>
+		<xsl:apply-templates select="." mode="customTableAdapterExtensions"/>
 
 		#endregion
 	}

@@ -51,15 +51,15 @@ using System.Data;
 using System.Data.Common;
 using System.Runtime.Serialization;
 using System.Text;
-<xsl:call-template name="userNamespaceDeclarations"/>
+<xsl:call-template name="customNamespaceDeclarations"/>
 
 namespace <xsl:value-of select="$codeNamespace"/>
 {
 	<xsl:apply-templates select="cobos:Object|cobos:Interface" mode="classDefinition"/>
 		
-	<xsl:apply-templates select="cobos:Object" mode="tableAdapter"/>
+	<xsl:apply-templates select="cobos:Object[ not( @createTableAdapter = 'false' ) ]" mode="tableAdapter"/>
 	
-	<xsl:apply-templates select="cobos:Object" mode="userCustomCodeExtensions"/>
+	<xsl:apply-templates select="cobos:Object" mode="customCodeExtensions"/>
 }
 	</xsl:template>
 

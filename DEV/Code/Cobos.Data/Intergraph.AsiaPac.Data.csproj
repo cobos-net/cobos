@@ -46,14 +46,14 @@
     <Compile Include="Adapters\OracleDatabaseAdapter.cs" />
     <Compile Include="Adapters\SqlDatabaseAdapter.cs" />
     <Compile Include="AsyncTask.cs" />
-    <Compile Include="CobosDataSet.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="DatabaseAdapter.cs" />
     <Compile Include="DatabaseAdapterFactory.cs" />
     <Compile Include="DatabaseQuery.cs" />
     <Compile Include="IDatabaseAdapter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SimpleDataSet.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Statements\SqlDeleteTemplate.cs" />
     <Compile Include="Statements\SqlInsertTemplate.cs" />
     <Compile Include="Statements\SqlSelectTemplate.cs" />
@@ -71,12 +71,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\Cobos.Codegen\stylesheets\database\oracle\databaseschema.xslt">
-      <Link>Stylesheets\Database\Oracle\databaseschema.xslt</Link>
-    </Content>
-    <Content Include="..\Cobos.Codegen\stylesheets\utilities.xslt">
-      <Link>Stylesheets\utilities.xslt</Link>
-    </Content>
+    <EmbeddedResource Include="..\Cobos.Codegen\Stylesheets\Database\Oracle\DatabaseSchema.xslt">
+      <Link>Stylesheets\Database\Oracle\DatabaseSchema.xslt</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Cobos.Codegen\Stylesheets\Utilities.xslt">
+      <Link>Stylesheets\Utilities.xslt</Link>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

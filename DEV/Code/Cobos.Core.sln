@@ -136,6 +136,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sql", "Sql", "{3C69F362-12A
 		Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Sql\Where.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Sql\Where.xslt
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "VisualStudio", "VisualStudio", "{B7F60FFC-70E9-419C-A7E9-055458CA5BBB}"
+	ProjectSection(SolutionItems) = preProject
+		Cobos.Codegen\VisualStudio\Codegen.Clean.VS2008.targets = Cobos.Codegen\VisualStudio\Codegen.Clean.VS2008.targets
+		Cobos.Codegen\VisualStudio\Codegen.Clean.VS2010.targets = Cobos.Codegen\VisualStudio\Codegen.Clean.VS2010.targets
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -254,7 +260,6 @@ Global
 		{CC47102A-EC00-4B3D-9561-BFC17D91099C}.Release|Any CPU.ActiveCfg = Release
 		{CC47102A-EC00-4B3D-9561-BFC17D91099C}.Release|Any CPU.Build.0 = Release
 		{CC47102A-EC00-4B3D-9561-BFC17D91099C}.Release|Mixed Platforms.ActiveCfg = Release
-		{CC47102A-EC00-4B3D-9561-BFC17D91099C}.Release|Mixed Platforms.Build.0 = Release
 		{CC47102A-EC00-4B3D-9561-BFC17D91099C}.Release|x86.ActiveCfg = Release
 		{CC47102A-EC00-4B3D-9561-BFC17D91099C}.Release|x86.Build.0 = Release
 		{AB2BFBE4-62CE-4BB7-BC37-E3F8AAF789C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -284,6 +289,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{6EDA8BED-1F3E-4A58-ADDB-A4096FC394DD} = {F563C737-98D0-42B5-B2FF-CC9143347784}
 		{734596B3-3329-4336-B41D-A0804C78B745} = {F563C737-98D0-42B5-B2FF-CC9143347784}
+		{B7F60FFC-70E9-419C-A7E9-055458CA5BBB} = {F563C737-98D0-42B5-B2FF-CC9143347784}
 		{CC47102A-EC00-4B3D-9561-BFC17D91099C} = {FB0EE68F-7546-4BBE-B39E-95FBF1517F77}
 		{98897FB0-F4F2-4EC7-A52B-C33A794825C0} = {734596B3-3329-4336-B41D-A0804C78B745}
 		{AA03B289-390E-4A38-93A7-B4E9856B769D} = {734596B3-3329-4336-B41D-A0804C78B745}

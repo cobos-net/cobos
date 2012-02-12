@@ -95,6 +95,40 @@ namespace Cobos.Data
 		}
 
 		/// <summary>
+		/// Gets the DB Connection.  Can be overridden to provide
+		/// custom connection opening behaviour.
+		/// </summary>
+		/// <returns></returns>
+		protected virtual ConnectionType GetConnection()
+		{
+			ConnectionType connection = new ConnectionType();
+			connection.ConnectionString = ConnectionString;
+			return connection;
+		}
+
+		/// <summary>
+		/// Gets a DB command object.  Can be overriden to provide
+		/// custom command behaviour.
+		/// </summary>
+		/// <returns></returns>
+		protected virtual CommandType GetCommand( ConnectionType connection )
+		{
+			CommandType command = new CommandType();
+			command.Connection = connection;
+			return command;
+		}
+
+		/// <summary>
+		/// Get the Data Adapter type.  Can be overridden to provide
+		/// custom data adapter behaviour.
+		/// </summary>
+		/// <returns></returns>
+		protected virtual DataAdapterType GetDataAdapter()
+		{
+			return new DataAdapterType();
+		}
+
+		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="sql"></param>
@@ -122,19 +156,17 @@ namespace Cobos.Data
 			}
 		}
 
-		public void Fill( string sql, DataTable result )
+		public virtual void Fill( string sql, DataTable result )
 		{
-			using ( ConnectionType connection = new ConnectionType() )
+			using ( ConnectionType connection = GetConnection() )
 			{
-				connection.ConnectionString = ConnectionString;
 				connection.Open();
 
-				using ( CommandType command = new CommandType() )
+				using ( CommandType command = GetCommand( connection ) )
 				{
-					command.Connection = connection;
 					command.CommandText = sql;
 
-					using ( DataAdapterType adapter = new DataAdapterType() )
+					using ( DataAdapterType adapter = GetDataAdapter() )
 					{
 						((IDbDataAdapter)adapter).SelectCommand = command;
 						adapter.Fill( result );
@@ -185,29 +217,9 @@ namespace Cobos.Data
 
 			try
 			{
-				using ( ConnectionType connection = new ConnectionType() )
-				{
-					connection.ConnectionString = ConnectionString;
-					connection.Open();
-
-					using ( CommandType command = new CommandType() )
-					{
-						command.Connection = connection;
-						command.CommandText = sql;
-
-						using ( DataAdapterType adapter = new DataAdapterType() )
-						{
-							((IDbDataAdapter)adapter).SelectCommand = command;
-							dataSet = new DataSetType();
-							adapter.Fill( dataSet, tableName );
-						}
-
-					}
-
-					connection.Close();
-
-					return dataSet;
-				}
+				Fill( sql, tableName, dataSet );
+				
+				return dataSet;
 			}
 			catch ( Exception )
 			{
@@ -226,11 +238,11 @@ namespace Cobos.Data
 		/// <param name="tableName"></param>
 		/// <param name="dataSetName"></param>
 		/// <returns></returns>
-		public CobosDataSet Fill( string sql, string tableName, string dataSetName )
+		public SimpleDataSet Fill( string sql, string tableName, string dataSetName )
 		{
 			DataTable dataTable = Fill( sql, tableName );
 
-			CobosDataSet dataSet = new CobosDataSet( dataSetName );
+			SimpleDataSet dataSet = new SimpleDataSet( dataSetName );
 			dataSet.Tables.Add( dataTable );
 
 			return dataSet;
@@ -321,7 +333,7 @@ namespace Cobos.Data
 		/// <param name="result"></param>
 		public void GetTableMetadata( string schema, string[] tables, Stream result )
 		{
-			CobosDataSet dataset = TableMetadata( schema, tables );
+			SimpleDataSet dataset = TableMetadata( schema, tables );
 			dataset.ToXml( result );
 		}
 
@@ -333,7 +345,7 @@ namespace Cobos.Data
 		/// <param name="result"></param>
 		public void GetTableSchema( string schema, string[] tables, Stream result )
 		{
-			CobosDataSet dataset = TableMetadata( schema, tables );
+			SimpleDataSet dataset = TableMetadata( schema, tables );
 
 #if INTERGRAPH_BRANDING
 			XslCompiledTransform xslTableToXsd = XsltHelper.Load( "Database/Oracle/DatabaseSchema.xslt", "Intergraph.AsiaPac.Data.Stylesheets" );
@@ -357,28 +369,12 @@ namespace Cobos.Data
 		/// <param name="schema"></param>
 		/// <param name="tables"></param>
 		/// <returns></returns>
-		protected abstract CobosDataSet TableMetadata( string schema, string[] tables );
+		protected abstract SimpleDataSet TableMetadata( string schema, string[] tables );
 
 		/// <summary>
 		/// Test that a connection to the database can be made
 		/// </summary>
 		/// <returns>True if the test succeeded, otherwise false.</returns>
-		bool TestConnection()
-		{
-			try
-			{
-				using ( ConnectionType connection = new ConnectionType() )
-				{
-					connection.ConnectionString = ConnectionString;
-					connection.Open();
-					connection.Close();
-					return true;
-				}
-			}
-			catch ( Exception )
-			{
-				return false;
-			}
-		}
+		public abstract bool TestConnection();
 	}
 }

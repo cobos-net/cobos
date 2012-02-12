@@ -75,5 +75,7 @@ namespace Cobos.Data
 		void GetTableMetadata( string schema, string[] tables, Stream result );
 
 		void GetTableSchema( string schema, string[] tables, Stream result );
+
+		bool TestConnection();
 	}
 }

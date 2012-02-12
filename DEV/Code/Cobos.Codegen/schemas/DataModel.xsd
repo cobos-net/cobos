@@ -202,6 +202,16 @@
 						</xsd:documentation>
 					</xsd:annotation>
 				</xsd:attribute>
+				<xsd:attribute name="createTableAdapter" type="xsd:boolean" use="optional" default="true">
+					<xsd:annotation>
+						<xsd:documentation>
+							Tells the code generator whether to create a Table Adapter class for 
+							CRUD operations in the database.  If you are creating a read-only
+							data service then you should implement a read-only Table Adapter 
+							yourself.
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
@@ -294,7 +304,24 @@
 				<xsd:sequence>
 					<xsd:element name="Metadata" type="TableMetadataType"/>
 				</xsd:sequence>
-				<xsd:attribute name="dbTable" type="xsd:string"/>
+				<xsd:attribute name="dbTable" type="xsd:string">
+					<xsd:annotation>
+						<xsd:documentation>
+							The database table to generate an object from.  Creates
+							object attributes for each column in the table.
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="createTableAdapter" type="xsd:boolean" use="optional" default="true">
+					<xsd:annotation>
+						<xsd:documentation>
+							Tells the code generator whether to create a Table Adapter class for 
+							CRUD operations in the database.  If you are creating a read-only
+							data service then you should implement a read-only Table Adapter 
+							yourself.
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>

@@ -51,14 +51,51 @@ namespace Cobos.Data.Adapters
 		}
 
 		/// <summary>
+		/// Test the connection with a simple query.
+		/// </summary>
+		/// <returns></returns>
+		public override bool TestConnection()
+		{
+			bool result = false;
+
+			try
+			{
+				using ( OracleConnection connection = GetConnection() )
+				{
+					connection.Open();
+
+					using ( OracleCommand command = GetCommand( connection ) )
+					{
+						command.CommandText = "select 1 from dual";
+						
+						object @object = command.ExecuteScalar();
+						
+						if ( @object != null && @object.GetType() == typeof( int ) )
+						{
+							result = (int)@object == 1;
+						}
+					}
+
+					connection.Close();
+					
+					return result;
+				}
+			}
+			catch ( Exception )
+			{
+				return false;
+			}
+		}
+
+		/// <summary>
 		/// Oracle specific implementation of the metadata query.
 		/// </summary>
 		/// <param name="schema"></param>
 		/// <param name="tables"></param>
 		/// <returns></returns>
-		protected override CobosDataSet TableMetadata( string schema, string[] tables )
+		protected override SimpleDataSet TableMetadata( string schema, string[] tables )
 		{
-			CobosDataSet result = new CobosDataSet( "TABLE_METADATA" );
+			SimpleDataSet result = new SimpleDataSet( "TABLE_METADATA" );
 
 			DataTable table = new DataTable( "TABLE" );
 			table.Columns.Add( new DataColumn( "NAME", Type.GetType( "System.String" ) ) );
@@ -92,10 +129,10 @@ namespace Cobos.Data.Adapters
 
 			Fill( constraints, "CONSTRAINT", result );
 
-			CobosDataSet.Relationship[] relations = new CobosDataSet.Relationship[]
+			SimpleDataSet.Relationship[] relations = new SimpleDataSet.Relationship[]
 			{
-				new CobosDataSet.Relationship( "COLUMNS", "TABLE", "NAME", "COLUMN", "TABLE_NAME" ),
-				new CobosDataSet.Relationship( "CONTSTRAINTS", "TABLE", "NAME", "CONSTRAINT", "TABLE_NAME" )
+				new SimpleDataSet.Relationship( "COLUMNS", "TABLE", "NAME", "COLUMN", "TABLE_NAME" ),
+				new SimpleDataSet.Relationship( "CONTSTRAINTS", "TABLE", "NAME", "CONSTRAINT", "TABLE_NAME" )
 			};
 
 			result.CreateRelationships( relations );
