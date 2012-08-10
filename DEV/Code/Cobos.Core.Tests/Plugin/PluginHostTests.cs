@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Cobos.Core.Plugin;
-using Xunit;
+using NUnit.Framework;
 using System.IO;
 
 namespace Cobos.Core.Plugin.Test
@@ -12,7 +12,7 @@ namespace Cobos.Core.Plugin.Test
 	{
 		List<IPluginClient> _plugins = new List<IPluginClient>();
 
-		[Fact]
+		[TestCase]
 		public void Plugin_host_works()
 		{
 			string codeBase = System.Reflection.Assembly.GetExecutingAssembly().CodeBase;

@@ -37,6 +37,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -69,6 +70,7 @@
       <DependentUpon>TriState.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\DateTimeConverter.cs" />
+    <Compile Include="Converters\DBNullConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -82,11 +84,18 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="UI\CobosWpfApplication.cs" />
     <Compile Include="UI\CommandLineArgs.cs" />
     <Compile Include="UI\CurrentCursor.cs" />
     <Compile Include="UI\CurrentUser.cs" />
-    <Compile Include="UI\LogonDialog.xaml.cs">
-      <DependentUpon>LogonDialog.xaml</DependentUpon>
+    <Compile Include="UI\DatabaseLoginDialog.xaml.cs">
+      <DependentUpon>DatabaseLoginDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\DatabaseSettingsDialog.xaml.cs">
+      <DependentUpon>DatabaseSettingsDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\LoginDialog.xaml.cs">
+      <DependentUpon>LoginDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\MessageBoxHandler.cs" />
     <Compile Include="UI\MessageChoice.xaml.cs">
@@ -95,7 +104,6 @@
     <Compile Include="UI\PasswordDialog.xaml.cs">
       <DependentUpon>PasswordDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\PhoneViewWpfApplication.cs" />
     <Compile Include="UI\ProgressDialog.xaml.cs">
       <DependentUpon>ProgressDialog.xaml</DependentUpon>
     </Compile>
@@ -141,15 +149,23 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Themes\GridLayout.xaml">
+    <Page Include="UI\DatabaseLoginDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\DatabaseSettingsDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Themes\GridLayout.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Themes\ViewDialogLayout.xaml">
+    <Page Include="UI\Themes\ViewDialogLayout.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UI\LogonDialog.xaml">
+    <Page Include="UI\LoginDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -15,5 +15,10 @@ namespace Cobos.Utilities.Tests
 		public const string TestFilesLocation = @"C:\Projects\Cobos.Core\DEV\Code\Cobos.Utilities.Tests\TestFiles";
 
 		public const string UncSharedFolder = @"\\ap-sgisourcectrl\cad_795\include";
+
+		public static string ResolvePath( string relative )
+		{
+			return System.IO.Path.Combine( TestFilesLocation, relative );
+		}
 	}
 }

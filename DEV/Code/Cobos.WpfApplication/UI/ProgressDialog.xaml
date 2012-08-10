@@ -6,7 +6,7 @@
         <StackPanel.Resources>
             <ResourceDictionary>
                 <ResourceDictionary.MergedDictionaries>
-                    <ResourceDictionary Source="..\Themes\GridLayout.xaml"/>
+                    <ResourceDictionary Source=".\Themes\GridLayout.xaml"/>
                 </ResourceDictionary.MergedDictionaries>
             </ResourceDictionary>
         </StackPanel.Resources>

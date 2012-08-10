@@ -1,15 +1,16 @@
 ﻿using System;
 using Cobos.Utilities.File;
-using Xunit;
+using NUnit.Framework;
 using System.IO;
 
 using SysFile = System.IO.File;
 
 namespace Cobos.Utilities.Tests.File
 {
+	[TestFixture]
 	public class DriveMappingTests
 	{
-		[Fact]
+		[TestCase]
 		public void Can_map_and_unmap_a_local_folder()
 		{
 			const string testFilePath = TestManager.TestFilesLocation + @"\drivemappingtest.txt";
@@ -41,7 +42,7 @@ namespace Cobos.Utilities.Tests.File
 			FileHandle h1 = new FileHandle( testFilePath );
 			FileHandle h2 = new FileHandle( drive + @":\drivemappingtest.txt" );
 
-			Assert.Equal( h1, h2 );
+			Assert.AreEqual( h1, h2 );
 
 			Assert.True( DriveMapping.RemoveLocalFolder( drive, null ) );
 
@@ -51,7 +52,7 @@ namespace Cobos.Utilities.Tests.File
 			FileUtility.DeleteFile( testFilePath );
 		}
 
-		[Fact]
+		[TestCase]
 		public void Can_map_and_unmap_a_network_folder()
 		{
 			// find a free drive...
@@ -73,7 +74,7 @@ namespace Cobos.Utilities.Tests.File
 			FileHandle h1 = new FileHandle( TestManager.UncSharedFolder + @"\init_cad.h" );
 			FileHandle h2 = new FileHandle( drive + @":\init_cad.h" );
 
-			Assert.Equal( h1, h2 );
+			Assert.AreEqual( h1, h2 );
 
 			Assert.True( DriveMapping.RemoveLocalFolder( drive, null ) );
 

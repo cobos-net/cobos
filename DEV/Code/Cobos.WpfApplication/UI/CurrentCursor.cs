@@ -2,74 +2,74 @@
 using System.Windows.Input;
 using Cobos.Core.UI;
 
-using PhoneViewCursorType = Cobos.Core.UI.CursorType;
+using CobosCursorType = Cobos.Core.UI.CursorType;
 using WindowsCursors = System.Windows.Input.Cursors;
 
 namespace Cobos.WpfApplication.UI
 {
 	public class CurrentCursor : ICurrentCursor 
 	{
-		public PhoneViewCursorType Type
+		public CobosCursorType Type
 		{
 			set
 			{
 				switch ( value )
 				{
-				case PhoneViewCursorType.AppStarting:
+				case CobosCursorType.AppStarting:
 					Mouse.OverrideCursor = WindowsCursors.AppStarting;
 					break;
-				case PhoneViewCursorType.ArrowCD:
+				case CobosCursorType.ArrowCD:
 					Mouse.OverrideCursor = WindowsCursors.ArrowCD;
 					break;
-				case PhoneViewCursorType.Arrow:
+				case CobosCursorType.Arrow:
 					Mouse.OverrideCursor = WindowsCursors.Arrow;
 					break;
-				case PhoneViewCursorType.Cross:
+				case CobosCursorType.Cross:
 					Mouse.OverrideCursor = WindowsCursors.Cross;
 					break;
-				case PhoneViewCursorType.HandCursor:
+				case CobosCursorType.HandCursor:
 					Mouse.OverrideCursor = WindowsCursors.Hand;
 					break;
-				case PhoneViewCursorType.Help:
+				case CobosCursorType.Help:
 					Mouse.OverrideCursor = WindowsCursors.Help;
 					break;
-				case PhoneViewCursorType.IBeam:
+				case CobosCursorType.IBeam:
 					Mouse.OverrideCursor = WindowsCursors.IBeam;
 					break;
-				case PhoneViewCursorType.No:
+				case CobosCursorType.No:
 					Mouse.OverrideCursor = WindowsCursors.No;
 					break;
-				case PhoneViewCursorType.None:
+				case CobosCursorType.None:
 					Mouse.OverrideCursor = WindowsCursors.None;
 					break;
-				case PhoneViewCursorType.Pen:
+				case CobosCursorType.Pen:
 					Mouse.OverrideCursor = WindowsCursors.Pen;
 					break;
-				case PhoneViewCursorType.ScrollSE:
+				case CobosCursorType.ScrollSE:
 					Mouse.OverrideCursor = WindowsCursors.ScrollSE;
 					break;
-				case PhoneViewCursorType.ScrollWE:
+				case CobosCursorType.ScrollWE:
 					Mouse.OverrideCursor = WindowsCursors.ScrollWE;
 					break;
-				case PhoneViewCursorType.SizeAll:
+				case CobosCursorType.SizeAll:
 					Mouse.OverrideCursor = WindowsCursors.SizeAll;
 					break;
-				case PhoneViewCursorType.SizeNESW:
+				case CobosCursorType.SizeNESW:
 					Mouse.OverrideCursor = WindowsCursors.SizeNESW;
 					break;
-				case PhoneViewCursorType.SizeNS:
+				case CobosCursorType.SizeNS:
 					Mouse.OverrideCursor = WindowsCursors.SizeNS;
 					break;
-				case PhoneViewCursorType.SizeNWSE:
+				case CobosCursorType.SizeNWSE:
 					Mouse.OverrideCursor = WindowsCursors.SizeNWSE;
 					break;
-				case PhoneViewCursorType.SizeWE:
+				case CobosCursorType.SizeWE:
 					Mouse.OverrideCursor = WindowsCursors.SizeWE;
 					break;
-				case PhoneViewCursorType.UpArrow:
+				case CobosCursorType.UpArrow:
 					Mouse.OverrideCursor = WindowsCursors.UpArrow;
 					break;
-				case PhoneViewCursorType.WaitCursor:
+				case CobosCursorType.WaitCursor:
 					Mouse.OverrideCursor = WindowsCursors.Wait;
 					break;
 				//case PhoneViewCursorType.Custom:

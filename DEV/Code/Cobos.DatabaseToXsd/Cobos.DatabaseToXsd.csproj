@@ -55,6 +55,10 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Cobos.Data.Oracle\Cobos.Data.Oracle.csproj">
+      <Project>{CFB3BE49-D78C-48D3-9238-A0DB2C2BA3A2}</Project>
+      <Name>Cobos.Data.Oracle</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Cobos.Data\Cobos.Data.csproj">
       <Project>{6906B107-C149-4682-AF7B-FEF9F697FE36}</Project>
       <Name>Cobos.Data</Name>

@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Data;
 using System.Text;
 using Cobos.Data.Utilities;
-using Xunit;
+using NUnit.Framework;
 
 namespace Cobos.Data.Tests.Utilities
 {
+	[TestFixture]
 	public class DataRowColumnAggregatorTests
 	{
 		/// <summary>
@@ -59,7 +60,7 @@ namespace Cobos.Data.Tests.Utilities
 		}
 
 		
-		[Fact]
+		[TestCase]
 		public void Can_aggregate_on_single_column()
 		{
 			// Strategy:
@@ -76,10 +77,10 @@ namespace Cobos.Data.Tests.Utilities
 			DataTable aggregated = aggregator.Process( table );
 
 			// should have aggregated into two groups: "First 4 Items" and "Last 4 Items"
-			Assert.Equal<int>( 2, aggregated.Rows.Count );
+			Assert.AreEqual( 2, aggregated.Rows.Count );
 
-			Assert.Equal<string>( "String1 String2 String3 String4", (string)aggregated.Rows[ 0 ][ "Col1" ] );
-			Assert.Equal<string>( "String5 String6 String7 String8", (string)aggregated.Rows[ 1 ][ "Col1" ] );
+			Assert.AreEqual( "String1 String2 String3 String4", (string)aggregated.Rows[ 0 ][ "Col1" ] );
+			Assert.AreEqual( "String5 String6 String7 String8", (string)aggregated.Rows[ 1 ][ "Col1" ] );
 
 			// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 			// NO LONGER SUPPORTED.
@@ -90,19 +91,19 @@ namespace Cobos.Data.Tests.Utilities
 			//aggregated = aggregator.Process( table );
 
 			//// should get 6 groups: "first 4 items", "First 4 Items",  "FIRST 4 ITEMS", "last 4 items", "Last 4 Items" and "LAST 4 ITEMS"
-			//Assert.Equal<int>( 6, aggregated.Rows.Count );
+			//Assert.AreEqual( 6, aggregated.Rows.Count );
 
-			//Assert.Equal<string>( "String1",				(string)aggregated.Rows[ 0 ][ "Col1" ] );
-			//Assert.Equal<string>( "String2 String3",	(string)aggregated.Rows[ 1 ][ "Col1" ] );
-			//Assert.Equal<string>( "String4",				(string)aggregated.Rows[ 2 ][ "Col1" ] );
-			//Assert.Equal<string>( "String5",				(string)aggregated.Rows[ 3 ][ "Col1" ] );
-			//Assert.Equal<string>( "String6 String7",	(string)aggregated.Rows[ 4 ][ "Col1" ] );
+			//Assert.AreEqual( "String1",				(string)aggregated.Rows[ 0 ][ "Col1" ] );
+			//Assert.AreEqual( "String2 String3",	(string)aggregated.Rows[ 1 ][ "Col1" ] );
+			//Assert.AreEqual( "String4",				(string)aggregated.Rows[ 2 ][ "Col1" ] );
+			//Assert.AreEqual( "String5",				(string)aggregated.Rows[ 3 ][ "Col1" ] );
+			//Assert.AreEqual( "String6 String7",	(string)aggregated.Rows[ 4 ][ "Col1" ] );
 			//// if an aggregation results in a single row, the row is copied, so no trimming of input
-			//Assert.Equal<string>( "  String8  ",		(string)aggregated.Rows[ 5 ][ "Col1" ] );
+			//Assert.AreEqual( "  String8  ",		(string)aggregated.Rows[ 5 ][ "Col1" ] );
 			// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		}
 
-		[Fact]
+		[TestCase]
 		public void Can_aggregate_on_multiple_columns()
 		{
 			// Strategy:
@@ -121,15 +122,15 @@ namespace Cobos.Data.Tests.Utilities
 			DataTable aggregated = aggregator.Process( table );
 
 			// should have aggregated into four groups: 1, 2, 3, 4
-			Assert.Equal<int>( 4, aggregated.Rows.Count );
+			Assert.AreEqual( 4, aggregated.Rows.Count );
 
-			Assert.Equal<string>( "String1",				(string)aggregated.Rows[ 0 ][ "Col1" ] );
-			Assert.Equal<string>( "String2 String5",	(string)aggregated.Rows[ 1 ][ "Col1" ] );
-			Assert.Equal<string>( "String3",				(string)aggregated.Rows[ 2 ][ "Col1" ] );
-			Assert.Equal<string>( "String4 String6 String7 String8", (string)aggregated.Rows[ 3 ][ "Col1" ] );
+			Assert.AreEqual( "String1",				(string)aggregated.Rows[ 0 ][ "Col1" ] );
+			Assert.AreEqual( "String2 String5",	(string)aggregated.Rows[ 1 ][ "Col1" ] );
+			Assert.AreEqual( "String3",				(string)aggregated.Rows[ 2 ][ "Col1" ] );
+			Assert.AreEqual( "String4 String6 String7 String8", (string)aggregated.Rows[ 3 ][ "Col1" ] );
 		}
 
-		[Fact]
+		[TestCase]
 		public void Can_aggregate_and_sort_columns()
 		{
 			// Strategy:
@@ -159,10 +160,10 @@ namespace Cobos.Data.Tests.Utilities
 			DataTable aggregated = aggregator.Process( table );
 
 			// should have aggregated into two groups: true and false
-			Assert.Equal<int>( 2, aggregated.Rows.Count );
+			Assert.AreEqual( 2, aggregated.Rows.Count );
 
-			Assert.Equal<string>( "String7 String5 String3 String1", (string)aggregated.Rows[ 0 ][ "Col1" ] );
-			Assert.Equal<string>( "String8 String6 String4 String2", (string)aggregated.Rows[ 1 ][ "Col1" ] );
+			Assert.AreEqual( "String7 String5 String3 String1", (string)aggregated.Rows[ 0 ][ "Col1" ] );
+			Assert.AreEqual( "String8 String6 String4 String2", (string)aggregated.Rows[ 1 ][ "Col1" ] );
 
 			//////////////////////////////////////////////////////////////////////
 			// 2) sort by single column, case sensitive, descending
@@ -172,10 +173,10 @@ namespace Cobos.Data.Tests.Utilities
 			aggregated = aggregator.Process( table );
 
 			// should have aggregated into two groups: true and false
-			Assert.Equal<int>( 2, aggregated.Rows.Count );
+			Assert.AreEqual( 2, aggregated.Rows.Count );
 
-			Assert.Equal<string>( "String1 String3 String5 String7", (string)aggregated.Rows[ 0 ][ "Col1" ] );
-			Assert.Equal<string>( "String2 String4 String6 String8", (string)aggregated.Rows[ 1 ][ "Col1" ] );
+			Assert.AreEqual( "String1 String3 String5 String7", (string)aggregated.Rows[ 0 ][ "Col1" ] );
+			Assert.AreEqual( "String2 String4 String6 String8", (string)aggregated.Rows[ 1 ][ "Col1" ] );
 
 			//////////////////////////////////////////////////////////////////////
 			// 3) sort by multiple columns, case insensitive, ascending
@@ -188,10 +189,10 @@ namespace Cobos.Data.Tests.Utilities
 			aggregated = aggregator.Process( table );
 
 			// again, should have aggregated into two groups: true and false
-			Assert.Equal<int>( 2, aggregated.Rows.Count );
+			Assert.AreEqual( 2, aggregated.Rows.Count );
 
-			Assert.Equal<string>( "String3 String1 String7 String5", (string)aggregated.Rows[ 0 ][ "Col1" ] );
-			Assert.Equal<string>( "String4 String2 String8 String6", (string)aggregated.Rows[ 1 ][ "Col1" ] );
+			Assert.AreEqual( "String3 String1 String7 String5", (string)aggregated.Rows[ 0 ][ "Col1" ] );
+			Assert.AreEqual( "String4 String2 String8 String6", (string)aggregated.Rows[ 1 ][ "Col1" ] );
 
 			//////////////////////////////////////////////////////////////////////
 			// 4) sort by multiple columns, case sensitive, descending
@@ -201,13 +202,13 @@ namespace Cobos.Data.Tests.Utilities
 			aggregated = aggregator.Process( table );
 
 			// again, should have aggregated into two groups: true and false
-			Assert.Equal<int>( 2, aggregated.Rows.Count );
+			Assert.AreEqual( 2, aggregated.Rows.Count );
 
-			Assert.Equal<string>( "String7 String5 String3 String1", (string)aggregated.Rows[ 0 ][ "Col1" ] );
-			Assert.Equal<string>( "String8 String6 String4 String2", (string)aggregated.Rows[ 1 ][ "Col1" ] );
+			Assert.AreEqual( "String7 String5 String3 String1", (string)aggregated.Rows[ 0 ][ "Col1" ] );
+			Assert.AreEqual( "String8 String6 String4 String2", (string)aggregated.Rows[ 1 ][ "Col1" ] );
 		}
 
-		[Fact]
+		[TestCase]
 		public void Cant_aggregate_on_non_string_columns()
 		{
 			// Strategy:
@@ -248,7 +249,7 @@ namespace Cobos.Data.Tests.Utilities
 				} );
 		}
 
-		[Fact]
+		[TestCase]
 		public void Can_handle_null_aggregate_column()
 		{
 			// Strategy:
@@ -269,13 +270,13 @@ namespace Cobos.Data.Tests.Utilities
 			DataTable aggregated = aggregator.Process( table );
 
 			// should have aggregated into two groups: "First 4 Items" and "Last 4 Items"
-			Assert.Equal<int>( 2, aggregated.Rows.Count );
+			Assert.AreEqual( 2, aggregated.Rows.Count );
 
-			Assert.Equal<string>( "String2 String3 String4", (string)aggregated.Rows[ 0 ][ "Col1" ] );
-			Assert.Equal<string>( "String5 String6 String7", (string)aggregated.Rows[ 1 ][ "Col1" ] );
+			Assert.AreEqual( "String2 String3 String4", (string)aggregated.Rows[ 0 ][ "Col1" ] );
+			Assert.AreEqual( "String5 String6 String7", (string)aggregated.Rows[ 1 ][ "Col1" ] );
 		}
 
-		[Fact]
+		[TestCase]
 		public void Can_handle_null_grouping_columns()
 		{
 			// Strategy:
@@ -296,14 +297,14 @@ namespace Cobos.Data.Tests.Utilities
 			DataTable aggregated = aggregator.Process( table );
 
 			// should have aggregated into three groups: null, "First 4 Items" and "Last 4 Items"
-			Assert.Equal<int>( 3, aggregated.Rows.Count );
+			Assert.AreEqual( 3, aggregated.Rows.Count );
 
-			Assert.Equal<string>( "String1 String8", (string)aggregated.Rows[ 0 ][ "Col1" ] );
-			Assert.Equal<string>( "String2 String3 String4", (string)aggregated.Rows[ 1 ][ "Col1" ] );
-			Assert.Equal<string>( "String5 String6 String7", (string)aggregated.Rows[ 2 ][ "Col1" ] );
+			Assert.AreEqual( "String1 String8", (string)aggregated.Rows[ 0 ][ "Col1" ] );
+			Assert.AreEqual( "String2 String3 String4", (string)aggregated.Rows[ 1 ][ "Col1" ] );
+			Assert.AreEqual( "String5 String6 String7", (string)aggregated.Rows[ 2 ][ "Col1" ] );
 		}
 
-		[Fact]
+		[TestCase]
 		public void Can_handle_null_sorting_columns()
 		{
 			// Strategy:
@@ -328,10 +329,10 @@ namespace Cobos.Data.Tests.Utilities
 			DataTable aggregated = aggregator.Process( table );
 
 			// should have aggregated into two groups: "First 4 Items" and "Last 4 Items"
-			Assert.Equal<int>( 2, aggregated.Rows.Count );
+			Assert.AreEqual( 2, aggregated.Rows.Count );
 
-			Assert.Equal<string>( "String2 String4 String3 String1", (string)aggregated.Rows[ 0 ][ "Col1" ] );
-			Assert.Equal<string>( "String7 String8 String6 String5", (string)aggregated.Rows[ 1 ][ "Col1" ] );
+			Assert.AreEqual( "String2 String4 String3 String1", (string)aggregated.Rows[ 0 ][ "Col1" ] );
+			Assert.AreEqual( "String7 String8 String6 String5", (string)aggregated.Rows[ 1 ][ "Col1" ] );
 		}
 
 	}

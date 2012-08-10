@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
-using Xunit;
+using NUnit.Framework;
 using Cobos.WpfApplication.UI;
 using Cobos.Core.UI;
 
@@ -10,7 +10,7 @@ namespace Cobos.WpfApplication.Tests.UI
 {
 	public class ProgressDialogTest
 	{
-		[Fact]
+		[TestCase]
 		public void Progress_can_show_and_hide()
 		{
 			IProgressBar dlg = new ProgressDialog();
@@ -41,7 +41,7 @@ namespace Cobos.WpfApplication.Tests.UI
 			for ( int i = 1; i <= 20; ++i )
 			{
 				dlg.PerformStep();
-				Assert.Equal<int>( i, dlg.Value );
+				Assert.AreEqual( i, dlg.Value );
 				Thread.Sleep( 500 );
 			}
 

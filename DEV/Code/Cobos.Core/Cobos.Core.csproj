@@ -32,6 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -40,42 +41,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Authentication\PasswordHash.cs" />
     <Compile Include="CobosException.cs" />
-    <Compile Include="Generated\LogFile.cs" />
-    <Compile Include="Logger\DebugLogger.cs" />
-    <Compile Include="Logger\ILogger.cs" />
-    <Compile Include="Logger\LogFileWriter.cs" />
-    <Compile Include="MessageCategory.cs" />
+    <Compile Include="Log\Generated\LogFile.cs" />
+    <Compile Include="Log\Logger.cs" />
+    <Compile Include="Log\LogWriter.cs" />
     <Compile Include="Plugin\PluginClient.cs" />
     <Compile Include="Plugin\PluginHost.cs" />
     <Compile Include="Plugin\PluginLoader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\CursorType.cs" />
+    <Compile Include="UI\DatabaseLoginDetails.cs" />
+    <Compile Include="UI\DatabaseSettingDetails.cs" />
     <Compile Include="UI\ICurrentCursor.cs" />
     <Compile Include="UI\ICurrentUser.cs" />
     <Compile Include="UI\IMessageHandler.cs" />
     <Compile Include="UI\IProgressBar.cs" />
     <Compile Include="UI\CobosApplication.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Logger\LogFile.xslt">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Logger\LogFile2.xslt" />
-    <Content Include="Logger\LogFile3.xslt">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Logger\LogFile4.xslt" />
-    <Content Include="Logger\sample.xml">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Logger\Template.htm" />
+    <Compile Include="Authentication\PrivilegeEnum.cs" />
+    <Compile Include="UI\UserLoginDetails.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="BUILD\prebuild.bat" />
-    <None Include="Schemas\LogFile.xsd">
+    <None Include="Log\LogFile.xsd">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
@@ -84,6 +72,9 @@
       <Project>{5EC3C9B9-DAE8-481C-8495-2A0A737D87A3}</Project>
       <Name>Cobos.Utilities</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Sql\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

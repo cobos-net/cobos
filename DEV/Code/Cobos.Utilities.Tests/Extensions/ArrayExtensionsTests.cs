@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Xunit;
+using NUnit.Framework;
 using Cobos.Utilities.Extensions;
 
 namespace Cobos.Utilities.Tests.Extensions
 {
+	[TestFixture]
 	public class ArrayExtensionsTests
 	{
-		[Fact]
+		[TestCase]
 		public void Can_concatenate_multiple_arrays()
 		{
 			int[][] multi = new int[][]
@@ -22,10 +23,10 @@ namespace Cobos.Utilities.Tests.Extensions
 
 			int[] result = ArrayExtensions.ConcatenateAll<int>( multi );
 
-			Assert.Equal<int[]>( new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }, result );
+			Assert.AreEqual( new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }, result );
 		}
 
-		[Fact]
+		[TestCase]
 		public void Can_concatenate_multiple_null_arrays()
 		{
 			int[][] multi = new int[][]
@@ -41,7 +42,7 @@ namespace Cobos.Utilities.Tests.Extensions
 			Assert.Null( result );
 		}
 
-		[Fact]
+		[TestCase]
 		public void Can_concatenate_multiple_arrays_with_some_nulls()
 		{
 			int[][] multi = new int[][]
@@ -54,7 +55,7 @@ namespace Cobos.Utilities.Tests.Extensions
 
 			int[] result = ArrayExtensions.ConcatenateAll<int>( multi );
 
-			Assert.Equal<int[]>( new int[] { 0, 1, 2, 7, 8 }, result );
+			Assert.AreEqual( new int[] { 0, 1, 2, 7, 8 }, result );
 
 		}
 	}

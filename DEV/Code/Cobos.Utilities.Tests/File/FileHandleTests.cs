@@ -1,37 +1,38 @@
 ﻿using System;
 using System.IO;
 using Cobos.Utilities.File;
-using Xunit;
+using NUnit.Framework;
 
 namespace Cobos.Utilities.Tests.File
 {
+	[TestFixture]
 	public class FileHandleTests
 	{
-		[Fact]
+		[TestCase]
 		public void File_handle_for_existing_file_succeeds()
 		{
 			Assert.DoesNotThrow( delegate { new FileHandle( TestManager.TestFilesLocation + @"\TestFile.txt" ); } );
 		}
 		
-		[Fact]
+		[TestCase]
 		public void File_handle_for_non_existing_file_fails()
 		{
 			Assert.Throws<DirectoryNotFoundException>( delegate { new FileHandle( @"C:\totally\madeup\file\location.txt" ); } );
 		}
 
-		[Fact]
+		[TestCase]
 		public void File_handle_for_existing_folder_succeeds()
 		{
 			Assert.DoesNotThrow( delegate { new FileHandle( TestManager.TestFilesLocation + @"\TestDirectory" ); } );
 		}
 
-		[Fact]
+		[TestCase]
 		public void File_handle_for_non_existing_folder_fails()
 		{
 			Assert.Throws<DirectoryNotFoundException>( delegate { new FileHandle( @"C:\totally\madeup\folder\location" ); } );
 		}
 
-		[Fact]
+		[TestCase]
 		public void File_handle_comparison_for_same_file_but_different_path_succeeds()
 		{
 			string path1 = TestManager.TestFilesLocation + @"\TestFile.txt";
@@ -49,7 +50,7 @@ namespace Cobos.Utilities.Tests.File
 			Assert.True( handle2.CompareTo( handle1 ) == 0 );
 		}
 
-		[Fact]
+		[TestCase]
 		public void File_handle_comparison_for_different_files_fails()
 		{
 			string path1 = TestManager.TestFilesLocation + @"\TestFile.txt";
@@ -62,7 +63,7 @@ namespace Cobos.Utilities.Tests.File
 			Assert.False( handle2.CompareTo( handle1 ) == 0 );
 		}
 
-		[Fact]
+		[TestCase]
 		public void File_handle_comparison_for_same_folder_but_different_path_succeeds()
 		{
 			string path1 = TestManager.TestFilesLocation + @"\TestDirectory";
@@ -80,7 +81,7 @@ namespace Cobos.Utilities.Tests.File
 			Assert.True( handle2.CompareTo( handle1 ) == 0 );
 		}
 
-		[Fact]
+		[TestCase]
 		public void File_handle_comparison_for_different_folder_fails()
 		{
 			string path1 = TestManager.TestFilesLocation + @"\TestDirectory";

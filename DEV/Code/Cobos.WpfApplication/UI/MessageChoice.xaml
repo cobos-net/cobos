@@ -6,14 +6,14 @@
         <StackPanel.Resources>
             <ResourceDictionary>
                 <ResourceDictionary.MergedDictionaries>
-                    <ResourceDictionary Source="..\Themes\GridLayout.xaml"/>
+                    <ResourceDictionary Source=".\Themes\GridLayout.xaml"/>
                 </ResourceDictionary.MergedDictionaries>
             </ResourceDictionary>
         </StackPanel.Resources>
         <TextBlock Name="_prompt" Style="{StaticResource GridTextBlockPrompt}" >This is the message prompt</TextBlock>
         <ComboBox Style="{StaticResource GridComboBox}" Name="_combo"></ComboBox>
         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-            <Button Name="_okButton" Style="{StaticResource GridButton}" Width="65" Click="OK_Click">OK</Button>
+            <Button Name="_okButton" Style="{StaticResource GridButton}" Width="65" Click="OK_Click" IsDefault="True">OK</Button>
             <Button Name="_cancelButton" Style="{StaticResource GridButton}" Width="65" Click="Cancel_Click">Cancel</Button>
         </StackPanel>
     </StackPanel>

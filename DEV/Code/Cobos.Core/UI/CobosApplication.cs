@@ -1,32 +1,50 @@
 ﻿using System;
 using System.IO;
-using Cobos.Core.Logger;
+using Cobos.Utilities.File;
+using Cobos.Core.Log;
 
 namespace Cobos.Core.UI
 {
-	public class CobosApplication
+	public class CobosApplication : IDisposable
 	{
 		#region Singleton Instance
 
-		private static CobosApplication _current = null;
+		private static CobosApplication _instance = null;
 
-		private CobosApplication()
+		protected CobosApplication()
 		{
+			Instance = this;
 		}
 
-		public static CobosApplication Current
+		public static CobosApplication Instance
 		{
 			get
 			{
-				if ( _current ==  null )
+				if ( _instance ==  null )
 				{
-					_current = new CobosApplication();
+					throw new InvalidOperationException( "Cobos.Core.UI.CobosApplication: No application object has been set." );
 				}
-				else if ( _current._disposed )
+				else if ( _instance._disposed )
 				{
-					throw new ObjectDisposedException( "Cobos.Core.UI.PhoneViewApplication", "The application has already been disposed." );
+					throw new ObjectDisposedException( "Cobos.Core.UI.CobosApplication", "The application has already been disposed." );
 				}
-				return _current;
+
+				return _instance;
+			}
+			protected set
+			{
+				if ( value == null )
+				{
+					_instance = value;
+				}
+				else if ( _instance != null )
+				{
+					throw new InvalidOperationException( "Cobos.Core.UI.CobosApplication: The application object has already been set." );
+				}
+				else
+				{
+					_instance = value;
+				}
 			}
 		}
 
@@ -44,9 +62,11 @@ namespace Cobos.Core.UI
 		public void Dispose()
 		{
 			Dispose( true );
+			
+			GC.SuppressFinalize( this );
 		}
 
-		protected void Dispose( bool disposing )
+		protected virtual void Dispose( bool disposing )
 		{
 			if ( _disposed )
 			{
@@ -55,9 +75,45 @@ namespace Cobos.Core.UI
 
 			if ( disposing )
 			{
-				_current = null;
+				// free managed resources
 
-				GC.SuppressFinalize( this );
+				if ( Log != null )
+				{
+					Log.Dispose();
+					Log = null;
+				}
+
+				IDisposable toDispose;
+
+				if ( (toDispose = Cursor as IDisposable) != null )
+				{
+					toDispose.Dispose();
+				}
+
+				Cursor = null;
+
+				if ( (toDispose = Message as IDisposable) != null )
+				{
+					toDispose.Dispose();
+				}
+
+				Message = null;
+
+				if ( (toDispose = ProgressBar as IDisposable) != null )
+				{
+					toDispose.Dispose();
+				}
+
+				ProgressBar = null;
+
+				if ( (toDispose = User as IDisposable) != null )
+				{
+					toDispose.Dispose();
+				}
+
+				User = null;
+
+				Instance = null;
 			}
 
 			// free non managed resources
@@ -68,6 +124,12 @@ namespace Cobos.Core.UI
 		#endregion
 
 		#region Public properties
+
+		public LogWriter Log
+		{
+			get;
+			private set;
+		}
 
 		/// <summary>
 		/// 
@@ -128,35 +190,46 @@ namespace Cobos.Core.UI
 		/// <param name="progress"></param>
 		/// <param name="user"></param>
 		/// <param name="startupPath"></param>
-		public void Initialise( ICurrentCursor cursor, IMessageHandler message, IProgressBar progress, ICurrentUser user, string startupPath )
+		public virtual void Initialise( ICurrentCursor cursor, IMessageHandler message, IProgressBar progress, ICurrentUser user, string startupPath )
 		{
+			#region Initialise the logger 
+
+			Log = new LogWriter();
+			Log.Initialise();
+
+			#endregion
+
 			#region Initialise UI components
 
 			if ( cursor == null )
 			{
 				throw new Exception( "Invalid cursor handle specified" );
 			}
+
 			Cursor = cursor;
 
 			if ( message == null )
 			{
 				throw new Exception( "Invalid cursor handle specified" );
 			}
+			
 			Message = message;
 
 			if ( progress == null )
 			{
 				throw new Exception( "Invalid progress bar handle specified" );
 			}
+			
 			ProgressBar = progress;
 
 			if ( user == null )
 			{
 				throw new Exception( "Invalid user handle specified" );
 			}
+			
 			User = user;
 
-#endregion
+			#endregion
 
 			#region Set the working folder
 
@@ -169,10 +242,21 @@ namespace Cobos.Core.UI
 			{
 				throw new Exception( string.Format( "The startup path {0} does not exist", startupPath ) );
 			}
+			
 			StartupPath = startupPath;
 
 			#endregion
+		}
 
+		/// <summary>
+		/// Report an exception to the user and add to the log.
+		/// </summary>
+		/// <param name="e"></param>
+		public void Report( Exception e, string category )
+		{
+			Log.Exception( e );
+
+			Message.ShowError( e, category );
 		}
 
 		/// <summary>
@@ -180,32 +264,18 @@ namespace Cobos.Core.UI
 		/// </summary>
 		/// <param name="path"></param>
 		/// <returns></returns>
-		public string ResolveFilePath( string path, bool failIfNotExist )
+		public string ResolveFilePath( string path )
 		{
-			if ( File.Exists( path ) )
-			{
-				return path;
-			}
+			PathResolver resolver = new PathResolver( StartupPath, null );
 
-			if ( Path.IsPathRooted( path ) )
-			{
-				// try resolving full path to the settings folder instead
-				path = Path.GetFileName( path );
-			}
-			
-			path = StartupPath + @"\" + path;
+			NormalisedPath found = resolver.FindFilePath( path );
 
-			if ( File.Exists( path ) )
-			{
-				return path;
-			}
-
-			if ( failIfNotExist )
+			if ( found == null )
 			{
 				return null;
 			}
 
-			return path;
+			return found.Value;
 		}
 
 		#endregion

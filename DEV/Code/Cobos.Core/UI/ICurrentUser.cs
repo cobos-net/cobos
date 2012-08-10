@@ -7,23 +7,28 @@ namespace Cobos.Core.UI
 		/// <summary>
 		/// 
 		/// </summary>
+		/// <param name="prompt"></param>
+		/// <param name="username"></param>
 		/// <returns></returns>
-		bool? ShowLogin( string prompt );
+		UserLoginDetails ShowLogin( string prompt, string username );
 
 		/// <summary>
 		/// 
 		/// </summary>
-		string Username
-		{
-			get;
-		}
+		/// <param name="prompt"></param>
+		/// <param name="username"></param>
+		/// <param name="hostname"></param>
+		/// <param name="port"></param>
+		/// <returns></returns>
+		DatabaseLoginDetails ShowDatabaseLogin( string prompt, string username, string hostname, int? port );
 
 		/// <summary>
 		/// 
 		/// </summary>
-		string Password
-		{
-			get;
-		}
+		/// <param name="prompt"></param>
+		/// <param name="hostname"></param>
+		/// <param name="port"></param>
+		/// <returns></returns>
+		DatabaseSettingsDetails ShowDatabaseSettings( string prompt, string hostname, int? port );
 	}
 }

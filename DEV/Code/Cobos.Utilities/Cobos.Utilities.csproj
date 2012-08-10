@@ -67,6 +67,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cache\CacheFile.cs" />
     <Compile Include="Extensions\DateExtensions.cs" />
     <Compile Include="File\DriveMapping.cs" />
     <Compile Include="Diagnostics\DateTimePrecise.cs" />

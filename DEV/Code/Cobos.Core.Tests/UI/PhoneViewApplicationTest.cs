@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Text;
-using Xunit;
+using NUnit.Framework;
 using Cobos.Core.UI;
 
 using PVCursor = Cobos.Core.UI.CursorType;
 
 namespace Cobos.Core.Tests.UI
 {
+	[TestFixture]
 	public class CobosApplicationTest : IDisposable
 	{
 		public CobosApplicationTest()
@@ -21,7 +22,7 @@ namespace Cobos.Core.Tests.UI
 
 		public static void InitialiseTest()
 		{
-			CobosApplication theApp = CobosApplication.Current;
+			CobosApplication theApp = CobosApplication.Instance;
 			theApp.Initialise( new CurrentCursorTest(),
 										new MessageHandlerTest(),
 										new ProgressBarTest(),
@@ -31,14 +32,14 @@ namespace Cobos.Core.Tests.UI
 
 		public static void DisposeTest()
 		{
-			CobosApplication.Current.Dispose();
+			CobosApplication.Instance.Dispose();
 		}
 
-		[Fact]
+		[TestCase]
 		public void Invalid_startup_parameters_throw_exception()
 		{
-			Assert.DoesNotThrow( delegate { CobosApplication.Current.Dispose(); } );
-			CobosApplication theApp = CobosApplication.Current;
+			Assert.DoesNotThrow( delegate { CobosApplication.Instance.Dispose(); } );
+			CobosApplication theApp = CobosApplication.Instance;
 
 			Assert.Throws<Exception>( delegate { theApp.Initialise( null, null, null, null, null ); } );
 
@@ -61,48 +62,28 @@ namespace Cobos.Core.Tests.UI
 			Assert.DoesNotThrow( delegate { theApp.Initialise( cursor, message, progress, user, startupPath ); } );
 		}
 
-		[Fact]
+		[TestCase]
 		public void Cursor_type_can_be_changed()
 		{
-			CobosApplication theApp = CobosApplication.Current;
+			CobosApplication theApp = CobosApplication.Instance;
 
 			theApp.Cursor.Type = CursorType.SizeWE;
-			Assert.Equal( ((CurrentCursorTest)theApp.Cursor).CurrentCursorValue, "SizeWE" );
+			Assert.AreEqual( ((CurrentCursorTest)theApp.Cursor).CurrentCursorValue, "SizeWE" );
 
 			theApp.Cursor.SetDefault();
-			Assert.Equal( ((CurrentCursorTest)theApp.Cursor).CurrentCursorValue, "Arrow" );
+			Assert.AreEqual( ((CurrentCursorTest)theApp.Cursor).CurrentCursorValue, "Arrow" );
 		}
 
-		[Fact]
+		[TestCase]
 		public void User_can_logon()
 		{
-			CobosApplication theApp = CobosApplication.Current;
-			CurrentUserTest theUser = (CurrentUserTest)theApp.User;
-			bool? res; 
-
-			theUser.NextShowLoginResult = null;
-			Assert.False( theApp.User.ShowLogin( "Login user" ).HasValue );
-
-			theUser.NextShowLoginResult = false;
-			res = theApp.User.ShowLogin( null );
-			Assert.True( res.HasValue );
-			Assert.False( res.Value );
-
-			theUser.NextShowLoginResult = true;
-			theUser.Username = "user";
-			theUser.Password = "pwd";
-			res = theApp.User.ShowLogin( null );
-			Assert.True( res.HasValue );
-			Assert.True( res.Value );
-
-			Assert.Equal( theApp.User.Username, "user" );
-			Assert.Equal( theApp.User.Password, "pwd" );
+			CobosApplication theApp = CobosApplication.Instance;
 		}
 	
-		[Fact]
+		[TestCase]
 		public void Message_handler_works()
 		{
-			CobosApplication theApp = CobosApplication.Current;
+			CobosApplication theApp = CobosApplication.Instance;
 			MessageHandlerTest theMessage = (MessageHandlerTest)theApp.Message;
 
 			Assert.DoesNotThrow( delegate { theApp.Message.ShowError( "This is an error", "Test error" ); } );
@@ -118,10 +99,10 @@ namespace Cobos.Core.Tests.UI
 			}
 
 			theMessage.NextShowQuestionResult = MessageHandlerResult.No;
-			Assert.Equal( theApp.Message.ShowQuestion( "Dumb question", "What" ), MessageHandlerResult.No );
+			Assert.AreEqual( theApp.Message.ShowQuestion( "Dumb question", "What" ), MessageHandlerResult.No );
 
 			theMessage.NextShowQuestionResult = MessageHandlerResult.Yes;
-			Assert.Equal( theApp.Message.ShowQuestion( "Sensible question", "What" ), MessageHandlerResult.Yes );
+			Assert.AreEqual( theApp.Message.ShowQuestion( "Sensible question", "What" ), MessageHandlerResult.Yes );
 
 			string[] choices = new string[] { "Zero", "One", "Two" };
 			int? choice;
@@ -132,13 +113,13 @@ namespace Cobos.Core.Tests.UI
 			theMessage.NextShowChoicesResult = 1;
 			choice = theApp.Message.ShowChoices( "Select one", choices );
 			Assert.True( choice.HasValue );
-			Assert.Equal( choice.Value, 1 );
+			Assert.AreEqual( choice.Value, 1 );
 		}
 
-		[Fact]
+		[TestCase]
 		public void Progress_bar_works()
 		{
-			CobosApplication theApp = CobosApplication.Current;
+			CobosApplication theApp = CobosApplication.Instance;
 			ProgressBarTest theProgress = (ProgressBarTest)theApp.ProgressBar;
 
 			theProgress.Maximum = 10;
@@ -149,7 +130,7 @@ namespace Cobos.Core.Tests.UI
 				theProgress.PerformStep();
 			}
 
-			Assert.Equal( theProgress.Value, 10 );
+			Assert.AreEqual( theProgress.Value, 10 );
 		}
 	}
 

@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
+// associated with an assembly.C:\Projects\Cobos.Core\DEV\Code\Cobos.Core\Properties\AssemblyInfo.cs
 [assembly: AssemblyTitle( "Cobos.Core" )]
 [assembly: AssemblyDescription( "Application layer objects for multi-tier applications." )]
 #if DEBUG
@@ -37,4 +37,4 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion( "0.1.0.0" )]
-[assembly: AssemblyFileVersion( "0.1.2.0" )]
+[assembly: AssemblyFileVersion( "0.1.3.0" )]

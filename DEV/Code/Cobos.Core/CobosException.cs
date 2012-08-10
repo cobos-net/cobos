@@ -1,4 +1,5 @@
 ﻿using System;
+using Cobos.Core.Log;
 
 namespace Cobos.Core
 {
@@ -12,7 +13,7 @@ namespace Cobos.Core
 		/// </summary>
 		/// <param name="message"></param>
 		/// <param name="category"></param>
-		public CobosException( string message, MessageCategory category )
+		public CobosException( string message, LogWriter.LogLevelEnum category )
 			: base( message )
 		{
 			Category = category;
@@ -22,7 +23,7 @@ namespace Cobos.Core
 		/// <summary>
 		/// 
 		/// </summary>
-		public readonly MessageCategory Category;
+		public readonly LogWriter.LogLevelEnum Category;
 		
 		/// <summary>
 		/// 
@@ -50,12 +51,12 @@ namespace Cobos.Core
 	public class CobosInformation : CobosException
 	{
 		public CobosInformation( string message )
-			: base( message, MessageCategory.Information )
+			: base( message, LogWriter.LogLevelEnum.Information )
 		{
 		}
 
 		public CobosInformation( string format, params object[] args )
-			: base ( string.Format( format, args ), MessageCategory.Information )
+			: base ( string.Format( format, args ), LogWriter.LogLevelEnum.Information )
 		{
 		}
 	}
@@ -66,12 +67,12 @@ namespace Cobos.Core
 	public class CobosWarning : CobosException
 	{
 		public CobosWarning( string message )
-			: base( message, MessageCategory.Warning )
+			: base( message, LogWriter.LogLevelEnum.Warning )
 		{
 		}
 		
 		public CobosWarning( string format, params object[] args )
-			: base ( string.Format( format, args ), MessageCategory.Warning )
+			: base ( string.Format( format, args ), LogWriter.LogLevelEnum.Warning )
 		{
 		}
 
@@ -83,12 +84,28 @@ namespace Cobos.Core
 	public class CobosError : CobosException
 	{
 		public CobosError( string message )
-			: base( message, MessageCategory.Error )
+			: base( message, LogWriter.LogLevelEnum.Error )
 		{
 		}
 
 		public CobosError( string format, params object[] args )
-			: base ( string.Format( format, args ), MessageCategory.Error )
+			: base ( string.Format( format, args ), LogWriter.LogLevelEnum.Error )
+		{
+		}
+	}
+
+	/// <summary>
+	///  
+	/// </summary>
+	public class CobosDebug : CobosException
+	{
+		public CobosDebug( string message )
+			: base( message, LogWriter.LogLevelEnum.Debug )
+		{
+		}
+
+		public CobosDebug( string format, params object[] args )
+			: base ( string.Format( format, args ), LogWriter.LogLevelEnum.Debug )
 		{
 		}
 	}
@@ -96,17 +113,21 @@ namespace Cobos.Core
 	/// <summary>
 	/// 
 	/// </summary>
-	public class CobosDebug : CobosException
+	public class CobosUserOperationCancelled : CobosException
 	{
-		public CobosDebug( string message )
-			: base( message, MessageCategory.Debug )
+		public CobosUserOperationCancelled()
+			: base( "Operation cancelled by user", LogWriter.LogLevelEnum.Information )
 		{
 		}
 
-		public CobosDebug( string format, params object[] args )
-			: base ( string.Format( format, args ), MessageCategory.Debug )
+		public CobosUserOperationCancelled( string operation )
+			: base( operation + " cancelled by user", LogWriter.LogLevelEnum.Information )
+		{
+		}
+
+		public CobosUserOperationCancelled( string format, params object[] args )
+			: base( string.Format( format, args ), LogWriter.LogLevelEnum.Information )
 		{
 		}
 	}
-
 }

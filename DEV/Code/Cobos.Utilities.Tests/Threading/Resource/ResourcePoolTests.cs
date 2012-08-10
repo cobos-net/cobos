@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
-using Xunit;
+using NUnit.Framework;
 using Cobos.Utilities.Threading.Resource;
 
 namespace Cobos.Utilities.Tests.Threading.Resource
 {
+	[TestFixture]
 	public class TestResourcePool
 	{
 		class JobStateInfo
@@ -79,7 +80,7 @@ namespace Cobos.Utilities.Tests.Threading.Resource
 			}
 		}
 
-		[Fact]
+		[TestCase]
 		void Threading_pool_can_process_jobs()
 		{
 			// Strategy:
@@ -94,7 +95,7 @@ namespace Cobos.Utilities.Tests.Threading.Resource
 
 			ResourcePoolStatistics stats = jobState.Pool.Statistics;
 
-			Assert.Equal( 0, stats.NumPendingRequests );
+			Assert.AreEqual( 0, stats.NumPendingRequests );
 		
 			Console.WriteLine( "Max Size: " + stats.MaxSizePool );
 
@@ -102,11 +103,11 @@ namespace Cobos.Utilities.Tests.Threading.Resource
 
 			stats = jobState.Pool.Statistics;
 
-			Assert.Equal( 0, stats.NumPendingRequests );
-			Assert.Equal( 0, stats.NumAvailableResources );
+			Assert.AreEqual( 0, stats.NumPendingRequests );
+			Assert.AreEqual( 0, stats.NumAvailableResources );
 		}
 
-		[Fact]
+		[TestCase]
 		void Cannot_acquire_a_resource_from_a_disposed_pool()
 		{
 			// Strategy:
@@ -120,7 +121,7 @@ namespace Cobos.Utilities.Tests.Threading.Resource
 			Assert.Throws<ObjectDisposedException>( delegate { jobState.Pool.AcquireResource(); } );
 		}
 
-		[Fact]
+		[TestCase]
 		void Resources_are_correctly_managed()
 		{
 			// Strategy:
@@ -133,38 +134,38 @@ namespace Cobos.Utilities.Tests.Threading.Resource
 
 			JobStateInfo jobState = new JobStateInfo( 2, 0, 0, 5 );
 
-			Assert.Equal<long>( 0, jobState.Pool.Statistics.NumAvailableResources );
-			Assert.Equal<long>( 0, jobState.Pool.Statistics.SizePool );
+			Assert.AreEqual( 0, jobState.Pool.Statistics.NumAvailableResources );
+			Assert.AreEqual( 0, jobState.Pool.Statistics.SizePool );
 
 			// acquire two resources
 			IResource<TestResource> r1 = jobState.Pool.AcquireResource();
 
-			Assert.Equal<long>( 0, jobState.Pool.Statistics.NumAvailableResources );
-			Assert.Equal<long>( 1, jobState.Pool.Statistics.SizePool );
+			Assert.AreEqual( 0, jobState.Pool.Statistics.NumAvailableResources );
+			Assert.AreEqual( 1, jobState.Pool.Statistics.SizePool );
 									
 			IResource<TestResource> r2 = jobState.Pool.AcquireResource();
 
-			Assert.Equal<long>( 0, jobState.Pool.Statistics.NumAvailableResources );
-			Assert.Equal<long>( 2, jobState.Pool.Statistics.SizePool );
+			Assert.AreEqual( 0, jobState.Pool.Statistics.NumAvailableResources );
+			Assert.AreEqual( 2, jobState.Pool.Statistics.SizePool );
 
 			r1.Dispose();
 
-			Assert.Equal<long>( 1, jobState.Pool.Statistics.NumAvailableResources );
-			Assert.Equal<long>( 2, jobState.Pool.Statistics.SizePool );
+			Assert.AreEqual( 1, jobState.Pool.Statistics.NumAvailableResources );
+			Assert.AreEqual( 2, jobState.Pool.Statistics.SizePool );
 
 			r2.Dispose();
 
-			Assert.Equal<long>( 2, jobState.Pool.Statistics.NumAvailableResources );
-			Assert.Equal<long>( 2, jobState.Pool.Statistics.SizePool );
+			Assert.AreEqual( 2, jobState.Pool.Statistics.NumAvailableResources );
+			Assert.AreEqual( 2, jobState.Pool.Statistics.SizePool );
 
 			jobState.Pool.Dispose();
 
-			Assert.Equal<long>( 0, jobState.Pool.Statistics.NumAvailableResources );
-			Assert.Equal<long>( 0, jobState.Pool.Statistics.SizePool );
-			Assert.Equal<long>( 2, jobState.Pool.Statistics.MaxSizePool );
+			Assert.AreEqual( 0, jobState.Pool.Statistics.NumAvailableResources );
+			Assert.AreEqual( 0, jobState.Pool.Statistics.SizePool );
+			Assert.AreEqual( 2, jobState.Pool.Statistics.MaxSizePool );
 		}
 
-		[Fact]
+		[TestCase]
 		void Minimum_pool_size_of_0_is_maintained()
 		{
 			// Strategy:
@@ -177,40 +178,40 @@ namespace Cobos.Utilities.Tests.Threading.Resource
 
 			JobStateInfo jobState = new JobStateInfo( 2, 0, 0, 5 );
 
-			Assert.Equal<long>( 0, jobState.Pool.Statistics.NumAvailableResources );
-			Assert.Equal<long>( 0, jobState.Pool.Statistics.SizePool );
+			Assert.AreEqual( 0, jobState.Pool.Statistics.NumAvailableResources );
+			Assert.AreEqual( 0, jobState.Pool.Statistics.SizePool );
 
 			// acquire two resources
 			IResource<TestResource> r1 = jobState.Pool.AcquireResource();
 
-			Assert.Equal<long>( 0, jobState.Pool.Statistics.NumAvailableResources );
-			Assert.Equal<long>( 1, jobState.Pool.Statistics.SizePool );
+			Assert.AreEqual( 0, jobState.Pool.Statistics.NumAvailableResources );
+			Assert.AreEqual( 1, jobState.Pool.Statistics.SizePool );
 
 			IResource<TestResource> r2 = jobState.Pool.AcquireResource();
 
-			Assert.Equal<long>( 0, jobState.Pool.Statistics.NumAvailableResources );
-			Assert.Equal<long>( 2, jobState.Pool.Statistics.SizePool );
+			Assert.AreEqual( 0, jobState.Pool.Statistics.NumAvailableResources );
+			Assert.AreEqual( 2, jobState.Pool.Statistics.SizePool );
 
 			r1.Invalid = true;
 			r1.Dispose();
 
-			Assert.Equal<long>( 0, jobState.Pool.Statistics.NumAvailableResources );
-			Assert.Equal<long>( 1, jobState.Pool.Statistics.SizePool );
+			Assert.AreEqual( 0, jobState.Pool.Statistics.NumAvailableResources );
+			Assert.AreEqual( 1, jobState.Pool.Statistics.SizePool );
 
 			r2.Invalid = true;
 			r2.Dispose();
 
-			Assert.Equal<long>( 0, jobState.Pool.Statistics.NumAvailableResources );
-			Assert.Equal<long>( 0, jobState.Pool.Statistics.SizePool );
+			Assert.AreEqual( 0, jobState.Pool.Statistics.NumAvailableResources );
+			Assert.AreEqual( 0, jobState.Pool.Statistics.SizePool );
 
 			jobState.Pool.Dispose();
 
-			Assert.Equal<long>( 0, jobState.Pool.Statistics.NumAvailableResources );
-			Assert.Equal<long>( 0, jobState.Pool.Statistics.SizePool );
-			Assert.Equal<long>( 2, jobState.Pool.Statistics.MaxSizePool );
+			Assert.AreEqual( 0, jobState.Pool.Statistics.NumAvailableResources );
+			Assert.AreEqual( 0, jobState.Pool.Statistics.SizePool );
+			Assert.AreEqual( 2, jobState.Pool.Statistics.MaxSizePool );
 		}
 
-		[Fact]
+		[TestCase]
 		void Minimum_pool_size_of_2_is_maintained()
 		{
 			// Strategy:
@@ -224,51 +225,51 @@ namespace Cobos.Utilities.Tests.Threading.Resource
 
 			JobStateInfo jobState = new JobStateInfo( 2, 0, 2, 5 );
 
-			Assert.Equal<long>( 2, jobState.Pool.Statistics.NumAvailableResources );
-			Assert.Equal<long>( 2, jobState.Pool.Statistics.SizePool );
+			Assert.AreEqual( 2, jobState.Pool.Statistics.NumAvailableResources );
+			Assert.AreEqual( 2, jobState.Pool.Statistics.SizePool );
 
 			// acquire two resources
 			IResource<TestResource> r1 = jobState.Pool.AcquireResource();
 
-			Assert.Equal<long>( 1, jobState.Pool.Statistics.NumAvailableResources );
-			Assert.Equal<long>( 2, jobState.Pool.Statistics.SizePool );
+			Assert.AreEqual( 1, jobState.Pool.Statistics.NumAvailableResources );
+			Assert.AreEqual( 2, jobState.Pool.Statistics.SizePool );
 
 			IResource<TestResource> r2 = jobState.Pool.AcquireResource();
 
-			Assert.Equal<long>( 0, jobState.Pool.Statistics.NumAvailableResources );
-			Assert.Equal<long>( 2, jobState.Pool.Statistics.SizePool );
+			Assert.AreEqual( 0, jobState.Pool.Statistics.NumAvailableResources );
+			Assert.AreEqual( 2, jobState.Pool.Statistics.SizePool );
 
 			IResource<TestResource> r3 = jobState.Pool.AcquireResource();
 
-			Assert.Equal<long>( 0, jobState.Pool.Statistics.NumAvailableResources );
-			Assert.Equal<long>( 3, jobState.Pool.Statistics.SizePool );
+			Assert.AreEqual( 0, jobState.Pool.Statistics.NumAvailableResources );
+			Assert.AreEqual( 3, jobState.Pool.Statistics.SizePool );
 
 			r1.Invalid = true;
 			r1.Dispose();
 
-			Assert.Equal<long>( 0, jobState.Pool.Statistics.NumAvailableResources );
-			Assert.Equal<long>( 2, jobState.Pool.Statistics.SizePool );
+			Assert.AreEqual( 0, jobState.Pool.Statistics.NumAvailableResources );
+			Assert.AreEqual( 2, jobState.Pool.Statistics.SizePool );
 
 			r2.Invalid = true;
 			r2.Dispose();
 
-			Assert.Equal<long>( 1, jobState.Pool.Statistics.NumAvailableResources );
-			Assert.Equal<long>( 2, jobState.Pool.Statistics.SizePool );
+			Assert.AreEqual( 1, jobState.Pool.Statistics.NumAvailableResources );
+			Assert.AreEqual( 2, jobState.Pool.Statistics.SizePool );
 
 			r3.Invalid = true;
 			r3.Dispose();
 
-			Assert.Equal<long>( 2, jobState.Pool.Statistics.NumAvailableResources );
-			Assert.Equal<long>( 2, jobState.Pool.Statistics.SizePool );
+			Assert.AreEqual( 2, jobState.Pool.Statistics.NumAvailableResources );
+			Assert.AreEqual( 2, jobState.Pool.Statistics.SizePool );
 
 			jobState.Pool.Dispose();
 
-			Assert.Equal<long>( 0, jobState.Pool.Statistics.NumAvailableResources );
-			Assert.Equal<long>( 0, jobState.Pool.Statistics.SizePool );
-			Assert.Equal<long>( 3, jobState.Pool.Statistics.MaxSizePool );
+			Assert.AreEqual( 0, jobState.Pool.Statistics.NumAvailableResources );
+			Assert.AreEqual( 0, jobState.Pool.Statistics.SizePool );
+			Assert.AreEqual( 3, jobState.Pool.Statistics.MaxSizePool );
 		}
 
-		[Fact]
+		[TestCase]
 		void Maximum_pool_size_is_not_breached()
 		{
 			// Strategy:
@@ -286,7 +287,7 @@ namespace Cobos.Utilities.Tests.Threading.Resource
 
 			ResourcePoolStatistics stats = jobState.Pool.Statistics;
 
-			Assert.Equal<long>( 2, stats.MaxSizePool );
+			Assert.AreEqual( 2, stats.MaxSizePool );
 		}
 
 

@@ -9,36 +9,26 @@ namespace Cobos.Core.Tests.UI
 		/// <summary>
 		/// Special test value to simulate logon/logoff success or failure
 		/// </summary>
-		public bool? NextShowLoginResult = null;
+		public static UserLoginDetails NextShowLoginResult;
 
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <returns></returns>
-		public bool? ShowLogin( string prompt )
+		public static DatabaseLoginDetails NextShowDatabaseConnectResult;
+
+		public static DatabaseSettingsDetails NextShowDatabaseSettingsResult;
+
+		public UserLoginDetails ShowLogin( string prompt, string username )
 		{
-			Debug.WriteLine( string.Format( "Show login = {0}", prompt ) );
-
 			return NextShowLoginResult;
 		}
 
-		/// <summary>
-		/// 
-		/// </summary>
-		public string Username
+		public DatabaseLoginDetails ShowDatabaseLogin( string prompt, string username, string hostname, int? port )
 		{
-			get;
-			set;
+			return NextShowDatabaseConnectResult;
 		}
 
-		/// <summary>
-		/// 
-		/// </summary>
-		public string Password
+		public DatabaseSettingsDetails ShowDatabaseSettings( string prompt, string hostname, int? port )
 		{
-			get;
-			set;
+			return NextShowDatabaseSettingsResult;
 		}
-		
+
 	}
 }

@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Text;
 using Cobos.WpfApplication.UI;
-using Xunit;
+using NUnit.Framework;
 
 namespace Cobos.WpfApplication.Tests.UI
 {
+	[TestFixture]
 	public class MessageChoiceTest
 	{
-		[Fact]
+		[TestCase]
 		public void MessageChoice_cancels()
 		{
 			string prompt = "Choose nothing, press cancel";
@@ -19,7 +20,7 @@ namespace Cobos.WpfApplication.Tests.UI
 			Assert.Null( result );
 		}
 
-		[Fact]
+		[TestCase]
 		public void MessageChoice_selects()
 		{
 			string prompt = "Choose 'Option 2', press OK";
@@ -32,7 +33,7 @@ namespace Cobos.WpfApplication.Tests.UI
 			Assert.True( result == 1 );
 		}
 
-		[Fact]
+		[TestCase]
 		public void MessageChoice_selects_but_cancels()
 		{
 			string prompt = "Choose 'Option 2', press cancel";

@@ -13,40 +13,105 @@ namespace Cobos.WpfApplication.UI
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		public bool? ShowLogin( string prompt )
+		public UserLoginDetails ShowLogin( string prompt, string username )
 		{
-			LogonDialog dlg = new LogonDialog();
-			dlg._prompt.Text = prompt;
+			LoginDialog dlg = new LoginDialog();
+
+			if ( !string.IsNullOrEmpty( prompt ) )
+			{
+				dlg._prompt.Text = prompt;
+			}
+
+			if ( !string.IsNullOrEmpty( username ) )
+			{
+				dlg._user.Text = username;
+			}
 
 			bool? result = dlg.ShowDialog();
 
-			if ( !result.HasValue || result == false )
+			if ( !result.GetValueOrDefault( false ) )
 			{
 				return null;
 			}
 
-			Username = dlg._user.Text;
-			Password = dlg._password.Password;
-
-			return result;
+			return new UserLoginDetails( dlg._user.Text, dlg._password.Password );
 		}
 
 		/// <summary>
 		/// 
 		/// </summary>
-		public string Username
+		/// <param name="prompt"></param>
+		/// <param name="username"></param>
+		/// <param name="hostname"></param>
+		/// <param name="port"></param>
+		/// <returns></returns>
+		public DatabaseLoginDetails ShowDatabaseLogin( string prompt, string username, string hostname, int? port )
 		{
-			get;
-			private set;
+			DatabaseLoginDialog dlg = new DatabaseLoginDialog();
+
+			if ( !string.IsNullOrEmpty( prompt ) )
+			{
+				dlg._prompt.Text = prompt;
+			}
+
+			if ( !string.IsNullOrEmpty( username ) )
+			{
+				dlg._user.Text = username;
+			}
+
+			if ( !string.IsNullOrEmpty( hostname ) )
+			{
+				dlg._hostname.Text = hostname;
+			}
+
+			if ( port.HasValue )
+			{
+				dlg._port.Text = port.Value.ToString();
+			}
+
+			bool? result = dlg.ShowDialog();
+
+			if ( !result.GetValueOrDefault( false ) )
+			{
+				return null;
+			}
+
+			return new DatabaseLoginDetails( dlg._user.Text, dlg._password.Password, dlg._hostname.Text, int.Parse( dlg._port.Text ) );
 		}
 
 		/// <summary>
 		/// 
 		/// </summary>
-		public string Password
+		/// <param name="hostname"></param>
+		/// <param name="port"></param>
+		/// <returns></returns>
+		public DatabaseSettingsDetails ShowDatabaseSettings( string prompt, string hostname, int? port )
 		{
-			get;
-			private set;
+			DatabaseSettingsDialog dlg = new DatabaseSettingsDialog();
+
+			if ( !string.IsNullOrEmpty( prompt ) )
+			{
+				dlg._prompt.Text = prompt;
+			}
+
+			if ( !string.IsNullOrEmpty( hostname ) )
+			{
+				dlg._hostname.Text = hostname;
+			}
+
+			if ( port.HasValue )
+			{
+				dlg._port.Text = port.Value.ToString();
+			}
+
+			bool? result = dlg.ShowDialog();
+
+			if ( !result.GetValueOrDefault( false ) )
+			{
+				return null;
+			}
+
+			return new DatabaseSettingsDetails( dlg._hostname.Text, int.Parse( dlg._port.Text ) );
 		}
 
 		#endregion

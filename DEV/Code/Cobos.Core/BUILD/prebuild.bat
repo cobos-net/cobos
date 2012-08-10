@@ -16,15 +16,15 @@ cd %1
 REM Global build parameters
 REM -----------------------------------------------------------------
 
-set xsd="C:\Program Files\Microsoft SDKs\Windows\v6.0A\bin\xsd.exe"
-set schemas=.\Schemas
-set out=.\Generated
+set xsd="C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\Bin\xsd.exe"
+set models=.\Log
+set out=.\Log\Generated
 
 REM Log File schema
 REM -----------------------------------------------------------------
 
-set logfile=%schemas%\LogFile.xsd
+set logfile=%models%\LogFile.xsd
 
 @echo on
 
-%xsd% /classes /n:Cobos.Core.Logger %logfile% /out:%out%
+%xsd% /classes /n:Cobos.Core.Log %logfile% /out:%out%

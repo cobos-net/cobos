@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Xunit;
+using NUnit.Framework;
 using Cobos.Utilities.Text;
 
 namespace Cobos.Utilities.Tests.Text
 {
+	[TestFixture]
 	public class StringSeparatorTests
 	{
-		[Fact]
+		[TestCase]
 		public void can_separate_strings()
 		{
 			string source = "0|1|2|3|4|5";
@@ -17,50 +18,50 @@ namespace Cobos.Utilities.Tests.Text
 			{
 				string token = StringSeparator.GetTokenAt( source, '|', i );
 				Assert.NotNull( token );
-				Assert.Equal<string>( i.ToString(), token );
+				Assert.AreEqual( i.ToString(), token );
 			}
 		}
 
-		[Fact]
+		[TestCase]
 		public void can_handle_mixed_separators()
 		{
 			string source = "0|1|2,3|4|5";
 
 			string token = StringSeparator.GetTokenAt( source, ',', 0 );
-			Assert.Equal<string>( "0|1|2", token );
+			Assert.AreEqual( "0|1|2", token );
 			
 			token = StringSeparator.GetTokenAt( source, ',', 1 );
-			Assert.Equal<string>( "3|4|5", token );
+			Assert.AreEqual( "3|4|5", token );
 
 			token = StringSeparator.GetTokenAt( source, '|', 0 );
-			Assert.Equal<string>( "0", token );
+			Assert.AreEqual( "0", token );
 
 			token = StringSeparator.GetTokenAt( source, '|', 1 );
-			Assert.Equal<string>( "1", token );
+			Assert.AreEqual( "1", token );
 
 			token = StringSeparator.GetTokenAt( source, '|', 2 );
-			Assert.Equal<string>( "2,3", token );
+			Assert.AreEqual( "2,3", token );
 
 			token = StringSeparator.GetTokenAt( source, '|', 3 );
-			Assert.Equal<string>( "4", token );
+			Assert.AreEqual( "4", token );
 
 			token = StringSeparator.GetTokenAt( source, '|', 4 );
-			Assert.Equal<string>( "5", token );
+			Assert.AreEqual( "5", token );
 		}
 
-		[Fact]
+		[TestCase]
 		public void can_handle_invalid_separator_character()
 		{
 			string source = "0|1|2|3|4|5";
 
 			string token = StringSeparator.GetTokenAt( source, ',', 0 );
-			Assert.Equal<string>( source, token );
+			Assert.AreEqual( source, token );
 
 			token = StringSeparator.GetTokenAt( source, ',', 1 );
 			Assert.Null( token );
 		}
 
-		[Fact]
+		[TestCase]
 		public void can_handle_invalid_index()
 		{
 			string source = "0|1|2|3|4|5";
@@ -71,7 +72,7 @@ namespace Cobos.Utilities.Tests.Text
 			Assert.Null( StringSeparator.GetTokenAt( source, '|', 6 ) );
 		}
 
-		[Fact]
+		[TestCase]
 		public void can_handle_invalid_input()
 		{
 			Assert.Null( StringSeparator.GetTokenAt( null, '|', 0 ) );

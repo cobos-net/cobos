@@ -101,7 +101,7 @@ namespace Cobos.DatabaseToXsd
 					output = ConfigurationManager.AppSettings[ "OutputFolder" ] + @"\" + schema + ".xsd";
 				}
 
-				IDatabaseAdapter database = DatabaseAdapterFactory.GetOracleAdapter( connectString );
+				IDatabaseAdapter database = new Cobos.Data.Oracle.OracleDatabaseAdapter( connectString );
 				
 				if ( dump != null )
 				{

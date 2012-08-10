@@ -1,12 +1,13 @@
 ﻿using System;
-using Xunit;
+using NUnit.Framework;
 using Cobos.Utilities.File;
 
 namespace Cobos.Utilities.Tests.File
 {
+	[TestFixture]
 	public class NormalisedPathTests
 	{
-		[Fact]
+		[TestCase]
 		public void Same_normalised_file_paths_are_the_same()
 		{
 			string path1 = @"C:\file\  location  \\   \\  \\without\any\relative\paths\\\\\\\\\file.txt";
@@ -58,7 +59,7 @@ namespace Cobos.Utilities.Tests.File
 			Assert.True( rpath1 == rpath2 && npath1 == rpath2 );
 		}
 
-		[Fact]
+		[TestCase]
 		public void Can_handle_empty_paths()
 		{
 			NormalisedPath empty = null;
@@ -82,16 +83,16 @@ namespace Cobos.Utilities.Tests.File
 			Assert.True( empty.IsNullPath );
 		}
 
-		[Fact]
+		[TestCase]
 		public void Can_get_path_components()
 		{
 			string path = @"C:\file\location\..\location\without\\ \ \\any\..\..\  without   \\\\\\\\\any\relative  \  paths\    ..\..   \   ..    \any\relative\paths\file.txt";
 			NormalisedPath npath = new NormalisedPath( path );
 
-			Assert.Equal( @"c:\file\location\without\any\relative\paths", npath.GetDirectoryName().Value );
-			Assert.Equal( @"file.txt", npath.GetFileName() );
-			Assert.Equal( @"file", npath.GetFileNameWithoutExtension() );
-			Assert.Equal( @".txt", npath.GetExtension() );
+			Assert.AreEqual( @"c:\file\location\without\any\relative\paths", npath.GetDirectoryName().Value );
+			Assert.AreEqual( @"file.txt", npath.GetFileName() );
+			Assert.AreEqual( @"file", npath.GetFileNameWithoutExtension() );
+			Assert.AreEqual( @".txt", npath.GetExtension() );
 		}
 
 	}
