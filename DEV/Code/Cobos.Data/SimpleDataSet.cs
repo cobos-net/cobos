@@ -29,10 +29,6 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // ============================================================================
 
-// 05-Feb-11 N.Davis
-// -----------------
-// Rebranded from "Cobos" to "Intergraph.AsiaPac" in preparation for use in the Generic CAD Interoperability project
-
 using System;
 using System.Data;
 using System.Xml;
@@ -41,15 +37,9 @@ using System.IO;
 using System.Text;
 using System.Diagnostics;
 
-#if INTERGRAPH_BRANDING
-using Intergraph.AsiaPac.Utilities.Xml;
-
-namespace Intergraph.AsiaPac.Data
-#else
 using Cobos.Utilities.Xml;
 
 namespace Cobos.Data
-#endif
 {
 	public class SimpleDataSet : DataSet
 	{

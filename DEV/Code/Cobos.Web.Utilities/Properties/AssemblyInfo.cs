@@ -5,26 +5,16 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-#if INTERGRAPH_BRANDING
-[assembly: AssemblyTitle( "Intergraph.AsiaPac.Web.Utilities" )]
-#else
 [assembly: AssemblyTitle( "Cobos.Web.Utilities" )]
-#endif
 [assembly: AssemblyDescription( "Utility objects to support web applications and services." )]
 #if DEBUG
 [assembly: AssemblyConfiguration("Debug")]
 #else
 [assembly: AssemblyConfiguration( "Release" )]
 #endif
-#if INTERGRAPH_BRANDING
-[assembly: AssemblyCompany( "Intergraph Corporation, Asia Pacific Region" )]
-[assembly: AssemblyProduct( "Intergraph.AsiaPac.Web.Utilities" )]
-[assembly: AssemblyCopyright( "Copyright © Intergraph Corporation Pty Ltd 2011" )]
-#else
 [assembly: AssemblyCompany( "Cobos Development Kit" )]
 [assembly: AssemblyProduct( "Cobos.Web.Utilities" )]
 [assembly: AssemblyCopyright( "Copyright © Nicholas Davis 2009-2011" )]
-#endif
 [assembly: AssemblyTrademark( "" )]
 [assembly: AssemblyCulture( "" )]
 

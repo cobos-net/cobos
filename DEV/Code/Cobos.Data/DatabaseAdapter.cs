@@ -29,10 +29,6 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // ============================================================================
 
-// 05-Feb-11 N.Davis
-// -----------------
-// Rebranded from "Cobos" to "Intergraph.AsiaPac" in preparation for use in the Generic CAD Interoperability project
-
 using System;
 using System.Data;
 using System.Data.Common;
@@ -41,17 +37,10 @@ using System.Xml.Xsl;
 using System.IO;
 using System.Diagnostics;
 
-#if INTERGRAPH_BRANDING
-using Intergraph.AsiaPac.Utilities;
-using Intergraph.AsiaPac.Utilities.Xml;
-
-namespace Intergraph.AsiaPac.Data
-#else
 using Cobos.Utilities;
 using Cobos.Utilities.Xml;
 
 namespace Cobos.Data
-#endif
 {
 	public abstract class DatabaseAdapter<ConnectionType, CommandType, DataAdapterType> : IDatabaseAdapter
 		where ConnectionType : IDbConnection, new()
@@ -347,11 +336,8 @@ namespace Cobos.Data
 		{
 			SimpleDataSet dataset = TableMetadata( schema, tables );
 
-#if INTERGRAPH_BRANDING
-			XslCompiledTransform xslTableToXsd = XsltHelper.Load( "Database/Oracle/DatabaseSchema.xslt", "Intergraph.AsiaPac.Data.Stylesheets" );
-#else
 			XslCompiledTransform xslTableToXsd = XsltHelper.Load( "Database/Oracle/DatabaseSchema.xslt", "Cobos.Data.Stylesheets" );
-#endif
+			
 			if ( xslTableToXsd != null )
 			{
 				dataset.ToXml( xslTableToXsd, null, result );

@@ -29,21 +29,13 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // ============================================================================
 
-// 05-Feb-11 N.Davis
-// -----------------
-// Rebranded from "Cobos" to "Intergraph.AsiaPac" in preparation for use in the Generic CAD Interoperability project
-
 using System;
 using System.Runtime.InteropServices;
 using Microsoft.Win32.SafeHandles;
 
 using COM_FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
-#if INTERGRAPH_BRANDING
-namespace Intergraph.AsiaPac.Utilities.Win32
-#else
 namespace Cobos.Utilities.Win32
-#endif
 {
 	public class Win32File
 	{

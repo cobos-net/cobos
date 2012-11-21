@@ -29,22 +29,12 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // ============================================================================
 
-// 05-Feb-11 N.Davis
-// -----------------
-// Rebranded from "Cobos" to "Intergraph.AsiaPac" in preparation for use in the Generic CAD Interoperability project
-
 using System;
 using System.Data;
 
-#if INTERGRAPH_BRANDING
-using Intergraph.AsiaPac.Data.Utilities;
-
-namespace Intergraph.AsiaPac.Data
-#else
 using Cobos.Data.Utilities;
 
 namespace Cobos.Data
-#endif
 {
 	/// <summary>
 	/// Allow multiple table queries to be processed ansynchronously

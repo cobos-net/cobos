@@ -29,18 +29,10 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // ============================================================================
 
-// 05-Feb-11 N.Davis
-// -----------------
-// Rebranded from "Cobos" to "Intergraph.AsiaPac" in preparation for use in the Generic CAD Interoperability project
-
 using System;
 using System.Data.SqlClient;
 
-#if INTERGRAPH_BRANDING
-namespace Intergraph.AsiaPac.Data.Adapters
-#else
 namespace Cobos.Data.Adapters
-#endif
 {
 	public class SqlDatabaseAdapter : DatabaseAdapter<SqlConnection, SqlCommand, SqlDataAdapter>
 	{

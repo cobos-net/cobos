@@ -29,23 +29,12 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // ============================================================================
 
-// 05-Feb-11 N.Davis
-// -----------------
-// Rebranded from "Cobos" to "Intergraph.AsiaPac" in preparation for use in the Generic CAD Interoperability project
-
 using System;
 using System.Text;
 using System.Web;
-
-#if INTERGRAPH_BRANDING
-using Intergraph.AsiaPac.Utilities.Xml;
-
-namespace Intergraph.AsiaPac.Web.Utilities.Xml
-#else
 using Cobos.Utilities.Xml;
 
 namespace Cobos.Web.Utilities.Xml
-#endif
 {
 	public static class HttpXmlHelper<T>
 	{

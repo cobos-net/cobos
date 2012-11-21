@@ -29,21 +29,13 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // ============================================================================
 
-// 05-Feb-11 N.Davis
-// -----------------
-// Rebranded from "Cobos" to "Intergraph.AsiaPac" in preparation for use in the Generic CAD Interoperability project
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
-#if INTERGRAPH_BRANDING
-namespace Intergraph.AsiaPac.Utilities.Text
-#else
 namespace Cobos.Utilities.Text
-#endif
 {
 	public static class RegExHelper
 	{

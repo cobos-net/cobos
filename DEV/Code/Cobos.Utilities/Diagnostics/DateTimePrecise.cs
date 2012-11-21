@@ -29,23 +29,12 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // ============================================================================
 
-// 05-Feb-11 N.Davis
-// -----------------
-// Rebranded from "Cobos" to "Intergraph.AsiaPac" in preparation for use in the Generic CAD Interoperability project
-
-using System;
-using System.Diagnostics;
-
-#if INTERGRAPH_BRANDING
-namespace Intergraph.AsiaPac.Utilities.Diagnostics
-#else
 namespace Cobos.Utilities.Diagnostics
-#endif
 {
 	/// <summary>
 	/// DateTimePrecise provides a way to get a DateTime that exhibits the
-	/// relative precision of
-	/// System.Diagnostics.Stopwatch, and the absolute accuracy of DateTime.Now.
+	/// relative precision of System.Diagnostics.Stopwatch, and the absolute 
+	/// accuracy of DateTime.Now.
 	/// 
 	/// Courtesy of James Brock (http://www.codeproject.com/KB/cs/DateTimePrecise.aspx)
 	/// </summary>

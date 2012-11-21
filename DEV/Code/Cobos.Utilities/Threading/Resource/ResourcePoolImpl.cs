@@ -29,24 +29,13 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // ============================================================================
 
-// 05-Feb-11 N.Davis
-// -----------------
-// Rebranded from "Cobos" to "Intergraph.AsiaPac" in preparation for use in the Generic CAD Interoperability project
-
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
-
-#if INTERGRAPH_BRANDING
-using Intergraph.AsiaPac.Utilities.Extensions;
-
-namespace Intergraph.AsiaPac.Utilities.Threading.Resource
-#else
 using Cobos.Utilities.Extensions;
 
 namespace Cobos.Utilities.Threading.Resource
-#endif
 {
 	/// <summary>
 	/// Implementation of a resource pool.  The class is marked as internal

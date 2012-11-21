@@ -29,10 +29,6 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // ============================================================================
 
-// 05-Feb-11 N.Davis
-// -----------------
-// Rebranded from "Cobos" to "Intergraph.AsiaPac" in preparation for use in the Generic CAD Interoperability project
-
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -41,16 +37,9 @@ using System.Xml.Serialization;
 using System.IO;
 using System.Threading;
 using System.Xml;
-
-#if INTERGRAPH_BRANDING
-using Intergraph.AsiaPac.Utilities.Xml;
-
-namespace Intergraph.AsiaPac.Web.Utilities.Handlers
-#else
 using Cobos.Utilities.Xml;
 
 namespace Cobos.Web.Utilities.Handlers
-#endif
 {
 	/// <summary>
 	/// Manages requesting XML data from a remote server

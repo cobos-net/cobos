@@ -29,19 +29,11 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // ============================================================================
 
-// 05-Feb-11 N.Davis
-// -----------------
-// Rebranded from "Cobos" to "Intergraph.AsiaPac" in preparation for use in the Generic CAD Interoperability project
-
 using System;
 using System.Data;
 using System.IO;
 
-#if INTERGRAPH_BRANDING
-namespace Intergraph.AsiaPac.Data
-#else
 namespace Cobos.Data
-#endif
 {
 	public interface IDatabaseAdapter
 	{

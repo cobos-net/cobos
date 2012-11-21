@@ -29,15 +29,7 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // ============================================================================
 
-// 05-Feb-11 N.Davis
-// -----------------
-// Rebranded from "Cobos" to "Intergraph.AsiaPac" in preparation for use in the Generic CAD Interoperability project
-
-#if INTERGRAPH_BRANDING
-namespace Intergraph.AsiaPac.Utilities.Threading.Resource
-#else
 namespace Cobos.Utilities.Threading.Resource
-#endif
 {
 	/// <summary>
 	/// User defined resource allocator to enable the resource pool

@@ -29,25 +29,14 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // ============================================================================
 
-// 05-Feb-11 N.Davis
-// -----------------
-// Rebranded from "Cobos" to "Intergraph.AsiaPac" in preparation for use in the Generic CAD Interoperability project
-
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
 using Microsoft.Win32.SafeHandles;
 using System.Runtime.CompilerServices;
-
-#if INTERGRAPH_BRANDING
-using Intergraph.AsiaPac.Utilities.Win32;
-
-namespace Intergraph.AsiaPac.Utilities.File
-#else
 using Cobos.Utilities.Win32;
 
 namespace Cobos.Utilities.File
-#endif
 {
 	/// <summary>
 	/// The file handle is used to uniquely identify a file on disk based on the
