@@ -1,1 +1,0 @@
-Placeholder file so the version control doesn't ignore this otherwise empty folder.
