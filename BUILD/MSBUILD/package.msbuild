@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+	<!--
+	===========================================================================
+	Filename: Package.msbuild
+	Description: Package specific build configuration
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Created by: N.Davis             Date: 2012-09-14
+	Updated by:                     Date:
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Notes:
+
+
+	===========================================================================
+	-->
+
+	<!-- Import the main build framework -->
+	<Import Project="\QualitySystem\BUILD\MSBUILD\cobos.build.targets"/>
+
+	<!-- 
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Custom build properties
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<ItemGroup>
+		<!-- Include all of the files to clean -->
+		<!-- <CleanFilesInclude Include="" /> -->
+		
+		<!-- INCLUDE all of the files to EXCLUDE from the clean. -->
+		<CleanFilesExclude Include="$(DevSourceDirectory)\**\.empty" />
+	</ItemGroup>
+
+	<!-- 
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Example hooks into build targets
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<!--
+	<Target Name="CustomPreBuildCopy" AfterTargets="PreBuildCopy"  />
+	-->
+
+	<Target Name="CustomPostBuildCopy" AfterTargets="PostBuildCopy" >
+		
+		<!-- Gather up all build binaries -->
+		<ItemGroup>
+			<CobosBinaries Include="$(DevSourceDirectory)\source\**\bin\Release\*.dll" 
+								Exclude="$(DevSourceDirectory)\source\**\*.Tests\bin\Release\*.dll" 
+								KeepDuplicates="false" />
+			<CobosBinaries Include="$(DevSourceDirectory)\source\**\bin\Release\*.exe" 
+								Exclude="$(DevSourceDirectory)\source\**.Tests\bin\Release\*.exe" 
+								KeepDuplicates="false" />
+		</ItemGroup>
+		
+		<Copy SourceFiles="@(CobosBinaries)" DestinationFolder="$(DevSourceDirectory)\bin" />		
+	
+	</Target>
+
+	<!--
+	<Target Name="CustomCopyResultToReleaseDirectory" AfterTargets="CopyResultToReleaseDirectory" />
+	-->
+
+	<!-- 
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Define all build projects, hook this in after 'DefineBuildProjects'.
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<Target Name="CobosBuildProjects" BeforeTargets="DefineBuildProjects">
+
+		<PropertyGroup>
+			<CobosSource>$(DevSourceDirectory)\source\</CobosSource>
+		</PropertyGroup>
+
+		<ItemGroup>
+			<DotNetBuildFiles Include="$(CobosSource)Cobos.Core\Cobos.Core.csproj;
+												$(CobosSource)Cobos.Core.Tests\Cobos.Core.Tests.csproj;
+												$(CobosSource)Cobos.Data\Cobos.Data.csproj;
+												$(CobosSource)Cobos.Data.Tests\Cobos.Data.Tests.csproj;
+												$(CobosSource)Cobos.Data.MySql\Cobos.Data.MySql.csproj;
+												$(CobosSource)Cobos.Data.MySql.Tests\Cobos.Data.MySql.Tests.csproj;
+												$(CobosSource)Cobos.Data.Oracle\Cobos.Data.Oracle.csproj;
+												$(CobosSource)Cobos.Data.Oracle.Tests\Cobos.Data.Oracle.Tests.csproj;
+												$(CobosSource)Cobos.DatabaseToXsd\Cobos.DatabaseToXsd.csproj;
+												$(CobosSource)Cobos.Geometry\Cobos.Geometry.csproj;
+												$(CobosSource)Cobos.Utilities\Cobos.Utilities.csproj;
+												$(CobosSource)Cobos.Utilities.Tests\Cobos.Utilities.Tests.csproj;
+												$(CobosSource)Cobos.Web.Utilities\Cobos.Web.Utilities.csproj;
+												$(CobosSource)Cobos.WpfApplication\Cobos.WpfApplication.csproj;
+												$(CobosSource)Cobos.WpfApplication.Tests\Cobos.WpfApplication.Tests.csproj;">
+				<Configuration>%(DotNetBuildConfigurations.Identity)</Configuration>
+				<Platform>%(DotNetBuildConfigurations.Platform)</Platform>
+			</DotNetBuildFiles>
+		</ItemGroup>
+
+		<!--
+		<ItemGroup>
+			<DotNetBuildFiles Include="$(CobosSource)Cobos.DatabaseToXsd\Cobos.DatabaseToXsd.csproj;">
+				<Configuration>%(DotNetBuildConfigurationsX86.Identity)</Configuration>
+				<Platform>%(DotNetBuildConfigurationsX86.Platform)</Platform>
+			</DotNetBuildFiles>
+		</ItemGroup>
+		-->
+
+	</Target>
+	
+</Project>

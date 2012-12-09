@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<?include Config.wxi?>
+	<Product Id="*" Name="$(var.ProductName) v$(var.Major).$(var.Minor) for $(var.ProductPlatform)" Language="1033" Version="$(var.Major).$(var.Minor).$(var.Build).$(var.Revision)" Manufacturer="Cobos Open-Source Software." UpgradeCode="$(var.ProductId)">
+		<!-- 
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		Common Product definitions
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		-->
+		<?include \QualitySystem\BUILD\INSTALL\Include\Cobos.Common.wxi ?>
+		
+		<!--
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		Custom Folder Locations
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		-->
+		
+		<DirectoryRef Id="INSTALLDIR">
+			<Directory Id="Source" Name="SOURCE" />
+		</DirectoryRef>
+		
+		<!-- 
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		Feature definitions
+		~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		-->
+		<Feature Id="BinFeature" Title="Applications" Level="1" Description="Installs the $(var.ProductName) applications.">
+			<!-- Defined in generated fragment scripts -->
+			<ComponentGroupRef Id="BinFiles"/>
+			<!-- Note: The following ComponentGroupRef is required to pull in generated authoring from project references. -->
+			<ComponentGroupRef Id="Product.Generated" />
+		</Feature>
+
+		<Feature Id="ConfigurationFeature" Title="Configuration" Level="1" Description="Installs the $(var.ProductName) configuration.">
+			<!-- Defined in generated fragment scripts -->
+			<ComponentGroupRef Id="ConfigFiles"/>
+			<!-- Note: The following ComponentGroupRef is required to pull in generated authoring from project references. -->
+			<ComponentGroupRef Id="Product.Generated" />
+		</Feature>
+
+		<Feature Id="DocumentationFeature" Title="Documentation" Level="1" Description="Installs the $(var.ProductName) documentation.">
+			<!-- Defined in generated fragment scripts -->
+			<ComponentGroupRef Id="DocFiles"/>
+			<!-- Note: The following ComponentGroupRef is required to pull in generated authoring from project references. -->
+			<ComponentGroupRef Id="Product.Generated" />
+		</Feature>
+
+		<Feature Id="SourceFeature" Title="Source" Level="1" Description="Installs the $(var.ProductName) source code.">
+			<!-- Defined in generated fragment scripts -->
+			<ComponentGroupRef Id="SourceFiles"/>
+			<!-- Note: The following ComponentGroupRef is required to pull in generated authoring from project references. -->
+			<ComponentGroupRef Id="Product.Generated" />
+		</Feature>
+		
+	</Product>
+
+</Wix>

@@ -13,8 +13,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cobos.Codegen", "Cobos.Code
 		Cobos.Codegen\xslt.js = Cobos.Codegen\xslt.js
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Installer", "Installer", "{FB0EE68F-7546-4BBE-B39E-95FBF1517F77}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Schemas", "Schemas", "{6EDA8BED-1F3E-4A58-ADDB-A4096FC394DD}"
 	ProjectSection(SolutionItems) = preProject
 		Cobos.Codegen\Schemas\BuildConfig.xsd = Cobos.Codegen\Schemas\BuildConfig.xsd
@@ -130,17 +128,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.Data.Tests", "Cobos.D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.DatabaseToXsd", "Cobos.DatabaseToXsd\Cobos.DatabaseToXsd.csproj", "{3E75163B-131A-4D6F-856E-211504B14A68}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Cobos.Core.SDK", "..\..\BUILD\Cobos.Core.SDK\Cobos.Core.SDK.vdproj", "{CC47102A-EC00-4B3D-9561-BFC17D91099C}"
-	ProjectSection(ProjectDependencies) = postProject
-		{6906B107-C149-4682-AF7B-FEF9F697FE36} = {6906B107-C149-4682-AF7B-FEF9F697FE36}
-		{3E75163B-131A-4D6F-856E-211504B14A68} = {3E75163B-131A-4D6F-856E-211504B14A68}
-		{5EC3C9B9-DAE8-481C-8495-2A0A737D87A3} = {5EC3C9B9-DAE8-481C-8495-2A0A737D87A3}
-		{D5196DEE-1711-4AD3-97C8-5215BE26264C} = {D5196DEE-1711-4AD3-97C8-5215BE26264C}
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.Codegen.Tests", "Cobos.Codegen.Tests\Cobos.Codegen.Tests.csproj", "{AB2BFBE4-62CE-4BB7-BC37-E3F8AAF789C0}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.Web.Proxy", "Cobos.Web.Proxy\Cobos.Web.Proxy.csproj", "{43F23355-0E22-493E-A376-1CB04D2141EC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.Data.MySql", "Cobos.Data.MySql\Cobos.Data.MySql.csproj", "{2F537275-3B9C-4914-B33E-E6AE6238F4B6}"
 EndProject
@@ -149,6 +137,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.Data.Oracle.Tests", "Cobos.Data.Oracle.Tests\Cobos.Data.Oracle.Tests.csproj", "{EAE0558B-E3E2-4378-8609-6914770DF377}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.Data.MySql.Tests", "Cobos.Data.MySql.Tests\Cobos.Data.MySql.Tests.csproj", "{E4CDF809-D35C-4350-9F3C-C3FCE0018B06}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.Geometry", "Cobos.Geometry\Cobos.Geometry.csproj", "{A6758F3A-6269-49C1-8911-35E4C79F330E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -250,26 +240,16 @@ Global
 		{45697D04-D665-448A-BB4B-939F8F3E66FF}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{45697D04-D665-448A-BB4B-939F8F3E66FF}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{45697D04-D665-448A-BB4B-939F8F3E66FF}.Release|x86.ActiveCfg = Release|Any CPU
-		{3E75163B-131A-4D6F-856E-211504B14A68}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{3E75163B-131A-4D6F-856E-211504B14A68}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{3E75163B-131A-4D6F-856E-211504B14A68}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{3E75163B-131A-4D6F-856E-211504B14A68}.Debug|x86.ActiveCfg = Debug|x86
-		{3E75163B-131A-4D6F-856E-211504B14A68}.Debug|x86.Build.0 = Debug|x86
-		{3E75163B-131A-4D6F-856E-211504B14A68}.Release|Any CPU.ActiveCfg = Release|x86
-		{3E75163B-131A-4D6F-856E-211504B14A68}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{3E75163B-131A-4D6F-856E-211504B14A68}.Release|Mixed Platforms.Build.0 = Release|x86
-		{3E75163B-131A-4D6F-856E-211504B14A68}.Release|x86.ActiveCfg = Release|x86
-		{3E75163B-131A-4D6F-856E-211504B14A68}.Release|x86.Build.0 = Release|x86
-		{CC47102A-EC00-4B3D-9561-BFC17D91099C}.Debug|Any CPU.ActiveCfg = Debug
-		{CC47102A-EC00-4B3D-9561-BFC17D91099C}.Debug|Any CPU.Build.0 = Debug
-		{CC47102A-EC00-4B3D-9561-BFC17D91099C}.Debug|Mixed Platforms.ActiveCfg = Debug
-		{CC47102A-EC00-4B3D-9561-BFC17D91099C}.Debug|x86.ActiveCfg = Debug
-		{CC47102A-EC00-4B3D-9561-BFC17D91099C}.Debug|x86.Build.0 = Debug
-		{CC47102A-EC00-4B3D-9561-BFC17D91099C}.Release|Any CPU.ActiveCfg = Release
-		{CC47102A-EC00-4B3D-9561-BFC17D91099C}.Release|Any CPU.Build.0 = Release
-		{CC47102A-EC00-4B3D-9561-BFC17D91099C}.Release|Mixed Platforms.ActiveCfg = Release
-		{CC47102A-EC00-4B3D-9561-BFC17D91099C}.Release|x86.ActiveCfg = Release
-		{CC47102A-EC00-4B3D-9561-BFC17D91099C}.Release|x86.Build.0 = Release
+		{3E75163B-131A-4D6F-856E-211504B14A68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E75163B-131A-4D6F-856E-211504B14A68}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E75163B-131A-4D6F-856E-211504B14A68}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{3E75163B-131A-4D6F-856E-211504B14A68}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{3E75163B-131A-4D6F-856E-211504B14A68}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3E75163B-131A-4D6F-856E-211504B14A68}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E75163B-131A-4D6F-856E-211504B14A68}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E75163B-131A-4D6F-856E-211504B14A68}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{3E75163B-131A-4D6F-856E-211504B14A68}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{3E75163B-131A-4D6F-856E-211504B14A68}.Release|x86.ActiveCfg = Release|Any CPU
 		{AB2BFBE4-62CE-4BB7-BC37-E3F8AAF789C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AB2BFBE4-62CE-4BB7-BC37-E3F8AAF789C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AB2BFBE4-62CE-4BB7-BC37-E3F8AAF789C0}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -280,16 +260,6 @@ Global
 		{AB2BFBE4-62CE-4BB7-BC37-E3F8AAF789C0}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{AB2BFBE4-62CE-4BB7-BC37-E3F8AAF789C0}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{AB2BFBE4-62CE-4BB7-BC37-E3F8AAF789C0}.Release|x86.ActiveCfg = Release|Any CPU
-		{43F23355-0E22-493E-A376-1CB04D2141EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{43F23355-0E22-493E-A376-1CB04D2141EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{43F23355-0E22-493E-A376-1CB04D2141EC}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{43F23355-0E22-493E-A376-1CB04D2141EC}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{43F23355-0E22-493E-A376-1CB04D2141EC}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{43F23355-0E22-493E-A376-1CB04D2141EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{43F23355-0E22-493E-A376-1CB04D2141EC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{43F23355-0E22-493E-A376-1CB04D2141EC}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{43F23355-0E22-493E-A376-1CB04D2141EC}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{43F23355-0E22-493E-A376-1CB04D2141EC}.Release|x86.ActiveCfg = Release|Any CPU
 		{2F537275-3B9C-4914-B33E-E6AE6238F4B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2F537275-3B9C-4914-B33E-E6AE6238F4B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2F537275-3B9C-4914-B33E-E6AE6238F4B6}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -330,6 +300,16 @@ Global
 		{E4CDF809-D35C-4350-9F3C-C3FCE0018B06}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{E4CDF809-D35C-4350-9F3C-C3FCE0018B06}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{E4CDF809-D35C-4350-9F3C-C3FCE0018B06}.Release|x86.ActiveCfg = Release|Any CPU
+		{A6758F3A-6269-49C1-8911-35E4C79F330E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6758F3A-6269-49C1-8911-35E4C79F330E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6758F3A-6269-49C1-8911-35E4C79F330E}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{A6758F3A-6269-49C1-8911-35E4C79F330E}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{A6758F3A-6269-49C1-8911-35E4C79F330E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A6758F3A-6269-49C1-8911-35E4C79F330E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6758F3A-6269-49C1-8911-35E4C79F330E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6758F3A-6269-49C1-8911-35E4C79F330E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{A6758F3A-6269-49C1-8911-35E4C79F330E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{A6758F3A-6269-49C1-8911-35E4C79F330E}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -338,7 +318,6 @@ Global
 		{6EDA8BED-1F3E-4A58-ADDB-A4096FC394DD} = {F563C737-98D0-42B5-B2FF-CC9143347784}
 		{734596B3-3329-4336-B41D-A0804C78B745} = {F563C737-98D0-42B5-B2FF-CC9143347784}
 		{B7F60FFC-70E9-419C-A7E9-055458CA5BBB} = {F563C737-98D0-42B5-B2FF-CC9143347784}
-		{CC47102A-EC00-4B3D-9561-BFC17D91099C} = {FB0EE68F-7546-4BBE-B39E-95FBF1517F77}
 		{98897FB0-F4F2-4EC7-A52B-C33A794825C0} = {734596B3-3329-4336-B41D-A0804C78B745}
 		{AA03B289-390E-4A38-93A7-B4E9856B769D} = {734596B3-3329-4336-B41D-A0804C78B745}
 		{431A7087-1C7A-4C5E-8619-3FE737D0C75C} = {734596B3-3329-4336-B41D-A0804C78B745}

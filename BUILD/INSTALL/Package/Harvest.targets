@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+	<!--
+	===========================================================================
+	Filename: Harvest.targets
+	Description: Harvest Directories for HEAT.
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Created by: N.Davis             Date: 2012-09-22
+	Updated by:                     Date:
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Notes:  Define your Harvest Directories for HEAT here.  Include this in 
+	your Wix project file.
+
+	===========================================================================
+	-->
+
+	<ItemGroup>
+
+		<!-- Bin folder -->
+		<HarvestDirectoryRef Include="$(DevSourceDirectory)\BIN\">
+			<DirectoryRef>Bin</DirectoryRef>
+			<ComponentGroup>BinFiles</ComponentGroup>
+			<Transforms>$(HeatStylesheetDirectory)\heat-ignore-default.xslt</Transforms>
+			<Variable>var.BinFiles</Variable>
+		</HarvestDirectoryRef>
+	
+		<!-- Config folder -->
+		<HarvestDirectoryRef Include="$(ConfigSourceDirectory)">
+			<DirectoryRef>Config</DirectoryRef>
+			<ComponentGroup>ConfigFiles</ComponentGroup>
+			<Transforms>$(HeatStylesheetDirectory)\heat-ignore-default.xslt</Transforms>
+			<Variable>var.ConfigFiles</Variable>
+		</HarvestDirectoryRef>
+		
+		<!-- Documentation folder -->
+		<HarvestDirectoryRef Include="$(DocSourceDirectory)">
+			<DirectoryRef>Doc</DirectoryRef>
+			<ComponentGroup>DocFiles</ComponentGroup>
+			<Transforms>$(HeatStylesheetDirectory)\heat-ignore-default.xslt</Transforms>
+			<Variable>var.DocFiles</Variable>
+		</HarvestDirectoryRef>
+		
+		<!-- Source folder -->
+		<HarvestDirectoryRef Include="$(DevSourceDirectory)\SOURCE\">
+			<DirectoryRef>Source</DirectoryRef>
+			<ComponentGroup>SourceFiles</ComponentGroup>
+			<Transforms>$(HeatStylesheetLocalDirectory)\heat-ignore-source.xslt</Transforms>
+			<Variable>var.SourceFiles</Variable>
+		</HarvestDirectoryRef>
+
+	</ItemGroup>
+
+	
+</Project>
