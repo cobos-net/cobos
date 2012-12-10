@@ -5,7 +5,7 @@ using System.Text;
 //using Cobos.Core.Scripting;
 using NUnit.Framework;
 
-namespace Cobos.Core.Scripting.Tests
+namespace Cobos.Core.Tests
 {
     [TestFixture]
     public class LoggerTests

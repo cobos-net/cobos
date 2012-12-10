@@ -11,13 +11,13 @@ namespace Cobos.Core.Log
 	{
 		public enum LogLevelEnum
 		{
-			Fatal,
+			Off,
+			Exception,
 			Error,
 			Warning,
 			Information,
 			Debug,
-			Trace,
-			Off
+			Trace
 		}
 
 		public LogLevelEnum LogLevel
@@ -49,33 +49,22 @@ namespace Cobos.Core.Log
 		private string LogName;
 
 		/// <summary>
-		/// Intialise the logger from the app.config settings.
+		/// Intialise the logger from the app.config or web.config settings.
 		/// </summary>
 		public void Initialise()
 		{
-			string level = ConfigurationManager.AppSettings[ "LogLevel" ];
+			Initialise( ParseLogLevel( ConfigurationManager.AppSettings[ "LogLevel" ] ), ConfigurationManager.AppSettings[ "LogFolder" ], ConfigurationManager.AppSettings[ "LogName" ] );
+		}
 
-			switch ( level.ToLower() )
-			{
-			case "debug":
-				LogLevel = LogLevelEnum.Debug;
-				break;
-
-			case "information":
-				LogLevel = LogLevelEnum.Information;
-				break;
-
-			case "warning":
-				LogLevel = LogLevelEnum.Warning;
-				break;
-
-			case "error":
-			default:
-				LogLevel = LogLevelEnum.Error;
-				break;
-			}
-
-			Initialise( LogLevel, ConfigurationManager.AppSettings[ "LogFolder" ], ConfigurationManager.AppSettings[ "LogName" ] );
+		/// <summary>
+		/// Initialise the log using your application's hard coded values.
+		/// </summary>
+		/// <param name="logLevel"></param>
+		/// <param name="logFolder"></param>
+		/// <param name="logName"></param>
+		public void Initialise( string logLevel, string logFolder, string logName )
+		{
+			Initialise( ParseLogLevel( logLevel ), logFolder, logName );
 		}
 
 		/// <summary>
@@ -121,6 +110,61 @@ namespace Cobos.Core.Log
 			}
 		}
 
+		/// <summary>
+		/// Parse the log level from a string value (usually in the configuration file).
+		/// </summary>
+		/// <param name="level"></param>
+		/// <returns></returns>
+		public static LogLevelEnum ParseLogLevel( string level )
+		{
+			LogLevelEnum logLevel = LogLevelEnum.Error;
+
+			if ( string.IsNullOrEmpty( level ) )
+			{
+				return logLevel;
+			}
+
+			switch ( level.ToLower() )
+			{
+            case "off":
+                logLevel = LogLevelEnum.Off;
+                break;
+
+            case "trace":
+				logLevel = LogLevelEnum.Trace;
+				break;
+
+			case "debug":
+				logLevel = LogLevelEnum.Debug;
+				break;
+
+			case "information":
+				logLevel = LogLevelEnum.Information;
+				break;
+
+			case "warning":
+				logLevel = LogLevelEnum.Warning;
+				break;
+
+			case "error":
+				logLevel = LogLevelEnum.Error;
+				break;
+
+			case "exception":
+				logLevel = LogLevelEnum.Exception;
+				break;
+
+			default:
+				logLevel = LogLevelEnum.Error;
+				break;
+			}
+
+			return logLevel;
+		}
+
+		/// <summary>
+		/// Write the log file header text.
+		/// </summary>
 		private void WriteHeader()
 		{
 			string timestamp = DateTime.Now.ToString( "yyyy-MM-dd HH:mm:ss:fff" );
@@ -142,6 +186,12 @@ namespace Cobos.Core.Log
 			}
 		}
 
+		/// <summary>
+		/// Log the message.
+		/// </summary>
+		/// <param name="category"></param>
+		/// <param name="format"></param>
+		/// <param name="args"></param>
 		private void Log( string category, string format, params object[] args )
 		{
 			string timestamp = DateTime.Now.ToString( "yyyy-MM-dd HH:mm:ss:fff" );
@@ -159,6 +209,9 @@ namespace Cobos.Core.Log
 			}
 		}
 
+		/// <summary>
+		/// Clear the log file and start writing again.
+		/// </summary>
 		public void Clear()
 		{
 			if ( Writer != null )
@@ -181,11 +234,15 @@ namespace Cobos.Core.Log
 			}
 		}
 
+		/// <summary>
+		/// Log the exception.
+		/// </summary>
+		/// <param name="e"></param>
 		public void Exception( Exception e )
 		{
 			const string format = "{0}\n" + "{1}\n" + "{2}\n";
 
-			Error( format, e.Message, e.Source, e.StackTrace );
+			Log( "Exception", format, new object[]{ e.Message, e.Source, e.StackTrace } );
 
 			Exception inner = e;
 
@@ -195,6 +252,11 @@ namespace Cobos.Core.Log
 			}
 		}
 
+		/// <summary>
+		/// Log a trace message.
+		/// </summary>
+		/// <param name="format"></param>
+		/// <param name="args"></param>
 		public void Trace( string format, params object[] args )
 		{
 			if ( LogLevel >= LogLevelEnum.Trace )
@@ -203,6 +265,11 @@ namespace Cobos.Core.Log
 			}
 		}
 
+		/// <summary>
+		/// Log a debug message.
+		/// </summary>
+		/// <param name="format"></param>
+		/// <param name="args"></param>
 		public void Debug( string format, params object[] args )
 		{
 			if ( LogLevel >= LogLevelEnum.Debug )
@@ -211,6 +278,11 @@ namespace Cobos.Core.Log
 			}
 		}
 
+		/// <summary>
+		/// Log an information message.
+		/// </summary>
+		/// <param name="format"></param>
+		/// <param name="args"></param>
 		public void Information( string format, params object[] args )
 		{
 			if ( LogLevel >= LogLevelEnum.Information )
@@ -219,6 +291,11 @@ namespace Cobos.Core.Log
 			}
 		}
 
+		/// <summary>
+		/// Log a warning message.
+		/// </summary>
+		/// <param name="format"></param>
+		/// <param name="args"></param>
 		public void Warning( string format, params object[] args )
 		{
 			if ( LogLevel >= LogLevelEnum.Warning )
@@ -227,17 +304,22 @@ namespace Cobos.Core.Log
 			}
 		}
 
-		public void Error( string format, params object[] args )
-		{
-			if ( LogLevel >= LogLevelEnum.Error )
-			{
-				Log( "Error", format, args );
-			}
-		}
+        /// <summary>
+        /// Log an error message.
+        /// </summary>
+        /// <param name="format"></param>
+        /// <param name="args"></param>
+        public void Error( string format, params object[] args )
+        {
+            if ( LogLevel >= LogLevelEnum.Error )
+            {
+                Log( "Error", format, args );
+            }
+        }
 
-		#region IDisposable
+        #region IDisposable
 
-		bool _disposed = false;
+		bool disposed = false;
 
 		~LogWriter()
 		{
@@ -251,7 +333,7 @@ namespace Cobos.Core.Log
 
 		private void Dispose( bool disposing )
 		{
-			if ( _disposed )
+			if ( this.disposed )
 			{
 				return;
 			}
@@ -268,7 +350,7 @@ namespace Cobos.Core.Log
 				GC.SuppressFinalize( this );
 			}
 
-			_disposed = true;
+			this.disposed = true;
 		}
 
 		#endregion
