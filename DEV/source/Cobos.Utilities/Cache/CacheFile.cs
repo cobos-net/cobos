@@ -27,7 +27,7 @@ namespace Cobos.Utilities.Cache
 		/// <summary>
 		/// 
 		/// </summary>
-		private readonly Regex _regexSectionHeader = new Regex( @"\[(?<name>\w*)\]" );
+		private readonly Regex RegexSectionHeader = new Regex( @"\[(?<name>\w*)\]" );
 
 		/// <summary>
 		/// 
@@ -60,7 +60,7 @@ namespace Cobos.Utilities.Cache
 
 				while ( (line = reader.ReadLine()) != null )
 				{
-					Match match = _regexSectionHeader.Match( line );
+					Match match = RegexSectionHeader.Match( line );
 
 					if ( match.Success )
 					{
