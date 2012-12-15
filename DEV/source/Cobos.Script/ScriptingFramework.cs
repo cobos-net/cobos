@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Reflection;
+using Cobos.Core.Log;
 
 namespace Cobos.Script
 {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Configuration;
+using Cobos.Utilities.Cache;
 
 namespace Cobos.Script
 {

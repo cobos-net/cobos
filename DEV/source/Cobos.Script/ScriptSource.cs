@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using Microsoft.CSharp;
+using Cobos.Core.Log;
 
 namespace Cobos.Script
 {
@@ -106,7 +107,7 @@ namespace Cobos.Script
 
 				parameters.CompilerOptions = buffer.ToString();
 
-				Logger.Instance.Debug( 0, "Compiler Options: {0}", parameters.CompilerOptions );
+				Logger.Instance.Trace( "Compiler Options: {0}", parameters.CompilerOptions );
 			}
 
 			return parameters;
