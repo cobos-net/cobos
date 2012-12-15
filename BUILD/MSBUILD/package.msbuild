@@ -50,7 +50,10 @@
 								Exclude="$(DevSourceDirectory)\source\**\*.Tests\bin\Release\*.dll" 
 								KeepDuplicates="false" />
 			<CobosBinaries Include="$(DevSourceDirectory)\source\**\bin\Release\*.exe" 
-								Exclude="$(DevSourceDirectory)\source\**.Tests\bin\Release\*.exe" 
+								Exclude="$(DevSourceDirectory)\source\**\*.Tests\bin\Release\*.exe" 
+								KeepDuplicates="false" />
+			<CobosBinaries Include="$(DevSourceDirectory)\source\**\bin\Release\*.pdb" 
+								Exclude="$(DevSourceDirectory)\source\**\*.Tests\bin\Release\*.pdb" 
 								KeepDuplicates="false" />
 		</ItemGroup>
 		
