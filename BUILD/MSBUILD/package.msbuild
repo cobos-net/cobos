@@ -87,7 +87,6 @@
 												$(CobosSource)Cobos.Data.Oracle\Cobos.Data.Oracle.csproj;
 												$(CobosSource)Cobos.Data.Oracle.Tests\Cobos.Data.Oracle.Tests.csproj;
 												$(CobosSource)Cobos.DatabaseToXsd\Cobos.DatabaseToXsd.csproj;
-												$(CobosSource)Cobos.Geometry\Cobos.Geometry.csproj;
 												$(CobosSource)Cobos.Utilities\Cobos.Utilities.csproj;
 												$(CobosSource)Cobos.Utilities.Tests\Cobos.Utilities.Tests.csproj;
 												$(CobosSource)Cobos.Web.Utilities\Cobos.Web.Utilities.csproj;

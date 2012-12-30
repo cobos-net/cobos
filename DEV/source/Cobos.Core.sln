@@ -138,8 +138,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.Data.Oracle.Tests", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.Data.MySql.Tests", "Cobos.Data.MySql.Tests\Cobos.Data.MySql.Tests.csproj", "{E4CDF809-D35C-4350-9F3C-C3FCE0018B06}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.Geometry", "Cobos.Geometry\Cobos.Geometry.csproj", "{A6758F3A-6269-49C1-8911-35E4C79F330E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.Script", "Cobos.Script\Cobos.Script.csproj", "{03D50FFC-8DF1-4DB2-B653-DC4D2E66F623}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.ScriptEngine", "Cobos.ScriptEngine\Cobos.ScriptEngine.csproj", "{3CA4CEBF-B176-4303-A018-9026A8C9B44C}"
@@ -306,16 +304,6 @@ Global
 		{E4CDF809-D35C-4350-9F3C-C3FCE0018B06}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{E4CDF809-D35C-4350-9F3C-C3FCE0018B06}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{E4CDF809-D35C-4350-9F3C-C3FCE0018B06}.Release|x86.ActiveCfg = Release|Any CPU
-		{A6758F3A-6269-49C1-8911-35E4C79F330E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A6758F3A-6269-49C1-8911-35E4C79F330E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A6758F3A-6269-49C1-8911-35E4C79F330E}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{A6758F3A-6269-49C1-8911-35E4C79F330E}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{A6758F3A-6269-49C1-8911-35E4C79F330E}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{A6758F3A-6269-49C1-8911-35E4C79F330E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A6758F3A-6269-49C1-8911-35E4C79F330E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A6758F3A-6269-49C1-8911-35E4C79F330E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{A6758F3A-6269-49C1-8911-35E4C79F330E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{A6758F3A-6269-49C1-8911-35E4C79F330E}.Release|x86.ActiveCfg = Release|Any CPU
 		{03D50FFC-8DF1-4DB2-B653-DC4D2E66F623}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{03D50FFC-8DF1-4DB2-B653-DC4D2E66F623}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{03D50FFC-8DF1-4DB2-B653-DC4D2E66F623}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
