@@ -1,9 +1,9 @@
 ﻿// ============================================================================
-// Filename: CobosDataSet.cs
+// Filename: SimpleDataSet.cs
 // Description: 
 // ----------------------------------------------------------------------------
 // Created by: N.Davis                          Date: 27-Nov-09
-// Modified by:                                 Date:
+// Updated by:                                  Date:
 // ============================================================================
 // Copyright (c) 2009-2011 Nicholas Davis		nick@cobos.co.uk
 //
@@ -159,7 +159,7 @@ namespace Cobos.Data
 				xsltArgs = new XsltArgumentList();
 			}
 
-			//xsltArgs.AddParam( "dummy", "", dummy );
+			//xsltArgs.AddParam( "example", "", example );
 
 			// do the transform
 			xslt.Transform( doc.CreateNavigator(), xsltArgs, results );
@@ -183,7 +183,7 @@ namespace Cobos.Data
 				xsltArgs = new XsltArgumentList();
 			}
 
-			//xsltArgs.AddParam( "dummy", "", dummy );
+			//xsltArgs.AddParam( "example", "", example );
 
 			using ( MemoryStream stream = new MemoryStream() )
 			{

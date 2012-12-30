@@ -1,13 +1,13 @@
 ﻿// ============================================================================
-// Filename: CobosDataSet.cs
+// Filename: XsltHelper.cs
 // Description: 
 // ----------------------------------------------------------------------------
 // Created by: N.Davis                          Date: 27-Nov-09
-// Modified by:                                 Date:
+// Updated by:                                  Date:
 // ============================================================================
-// Copyright (c) 2009-2011 Nicholas Davis		nick@cobos.co.uk
+// Copyright (c) 2009-2012 Nicholas Davis		nick@cobos.co.uk
 //
-// Cobos Software Development Kit v0.1
+// Cobos Software Development Kit
 // 
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the

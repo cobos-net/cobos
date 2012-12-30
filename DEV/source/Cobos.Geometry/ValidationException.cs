@@ -1,8 +1,8 @@
 ﻿// ============================================================================
-// Filename: AsynchTask.cs
+// Filename: ValidationException.cs
 // Description: 
 // ----------------------------------------------------------------------------
-// Created by: N.Davis                          Date: 27-Nov-09
+// Created by: N.Davis                          Date: 21-Nov-09
 // Updated by:                                  Date:
 // ============================================================================
 // Copyright (c) 2009-2012 Nicholas Davis		nick@cobos.co.uk
@@ -30,21 +30,39 @@
 // ============================================================================
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace Cobos.Data
+namespace Cobos.Geometry
 {
-	/// <summary>
-	/// 
-	/// </summary>
-	/// <typeparam name="TObject"></typeparam>
-	/// <typeparam name="TDelegate"></typeparam>
-	public struct AsyncTask<TObject, TDelegate>
-	{
-		public TObject Object;
-		public TDelegate Caller;
-		public IAsyncResult AsyncResult;
-	}
+    /// <summary>
+    /// Base class for geometry validation errors.
+    /// </summary>
+    public class ValidationException : Exception
+    {
+        /// <summary>
+        /// Construct a new exception.
+        /// </summary>
+        public ValidationException()
+            : base()
+        {
+        }
+
+        /// <summary>
+        /// Construct a new exception.
+        /// </summary>
+        /// <param name="message">The error message that explains the reason for the exception.</param>
+        public ValidationException( string message )
+            : base( message )
+        {
+        }
+
+        /// <summary>
+        /// Construct a new exception.
+        /// </summary>
+        /// <param name="message">The error message that explains the reason for the exception.</param>
+        /// <param name="innerException">The exception that caused this exception to be raised.</param>
+        public ValidationException( string message, Exception innerException )
+            : base( message, innerException )
+        {
+        }
+    }
 }

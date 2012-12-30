@@ -1,4 +1,35 @@
-﻿using System;
+﻿// ============================================================================
+// Filename: Curve.cs
+// Description: 
+// ----------------------------------------------------------------------------
+// Created by: N.Davis                          Date: 21-Nov-09
+// Updated by:                                  Date:
+// ============================================================================
+// Copyright (c) 2009-2012 Nicholas Davis		nick@cobos.co.uk
+//
+// Cobos Software Development Kit
+// 
+// Permission is hereby granted, free of charge, to any person obtaining
+// a copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to
+// permit persons to whom the Software is furnished to do so, subject to
+// the following conditions:
+// 
+// The above copyright notice and this permission notice shall be
+// included in all copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+// LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+// OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+// WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+// ============================================================================
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Collections.ObjectModel;
@@ -6,50 +37,54 @@ using System.Collections.ObjectModel;
 namespace Cobos.Geometry
 {
 	/// <summary>
-	/// Simple implementation of a curve (i.e. coordset) to include a bounding extent.
-	/// This exposes the full functionality of the List class but if any base class
-	/// methods are called that change the contents of the object, then the client
-	/// must call RecalculateExtent to refresh the bounding extent.
+	/// A Curve is a one-dimensional geometric object usually stored as a 
+    /// sequence of points, with the subtype of Curve specifying the form 
+    /// of the interpolation between points.
 	/// </summary>
-	[Serializable]
 	public abstract class Curve : Geometry
 	{
-		#region OpenGIS implementation
+		#region OpenGIS specification
 
-		public abstract Coord StartPoint
-		{
-			get;
-		}
-
+        /// <summary>
+        /// The end point of this Curve.
+        /// </summary>
 		public abstract Coord EndPoint
 		{
 			get;
 		}
 
 		/// <summary>
-		/// 
+        /// Returns true if this Curve is closed (StartPoint ( ) = EndPoint ( )).
 		/// </summary>
-		public abstract bool? IsClosed
+		public abstract bool IsClosed
 		{
 			get;
 		}
 
 		/// <summary>
-		/// 
+		/// Returns true if this Curve is closed (StartPoint ( ) = EndPoint ( ))
+        /// and this Curve is simple
 		/// </summary>
 		public abstract bool IsRing
 		{
 			get;
 		}
 
-
 		/// <summary>
-		/// 
+        /// The length of this Curve in its associated spatial reference.
 		/// </summary>
 		public abstract double Length
 		{
 			get;
 		}
+
+        /// <summary>
+        /// The start point of this Curve.
+        /// </summary>
+        public abstract Coord StartPoint
+        {
+            get;
+        }
 
 		#endregion
 	}
