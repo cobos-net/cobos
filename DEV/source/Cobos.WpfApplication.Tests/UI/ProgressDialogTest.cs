@@ -29,16 +29,16 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // ============================================================================
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
-using NUnit.Framework;
-using Cobos.WpfApplication.UI;
-using Cobos.Core.UI;
-
 namespace Cobos.WpfApplication.Tests.UI
 {
+    using Cobos.WpfApplication.Interfaces;
+    using Cobos.WpfApplication.UI;
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+    using System.Threading;
+    using NUnit.Framework;
+
 	public class ProgressDialogTest
 	{
 		[TestCase]

@@ -29,14 +29,14 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // ============================================================================
 
-using System;
-using System.Windows;
-using Cobos.Core.UI;
-using Cobos.WpfApplication.Controls;
-
 namespace Cobos.WpfApplication.UI
 {
-	class MessageBoxHandler : IMessageHandler 
+    using Cobos.WpfApplication.Controls;
+    using Cobos.WpfApplication.Interfaces;
+    using System;
+    using System.Windows;
+
+	public class MessageBoxHandler : IMessageHandler 
 	{
 		/// <summary>
 		/// 

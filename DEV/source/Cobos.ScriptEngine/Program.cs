@@ -33,7 +33,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Cobos.Script;
-using Cobos.Core.Log;
 using NDesk.Options;
 
 namespace Cobos.ScriptEngine
@@ -49,8 +48,6 @@ namespace Cobos.ScriptEngine
 				WriteHelp();
 				return;
 			}
-
-            Logger.Instance.Initialise();
 
 			string script = null, @class = null, method = null;
 			bool help = false;
@@ -71,19 +68,15 @@ namespace Cobos.ScriptEngine
 				return;
 			}
 
-            Logger.Instance.LogToConsole = true;
-
 			if ( string.IsNullOrEmpty( script ) )
 			{
-				Logger.Instance.Error( "The script source path cannot be null or an empty string." );
+				LogSingleton.Instance.Error( "The script source path cannot be null or an empty string." );
 				return;
 			}
 
 			try
 			{
 				ScriptAssembly assembly = new ScriptSource( script ).Compile();
-
-				Logger.Instance.Clear();
 
 				using ( ScriptingFramework.Instance )
 				{
@@ -94,10 +87,8 @@ namespace Cobos.ScriptEngine
 			}
 			catch ( Exception e )
 			{
-				Logger.Instance.Exception( e );
+				LogSingleton.Instance.ErrorException( "Script Error", e );
 			}
-
-            Logger.Instance.Dispose();
 		}
 
 		/// <summary>

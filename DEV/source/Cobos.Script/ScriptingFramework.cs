@@ -36,7 +36,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Reflection;
-using Cobos.Core.Log;
 
 namespace Cobos.Script
 {
@@ -69,7 +68,7 @@ namespace Cobos.Script
 
 		public void Initialise()
 		{
-			Logger.Instance.Information( "Initialising Scripting" );
+			LogSingleton.Instance.Info( "Initialising Scripting" );
 		}
 
 		public void Terminate()

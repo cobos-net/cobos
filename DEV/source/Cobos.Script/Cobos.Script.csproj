@@ -54,6 +54,10 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NLog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files (x86)\NLog\.NET Framework 4.0\NLog.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core">
@@ -70,6 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyReferenceResolver.cs" />
+    <Compile Include="LogSingleton.cs" />
     <Compile Include="ScriptMethod.cs" />
     <Compile Include="ScriptClass.cs" />
     <Compile Include="ScriptAssembly.cs" />
@@ -79,10 +84,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Cobos.Core\Cobos.Core.csproj">
-      <Project>{79555902-5b9f-469c-b89f-488c408c99df}</Project>
-      <Name>Cobos.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Cobos.Utilities\Cobos.Utilities.csproj">
       <Project>{5ec3c9b9-dae8-481c-8495-2a0a737d87a3}</Project>
       <Name>Cobos.Utilities</Name>

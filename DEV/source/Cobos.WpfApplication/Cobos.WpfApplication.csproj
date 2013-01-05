@@ -54,6 +54,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CobosApplication.cs" />
     <Compile Include="Commands\CommandReference.cs" />
     <Compile Include="Commands\DelegateCommand.cs" />
     <Compile Include="Controls\EditableGrid.xaml.cs">
@@ -73,6 +74,14 @@
     </Compile>
     <Compile Include="Converters\DateTimeConverter.cs" />
     <Compile Include="Converters\DBNullConverter.cs" />
+    <Compile Include="Interfaces\ICurrentCursor.cs" />
+    <Compile Include="Interfaces\ICurrentUser.cs" />
+    <Compile Include="Interfaces\IMessageHandler.cs" />
+    <Compile Include="Interfaces\IProgressBar.cs" />
+    <Compile Include="Utilities\CursorType.cs" />
+    <Compile Include="Utilities\DatabaseLoginDetails.cs" />
+    <Compile Include="Utilities\DatabaseSettingDetails.cs" />
+    <Compile Include="Utilities\UserLoginDetails.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -196,9 +205,9 @@
     <Resource Include="Resources\edit_find.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Cobos.Core\Cobos.Core.csproj">
-      <Project>{79555902-5B9F-469C-B89F-488C408C99DF}</Project>
-      <Name>Cobos.Core</Name>
+    <ProjectReference Include="..\Cobos.Utilities\Cobos.Utilities.csproj">
+      <Project>{5ec3c9b9-dae8-481c-8495-2a0a737d87a3}</Project>
+      <Name>Cobos.Utilities</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

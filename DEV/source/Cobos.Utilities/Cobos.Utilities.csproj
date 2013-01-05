@@ -69,6 +69,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Authentication\PasswordHash.cs" />
+    <Compile Include="Authentication\PrivilegeEnum.cs" />
     <Compile Include="Cache\CacheFile.cs" />
     <Compile Include="Extensions\DateExtensions.cs" />
     <Compile Include="File\DriveMapping.cs" />
@@ -83,6 +85,11 @@
     <Compile Include="File\FileVersionHelper.cs" />
     <Compile Include="File\NormalisedPath.cs" />
     <Compile Include="File\PathResolver.cs" />
+    <Compile Include="Plugin\PluginAttribute.cs" />
+    <Compile Include="Plugin\IPluginClient.cs" />
+    <Compile Include="Plugin\IPluginHost.cs" />
+    <Compile Include="Plugin\PluginLoader.cs" />
+    <Compile Include="Plugin\PluginNotSupportedException.cs" />
     <Compile Include="Text\StringSeparator.cs" />
     <Compile Include="Threading\Resource\IResource.cs" />
     <Compile Include="Threading\Resource\IResourceAllocator.cs" />

@@ -57,6 +57,10 @@
     <Reference Include="NDesk.Options">
       <HintPath>..\..\..\..\..\Program Files (x86)\NDesk\lib\ndesk-options\NDesk.Options.dll</HintPath>
     </Reference>
+    <Reference Include="NLog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files (x86)\NLog\.NET Framework 4.0\NLog.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -78,10 +82,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Cobos.Core\Cobos.Core.csproj">
-      <Project>{79555902-5b9f-469c-b89f-488c408c99df}</Project>
-      <Name>Cobos.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Cobos.Script\Cobos.Script.csproj">
       <Project>{03d50ffc-8df1-4db2-b653-dc4d2e66f623}</Project>
       <Name>Cobos.Script</Name>
