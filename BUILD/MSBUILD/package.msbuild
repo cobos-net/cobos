@@ -24,6 +24,13 @@
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
+	<PropertyGroup>
+		<CobosSource>$(DevSourceDirectory)\source\</CobosSource>
+		<BinFolder>$(DevSourceDirectory)\bin\</BinFolder>
+		<BinFolderX86>$(DevSourceDirectory)\bin\x86\</BinFolderX86>
+		<BinFolderX64>$(DevSourceDirectory)\bin\x64\</BinFolderX64>
+	</PropertyGroup>
+
 	<ItemGroup>
 		<!-- Include all of the files to clean -->
 		<!-- <CleanFilesInclude Include="" /> -->
@@ -55,9 +62,25 @@
 			<CobosBinaries Include="$(DevSourceDirectory)\source\**\bin\Release\*.pdb" 
 								Exclude="$(DevSourceDirectory)\source\**\*.Tests\bin\Release\*.pdb" 
 								KeepDuplicates="false" />
+			<CobosBinariesX86 Include="$(DevSourceDirectory)\source\**\bin\x86\Release\*.dll" 
+									Exclude="$(DevSourceDirectory)\source\**\*.Tests\bin\x86\Release\*.dll" 
+									KeepDuplicates="false" />
+			<CobosBinariesX64 Include="$(DevSourceDirectory)\source\**\bin\x64\Release\*.dll" 
+									Exclude="$(DevSourceDirectory)\source\**\*.Tests\bin\x64\Release\*.dll" 
+									KeepDuplicates="false" />
 		</ItemGroup>
-		
-		<Copy SourceFiles="@(CobosBinaries)" DestinationFolder="$(DevSourceDirectory)\bin" />		
+
+		<!-- Make the target folders -->
+		<!--
+		<MakeDir Directories="BinFolderX86" ContinueOnError="true" />
+		<MakeDir Directories="BinFolderX64" ContinueOnError="true" />
+		-->
+	
+		<Copy SourceFiles="@(CobosBinaries)" DestinationFolder="$(BinFolder)" />
+		<!--
+		<Copy SourceFiles="@(CobosBinariesX86)" DestinationFolder="$(BinFolderX86)" />
+		<Copy SourceFiles="@(CobosBinariesX64)" DestinationFolder="$(BinFolderX64)" />
+		-->
 	
 	</Target>
 
@@ -73,28 +96,23 @@
 
 	<Target Name="CobosBuildProjects" BeforeTargets="DefineBuildProjects">
 
-		<PropertyGroup>
-			<CobosSource>$(DevSourceDirectory)\source\</CobosSource>
-		</PropertyGroup>
-
 		<ItemGroup>
-			<DotNetBuildFiles Include="$(CobosSource)Cobos.Core\Cobos.Core.csproj;
-												$(CobosSource)Cobos.Core.Tests\Cobos.Core.Tests.csproj;
-												$(CobosSource)Cobos.Data\Cobos.Data.csproj;
-												$(CobosSource)Cobos.Data.Tests\Cobos.Data.Tests.csproj;
-												$(CobosSource)Cobos.Data.MySql\Cobos.Data.MySql.csproj;
-												$(CobosSource)Cobos.Data.MySql.Tests\Cobos.Data.MySql.Tests.csproj;
-												$(CobosSource)Cobos.Data.Oracle\Cobos.Data.Oracle.csproj;
-												$(CobosSource)Cobos.Data.Oracle.Tests\Cobos.Data.Oracle.Tests.csproj;
-												$(CobosSource)Cobos.DatabaseToXsd\Cobos.DatabaseToXsd.csproj;
-												$(CobosSource)Cobos.Utilities\Cobos.Utilities.csproj;
-												$(CobosSource)Cobos.Utilities.Tests\Cobos.Utilities.Tests.csproj;
-												$(CobosSource)Cobos.Web.Utilities\Cobos.Web.Utilities.csproj;
-												$(CobosSource)Cobos.WpfApplication\Cobos.WpfApplication.csproj;
-												$(CobosSource)Cobos.WpfApplication.Tests\Cobos.WpfApplication.Tests.csproj;">
+			<DotNetBuildFiles Include="$(CobosSource)Cobos.Build.Targets\Cobos.Build.Targets.csproj;
+										$(CobosSource)Cobos.Data\Cobos.Data.csproj;
+										$(CobosSource)Cobos.Data.Tests\Cobos.Data.Tests.csproj;
+										$(CobosSource)Cobos.Data.MySql\Cobos.Data.MySql.csproj;
+										$(CobosSource)Cobos.Data.MySql.Tests\Cobos.Data.MySql.Tests.csproj;
+										$(CobosSource)Cobos.Data.Oracle\Cobos.Data.Oracle.csproj;
+										$(CobosSource)Cobos.Data.Oracle.Tests\Cobos.Data.Oracle.Tests.csproj;
+										$(CobosSource)Cobos.Utilities\Cobos.Utilities.csproj;
+										$(CobosSource)Cobos.Utilities.Tests\Cobos.Utilities.Tests.csproj;
+										$(CobosSource)Cobos.Web.Utilities\Cobos.Web.Utilities.csproj;
+										$(CobosSource)Cobos.WpfApplication\Cobos.WpfApplication.csproj;
+										$(CobosSource)Cobos.WpfApplication.Tests\Cobos.WpfApplication.Tests.csproj;">
 				<Configuration>%(DotNetBuildConfigurations.Identity)</Configuration>
 				<Platform>%(DotNetBuildConfigurations.Platform)</Platform>
 			</DotNetBuildFiles>
+		
 		</ItemGroup>
 
 		<!--

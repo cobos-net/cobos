@@ -33,24 +33,24 @@ namespace Cobos.WpfApplication.UI
     using Cobos.WpfApplication;
     using Cobos.WpfApplication.Utilities;
 
-	public class CobosWpfApplication : CobosApplication
-	{
-		/// <summary>
-		/// Initialise the Cobos application using WPF.
-		/// </summary>
-		public virtual void Initialise()
-		{
-			CommandLineArgs args = new CommandLineArgs();
+    public class CobosWpfApplication : CobosApplication
+    {
+        /// <summary>
+        /// Initialise the Cobos application using WPF.
+        /// </summary>
+        public virtual void Initialise()
+        {
+            CommandLineArgs args = new CommandLineArgs();
 
-			string home = args[ "home" ];
-			string settings = args[ "settings" ];
+            string home = args["home"];
+            string settings = args["settings"];
 
-			if ( home == null )
-			{
-				home = AppDomain.CurrentDomain.BaseDirectory;
-			}
+            if (home == null)
+            {
+                home = AppDomain.CurrentDomain.BaseDirectory;
+            }
 
-			base.Initialise( new CurrentCursor(), new MessageBoxHandler(), new ProgressDialog(), new CurrentUser(), home );
-		}
-	}
+            base.Initialise(new CurrentCursor(), new MessageBoxHandler(), new ProgressDialog(), new CurrentUser(), home);
+        }
+    }
 }

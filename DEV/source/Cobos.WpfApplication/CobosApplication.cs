@@ -35,258 +35,258 @@ namespace Cobos.WpfApplication
     using System;
     using System.IO;
 
-	public class CobosApplication : IDisposable
-	{
-		#region Singleton Instance
+    public class CobosApplication : IDisposable
+    {
+        #region Singleton Instance
 
-		private static CobosApplication _instance = null;
+        private static CobosApplication _instance = null;
 
-		protected CobosApplication()
-		{
-			Instance = this;
-		}
+        protected CobosApplication()
+        {
+            Instance = this;
+        }
 
-		public static CobosApplication Instance
-		{
-			get
-			{
-				if ( _instance ==  null )
-				{
-					throw new InvalidOperationException( "Cobos.Core.UI.CobosApplication: No application object has been set." );
-				}
-				else if ( _instance._disposed )
-				{
-					throw new ObjectDisposedException( "Cobos.Core.UI.CobosApplication", "The application has already been disposed." );
-				}
+        public static CobosApplication Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    throw new InvalidOperationException("Cobos.Core.UI.CobosApplication: No application object has been set.");
+                }
+                else if (_instance._disposed)
+                {
+                    throw new ObjectDisposedException("Cobos.Core.UI.CobosApplication", "The application has already been disposed.");
+                }
 
-				return _instance;
-			}
-			protected set
-			{
-				if ( value == null )
-				{
-					_instance = value;
-				}
-				else if ( _instance != null )
-				{
-					throw new InvalidOperationException( "Cobos.Core.UI.CobosApplication: The application object has already been set." );
-				}
-				else
-				{
-					_instance = value;
-				}
-			}
-		}
+                return _instance;
+            }
+            protected set
+            {
+                if (value == null)
+                {
+                    _instance = value;
+                }
+                else if (_instance != null)
+                {
+                    throw new InvalidOperationException("Cobos.Core.UI.CobosApplication: The application object has already been set.");
+                }
+                else
+                {
+                    _instance = value;
+                }
+            }
+        }
 
-		#endregion
+        #endregion
 
-		#region IDisposable
+        #region IDisposable
 
-		~CobosApplication()
-		{
-			Dispose( false );
-		}
+        ~CobosApplication()
+        {
+            Dispose(false);
+        }
 
-		private bool _disposed = false;
+        private bool _disposed = false;
 
-		public void Dispose()
-		{
-			Dispose( true );
-			
-			GC.SuppressFinalize( this );
-		}
+        public void Dispose()
+        {
+            Dispose(true);
 
-		protected virtual void Dispose( bool disposing )
-		{
-			if ( _disposed )
-			{
-				return;
-			}
+            GC.SuppressFinalize(this);
+        }
 
-			if ( disposing )
-			{
-				// free managed resources
-				IDisposable toDispose;
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed)
+            {
+                return;
+            }
 
-				if ( (toDispose = Cursor as IDisposable) != null )
-				{
-					toDispose.Dispose();
-				}
+            if (disposing)
+            {
+                // free managed resources
+                IDisposable toDispose;
 
-				Cursor = null;
+                if ((toDispose = Cursor as IDisposable) != null)
+                {
+                    toDispose.Dispose();
+                }
 
-				if ( (toDispose = Message as IDisposable) != null )
-				{
-					toDispose.Dispose();
-				}
+                Cursor = null;
 
-				Message = null;
+                if ((toDispose = Message as IDisposable) != null)
+                {
+                    toDispose.Dispose();
+                }
 
-				if ( (toDispose = ProgressBar as IDisposable) != null )
-				{
-					toDispose.Dispose();
-				}
+                Message = null;
 
-				ProgressBar = null;
+                if ((toDispose = ProgressBar as IDisposable) != null)
+                {
+                    toDispose.Dispose();
+                }
 
-				if ( (toDispose = User as IDisposable) != null )
-				{
-					toDispose.Dispose();
-				}
+                ProgressBar = null;
 
-				User = null;
+                if ((toDispose = User as IDisposable) != null)
+                {
+                    toDispose.Dispose();
+                }
 
-				Instance = null;
-			}
+                User = null;
 
-			// free non managed resources
+                Instance = null;
+            }
 
-			_disposed = true;
-		}
+            // free non managed resources
 
-		#endregion
+            _disposed = true;
+        }
 
-		#region Public properties
+        #endregion
 
-		/// <summary>
-		/// 
-		/// </summary>
-		public ICurrentCursor Cursor
-		{
-			get;
-			private set;
-		}
+        #region Public properties
 
-		/// <summary>
-		/// 
-		/// </summary>
-		public IMessageHandler Message
-		{
-			get;
-			private set;
-		}
+        /// <summary>
+        /// 
+        /// </summary>
+        public ICurrentCursor Cursor
+        {
+            get;
+            private set;
+        }
 
-		/// <summary>
-		/// 
-		/// </summary>
-		public IProgressBar ProgressBar
-		{
-			get;
-			private set;
-		}
+        /// <summary>
+        /// 
+        /// </summary>
+        public IMessageHandler Message
+        {
+            get;
+            private set;
+        }
 
-		/// <summary>
-		/// 
-		/// </summary>
-		public string StartupPath
-		{
-			get;
-			private set;
-		}
+        /// <summary>
+        /// 
+        /// </summary>
+        public IProgressBar ProgressBar
+        {
+            get;
+            private set;
+        }
 
-		/// <summary>
-		/// 
-		/// </summary>
-		public ICurrentUser User
-		{
-			get;
-			private set;
-		}
+        /// <summary>
+        /// 
+        /// </summary>
+        public string StartupPath
+        {
+            get;
+            private set;
+        }
 
-		#endregion
+        /// <summary>
+        /// 
+        /// </summary>
+        public ICurrentUser User
+        {
+            get;
+            private set;
+        }
 
-		#region Public methods
+        #endregion
 
-		/// <summary>
-		/// Convenience method to initialise the application components.
-		/// Will throw an exception if any of the required application components
-		/// are null or invalid paths.
-		/// </summary>
-		/// <param name="cursor"></param>
-		/// <param name="messages"></param>
-		/// <param name="progress"></param>
-		/// <param name="user"></param>
-		/// <param name="startupPath"></param>
-		public virtual void Initialise( CurrentCursor cursor, IMessageHandler message, IProgressBar progress, ICurrentUser user, string startupPath )
-		{
-			#region Initialise UI components
+        #region Public methods
 
-			if ( cursor == null )
-			{
-				throw new Exception( "Invalid cursor handle specified" );
-			}
+        /// <summary>
+        /// Convenience method to initialise the application components.
+        /// Will throw an exception if any of the required application components
+        /// are null or invalid paths.
+        /// </summary>
+        /// <param name="cursor"></param>
+        /// <param name="messages"></param>
+        /// <param name="progress"></param>
+        /// <param name="user"></param>
+        /// <param name="startupPath"></param>
+        public virtual void Initialise(CurrentCursor cursor, IMessageHandler message, IProgressBar progress, ICurrentUser user, string startupPath)
+        {
+            #region Initialise UI components
 
-			Cursor = cursor;
+            if (cursor == null)
+            {
+                throw new Exception("Invalid cursor handle specified");
+            }
 
-			if ( message == null )
-			{
-				throw new Exception( "Invalid cursor handle specified" );
-			}
-			
-			Message = message;
+            Cursor = cursor;
 
-			if ( progress == null )
-			{
-				throw new Exception( "Invalid progress bar handle specified" );
-			}
-			
-			ProgressBar = progress;
+            if (message == null)
+            {
+                throw new Exception("Invalid cursor handle specified");
+            }
 
-			if ( user == null )
-			{
-				throw new Exception( "Invalid user handle specified" );
-			}
-			
-			User = user;
+            Message = message;
 
-			#endregion
+            if (progress == null)
+            {
+                throw new Exception("Invalid progress bar handle specified");
+            }
 
-			#region Set the working folder
+            ProgressBar = progress;
 
-			if ( string.IsNullOrEmpty( startupPath ) )
-			{
-				throw new Exception( "Invalid startup path specified" );
-			}
+            if (user == null)
+            {
+                throw new Exception("Invalid user handle specified");
+            }
 
-			if ( !Directory.Exists( startupPath ) )
-			{
-				throw new Exception( string.Format( "The startup path {0} does not exist", startupPath ) );
-			}
-			
-			StartupPath = startupPath;
+            User = user;
 
-			#endregion
-		}
+            #endregion
 
-		/// <summary>
-		/// Report an exception to the user and add to the log.
-		/// </summary>
-		/// <param name="e"></param>
-		public void Report( Exception e, string category )
-		{
-			Message.ShowError( e, category );
-		}
+            #region Set the working folder
 
-		/// <summary>
-		/// Resolves a configuration path using the startup path if the file can't be found
-		/// </summary>
-		/// <param name="path"></param>
-		/// <returns></returns>
-		public string ResolveFilePath( string path )
-		{
-			PathResolver resolver = new PathResolver( StartupPath, null );
+            if (string.IsNullOrEmpty(startupPath))
+            {
+                throw new Exception("Invalid startup path specified");
+            }
 
-			NormalisedPath found = resolver.FindFilePath( path );
+            if (!Directory.Exists(startupPath))
+            {
+                throw new Exception(string.Format("The startup path {0} does not exist", startupPath));
+            }
 
-			if ( found == null )
-			{
-				return null;
-			}
+            StartupPath = startupPath;
 
-			return found.Value;
-		}
+            #endregion
+        }
 
-		#endregion
+        /// <summary>
+        /// Report an exception to the user and add to the log.
+        /// </summary>
+        /// <param name="e"></param>
+        public void Report(Exception e, string category)
+        {
+            Message.ShowError(e, category);
+        }
 
-	}
+        /// <summary>
+        /// Resolves a configuration path using the startup path if the file can't be found
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public string ResolveFilePath(string path)
+        {
+            PathResolver resolver = new PathResolver(StartupPath, null);
+
+            NormalisedPath found = resolver.FindFilePath(path);
+
+            if (found == null)
+            {
+                return null;
+            }
+
+            return found.Value;
+        }
+
+        #endregion
+
+    }
 }

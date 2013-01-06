@@ -106,7 +106,7 @@ namespace Cobos.Utilities.Authentication
         private static string BytesToHex(byte[] toConvert)
         {
             StringBuilder s = new StringBuilder(toConvert.Length * 2);
-            
+
             foreach (byte b in toConvert)
             {
                 s.Append(b.ToString("x2"));

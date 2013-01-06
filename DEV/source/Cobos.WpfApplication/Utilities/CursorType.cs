@@ -43,7 +43,7 @@ namespace Cobos.WpfApplication.Utilities
         /// The arrow with a compact disk Cursor.
         /// </summary>
         ArrowCD,
-        
+
         /// <summary>
         /// The Arrow Cursor.
         /// </summary>
@@ -78,7 +78,7 @@ namespace Cobos.WpfApplication.Utilities
         /// A special cursor that is invisible.
         /// </summary>
         None,
-        
+
         /// <summary>
         /// A pen Cursor.
         /// </summary>
@@ -88,12 +88,12 @@ namespace Cobos.WpfApplication.Utilities
         /// A south/east scrolling Cursor.
         /// </summary>
         ScrollSE,
-        
+
         /// <summary>
         /// A west/east scrolling Cursor.
         /// </summary>
         ScrollWE,
-        
+
         /// <summary>
         /// A four-headed sizing Cursor, which consists of four joined arrows that point north, south, east, and west.
         /// </summary>
@@ -118,17 +118,17 @@ namespace Cobos.WpfApplication.Utilities
         /// A two-headed west/east sizing Cursor.
         /// </summary>
         SizeWE,
-        
+
         /// <summary>
         /// An up arrow Cursor, which is typically used to identify an insertion point.
         /// </summary>
         UpArrow,
-        
+
         /// <summary>
         /// A wait (or hourglass) Cursor.
         /// </summary>
         WaitCursor,
-        
+
         /// <summary>
         /// The custom cursor.
         /// </summary>

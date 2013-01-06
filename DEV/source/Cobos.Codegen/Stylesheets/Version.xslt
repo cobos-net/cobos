@@ -3,6 +3,6 @@
 	 xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="msxsl"
 >
 
-	<xsl:variable name="COBOS_VERSION">0.2</xsl:variable>
+	<xsl:variable name="COBOS_VERSION">0.3</xsl:variable>
 	
 </xsl:stylesheet>

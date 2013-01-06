@@ -1,33 +1,31 @@
-﻿// ============================================================================
-// Filename: ObjectExtensions.cs
-// Description: 
-// ----------------------------------------------------------------------------
-// Created by: N.Davis                          Date: 27-Nov-09
-// Updated by:                                  Date:
-// ============================================================================
-// Copyright (c) 2009-2012 Nicholas Davis		nick@cobos.co.uk
+﻿// ----------------------------------------------------------------------------
+// <copyright file="ObjectExtensions.cs" company="Cobos SDK">
 //
-// Cobos Software Development Kit 
-// 
-// Permission is hereby granted, free of charge, to any person obtaining
-// a copy of this software and associated documentation files (the
-// "Software"), to deal in the Software without restriction, including
-// without limitation the rights to use, copy, modify, merge, publish,
-// distribute, sublicense, and/or sell copies of the Software, and to
-// permit persons to whom the Software is furnished to do so, subject to
-// the following conditions:
-// 
-// The above copyright notice and this permission notice shall be
-// included in all copies or substantial portions of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-// LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-// OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-// WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-// ============================================================================
+//      Copyright (c) 2009-2012 Nicholas Davis - nick@cobos.co.uk
+//
+//      Cobos Software Development Kit
+//
+//      Permission is hereby granted, free of charge, to any person obtaining
+//      a copy of this software and associated documentation files (the
+//      "Software"), to deal in the Software without restriction, including
+//      without limitation the rights to use, copy, modify, merge, publish,
+//      distribute, sublicense, and/or sell copies of the Software, and to
+//      permit persons to whom the Software is furnished to do so, subject to
+//      the following conditions:
+//      
+//      The above copyright notice and this permission notice shall be
+//      included in all copies or substantial portions of the Software.
+//      
+//      THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+//      EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//      MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+//      NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+//      LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+//      OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+//      WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+//
+// </copyright>
+// ----------------------------------------------------------------------------
 
 using System;
 using System.Collections.Generic;
@@ -35,64 +33,64 @@ using System.Runtime.InteropServices;
 
 namespace Cobos.Utilities.Extensions
 {
-	public static class ObjectExtensions
-	{
-		/// <summary>
-		/// extend the object class to support casting to an anonymous type
-		/// </summary>
-		/// <typeparam name="T">The anonymous type to cast to</typeparam>
-		/// <param name="obj">The 'this' object reference</param>
-		/// <param name="example">An instance of an anonymous type</param>
-		/// <returns>A reference to the anonymous type.  If the cast fails, then null.</returns>
-		public static T CastByExample<T>( this object obj, T example )
-		{
-			try
-			{
-				return (T)obj;
-			}
-			catch ( InvalidCastException )
-			{
-				return default( T );
-			}
-		}
+    public static class ObjectExtensions
+    {
+        /// <summary>
+        /// extend the object class to support casting to an anonymous type
+        /// </summary>
+        /// <typeparam name="T">The anonymous type to cast to</typeparam>
+        /// <param name="obj">The 'this' object reference</param>
+        /// <param name="example">An instance of an anonymous type</param>
+        /// <returns>A reference to the anonymous type.  If the cast fails, then null.</returns>
+        public static T CastByExample<T>(this object obj, T example)
+        {
+            try
+            {
+                return (T)obj;
+            }
+            catch (InvalidCastException)
+            {
+                return default(T);
+            }
+        }
 
-		/// <summary>
-		/// Serialize the object (usually a struct with StructLayout attributes)
-		/// </summary>
-		/// <param name="obj"></param>
-		/// <returns></returns>
-		public static byte[] ConvertToByteArray( this object obj )
-		{
-			int size = Marshal.SizeOf( obj );
+        /// <summary>
+        /// Serialize the object (usually a struct with StructLayout attributes)
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public static byte[] ConvertToByteArray(this object obj)
+        {
+            int size = Marshal.SizeOf(obj);
 
-			IntPtr buffer = Marshal.AllocHGlobal( size );
-			Marshal.StructureToPtr( obj, buffer, false );
+            IntPtr buffer = Marshal.AllocHGlobal(size);
+            Marshal.StructureToPtr(obj, buffer, false);
 
-			byte[] data = new byte[ size ];
-			Marshal.Copy( buffer, data, 0, size );
-			Marshal.FreeHGlobal( buffer );
-			
-			return data;
-		}
+            byte[] data = new byte[size];
+            Marshal.Copy(buffer, data, 0, size);
+            Marshal.FreeHGlobal(buffer);
 
-		public static T ConvertTo<T>( this byte[] data )
-		{
-			Type type = typeof( T );
+            return data;
+        }
 
-			int size = Marshal.SizeOf( type );
+        public static T ConvertTo<T>(this byte[] data)
+        {
+            Type type = typeof(T);
 
-			if ( size > data.Length )
-			{
-				return default(T);
-			}
+            int size = Marshal.SizeOf(type);
 
-			IntPtr buffer = Marshal.AllocHGlobal( size );
-			Marshal.Copy( data, 0, buffer, size );
+            if (size > data.Length)
+            {
+                return default(T);
+            }
 
-			T obj = (T)Marshal.PtrToStructure( buffer, type );
-			Marshal.FreeHGlobal( buffer );
+            IntPtr buffer = Marshal.AllocHGlobal(size);
+            Marshal.Copy(data, 0, buffer, size);
 
-			return obj;
-		} 
-	}
+            T obj = (T)Marshal.PtrToStructure(buffer, type);
+            Marshal.FreeHGlobal(buffer);
+
+            return obj;
+        }
+    }
 }

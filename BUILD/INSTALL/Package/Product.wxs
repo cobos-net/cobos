@@ -16,6 +16,7 @@
 		-->
 		
 		<DirectoryRef Id="INSTALLDIR">
+			<Directory Id="Codegen" Name="CODEGEN" />
 			<Directory Id="Source" Name="SOURCE" />
 		</DirectoryRef>
 		
@@ -27,6 +28,13 @@
 		<Feature Id="BinFeature" Title="Applications" Level="1" Description="Installs the $(var.ProductName) applications.">
 			<!-- Defined in generated fragment scripts -->
 			<ComponentGroupRef Id="BinFiles"/>
+			<!-- Note: The following ComponentGroupRef is required to pull in generated authoring from project references. -->
+			<ComponentGroupRef Id="Product.Generated" />
+		</Feature>
+
+		<Feature Id="CodegenFeature" Title="Code Generation Tools" Level="1" Description="Installs the $(var.ProductName) code generation tools.">
+			<!-- Defined in generated fragment scripts -->
+			<ComponentGroupRef Id="CodegenFiles"/>
 			<!-- Note: The following ComponentGroupRef is required to pull in generated authoring from project references. -->
 			<ComponentGroupRef Id="Product.Generated" />
 		</Feature>

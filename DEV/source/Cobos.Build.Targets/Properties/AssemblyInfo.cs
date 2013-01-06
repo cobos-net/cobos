@@ -34,11 +34,15 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Cobos.Data.MySql")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Cobos.Data.MySql")]
+[assembly: AssemblyTitle("Cobos.Build.Targets")]
+[assembly: AssemblyDescription("MSBuild Extensions for Cobos.")]
+#if DEBUG
+[assembly: AssemblyConfiguration("Debug")]
+#else
+[assembly: AssemblyConfiguration("Release")]
+#endif
+[assembly: AssemblyCompany("Cobos Software Development Kit")]
+[assembly: AssemblyProduct("Cobos.Build.Targets")]
 [assembly: AssemblyCopyright("Copyright (c) 2009-2013 Nicholas Davis")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -49,7 +53,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("e829415c-e464-419e-9971-830738c95b78")]
+[assembly: Guid("7b3f60be-e411-4e8a-8cde-afcb319bc39b")]
 
 // Version information for an assembly consists of the following four values:
 //

@@ -1,33 +1,31 @@
-﻿// ============================================================================
-// Filename: FileLocation.cs
-// Description: 
-// ----------------------------------------------------------------------------
-// Created by: N.Davis                          Date: 21-Nov-09
-// Updated by:                                  Date:
-// ============================================================================
-// Copyright (c) 2009-2012 Nicholas Davis		nick@cobos.co.uk
+﻿// ----------------------------------------------------------------------------
+// <copyright file="FileLocation.cs" company="Cobos SDK">
 //
-// Cobos Software Development Kit
-// 
-// Permission is hereby granted, free of charge, to any person obtaining
-// a copy of this software and associated documentation files (the
-// "Software"), to deal in the Software without restriction, including
-// without limitation the rights to use, copy, modify, merge, publish,
-// distribute, sublicense, and/or sell copies of the Software, and to
-// permit persons to whom the Software is furnished to do so, subject to
-// the following conditions:
-// 
-// The above copyright notice and this permission notice shall be
-// included in all copies or substantial portions of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-// LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-// OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-// WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-// ============================================================================
+//      Copyright (c) 2009-2012 Nicholas Davis - nick@cobos.co.uk
+//
+//      Cobos Software Development Kit
+//
+//      Permission is hereby granted, free of charge, to any person obtaining
+//      a copy of this software and associated documentation files (the
+//      "Software"), to deal in the Software without restriction, including
+//      without limitation the rights to use, copy, modify, merge, publish,
+//      distribute, sublicense, and/or sell copies of the Software, and to
+//      permit persons to whom the Software is furnished to do so, subject to
+//      the following conditions:
+//      
+//      The above copyright notice and this permission notice shall be
+//      included in all copies or substantial portions of the Software.
+//      
+//      THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+//      EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//      MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+//      NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+//      LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+//      OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+//      WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+//
+// </copyright>
+// ----------------------------------------------------------------------------
 
 using System;
 using System.Collections.Generic;
@@ -45,87 +43,87 @@ using System.Windows.Shapes;
 
 namespace Cobos.WpfApplication.Controls
 {
-	/// <summary>
-	/// Interaction logic for FileLocation.xaml
-	/// </summary>
-	public partial class FileLocation : UserControl
-	{
-		public FileLocation()
-		{
-			InitializeComponent();
+    /// <summary>
+    /// Interaction logic for FileLocation.xaml
+    /// </summary>
+    public partial class FileLocation : UserControl
+    {
+        public FileLocation()
+        {
+            InitializeComponent();
 
-			IsFolderBrowser = true;
+            IsFolderBrowser = true;
 
-			Filter = "All files (.*)|*.*";
-		}
+            Filter = "All files (.*)|*.*";
+        }
 
-		public bool IsFolderBrowser
-		{
-			get;
-			set;
-		}
+        public bool IsFolderBrowser
+        {
+            get;
+            set;
+        }
 
-		public string Filter
-		{
-			get;
-			set;
-		}
+        public string Filter
+        {
+            get;
+            set;
+        }
 
-		public static readonly DependencyProperty FilePathProperty = DependencyProperty.Register( "FilePath", typeof( string ), typeof( FileLocation ), null );
+        public static readonly DependencyProperty FilePathProperty = DependencyProperty.Register("FilePath", typeof(string), typeof(FileLocation), null);
 
-		public string FilePath
-		{
-			get
-			{
-				return (string)GetValue( FilePathProperty );
-			}
-			set
-			{
-				SetValue( FilePathProperty, value );
-			}
-		}
+        public string FilePath
+        {
+            get
+            {
+                return (string)GetValue(FilePathProperty);
+            }
+            set
+            {
+                SetValue(FilePathProperty, value);
+            }
+        }
 
-		private void Button_Click( object sender, RoutedEventArgs e )
-		{
-			if ( IsFolderBrowser )
-			{
-				BrowseForFolder();
-			}
-			else
-			{
-				BrowseForFile();
-			}
-		}
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (IsFolderBrowser)
+            {
+                BrowseForFolder();
+            }
+            else
+            {
+                BrowseForFile();
+            }
+        }
 
-		/// <summary>
-		/// 
-		/// </summary>
-		void BrowseForFile()
-		{
-			Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
-			dlg.Filter = Filter; // Filter files by extension
+        /// <summary>
+        /// 
+        /// </summary>
+        void BrowseForFile()
+        {
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+            dlg.Filter = Filter; // Filter files by extension
 
-			Nullable<bool> result = dlg.ShowDialog();
+            Nullable<bool> result = dlg.ShowDialog();
 
-			if ( result == true )
-			{
-				FilePath = dlg.FileName;
-			}
-		}
+            if (result == true)
+            {
+                FilePath = dlg.FileName;
+            }
+        }
 
-		/// <summary>
-		/// 
-		/// </summary>
-		void BrowseForFolder()
-		{
-			System.Windows.Forms.FolderBrowserDialog dlg = new System.Windows.Forms.FolderBrowserDialog();
+        /// <summary>
+        /// 
+        /// </summary>
+        void BrowseForFolder()
+        {
+            System.Windows.Forms.FolderBrowserDialog dlg = new System.Windows.Forms.FolderBrowserDialog();
 
-			System.Windows.Forms.DialogResult result = dlg.ShowDialog();
+            System.Windows.Forms.DialogResult result = dlg.ShowDialog();
 
-			if ( result == System.Windows.Forms.DialogResult.OK )
-			{
-				FilePath = dlg.SelectedPath;
-			}
-		}
-	}
+            if (result == System.Windows.Forms.DialogResult.OK)
+            {
+                FilePath = dlg.SelectedPath;
+            }
+        }
+    }
 }

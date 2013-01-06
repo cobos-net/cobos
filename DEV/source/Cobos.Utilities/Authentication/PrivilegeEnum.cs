@@ -32,31 +32,31 @@ namespace Cobos.Utilities.Authentication
     /// <summary>
     /// User Access privilege level.
     /// </summary>
-	public enum PrivilegeEnum
-	{
+    public enum PrivilegeEnum
+    {
         /// <summary>
         /// Guest - lowest privilege.
         /// </summary>
-		Guest = 1,
+        Guest = 1,
 
         /// <summary>
         /// Normal user.
         /// </summary>
-		User,
+        User,
 
         /// <summary>
         /// Normal user with some special privileges.
         /// </summary>
-		PowerUser,
+        PowerUser,
 
         /// <summary>
         /// Supervisor access.
         /// </summary>
-		Supervisor,
+        Supervisor,
 
         /// <summary>
         /// Full access - highest level.
         /// </summary>
-		Administrator
-	}
+        Administrator
+    }
 }

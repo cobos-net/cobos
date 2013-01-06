@@ -24,7 +24,15 @@
 			<Transforms>$(HeatStylesheetDirectory)\heat-ignore-default.xslt</Transforms>
 			<Variable>var.BinFiles</Variable>
 		</HarvestDirectoryRef>
-	
+
+		<!-- Codegen folder -->
+		<HarvestDirectoryRef Include="$(DevSourceDirectory)\SOURCE\Cobos.Codegen">
+			<DirectoryRef>Codegen</DirectoryRef>
+			<ComponentGroup>CodegenFiles</ComponentGroup>
+			<Transforms>$(HeatStylesheetDirectory)\heat-ignore-default.xslt</Transforms>
+			<Variable>var.CodegenFiles</Variable>
+		</HarvestDirectoryRef>
+
 		<!-- Config folder -->
 		<HarvestDirectoryRef Include="$(ConfigSourceDirectory)">
 			<DirectoryRef>Config</DirectoryRef>
@@ -50,6 +58,5 @@
 		</HarvestDirectoryRef>
 
 	</ItemGroup>
-
 	
 </Project>

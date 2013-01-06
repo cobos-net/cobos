@@ -58,7 +58,7 @@
 
 	<xsl:template match="cobos:Object" mode="addNewMethodBody">
 		/// <xsl:text disable-output-escaping="yes"><![CDATA[<summary>]]></xsl:text>
-		/// If the object needs to be initialised with primary or unique key contstraints 
+		/// If the object needs to be initialised with primary or unique key constraints 
 		/// then make sure that it's done before adding to the model.
 		/// <xsl:text disable-output-escaping="yes"><![CDATA[</summary>]]></xsl:text>
 		public <xsl:value-of select="@className"/> AddNew<xsl:value-of select="@className"/>( <xsl:value-of select="@className"/> @object)

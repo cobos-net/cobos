@@ -29,6 +29,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Generated\BinFilesFragment.wxs" />
+    <Compile Include="Generated\CodegenFilesFragment.wxs" />
     <Compile Include="Generated\ConfigFilesFragment.wxs" />
     <Compile Include="Generated\DocFilesFragment.wxs" />
     <Compile Include="Generated\SourceFilesFragment.wxs" />

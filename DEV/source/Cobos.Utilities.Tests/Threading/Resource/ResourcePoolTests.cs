@@ -1,33 +1,31 @@
-﻿// ============================================================================
-// Filename: ResourcePoolTests.cs
-// Description: 
-// ----------------------------------------------------------------------------
-// Created by: N.Davis                          Date: 21-Nov-09
-// Updated by:                                  Date:
-// ============================================================================
-// Copyright (c) 2009-2012 Nicholas Davis		nick@cobos.co.uk
+﻿// ----------------------------------------------------------------------------
+// <copyright file="ResourcePoolTests.cs" company="Cobos SDK">
 //
-// Cobos Software Development Kit
-// 
-// Permission is hereby granted, free of charge, to any person obtaining
-// a copy of this software and associated documentation files (the
-// "Software"), to deal in the Software without restriction, including
-// without limitation the rights to use, copy, modify, merge, publish,
-// distribute, sublicense, and/or sell copies of the Software, and to
-// permit persons to whom the Software is furnished to do so, subject to
-// the following conditions:
-// 
-// The above copyright notice and this permission notice shall be
-// included in all copies or substantial portions of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-// LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-// OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-// WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-// ============================================================================
+//      Copyright (c) 2009-2012 Nicholas Davis - nick@cobos.co.uk
+//
+//      Cobos Software Development Kit
+//
+//      Permission is hereby granted, free of charge, to any person obtaining
+//      a copy of this software and associated documentation files (the
+//      "Software"), to deal in the Software without restriction, including
+//      without limitation the rights to use, copy, modify, merge, publish,
+//      distribute, sublicense, and/or sell copies of the Software, and to
+//      permit persons to whom the Software is furnished to do so, subject to
+//      the following conditions:
+//      
+//      The above copyright notice and this permission notice shall be
+//      included in all copies or substantial portions of the Software.
+//      
+//      THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+//      EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//      MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+//      NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+//      LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+//      OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+//      WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+//
+// </copyright>
+// ----------------------------------------------------------------------------
 
 using System;
 using System.Collections.Generic;
@@ -38,289 +36,289 @@ using Cobos.Utilities.Threading.Resource;
 
 namespace Cobos.Utilities.Tests.Threading.Resource
 {
-	[TestFixture]
-	public class TestResourcePool
-	{
-		class JobStateInfo
-		{
-			public readonly IResourcePool<TestResource> Pool;
-			
-			readonly AutoResetEvent _allJobsCompleted = new AutoResetEvent( false );
-			
-			readonly uint _maxJobs;
-			
-			int _jobsDone;
-
-			public JobStateInfo( uint maxJobs, int jobPeriod, uint minPoolSize, uint maxPoolSize )
-			{
-				_maxJobs = maxJobs;
-
-				ResourcePoolSettings<TestResource> settings = new ResourcePoolSettings<TestResource>();
-
-				settings.Allocator = new TestResourceAllocator( jobPeriod );
-				settings.MaxPoolSize = maxPoolSize;
-				settings.MinPoolSize = minPoolSize;
-
-				Pool = ResourcePool<TestResource>.Create( settings );
-
-				_allJobsCompleted.Reset();
-			}
-
-			public void JobDone()
-			{
-				Interlocked.Increment( ref _jobsDone );
-
-				if ( _jobsDone >= _maxJobs )
-				{
-					_allJobsCompleted.Set();
-				}
-			}
-
-			public void WaitForAllJobs()
-			{
-				for ( int i = 1; i <= _maxJobs; ++i )
-				{
-					ThreadPool.QueueUserWorkItem( new WaitCallback( ThreadProc ), this );
-					Thread.Sleep( 10 );
-				}
-
-				_allJobsCompleted.WaitOne();
-			}
-		}
-
-		/// <summary>
-		/// Thread pool delegate to do work on test resources
-		/// </summary>
-		/// <param name="stateInfo"></param>
-		static void ThreadProc( Object stateInfo )
-		{
-			JobStateInfo jobState = (JobStateInfo)stateInfo;
-
-			ResourcePoolStatistics stats = jobState.Pool.Statistics;
-
-			Console.WriteLine( "Pool Status: {0} Pending {1} Available", stats.NumPendingRequests, stats.NumAvailableResources );
-
-			using ( IResource<TestResource> resource = jobState.Pool.AcquireResource() )
-			{
-				// signal the jobs are complete before doing the work.
-				// when the resource pool is disposed, it will force
-				// it to wait for this job to complete before terminating.
-				jobState.JobDone();
-
-				resource.Instance.DoWork();
-			}
-		}
-
-		[TestCase]
-		void Threading_pool_can_process_jobs()
-		{
-			// Strategy:
-			//	---------
-			// 1. Create 100 jobs and add them to the thread pool for processing
-			// 2. Wait for all jobs to complete
-			// 3. Check the pool cleaned up OK.
-
-			JobStateInfo jobState = new JobStateInfo( 100, 300, 0, 5 );
-
-			jobState.WaitForAllJobs();
-
-			ResourcePoolStatistics stats = jobState.Pool.Statistics;
-
-			Assert.AreEqual( 0, stats.NumPendingRequests );
-		
-			Console.WriteLine( "Max Size: " + stats.MaxSizePool );
+    [TestFixture]
+    public class TestResourcePool
+    {
+        class JobStateInfo
+        {
+            public readonly IResourcePool<TestResource> Pool;
 
-			jobState.Pool.Dispose();
-
-			stats = jobState.Pool.Statistics;
+            readonly AutoResetEvent _allJobsCompleted = new AutoResetEvent(false);
 
-			Assert.AreEqual( 0, stats.NumPendingRequests );
-			Assert.AreEqual( 0, stats.NumAvailableResources );
-		}
+            readonly uint _maxJobs;
 
-		[TestCase]
-		void Cannot_acquire_a_resource_from_a_disposed_pool()
-		{
-			// Strategy:
-			//	---------
-			// 1. Dispose a pool and then try to acquire a resource.
+            int _jobsDone;
 
-			JobStateInfo jobState = new JobStateInfo( 100, 300, 0, 5 );
+            public JobStateInfo(uint maxJobs, int jobPeriod, uint minPoolSize, uint maxPoolSize)
+            {
+                _maxJobs = maxJobs;
 
-			jobState.Pool.Dispose();
+                ResourcePoolSettings<TestResource> settings = new ResourcePoolSettings<TestResource>();
 
-			Assert.Throws<ObjectDisposedException>( delegate { jobState.Pool.AcquireResource(); } );
-		}
+                settings.Allocator = new TestResourceAllocator(jobPeriod);
+                settings.MaxPoolSize = maxPoolSize;
+                settings.MinPoolSize = minPoolSize;
 
-		[TestCase]
-		void Resources_are_correctly_managed()
-		{
-			// Strategy:
-			//	---------
-			// 1. Create a pool with a min size of 0.
-			// 2. Acquire one resource and check the number of available and the number in the pool.
-			// 3. Acquire another resource and check the pool state.
-			// 4. Release one resource and check the pool state.
-			// 5. Release the remaining resource and check the pool state.
+                Pool = ResourcePool<TestResource>.Create(settings);
 
-			JobStateInfo jobState = new JobStateInfo( 2, 0, 0, 5 );
+                _allJobsCompleted.Reset();
+            }
 
-			Assert.AreEqual( 0, jobState.Pool.Statistics.NumAvailableResources );
-			Assert.AreEqual( 0, jobState.Pool.Statistics.SizePool );
+            public void JobDone()
+            {
+                Interlocked.Increment(ref _jobsDone);
 
-			// acquire two resources
-			IResource<TestResource> r1 = jobState.Pool.AcquireResource();
+                if (_jobsDone >= _maxJobs)
+                {
+                    _allJobsCompleted.Set();
+                }
+            }
 
-			Assert.AreEqual( 0, jobState.Pool.Statistics.NumAvailableResources );
-			Assert.AreEqual( 1, jobState.Pool.Statistics.SizePool );
-									
-			IResource<TestResource> r2 = jobState.Pool.AcquireResource();
+            public void WaitForAllJobs()
+            {
+                for (int i = 1; i <= _maxJobs; ++i)
+                {
+                    ThreadPool.QueueUserWorkItem(new WaitCallback(ThreadProc), this);
+                    Thread.Sleep(10);
+                }
 
-			Assert.AreEqual( 0, jobState.Pool.Statistics.NumAvailableResources );
-			Assert.AreEqual( 2, jobState.Pool.Statistics.SizePool );
+                _allJobsCompleted.WaitOne();
+            }
+        }
 
-			r1.Dispose();
+        /// <summary>
+        /// Thread pool delegate to do work on test resources
+        /// </summary>
+        /// <param name="stateInfo"></param>
+        static void ThreadProc(Object stateInfo)
+        {
+            JobStateInfo jobState = (JobStateInfo)stateInfo;
 
-			Assert.AreEqual( 1, jobState.Pool.Statistics.NumAvailableResources );
-			Assert.AreEqual( 2, jobState.Pool.Statistics.SizePool );
+            ResourcePoolStatistics stats = jobState.Pool.Statistics;
 
-			r2.Dispose();
+            Console.WriteLine("Pool Status: {0} Pending {1} Available", stats.NumPendingRequests, stats.NumAvailableResources);
 
-			Assert.AreEqual( 2, jobState.Pool.Statistics.NumAvailableResources );
-			Assert.AreEqual( 2, jobState.Pool.Statistics.SizePool );
+            using (IResource<TestResource> resource = jobState.Pool.AcquireResource())
+            {
+                // signal the jobs are complete before doing the work.
+                // when the resource pool is disposed, it will force
+                // it to wait for this job to complete before terminating.
+                jobState.JobDone();
 
-			jobState.Pool.Dispose();
+                resource.Instance.DoWork();
+            }
+        }
 
-			Assert.AreEqual( 0, jobState.Pool.Statistics.NumAvailableResources );
-			Assert.AreEqual( 0, jobState.Pool.Statistics.SizePool );
-			Assert.AreEqual( 2, jobState.Pool.Statistics.MaxSizePool );
-		}
+        [TestCase]
+        void Threading_pool_can_process_jobs()
+        {
+            // Strategy:
+            //	---------
+            // 1. Create 100 jobs and add them to the thread pool for processing
+            // 2. Wait for all jobs to complete
+            // 3. Check the pool cleaned up OK.
 
-		[TestCase]
-		void Minimum_pool_size_of_0_is_maintained()
-		{
-			// Strategy:
-			//	---------
-			// 1. Create a pool with a min size of 0.
-			// 2. Acquire one resource and check the number of available and the number in the pool.
-			// 3. Acquire another resource and check the pool state.
-			// 4. Release one invalid resource and check the pool state.
-			// 5. Release the remaining invalid resource and check the pool state.
+            JobStateInfo jobState = new JobStateInfo(100, 300, 0, 5);
 
-			JobStateInfo jobState = new JobStateInfo( 2, 0, 0, 5 );
+            jobState.WaitForAllJobs();
 
-			Assert.AreEqual( 0, jobState.Pool.Statistics.NumAvailableResources );
-			Assert.AreEqual( 0, jobState.Pool.Statistics.SizePool );
+            ResourcePoolStatistics stats = jobState.Pool.Statistics;
 
-			// acquire two resources
-			IResource<TestResource> r1 = jobState.Pool.AcquireResource();
+            Assert.AreEqual(0, stats.NumPendingRequests);
 
-			Assert.AreEqual( 0, jobState.Pool.Statistics.NumAvailableResources );
-			Assert.AreEqual( 1, jobState.Pool.Statistics.SizePool );
+            Console.WriteLine("Max Size: " + stats.MaxSizePool);
 
-			IResource<TestResource> r2 = jobState.Pool.AcquireResource();
+            jobState.Pool.Dispose();
 
-			Assert.AreEqual( 0, jobState.Pool.Statistics.NumAvailableResources );
-			Assert.AreEqual( 2, jobState.Pool.Statistics.SizePool );
+            stats = jobState.Pool.Statistics;
 
-			r1.Invalid = true;
-			r1.Dispose();
+            Assert.AreEqual(0, stats.NumPendingRequests);
+            Assert.AreEqual(0, stats.NumAvailableResources);
+        }
 
-			Assert.AreEqual( 0, jobState.Pool.Statistics.NumAvailableResources );
-			Assert.AreEqual( 1, jobState.Pool.Statistics.SizePool );
+        [TestCase]
+        void Cannot_acquire_a_resource_from_a_disposed_pool()
+        {
+            // Strategy:
+            //	---------
+            // 1. Dispose a pool and then try to acquire a resource.
 
-			r2.Invalid = true;
-			r2.Dispose();
+            JobStateInfo jobState = new JobStateInfo(100, 300, 0, 5);
 
-			Assert.AreEqual( 0, jobState.Pool.Statistics.NumAvailableResources );
-			Assert.AreEqual( 0, jobState.Pool.Statistics.SizePool );
+            jobState.Pool.Dispose();
 
-			jobState.Pool.Dispose();
+            Assert.Throws<ObjectDisposedException>(delegate { jobState.Pool.AcquireResource(); });
+        }
 
-			Assert.AreEqual( 0, jobState.Pool.Statistics.NumAvailableResources );
-			Assert.AreEqual( 0, jobState.Pool.Statistics.SizePool );
-			Assert.AreEqual( 2, jobState.Pool.Statistics.MaxSizePool );
-		}
+        [TestCase]
+        void Resources_are_correctly_managed()
+        {
+            // Strategy:
+            //	---------
+            // 1. Create a pool with a min size of 0.
+            // 2. Acquire one resource and check the number of available and the number in the pool.
+            // 3. Acquire another resource and check the pool state.
+            // 4. Release one resource and check the pool state.
+            // 5. Release the remaining resource and check the pool state.
 
-		[TestCase]
-		void Minimum_pool_size_of_2_is_maintained()
-		{
-			// Strategy:
-			//	---------
-			// 1. Create a pool with a min size of 0.
-			// 2. Acquire one resource and check the number of available and the number in the pool.
-			// 3. Acquire another resource and check the pool state.
-			// 4. Acquire another resource and check the pool state.
-			// 5. Release one invalid resource and check the pool state.
-			// 6. Release the remaining invalid resources and check the pool state.
+            JobStateInfo jobState = new JobStateInfo(2, 0, 0, 5);
 
-			JobStateInfo jobState = new JobStateInfo( 2, 0, 2, 5 );
+            Assert.AreEqual(0, jobState.Pool.Statistics.NumAvailableResources);
+            Assert.AreEqual(0, jobState.Pool.Statistics.SizePool);
 
-			Assert.AreEqual( 2, jobState.Pool.Statistics.NumAvailableResources );
-			Assert.AreEqual( 2, jobState.Pool.Statistics.SizePool );
+            // acquire two resources
+            IResource<TestResource> r1 = jobState.Pool.AcquireResource();
 
-			// acquire two resources
-			IResource<TestResource> r1 = jobState.Pool.AcquireResource();
+            Assert.AreEqual(0, jobState.Pool.Statistics.NumAvailableResources);
+            Assert.AreEqual(1, jobState.Pool.Statistics.SizePool);
 
-			Assert.AreEqual( 1, jobState.Pool.Statistics.NumAvailableResources );
-			Assert.AreEqual( 2, jobState.Pool.Statistics.SizePool );
+            IResource<TestResource> r2 = jobState.Pool.AcquireResource();
 
-			IResource<TestResource> r2 = jobState.Pool.AcquireResource();
+            Assert.AreEqual(0, jobState.Pool.Statistics.NumAvailableResources);
+            Assert.AreEqual(2, jobState.Pool.Statistics.SizePool);
 
-			Assert.AreEqual( 0, jobState.Pool.Statistics.NumAvailableResources );
-			Assert.AreEqual( 2, jobState.Pool.Statistics.SizePool );
+            r1.Dispose();
 
-			IResource<TestResource> r3 = jobState.Pool.AcquireResource();
+            Assert.AreEqual(1, jobState.Pool.Statistics.NumAvailableResources);
+            Assert.AreEqual(2, jobState.Pool.Statistics.SizePool);
 
-			Assert.AreEqual( 0, jobState.Pool.Statistics.NumAvailableResources );
-			Assert.AreEqual( 3, jobState.Pool.Statistics.SizePool );
+            r2.Dispose();
 
-			r1.Invalid = true;
-			r1.Dispose();
+            Assert.AreEqual(2, jobState.Pool.Statistics.NumAvailableResources);
+            Assert.AreEqual(2, jobState.Pool.Statistics.SizePool);
 
-			Assert.AreEqual( 0, jobState.Pool.Statistics.NumAvailableResources );
-			Assert.AreEqual( 2, jobState.Pool.Statistics.SizePool );
+            jobState.Pool.Dispose();
 
-			r2.Invalid = true;
-			r2.Dispose();
+            Assert.AreEqual(0, jobState.Pool.Statistics.NumAvailableResources);
+            Assert.AreEqual(0, jobState.Pool.Statistics.SizePool);
+            Assert.AreEqual(2, jobState.Pool.Statistics.MaxSizePool);
+        }
 
-			Assert.AreEqual( 1, jobState.Pool.Statistics.NumAvailableResources );
-			Assert.AreEqual( 2, jobState.Pool.Statistics.SizePool );
+        [TestCase]
+        void Minimum_pool_size_of_0_is_maintained()
+        {
+            // Strategy:
+            //	---------
+            // 1. Create a pool with a min size of 0.
+            // 2. Acquire one resource and check the number of available and the number in the pool.
+            // 3. Acquire another resource and check the pool state.
+            // 4. Release one invalid resource and check the pool state.
+            // 5. Release the remaining invalid resource and check the pool state.
 
-			r3.Invalid = true;
-			r3.Dispose();
+            JobStateInfo jobState = new JobStateInfo(2, 0, 0, 5);
 
-			Assert.AreEqual( 2, jobState.Pool.Statistics.NumAvailableResources );
-			Assert.AreEqual( 2, jobState.Pool.Statistics.SizePool );
+            Assert.AreEqual(0, jobState.Pool.Statistics.NumAvailableResources);
+            Assert.AreEqual(0, jobState.Pool.Statistics.SizePool);
 
-			jobState.Pool.Dispose();
+            // acquire two resources
+            IResource<TestResource> r1 = jobState.Pool.AcquireResource();
 
-			Assert.AreEqual( 0, jobState.Pool.Statistics.NumAvailableResources );
-			Assert.AreEqual( 0, jobState.Pool.Statistics.SizePool );
-			Assert.AreEqual( 3, jobState.Pool.Statistics.MaxSizePool );
-		}
+            Assert.AreEqual(0, jobState.Pool.Statistics.NumAvailableResources);
+            Assert.AreEqual(1, jobState.Pool.Statistics.SizePool);
 
-		[TestCase]
-		void Maximum_pool_size_is_not_breached()
-		{
-			// Strategy:
-			//	---------
-			// 1. Create a pool with a max size of 2.
-			// 2. Acquire one resource and check the number of available and the number in the pool.
-			// 3. Acquire another resource and check the pool state.
-			// 4. Acquire another resource and check the pool state.
-			// 5. Release one invalid resource and check the pool state.
-			// 6. Release the remaining invalid resources and check the pool state.
+            IResource<TestResource> r2 = jobState.Pool.AcquireResource();
 
-			JobStateInfo jobState = new JobStateInfo( 10, 300, 2, 2 );
+            Assert.AreEqual(0, jobState.Pool.Statistics.NumAvailableResources);
+            Assert.AreEqual(2, jobState.Pool.Statistics.SizePool);
 
-			jobState.WaitForAllJobs();
+            r1.Invalid = true;
+            r1.Dispose();
 
-			ResourcePoolStatistics stats = jobState.Pool.Statistics;
+            Assert.AreEqual(0, jobState.Pool.Statistics.NumAvailableResources);
+            Assert.AreEqual(1, jobState.Pool.Statistics.SizePool);
 
-			Assert.AreEqual( 2, stats.MaxSizePool );
-		}
+            r2.Invalid = true;
+            r2.Dispose();
 
+            Assert.AreEqual(0, jobState.Pool.Statistics.NumAvailableResources);
+            Assert.AreEqual(0, jobState.Pool.Statistics.SizePool);
 
-	}
+            jobState.Pool.Dispose();
+
+            Assert.AreEqual(0, jobState.Pool.Statistics.NumAvailableResources);
+            Assert.AreEqual(0, jobState.Pool.Statistics.SizePool);
+            Assert.AreEqual(2, jobState.Pool.Statistics.MaxSizePool);
+        }
+
+        [TestCase]
+        void Minimum_pool_size_of_2_is_maintained()
+        {
+            // Strategy:
+            //	---------
+            // 1. Create a pool with a min size of 0.
+            // 2. Acquire one resource and check the number of available and the number in the pool.
+            // 3. Acquire another resource and check the pool state.
+            // 4. Acquire another resource and check the pool state.
+            // 5. Release one invalid resource and check the pool state.
+            // 6. Release the remaining invalid resources and check the pool state.
+
+            JobStateInfo jobState = new JobStateInfo(2, 0, 2, 5);
+
+            Assert.AreEqual(2, jobState.Pool.Statistics.NumAvailableResources);
+            Assert.AreEqual(2, jobState.Pool.Statistics.SizePool);
+
+            // acquire two resources
+            IResource<TestResource> r1 = jobState.Pool.AcquireResource();
+
+            Assert.AreEqual(1, jobState.Pool.Statistics.NumAvailableResources);
+            Assert.AreEqual(2, jobState.Pool.Statistics.SizePool);
+
+            IResource<TestResource> r2 = jobState.Pool.AcquireResource();
+
+            Assert.AreEqual(0, jobState.Pool.Statistics.NumAvailableResources);
+            Assert.AreEqual(2, jobState.Pool.Statistics.SizePool);
+
+            IResource<TestResource> r3 = jobState.Pool.AcquireResource();
+
+            Assert.AreEqual(0, jobState.Pool.Statistics.NumAvailableResources);
+            Assert.AreEqual(3, jobState.Pool.Statistics.SizePool);
+
+            r1.Invalid = true;
+            r1.Dispose();
+
+            Assert.AreEqual(0, jobState.Pool.Statistics.NumAvailableResources);
+            Assert.AreEqual(2, jobState.Pool.Statistics.SizePool);
+
+            r2.Invalid = true;
+            r2.Dispose();
+
+            Assert.AreEqual(1, jobState.Pool.Statistics.NumAvailableResources);
+            Assert.AreEqual(2, jobState.Pool.Statistics.SizePool);
+
+            r3.Invalid = true;
+            r3.Dispose();
+
+            Assert.AreEqual(2, jobState.Pool.Statistics.NumAvailableResources);
+            Assert.AreEqual(2, jobState.Pool.Statistics.SizePool);
+
+            jobState.Pool.Dispose();
+
+            Assert.AreEqual(0, jobState.Pool.Statistics.NumAvailableResources);
+            Assert.AreEqual(0, jobState.Pool.Statistics.SizePool);
+            Assert.AreEqual(3, jobState.Pool.Statistics.MaxSizePool);
+        }
+
+        [TestCase]
+        void Maximum_pool_size_is_not_breached()
+        {
+            // Strategy:
+            //	---------
+            // 1. Create a pool with a max size of 2.
+            // 2. Acquire one resource and check the number of available and the number in the pool.
+            // 3. Acquire another resource and check the pool state.
+            // 4. Acquire another resource and check the pool state.
+            // 5. Release one invalid resource and check the pool state.
+            // 6. Release the remaining invalid resources and check the pool state.
+
+            JobStateInfo jobState = new JobStateInfo(10, 300, 2, 2);
+
+            jobState.WaitForAllJobs();
+
+            ResourcePoolStatistics stats = jobState.Pool.Statistics;
+
+            Assert.AreEqual(2, stats.MaxSizePool);
+        }
+
+
+    }
 }
