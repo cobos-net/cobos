@@ -85,6 +85,7 @@
     <Compile Include="File\FileVersionHelper.cs" />
     <Compile Include="File\NormalisedPath.cs" />
     <Compile Include="File\PathResolver.cs" />
+    <Compile Include="IO\LookAheadTextReader.cs" />
     <Compile Include="Plugin\PluginAttribute.cs" />
     <Compile Include="Plugin\IPluginClient.cs" />
     <Compile Include="Plugin\IPluginHost.cs" />

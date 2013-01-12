@@ -1,4 +1,32 @@
-﻿
+﻿// ----------------------------------------------------------------------------
+// <copyright file="LookAheadTextReader.cs" company="Cobos SDK">
+//
+//      Copyright (c) 2009-2012 Nicholas Davis - nick@cobos.co.uk
+//
+//      Cobos Software Development Kit
+//
+//      Permission is hereby granted, free of charge, to any person obtaining
+//      a copy of this software and associated documentation files (the
+//      "Software"), to deal in the Software without restriction, including
+//      without limitation the rights to use, copy, modify, merge, publish,
+//      distribute, sublicense, and/or sell copies of the Software, and to
+//      permit persons to whom the Software is furnished to do so, subject to
+//      the following conditions:
+//      
+//      The above copyright notice and this permission notice shall be
+//      included in all copies or substantial portions of the Software.
+//      
+//      THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+//      EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+//      MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+//      NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+//      LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+//      OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+//      WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+//
+// </copyright>
+// ----------------------------------------------------------------------------
+
 namespace Cobos.Utilities.IO
 {
     using System;
@@ -9,7 +37,7 @@ namespace Cobos.Utilities.IO
     /// Utility class to allow us to "peek" the next line.  
     /// Works around the limitation that the text reader is not seek-able.
     /// </summary>
-    public partial class LookaheadTextReader : IDisposable
+    public partial class LookAheadTextReader : IDisposable
     {
         #region Fields
 
@@ -33,13 +61,13 @@ namespace Cobos.Utilities.IO
         #region Constructors
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of the LookAheadTextReader class.
         /// </summary>
-        /// <param name="path"></param>
-        public LookaheadTextReader(string path)
+        /// <param name="path">The path to the text file to read.</param>
+        public LookAheadTextReader(string path)
         {
             this.Reader = File.OpenText(path);
-            this.line = Reader.ReadLine();
+            this.line = this.Reader.ReadLine();
         }
 
         #endregion
@@ -59,7 +87,7 @@ namespace Cobos.Utilities.IO
         #region Properties
 
         /// <summary>
-        /// Test for the end of the stream
+        /// Gets a value indicating whether this stream is EOF.
         /// </summary>
         public bool EOF
         {
@@ -90,11 +118,11 @@ namespace Cobos.Utilities.IO
         /// <summary>
         /// Gets the next line from the stream and returns the previously cached line.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The previous text line.</returns>
         public string NextLine()
         {
             string last = this.line;
-            this.line = Reader.ReadLine();
+            this.line = this.Reader.ReadLine();
             ++this.lineNumber;
             return last;
         }
@@ -109,7 +137,7 @@ namespace Cobos.Utilities.IO
         }
 
         /// <summary>
-        /// 
+        /// Peek the current line to test whether it has data.
         /// </summary>
         /// <returns>True if there is data, false if the string is null empty or full of whitespace characters.</returns>
         public bool PeekLineHasData()
@@ -134,7 +162,7 @@ namespace Cobos.Utilities.IO
     /// <summary>
     /// Implements the IDisposable interface.
     /// </summary>
-    public partial class LookaheadTextReader : IDisposable
+    public partial class LookAheadTextReader : IDisposable
     {
         /// <summary>
         /// Is this object disposed.
@@ -142,9 +170,9 @@ namespace Cobos.Utilities.IO
         private bool disposed = false;
 
         /// <summary>
-        /// Finalizes an instance of the LookaheadTextReader class.
+        /// Finalizes an instance of the LookAheadTextReader class.
         /// </summary>
-        ~LookaheadTextReader()
+        ~LookAheadTextReader()
         {
             this.Dispose(false);
         }
@@ -171,7 +199,7 @@ namespace Cobos.Utilities.IO
             if (disposing)
             {
                 // free managed resources
-                Reader.Dispose();
+                this.Reader.Dispose();
 
                 GC.SuppressFinalize(this);
             }

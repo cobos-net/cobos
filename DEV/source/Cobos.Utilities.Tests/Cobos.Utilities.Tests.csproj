@@ -79,6 +79,7 @@
     <Compile Include="File\FileUtilityTests.cs" />
     <Compile Include="File\NormalisedPathTests.cs" />
     <Compile Include="File\PathResolverTests.cs" />
+    <Compile Include="IO\LookAheadTextReaderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestManager.cs" />
     <Compile Include="Text\MacroExpanderTests.cs" />
