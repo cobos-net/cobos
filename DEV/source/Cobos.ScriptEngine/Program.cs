@@ -27,14 +27,15 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Cobos.Script;
-using NDesk.Options;
-
 namespace Cobos.ScriptEngine
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Text;
+    using Cobos.Script;
+    using NDesk.Options;
+
     class Program
     {
         static void Main(string[] args)
@@ -68,7 +69,7 @@ namespace Cobos.ScriptEngine
 
             if (string.IsNullOrEmpty(script))
             {
-                LogSingleton.Instance.Error("The script source path cannot be null or an empty string.");
+                LogSingleton.Instance.TraceEvent(TraceEventType.Error, 0, "The script source path cannot be null or an empty string.");
                 return;
             }
 
@@ -85,7 +86,7 @@ namespace Cobos.ScriptEngine
             }
             catch (Exception e)
             {
-                LogSingleton.Instance.ErrorException("Script Error", e);
+                LogSingleton.Instance.TraceData(TraceEventType.Error, 0, e);
             }
         }
 

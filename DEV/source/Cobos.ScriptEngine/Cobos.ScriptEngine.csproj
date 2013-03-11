@@ -55,11 +55,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="NDesk.Options">
-      <HintPath>..\..\..\..\..\Program Files (x86)\NDesk\lib\ndesk-options\NDesk.Options.dll</HintPath>
-    </Reference>
-    <Reference Include="NLog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Program Files (x86)\NLog\.NET Framework 4.0\NLog.dll</HintPath>
+      <HintPath>C:\Program Files\ndesk-options-0.2.1.bin\lib\ndesk-options\NDesk.Options.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">

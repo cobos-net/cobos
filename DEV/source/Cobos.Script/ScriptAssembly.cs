@@ -117,7 +117,7 @@ namespace Cobos.Script
                 methodInfo.Invoke(instance, methodArgs);
             }
 
-            LogSingleton.Instance.Info("Script finished!");
+            LogSingleton.Instance.TraceInformation("Script finished!");
         }
 
         /// <summary>
@@ -155,7 +155,7 @@ namespace Cobos.Script
 
             trace.Append(")");
 
-            LogSingleton.Instance.Info(trace.ToString());
+            LogSingleton.Instance.TraceInformation(trace.ToString());
         }
 
         /// <summary>

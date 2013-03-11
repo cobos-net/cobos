@@ -7,7 +7,7 @@
 					 xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 					 exclude-result-prefixes="msxsl">
 
-	<!-- 
+  <!-- 
 	=============================================================================
 	Filename: .xslt
 	Description: Implement the IDisposable pattern.
@@ -20,51 +20,50 @@
 	
 	============================================================================
 	-->
-					 
-	<!--
+
+  <!--
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	IDisposable pattern 
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
-	
-	<xsl:template match="cobos:Object" mode="classIDisposable">
-		#region IDisposable
 
-		~<xsl:value-of select="@name"/>()
-		{
-			Dispose( false );
-		}
-		
-		public void Dispose()
-		{
-			Dispose( true );
-		}
-		
-		public void Dispose( bool disposing )
-		{
-			if ( _disposed )
-			{
-				return;
-			}
-			
-			if ( disposing )
-			{
-				ObjectDataRow.Delete();
-				
-				GC.SuppressFinalize( this );
-			}
-			
-			_disposed = true;
-		}
-		
-		bool _disposed = false;
-		
-		public bool IsDisposed
-		{
-			get { return _disposed; }
-		}
-		
-		#endregion
-	</xsl:template>
-					 
+  <xsl:template match="cobos:Object" mode="classIDisposable">
+    public partial class <xsl:value-of select="@name"/> : IDisposable
+    {
+        private bool disposed = false;
+
+        ~<xsl:value-of select="@name"/>()
+        {
+            this.Dispose(false);
+        }
+
+        public bool IsDisposed
+        {
+            get { return this.disposed; }
+        }
+
+        public void Dispose()
+        {
+            this.Dispose(true);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                this.ObjectDataRow.Delete();
+
+                GC.SuppressFinalize(this);
+            }
+
+            this.disposed = true;
+        }
+    }
+  </xsl:template>
+
 </xsl:stylesheet>

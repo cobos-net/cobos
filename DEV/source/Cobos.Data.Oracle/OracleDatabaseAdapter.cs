@@ -27,13 +27,13 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-using System;
-using System.Data;
-using Oracle.DataAccess.Client;
-using Cobos.Data;
-
 namespace Cobos.Data.Oracle
 {
+    using System;
+    using System.Data;
+    using global::Oracle.DataAccess.Client;
+    using Cobos.Data;
+
     public class OracleDatabaseAdapter : DatabaseAdapter<OracleConnection, OracleCommand, OracleDataAdapter>
     {
         public OracleDatabaseAdapter(string connectionString)
@@ -101,22 +101,22 @@ namespace Cobos.Data.Oracle
             result.Tables.Add(table);
 
             string columns = @"SELECT table_name, column_name, data_type, data_length, "
-                              + "data_precision, data_scale, nullable, data_default, char_length "
-                              + "FROM all_tab_columns "
-                              + "WHERE UPPER( owner ) = '" + schema.ToUpper() + "' "
-                              + "AND UPPER( table_name ) IN ('" + string.Join("', '", tables).ToUpper() + "') "
-                              + "ORDER BY table_name ASC, column_id ASC";
+                                    + "data_precision, data_scale, nullable, data_default, char_length "
+                                    + "FROM all_tab_columns "
+                                    + "WHERE UPPER( owner ) = '" + schema.ToUpper() + "' "
+                                    + "AND UPPER( table_name ) IN ('" + string.Join("', '", tables).ToUpper() + "') "
+                                    + "ORDER BY table_name ASC, column_id ASC";
 
             Fill(columns, "COLUMN", result);
 
             string constraints = "SELECT cols.table_name, cols.column_name, cols.position, cons.constraint_type, cons.constraint_name, cons.status "
-                                        + "FROM all_constraints cons, all_cons_columns cols "
-                                        + "WHERE cols.table_name IN ('" + string.Join("', '", tables).ToUpper() + "') "
-                                        + "AND cons.constraint_type IN ('P', 'R', 'U') "
-                                        + "AND cons.constraint_name = cols.constraint_name "
-                                        + "AND cons.owner = '" + schema.ToUpper() + "' "
-                                        + "AND cons.owner = cols.owner "
-                                        + "ORDER BY cols.table_name, cols.position";
+                                                 + "FROM all_constraints cons, all_cons_columns cols "
+                                                 + "WHERE cols.table_name IN ('" + string.Join("', '", tables).ToUpper() + "') "
+                                                 + "AND cons.constraint_type IN ('P', 'R', 'U') "
+                                                 + "AND cons.constraint_name = cols.constraint_name "
+                                                 + "AND cons.owner = '" + schema.ToUpper() + "' "
+                                                 + "AND cons.owner = cols.owner "
+                                                 + "ORDER BY cols.table_name, cols.position";
 
             Fill(constraints, "CONSTRAINT", result);
 

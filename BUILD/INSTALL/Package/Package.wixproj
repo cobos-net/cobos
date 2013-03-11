@@ -11,7 +11,7 @@
     <OutputType>Package</OutputType>
     <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' AND '$(MSBuildExtensionsPath32)' != '' ">$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
     <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
-	<EnableProjectHarvesting>True</EnableProjectHarvesting>
+    <EnableProjectHarvesting>True</EnableProjectHarvesting>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <OutputPath>bin\$(Configuration)\</OutputPath>
@@ -37,9 +37,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Generated" />
+    <Folder Include="Build" />
     <Folder Include="Stylesheets" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Build\Harvest.targets" />
     <Content Include="Config.wxi" />
     <Content Include="Stylesheets\heat-ignore-source.xslt" />
   </ItemGroup>
@@ -59,5 +61,5 @@
   <Target Name="AfterBuild">
   </Target>
   <Import Project="\QualitySystem\BUILD\INSTALL\Include\cobos.heat.targets" />
-  <Import Project="Harvest.targets" />
+  <Import Project="Build\Harvest.targets" />
 </Project>

@@ -29,14 +29,14 @@
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-	<xsl:template match="cobos:Object[ ./cobos:Metadata/cobos:Order/cobos:By ]" mode="sqlOrderBy">
+	<xsl:template match="cobos:Object[./cobos:Metadata/cobos:Order/cobos:By]" mode="sqlOrderBy">
 		<xsl:text>"</xsl:text>
 		<xsl:apply-templates select="./cobos:Metadata/cobos:Order/cobos:By"/>
 		<xsl:text>"</xsl:text>
 	</xsl:template>
 
 
-	<xsl:template match="cobos:Object[ not( ./cobos:Metadata/cobos:Order/cobos:By ) ]" mode="sqlOrderBy">
+	<xsl:template match="cobos:Object[not(./cobos:Metadata/cobos:Order/cobos:By)]" mode="sqlOrderBy">
 		<xsl:text>null</xsl:text>
 	</xsl:template>
 					 

@@ -29,14 +29,13 @@
 	-->
 
 	<xsl:template match="cobos:Object[ not( ancestor::cobos:Interface ) ]" mode="classMemberDefinition">
-		<xsl:variable name="datasetRowType">
-			<xsl:apply-templates select="." mode="datasetRowType"/>
-		</xsl:variable>
-		<xsl:apply-templates select="cobos:Object" mode="classMemberDecl"/>
-		<xsl:apply-templates select="cobos:Reference" mode="classMemberDecl"/>
-		
-		public readonly <xsl:value-of select="$datasetRowType"/> ObjectDataRow;
-	</xsl:template>
+    <xsl:variable name="datasetRowType">
+      <xsl:apply-templates select="." mode="datasetRowType"/>
+    </xsl:variable>
+    <xsl:value-of select="concat($indent2, 'public readonly ', $datasetRowType, ' ObjectDataRow;')" />
+    <xsl:apply-templates select="cobos:Object" mode="classMemberDecl"/>
+    <xsl:apply-templates select="cobos:Reference" mode="classMemberDecl"/>
+  </xsl:template>
 
 	<!--
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -46,13 +45,8 @@
 	-->
 
 	<xsl:template match="cobos:Object" mode="classMemberDecl">
-		<xsl:value-of select="@typeName"/>
-		<xsl:text> _</xsl:text>
-		<xsl:value-of select="@name"/>
-		<xsl:text>;</xsl:text>
-		<xsl:if test="not( position() = last() )">
-			<xsl:value-of select="$newlineTab2"/>
-		</xsl:if>
+    <xsl:value-of select="$newlineIndent2"/>
+    <xsl:value-of select="concat('private ', @typeName, ' ', @memberName, ';')" />
 	</xsl:template>
 
 	<!--
@@ -62,14 +56,9 @@
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-	<xsl:template match="cobos:Reference[ not( @isCollection ) ]" mode="classMemberDecl">
-		<xsl:value-of select="@ref"/>
-		<xsl:text> _</xsl:text>
-		<xsl:value-of select="@name"/>
-		<xsl:text>;</xsl:text>
-		<xsl:if test="not( position() = last() )">
-			<xsl:value-of select="$newlineTab2"/>
-		</xsl:if>
+	<xsl:template match="cobos:Reference[not(@isCollection)]" mode="classMemberDecl">
+    <xsl:value-of select="$newlineIndent2"/>
+    <xsl:value-of select="concat('private ', @ref, ' ', @memberName, ';')" />
 	</xsl:template>
 
 	<!--
@@ -80,13 +69,11 @@
 	-->
 
 	<xsl:template match="cobos:Reference[ @isCollection ]" mode="classMemberDecl">
-		<xsl:apply-templates select="." mode="listDecl"/>
-		<xsl:text> _</xsl:text>
-		<xsl:value-of select="@name"/>
-		<xsl:text>;</xsl:text>
-		<xsl:if test="not( position() = last() )">
-			<xsl:value-of select="$newlineTab2"/>
-		</xsl:if>
+    <xsl:value-of select="$newlineIndent2"/>
+    <xsl:variable name="listDecl">
+      <xsl:apply-templates select="." mode="listDecl"/>
+    </xsl:variable>
+    <xsl:value-of select="concat('private ', $listDecl, ' ', @memberName, ';')" />
 	</xsl:template>
 
 	

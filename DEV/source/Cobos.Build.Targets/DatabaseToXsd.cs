@@ -180,10 +180,6 @@ namespace Cobos.Build.Targets
                     database.GetTableSchema(this.DatabaseSchema, tables, fstream);
                 }
             }
-            catch (System.Exception ex)
-            {
-                throw ex;
-            }
             finally
             {
                 IDisposable toDispose = database as IDisposable;

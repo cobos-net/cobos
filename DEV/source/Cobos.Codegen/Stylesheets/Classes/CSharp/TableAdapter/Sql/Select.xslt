@@ -32,11 +32,11 @@
 		<xsl:if test="not( position() = last() )">, </xsl:if>
 	</xsl:template>
 
-	<xsl:template match="cobos:Property[ not( @dbAlias ) ]" mode="sqlSelectColumn">
+	<xsl:template match="cobos:Property[not(@dbAlias)]" mode="sqlSelectColumn">
 		<xsl:value-of select="@dbColumn"/>
 	</xsl:template>
 
-	<xsl:template match="cobos:Property[ @dbAlias ]" mode="sqlSelectColumn">
+	<xsl:template match="cobos:Property[@dbAlias]" mode="sqlSelectColumn">
 		<xsl:value-of select="@dbColumn"/>
 		<xsl:text > AS </xsl:text>
 		<xsl:value-of select="@dbAlias"/>

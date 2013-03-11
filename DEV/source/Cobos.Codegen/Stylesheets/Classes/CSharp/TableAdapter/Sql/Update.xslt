@@ -29,19 +29,19 @@
 
 	<!-- simple case for non-nullable fields -->
 	<xsl:template match="cobos:Property[ @minOccurs = 1 ]" mode="sqlUpdateValue">
-		<xsl:value-of select="concat( $newlineTab3, 'buffer.Append( ', $quot, @dbColumn, '=',  $quot, ' );' )"/>
+		<xsl:value-of select="concat( $newlineIndent3, 'buffer.Append(', $quot, @dbColumn, '=',  $quot, ');' )"/>
 		<xsl:apply-templates select="." mode="sqlPropertyRow"/>
 		<xsl:if test="not( position() = last() )">
-			<xsl:value-of select="concat( $newlineTab3, 'buffer.Append( ', $quot, ', ', $quot, ');' )"/>
+			<xsl:value-of select="concat( $newlineIndent3, 'buffer.Append(', $quot, ', ', $quot, ');' )"/>
 		</xsl:if>
 	</xsl:template>
 
 	<!-- test for null for nullable fields before inserting -->
 	<xsl:template match="cobos:Property[ @minOccurs = 0 ]" mode="sqlUpdateValue">
-		<xsl:value-of select="concat( $newlineTab3, 'buffer.Append( ', $quot, @dbColumn, '=',  $quot, ' );' )"/>
+		<xsl:value-of select="concat( $newlineIndent3, 'buffer.Append(', $quot, @dbColumn, '=',  $quot, ');' )"/>
 		<xsl:apply-templates select="." mode="sqlPropertyRow"/>
 		<xsl:if test="not( position() = last() )">
-			<xsl:value-of select="concat( $newlineTab3, 'buffer.Append( ', $quot, ', ', $quot, ');' )"/>
+			<xsl:value-of select="concat( $newlineIndent3, 'buffer.Append(', $quot, ', ', $quot, ');' )"/>
 		</xsl:if>
 	</xsl:template>
 	
@@ -54,8 +54,8 @@
 	<xsl:template match="cobos:Object" mode="sqlUpdateWhere">
 		<xsl:variable name="object" select="."/>
 		<xsl:text>"(</xsl:text>
-		<xsl:for-each select="$databaseConstraintsNodeSet//xsd:field[ ../xsd:selector/@xpath = concat( './/', $object/@dbTable ) ]">
-			<xsl:apply-templates select="$object//cobos:Property[ translate( @dbColumn, $lowercase, $uppercase ) = current()/@xpath ]"
+		<xsl:for-each select="$databaseConstraintsNodeSet//xsd:field[../xsd:selector/@xpath = concat('.//', $object/@dbTable)]">
+			<xsl:apply-templates select="$object//cobos:Property[translate(@dbColumn, $lowercase, $uppercase) = current()/@xpath]"
 										mode="sqlUpdateWhere"/>
 			<xsl:if test="not( position() = last() )">
 				<xsl:text> AND </xsl:text>
@@ -64,19 +64,19 @@
 		<xsl:text>)"</xsl:text>
 	</xsl:template>
 
-	<xsl:template match="cobos:Property[ @dbType = 'xsd:string' or contains( @dbType, 'string_' ) ]" mode="sqlUpdateWhere">
+	<xsl:template match="cobos:Property[@dbType = 'xsd:string' or contains(@dbType, 'string_')]" mode="sqlUpdateWhere">
 		<xsl:variable name="columnName">
 			<xsl:apply-templates mode="qualifiedName" select="."/>
 		</xsl:variable>
-		<xsl:value-of select="concat( @dbColumn, ' = ', $apos, $quot, ' + row.', $columnName, ' + ', $quot, $apos )"/>
+		<xsl:value-of select="concat(@dbColumn, ' = ', $apos, $quot, ' + row.', $columnName, ' + ', $quot, $apos)"/>
 	</xsl:template>
 
 	<!-- -->
-	<xsl:template match="cobos:Property[ not( @dbType = 'xsd:string' or contains( @dbType, 'string_' ) ) ]" mode="sqlUpdateWhere">
+	<xsl:template match="cobos:Property[not(@dbType = 'xsd:string' or contains( @dbType, 'string_' ))]" mode="sqlUpdateWhere">
 		<xsl:variable name="columnName">
 			<xsl:apply-templates mode="qualifiedName" select="."/>
 		</xsl:variable>
-		<xsl:value-of select="concat( @dbColumn, ' = ', $quot, ' + row.', $columnName, ' + ', $quot )"/>
+		<xsl:value-of select="concat(@dbColumn, ' = ', $quot, ' + row.', $columnName, ' + ', $quot)"/>
 	</xsl:template>
 					 
 </xsl:stylesheet>

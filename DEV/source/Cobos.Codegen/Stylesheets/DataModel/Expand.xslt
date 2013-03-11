@@ -57,7 +57,7 @@
 			</xsl:if>
 			<xsl:apply-templates mode="classHierarchyClassName" select="."/>
 			<xsl:apply-templates mode="classHierarchyDatasetDefinition" select="."/>
-			<xsl:apply-templates select="child::*" mode="classHierarchy"/>
+      <xsl:apply-templates select="child::*[not(self::cobos:Metadata)]" mode="classHierarchy"/>
 			<xsl:copy-of select="./cobos:Metadata"/>
 		</xsl:element>
 	</xsl:template>
@@ -106,6 +106,9 @@
 		<xsl:element name="Reference">
 			<xsl:apply-templates mode="classHierarchyDatasetDefinition" select="/cobos:DataModel/cobos:Object[ @name = current()/@ref ]"/>
 			<xsl:copy-of select="@*"/>
+      <xsl:attribute name="memberName">
+			  <xsl:apply-templates mode="memberName" select="."/>
+      </xsl:attribute>
 			<xsl:copy-of select="./cobos:Metadata"/>
 		</xsl:element>
 	</xsl:template>
@@ -203,6 +206,9 @@
 		<xsl:attribute name="typeName">
 			<xsl:apply-templates mode="typeName" select="."/>
 		</xsl:attribute>
+    <xsl:attribute name="memberName">
+			<xsl:apply-templates mode="memberName" select="."/>
+    </xsl:attribute>
 	</xsl:template>
 
 	<!-- class name for concrete object type -->
@@ -213,6 +219,9 @@
 		<xsl:attribute name="typeName">
 			<xsl:apply-templates mode="typeName" select="."/>
 		</xsl:attribute>
+    <xsl:attribute name="memberName">
+			<xsl:apply-templates mode="memberName" select="."/>
+    </xsl:attribute>
 	</xsl:template>
 
 	<!-- class name for a type reference -->
@@ -223,6 +232,9 @@
 		<xsl:attribute name="typeName">
 			<xsl:apply-templates mode="typeName" select="."/>
 		</xsl:attribute>
+    <xsl:attribute name="memberName">
+			<xsl:apply-templates mode="memberName" select="."/>
+    </xsl:attribute>
 		<xsl:attribute name="qualifiedName">
 			<xsl:apply-templates mode="qualifiedName" select="."/>
 		</xsl:attribute>
@@ -239,6 +251,9 @@
 		<xsl:attribute name="typeName">
 			<xsl:apply-templates mode="typeName" select="."/>
 		</xsl:attribute>
+    <xsl:attribute name="memberName">
+			<xsl:apply-templates mode="memberName" select="."/>
+    </xsl:attribute>
 		<xsl:attribute name="qualifiedName">
 			<xsl:apply-templates mode="qualifiedName" select="."/>
 		</xsl:attribute>
@@ -249,6 +264,9 @@
 	
 	<!-- qualified name for a property -->
 	<xsl:template match="cobos:Property" mode="classHierarchyPropertyName">
+    <xsl:attribute name="memberName">
+			<xsl:apply-templates mode="memberName" select="."/>
+    </xsl:attribute>
 		<xsl:attribute name="qualifiedName">
 			<xsl:apply-templates select="ancestor::*[ self::cobos:Object | self::cobos:Interface ]" mode="qualifiedNameForClass"/>
 			<xsl:call-template name="titleCaseName">

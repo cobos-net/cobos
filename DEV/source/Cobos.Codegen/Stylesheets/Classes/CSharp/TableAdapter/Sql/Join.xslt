@@ -32,13 +32,13 @@
 	-->
 
 	<!-- Find all inner join tables -->
-	<xsl:template match="cobos:Object[ ./cobos:Metadata/cobos:Joins/* ]" mode="sqlJoin">
-		<xsl:text>new string[]{ </xsl:text>
-		<xsl:apply-templates mode="sqlJoin" select="./cobos:Metadata/cobos:Joins/*[ self::cobos:InnerJoin | self::cobos:OuterJoin ]"/>
+	<xsl:template match="cobos:Object[./cobos:Metadata/cobos:Joins/*]" mode="sqlJoin">
+		<xsl:text>new string[] { </xsl:text>
+		<xsl:apply-templates mode="sqlJoin" select="./cobos:Metadata/cobos:Joins/*[self::cobos:InnerJoin | self::cobos:OuterJoin]"/>
 		<xsl:text> }</xsl:text>
 	</xsl:template>
 
-	<xsl:template match="cobos:Object[ not( ./cobos:Metadata/cobos:Joins/* ) ]" mode="sqlJoin">
+	<xsl:template match="cobos:Object[not(./cobos:Metadata/cobos:Joins/*)]" mode="sqlJoin">
 		<xsl:text>null</xsl:text>
 	</xsl:template>
 	
@@ -47,7 +47,7 @@
 		<xsl:text>"</xsl:text>
 		<xsl:value-of select="@references"/>
 		<xsl:text> ON </xsl:text>
-		<xsl:value-of select="ancestor::cobos:Object[ 1 ]/@dbTable"/>
+		<xsl:value-of select="ancestor::cobos:Object[1]/@dbTable"/>
 		<xsl:text>.</xsl:text>
 		<xsl:value-of select="@foreignKey"/>
 		<xsl:text> = </xsl:text>
@@ -55,7 +55,7 @@
 		<xsl:text>.</xsl:text>
 		<xsl:value-of select="@referenceKey"/>
 		<xsl:text>"</xsl:text>
-		<xsl:if test="not( position() = last() )">, </xsl:if>
+		<xsl:if test="not(position() = last())">, </xsl:if>
 	</xsl:template>
 					 
 </xsl:stylesheet>

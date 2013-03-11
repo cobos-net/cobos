@@ -29,23 +29,23 @@
 
 namespace Cobos.Script
 {
-    using NLog;
+    using System.Diagnostics;
 
     public static class LogSingleton
     {
         /// <summary>
         /// The static log instance
         /// </summary>
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static TraceSource source = new TraceSource("Cobos.Script");
 
         /// <summary>
         /// Get the log instance.
         /// </summary>
-        public static Logger Instance
+        public static TraceSource Instance
         {
             get
             {
-                return logger;
+                return source;
             }
         }
 

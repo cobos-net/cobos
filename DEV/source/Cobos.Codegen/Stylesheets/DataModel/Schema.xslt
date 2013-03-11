@@ -72,7 +72,7 @@
 	<xsl:template match="/cobos:DataModel">
 
 		<xsl:call-template name="generatedXmlWarning"/>
-
+    
 		<xsl:element name="xsd:schema">
 
 			<xsl:copy-of select="msxsl:node-set( $ns-container )/*/namespace::*[ . = $ns-uri ]" />

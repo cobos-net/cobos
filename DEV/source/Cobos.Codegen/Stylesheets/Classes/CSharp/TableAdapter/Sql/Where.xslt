@@ -32,7 +32,7 @@
 	-->
 
 	<xsl:template match="cobos:Object[ ./cobos:Metadata//cobos:Filter ]" mode="sqlWhere">
-		<xsl:text>new string[]{ </xsl:text>
+		<xsl:text>new string[] { </xsl:text>
 		<xsl:apply-templates select="./cobos:Metadata//cobos:Filter" mode="sqlWhere"/>
 		<xsl:text> }</xsl:text>
 	</xsl:template>

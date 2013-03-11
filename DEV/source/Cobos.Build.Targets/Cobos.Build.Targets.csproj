@@ -57,6 +57,16 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>mkdir $(ProjectDir)..\~bin
+copy /y $(TargetDir)*.dll  $(ProjectDir)..\~bin
+copy /y $(ProjectDir)..\..\..\TOOLS\Oracle\*.dll $(ProjectDir)..\~bin
+copy /y \QualitySystem\BUILD\MSBUILD\cobos.clean.generated.targets $(ProjectDir)..\Cobos.Codegen\MSBuild
+copy /y \QualitySystem\BUILD\MSBUILD\cobos.definitions.targets $(ProjectDir)..\Cobos.Codegen\MSBuild
+copy /y \QualitySystem\BUILD\MSBUILD\cobos.runxsd.targets $(ProjectDir)..\Cobos.Codegen\MSBuild
+
+</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

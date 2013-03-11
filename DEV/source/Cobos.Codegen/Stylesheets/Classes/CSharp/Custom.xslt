@@ -98,7 +98,7 @@
 		<xsl:variable name="columnName">
 			<xsl:apply-templates mode="qualifiedName" select="."/>
 		</xsl:variable>
-		<xsl:value-of select="concat( 'return MyDateFormatter.ConvertFromTimeStamp( ObjectDataRow.', $columnName, ' );' )"/>
+		<xsl:value-of select="concat( 'return MyDateFormatter.ConvertFromTimeStamp(this.ObjectDataRow.', $columnName, ');' )"/>
 	</xsl:template>
 	-->
 
@@ -116,7 +116,7 @@
 		<xsl:variable name="value">
 			<xsl:apply-templates mode="propertySetValue" select="."/>
 		</xsl:variable>
-		<xsl:value-of select="concat( 'ObjectDataRow.', $columnName, ' = MyDateFormatter.ConvertToTimeStamp( ', $value, ' );' )"/>
+		<xsl:value-of select="concat( 'this.ObjectDataRow.', $columnName, ' = MyDateFormatter.ConvertToTimeStamp(', $value, ');' )"/>
 	</xsl:template>
 	-->
 
@@ -135,7 +135,7 @@
 
 	<!--
 	<xsl:template match="cobos:Property[ @stringFormat = 'MyCustomDateFormat' ]" mode="findByMethodParamValue">
-		<xsl:value-of select="concat( 'MyDateFormatter.ConvertToTimeStamp( ', @name, ' )' )"/>
+		<xsl:value-of select="concat( 'MyDateFormatter.ConvertToTimeStamp(', @name, ')' )"/>
 	</xsl:template>
 	-->
 	

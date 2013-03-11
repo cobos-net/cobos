@@ -27,18 +27,19 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-using System;
-using System.CodeDom.Compiler;
-using System.Collections.Generic;
-using System.Configuration;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using Microsoft.CSharp;
-
 namespace Cobos.Script
 {
+    using System;
+    using System.CodeDom.Compiler;
+    using System.Collections.Generic;
+    using System.Configuration;
+    using System.Diagnostics;
+    using System.IO;
+    using System.Linq;
+    using System.Reflection;
+    using System.Text;
+    using Microsoft.CSharp;
+
     public class ScriptSource
     {
         /// <summary>
@@ -71,7 +72,7 @@ namespace Cobos.Script
                 throw new ScriptException("The script path does not exist: {0}", SourcePath);
             }
 
-            LogSingleton.Instance.Info("Compiling script {0}", SourcePath);
+            LogSingleton.Instance.TraceInformation("Compiling script {0}", SourcePath);
 
             // resolve the source and compiled assembly path
             string scriptSource = File.ReadAllText(SourcePath);
@@ -82,12 +83,12 @@ namespace Cobos.Script
             {
                 if (File.GetLastWriteTime(SourcePath) < File.GetLastWriteTime(assemblyPath))
                 {
-                    LogSingleton.Instance.Info("No modifications detected, skipping compilation");
+                    LogSingleton.Instance.TraceInformation("No modifications detected, skipping compilation");
                     return new ScriptAssembly(assemblyPath);
                 }
             }
 
-            LogSingleton.Instance.Info("Starting compilation...");
+            LogSingleton.Instance.TraceInformation("Starting compilation...");
 
             CSharpCodeProvider compiler = new CSharpCodeProvider(new Dictionary<string, string>() { { "CompilerVersion", "v3.5" } });
 
@@ -97,7 +98,7 @@ namespace Cobos.Script
 
             CheckResults(results);
 
-            LogSingleton.Instance.Info("Compilation complete");
+            LogSingleton.Instance.TraceInformation("Compilation complete");
 
             return new ScriptAssembly(assemblyPath);
         }
@@ -117,7 +118,7 @@ namespace Cobos.Script
             CompilerParameters parameters = new CompilerParameters(references, assemblyPath, true);
             parameters.GenerateExecutable = false;
 
-            LogSingleton.Instance.Info("Resolving all assembly references... (this may take some time)");
+            LogSingleton.Instance.TraceInformation("Resolving all assembly references... (this may take some time)");
 
             // resolve paths to all referenced assemblies
 
@@ -135,7 +136,7 @@ namespace Cobos.Script
 
                 parameters.CompilerOptions = buffer.ToString();
 
-                LogSingleton.Instance.Trace("Compiler Options: {0}", parameters.CompilerOptions);
+                LogSingleton.Instance.TraceEvent(TraceEventType.Verbose, 0, "Compiler Options: {0}", parameters.CompilerOptions);
             }
 
             return parameters;
@@ -159,7 +160,7 @@ namespace Cobos.Script
             // check for warnings, just report these to the console
             if (results.Errors.HasWarnings)
             {
-                results.Errors.Cast<CompilerError>().ToList().ForEach(error => LogSingleton.Instance.Warn(error.ErrorText));
+                results.Errors.Cast<CompilerError>().ToList().ForEach(error => LogSingleton.Instance.TraceEvent(TraceEventType.Warning, 0, error.ErrorText));
             }
         }
 

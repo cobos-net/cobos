@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
 	<!--
 	===========================================================================
@@ -54,20 +54,15 @@
 		<!-- Gather up all build binaries -->
 		<ItemGroup>
 			<CobosBinaries Include="$(DevSourceDirectory)\source\**\bin\Release\*.dll" 
-								Exclude="$(DevSourceDirectory)\source\**\*.Tests\bin\Release\*.dll" 
-								KeepDuplicates="false" />
+							Exclude="$(DevSourceDirectory)\source\**\*.Tests\bin\Release\*.dll" />
 			<CobosBinaries Include="$(DevSourceDirectory)\source\**\bin\Release\*.exe" 
-								Exclude="$(DevSourceDirectory)\source\**\*.Tests\bin\Release\*.exe" 
-								KeepDuplicates="false" />
+							Exclude="$(DevSourceDirectory)\source\**\*.Tests\bin\Release\*.exe" />
 			<CobosBinaries Include="$(DevSourceDirectory)\source\**\bin\Release\*.pdb" 
-								Exclude="$(DevSourceDirectory)\source\**\*.Tests\bin\Release\*.pdb" 
-								KeepDuplicates="false" />
+							Exclude="$(DevSourceDirectory)\source\**\*.Tests\bin\Release\*.pdb" />
 			<CobosBinariesX86 Include="$(DevSourceDirectory)\source\**\bin\x86\Release\*.dll" 
-									Exclude="$(DevSourceDirectory)\source\**\*.Tests\bin\x86\Release\*.dll" 
-									KeepDuplicates="false" />
+								Exclude="$(DevSourceDirectory)\source\**\*.Tests\bin\x86\Release\*.dll" />
 			<CobosBinariesX64 Include="$(DevSourceDirectory)\source\**\bin\x64\Release\*.dll" 
-									Exclude="$(DevSourceDirectory)\source\**\*.Tests\bin\x64\Release\*.dll" 
-									KeepDuplicates="false" />
+								Exclude="$(DevSourceDirectory)\source\**\*.Tests\bin\x64\Release\*.dll" />
 		</ItemGroup>
 
 		<!-- Make the target folders -->
@@ -76,7 +71,14 @@
 		<MakeDir Directories="BinFolderX64" ContinueOnError="true" />
 		-->
 	
-		<Copy SourceFiles="@(CobosBinaries)" DestinationFolder="$(BinFolder)" />
+		<RemoveDuplicates
+            Inputs="@(CobosBinaries)">
+            <Output
+                TaskParameter="Filtered"
+                ItemName="FilteredCobosBinaries"/>
+        </RemoveDuplicates>		
+	
+		<Copy SourceFiles="@(FilteredCobosBinaries)" DestinationFolder="$(BinFolder)" />
 		<!--
 		<Copy SourceFiles="@(CobosBinariesX86)" DestinationFolder="$(BinFolderX86)" />
 		<Copy SourceFiles="@(CobosBinariesX64)" DestinationFolder="$(BinFolderX64)" />
@@ -88,7 +90,27 @@
 	<Target Name="CustomCopyResultToReleaseDirectory" AfterTargets="CopyResultToReleaseDirectory" />
 	-->
 
-	<!-- 
+  <!-- 
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Change paths to installation paths before packaging
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+  <Target Name="CustomConfigPathForInstaller" BeforeTargets="BuildInstallations">
+    <XmlPoke XmlInputPath="$(DevSourceDirectory)\source\Cobos.Codegen\MSBuild\cobos.codegen.targets"
+             Namespaces="&lt;Namespace Prefix='x' Uri='http://schemas.microsoft.com/developer/msbuild/2003' /&gt;"
+             Query="/x:Project/x:PropertyGroup/x:CodegenAssembly"
+             Value="..\..\bin\Cobos.Build.Targets.dll" />
+  </Target>
+
+  <Target Name="CustomConfigPathForDevelopment" AfterTargets="BuildInstallations">
+    <XmlPoke XmlInputPath="$(DevSourceDirectory)\source\Cobos.Codegen\MSBuild\cobos.codegen.targets"
+             Namespaces="&lt;Namespace Prefix='x' Uri='http://schemas.microsoft.com/developer/msbuild/2003' /&gt;"
+             Query="/Project/PropertyGroup/CodegenAssembly"
+             Value="..\..\~bin\Cobos.Build.Targets.dll" />
+  </Target>
+
+  <!-- 
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	Define all build projects, hook this in after 'DefineBuildProjects'.
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -98,6 +120,7 @@
 
 		<ItemGroup>
 			<DotNetBuildFiles Include="$(CobosSource)Cobos.Build.Targets\Cobos.Build.Targets.csproj;
+										$(CobosSource)Cobos.Build.Targets.Tests\Cobos.Build.Targets.Tests.csproj;
 										$(CobosSource)Cobos.Data\Cobos.Data.csproj;
 										$(CobosSource)Cobos.Data.Tests\Cobos.Data.Tests.csproj;
 										$(CobosSource)Cobos.Data.MySql\Cobos.Data.MySql.csproj;

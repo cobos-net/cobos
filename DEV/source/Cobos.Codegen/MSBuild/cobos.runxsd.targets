@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Project DefaultTargets="RunXsd" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+	<!--
+	===========================================================================
+	Filename: cobos.runxsd.targets
+	Description: Run XSD.exe.
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Created by: N.Davis                        Date: 2010-02-09
+	Modified by:                               Date:
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Usage: 
+			<MSBuild Projects="cobos.runxsd.targets.targets"
+						Targets="RunXsd"
+						Properties="XsdInput=<XsdInput>;
+										XsdTarget=<XsdTarget>;
+										XsdNamespace=<XsdNamespace>;
+										XsdOutputFolder=<XsdOutputFolder>" />
+	Description:
+			XsdInput:			The input schema document.
+			XsdTarget:			Either dataset or classes
+			XsdNamespace:		The code namespace for the generated classes.
+			XsdOutputFolder:	The output folder for the generated code.
+			
+	Example:
+			<MSBuild Projects="cobos.runxsd.targets"
+						Targets="RunXsd"
+						Properties="XsdInput=MySchema.xsd;
+										XsdTarget=dataset;
+										XsdNamespace=Cobos.Example.Data;
+										XsdOutputFolder=$(GeneratedDir)" />
+	===========================================================================
+	-->
+	
+	<Import Project="cobos.definitions.targets" />
+
+	<!-- 
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Find the path to xsd.exe.
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<PropertyGroup>
+		<!-- All possible XSD.exe versions -->
+		<Xsd_60A>$(ProgramFiles32)\Microsoft SDKs\Windows\v6.0A\Bin\xsd.exe</Xsd_60A>
+		<Xsd_60A_x64>$(ProgramFiles32)\Microsoft SDKs\Windows\v6.0A\Bin\x64\xsd.exe</Xsd_60A_x64>
+		<Xsd_70A>$(ProgramFiles32)\Microsoft SDKs\Windows\v7.0A\Bin\xsd.exe</Xsd_70A>
+		<Xsd_70A_x64>$(ProgramFiles32)\Microsoft SDKs\Windows\v7.0A\Bin\x64\xsd.exe</Xsd_70A_x64>
+
+		<!-- Detect which version is installed -->
+		<XsdExe Condition="Exists( '$(Xsd_60A)' )">$(Xsd_60A)</XsdExe>
+		<XsdExe Condition="Exists( '$(Xsd_60A_x64)' )">$(Xsd_60A_x64)</XsdExe>
+		<XsdExe Condition="Exists( '$(Xsd_70A)' )">$(Xsd_70A)</XsdExe>
+		<XsdExe Condition="Exists( '$(Xsd_70A_x64)' )">$(Xsd_70A_x64)</XsdExe>
+	</PropertyGroup>
+	
+<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Run XSD.exe
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+	
+	<Target Name="RunXsd">
+		
+		<!-- Error checking -->
+		<Error Condition=" '$(XsdInput)'=='' " Text="RunXsd: You must supply an input file." />
+		<Error Condition=" '$(XsdTarget)'=='' " Text="RunXsd: You must supply a target: dataset or classes." />
+		<Error Condition=" '$(XsdNamespace)'=='' " Text="RunXsd: You must supply a namespace identifier." />
+		<Error Condition=" '$(XsdOutputFolder)'=='' " Text="RunXsd: You must supply an output folder." />
+		
+		<!-- Run Xsd.exe -->
+		<Exec Command="&quot;$(XsdExe)&quot; &quot;$(XsdInput)&quot; /$(XsdTarget) /n:$(XsdNamespace) /out:&quot;$(XsdOutputFolder)&quot;" />
+	
+	</Target>
+	
+</Project>

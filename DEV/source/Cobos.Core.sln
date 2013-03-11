@@ -2,20 +2,9 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cobos.Codegen", "Cobos.Codegen", "{F563C737-98D0-42B5-B2FF-CC9143347784}"
-	ProjectSection(SolutionItems) = preProject
-		Cobos.Codegen\build.bat = Cobos.Codegen\build.bat
-		Cobos.Codegen\classes.bat = Cobos.Codegen\classes.bat
-		Cobos.Codegen\database.bat = Cobos.Codegen\database.bat
-		Cobos.Codegen\filetime_cmp.bat = Cobos.Codegen\filetime_cmp.bat
-		Cobos.Codegen\filetime_iso8601.bat = Cobos.Codegen\filetime_iso8601.bat
-		Cobos.Codegen\schema.bat = Cobos.Codegen\schema.bat
-		Cobos.Codegen\var_args.bat = Cobos.Codegen\var_args.bat
-		Cobos.Codegen\xslt.js = Cobos.Codegen\xslt.js
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Schemas", "Schemas", "{6EDA8BED-1F3E-4A58-ADDB-A4096FC394DD}"
 	ProjectSection(SolutionItems) = preProject
-		Cobos.Codegen\Schemas\BuildConfig.xsd = Cobos.Codegen\Schemas\BuildConfig.xsd
 		Cobos.Codegen\Schemas\DataModel.xsd = Cobos.Codegen\Schemas\DataModel.xsd
 	EndProjectSection
 EndProject
@@ -23,12 +12,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Stylesheets", "Stylesheets"
 	ProjectSection(SolutionItems) = preProject
 		Cobos.Codegen\Stylesheets\Common.xslt = Cobos.Codegen\Stylesheets\Common.xslt
 		Cobos.Codegen\Stylesheets\Utilities.xslt = Cobos.Codegen\Stylesheets\Utilities.xslt
-		Cobos.Codegen\Stylesheets\Version.xslt = Cobos.Codegen\Stylesheets\Version.xslt
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{98897FB0-F4F2-4EC7-A52B-C33A794825C0}"
-	ProjectSection(SolutionItems) = preProject
-		Cobos.Codegen\Stylesheets\Build\BuildConfig.xslt = Cobos.Codegen\Stylesheets\Build\BuildConfig.xslt
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataModel", "DataModel", "{AA03B289-390E-4A38-93A7-B4E9856B769D}"
@@ -103,6 +86,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sql", "Sql", "{3C69F362-12A
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MSBuild", "MSBuild", "{B7F60FFC-70E9-419C-A7E9-055458CA5BBB}"
+	ProjectSection(SolutionItems) = preProject
+		Cobos.Codegen\MSBuild\cobos.codegen.targets = Cobos.Codegen\MSBuild\cobos.codegen.targets
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.Utilities", "Cobos.Utilities\Cobos.Utilities.csproj", "{5EC3C9B9-DAE8-481C-8495-2A0A737D87A3}"
 EndProject
@@ -135,6 +121,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.Script.Tests", "Cobos.Script.Tests\Cobos.Script.Tests.csproj", "{169B5112-DFA3-45F6-A8AD-AFA6F888D0B6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.Build.Targets", "Cobos.Build.Targets\Cobos.Build.Targets.csproj", "{1FC4F6FF-51BD-4FC2-8464-6CCF971F6ADC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.Build.Targets.Tests", "Cobos.Build.Targets.Tests\Cobos.Build.Targets.Tests.csproj", "{98F41521-D93D-4E57-9007-924F79AAF242}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -207,6 +195,10 @@ Global
 		{1FC4F6FF-51BD-4FC2-8464-6CCF971F6ADC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1FC4F6FF-51BD-4FC2-8464-6CCF971F6ADC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1FC4F6FF-51BD-4FC2-8464-6CCF971F6ADC}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{98F41521-D93D-4E57-9007-924F79AAF242}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98F41521-D93D-4E57-9007-924F79AAF242}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98F41521-D93D-4E57-9007-924F79AAF242}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98F41521-D93D-4E57-9007-924F79AAF242}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -215,7 +207,6 @@ Global
 		{6EDA8BED-1F3E-4A58-ADDB-A4096FC394DD} = {F563C737-98D0-42B5-B2FF-CC9143347784}
 		{734596B3-3329-4336-B41D-A0804C78B745} = {F563C737-98D0-42B5-B2FF-CC9143347784}
 		{B7F60FFC-70E9-419C-A7E9-055458CA5BBB} = {F563C737-98D0-42B5-B2FF-CC9143347784}
-		{98897FB0-F4F2-4EC7-A52B-C33A794825C0} = {734596B3-3329-4336-B41D-A0804C78B745}
 		{AA03B289-390E-4A38-93A7-B4E9856B769D} = {734596B3-3329-4336-B41D-A0804C78B745}
 		{431A7087-1C7A-4C5E-8619-3FE737D0C75C} = {734596B3-3329-4336-B41D-A0804C78B745}
 		{6B8454F6-62C2-4A7F-A6A7-C3B9246836D2} = {734596B3-3329-4336-B41D-A0804C78B745}

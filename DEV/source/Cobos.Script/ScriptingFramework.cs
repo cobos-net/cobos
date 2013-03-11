@@ -66,7 +66,7 @@ namespace Cobos.Script
 
         public void Initialise()
         {
-            LogSingleton.Instance.Info("Initialising Scripting");
+            LogSingleton.Instance.TraceInformation("Initialising Scripting");
         }
 
         public void Terminate()

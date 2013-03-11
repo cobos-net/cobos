@@ -33,6 +33,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -40,14 +41,57 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\Event\Generated\DataModel.cs" />
+    <Compile Include="Data\Event\Generated\Dataset.cs">
+      <DependentUpon>Dataset.xsd</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Data\Event\Generated\Dataset.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Dataset.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Data\DataModel.xml" />
-    <Content Include="Stylesheets\default.xslt" />
-    <Content Include="Stylesheets\main.xslt" />
+    <None Include="BUILD\prebuild.targets">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Data\Event\Generated\DataModel.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Data\Event\Generated\Dataset.xsc">
+      <DependentUpon>Dataset.xsd</DependentUpon>
+    </None>
+    <None Include="Data\Event\Generated\Dataset.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>Dataset.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Data\Event\Generated\Dataset.xss">
+      <DependentUpon>Dataset.xsd</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Data\Event\DataModel.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Stylesheets\Classes\CSharp\Custom.xslt">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Cobos.Data\Cobos.Data.csproj">
+      <Project>{6906b107-c149-4682-af7b-fef9f697fe36}</Project>
+      <Name>Cobos.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Cobos.Utilities\Cobos.Utilities.csproj">
+      <Project>{5ec3c9b9-dae8-481c-8495-2a0a737d87a3}</Project>
+      <Name>Cobos.Utilities</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="BUILD\prebuild.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

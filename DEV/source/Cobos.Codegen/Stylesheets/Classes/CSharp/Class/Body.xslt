@@ -7,7 +7,7 @@
 					 xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 					 exclude-result-prefixes="msxsl">
 
-	<!-- 
+  <!-- 
 	=============================================================================
 	Filename: .xslt
 	Description: Create a class definition for each object.
@@ -20,27 +20,25 @@
 	
 	============================================================================
 	-->
-	
-	<!--
+
+  <!--
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	Class body definition
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-	<xsl:template match="cobos:Interface|cobos:Object" mode="classBody">
-		
-		<!-- add member object declarations (Members.xslt) -->
-		<xsl:apply-templates select="." mode="classMemberDefinition"/>
-		
-		<!-- add the constructor declaration (Constructor.xslt) -->
-		<xsl:apply-templates select="." mode="classConstructorDeclaration"/>
+  <xsl:template match="cobos:Interface|cobos:Object" mode="classBody">
+    <!-- add member object declarations (Members.xslt) -->
+    <xsl:apply-templates select="." mode="classMemberDefinition"/>
 
-		<!-- add property declarations (..\Properties\Properties.xslt) -->
-		<xsl:apply-templates select="child::cobos:Property[ not( @hidden ) ]|child::cobos:Object|child::cobos:Reference" mode="propertyDefinition"/>
+    <!-- add the constructor declaration (Constructor.xslt) -->
+    <xsl:apply-templates select="." mode="classConstructorDeclaration"/>
 
-		<!-- add nested classes (Class.xslt) -->
-		<xsl:apply-templates select="child::cobos:Object" mode="classDefinition"/>
+    <!-- add property declarations (..\Properties\Properties.xslt) -->
+    <xsl:apply-templates select="child::cobos:Property[ not( @hidden ) ]|child::cobos:Object|child::cobos:Reference" mode="propertyDefinition"/>
 
-	</xsl:template>
+    <!-- add nested classes (Class.xslt) -->
+    <xsl:apply-templates select="child::cobos:Object" mode="classDefinition"/>
+  </xsl:template>
 
 </xsl:stylesheet>

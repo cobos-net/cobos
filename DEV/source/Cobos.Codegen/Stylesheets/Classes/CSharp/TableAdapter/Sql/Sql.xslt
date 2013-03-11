@@ -42,9 +42,9 @@
 		<xsl:variable name="columnValue">
 			<xsl:apply-templates mode="sqlPropertyValue" select="."/>
 		</xsl:variable>
-		<xsl:value-of select="concat( $newlineTab3, 'buffer.Append( ', $columnValue, ' );' )"/>
+		<xsl:value-of select="concat( $newlineIndent3, 'buffer.Append( ', $columnValue, ' );' )"/>
 		<xsl:if test="not( position() = last() )">
-			<xsl:value-of select="concat( $newlineTab3, 'buffer.Append( ', $quot, ', ', $quot, ');' )"/>
+			<xsl:value-of select="concat( $newlineIndent3, 'buffer.Append( ', $quot, ', ', $quot, ');' )"/>
 		</xsl:if>
 	</xsl:template>
 
@@ -56,9 +56,9 @@
 		<xsl:variable name="columnValue">
 			<xsl:apply-templates mode="sqlPropertyValue" select="."/>
 		</xsl:variable>
-		<xsl:value-of select="concat( $newlineTab3, 'buffer.Append( row.Is', $columnName, 'Null() ? ', $quot, 'NULL', $quot, ' : ', $columnValue, ' );' )"/>
+		<xsl:value-of select="concat( $newlineIndent3, 'buffer.Append( row.Is', $columnName, 'Null() ? ', $quot, 'NULL', $quot, ' : ', $columnValue, ' );' )"/>
 		<xsl:if test="not( position() = last() )">
-			<xsl:value-of select="concat( $newlineTab3, 'buffer.Append( ', $quot, ', ', $quot, ');' )"/>
+			<xsl:value-of select="concat( $newlineIndent3, 'buffer.Append( ', $quot, ', ', $quot, ');' )"/>
 		</xsl:if>
 	</xsl:template>
 
