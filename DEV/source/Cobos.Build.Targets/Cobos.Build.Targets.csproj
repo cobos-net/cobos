@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Cobos.Build.Targets</RootNamespace>
     <AssemblyName>Cobos.Build.Targets</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -33,7 +33,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Build.Framework" />
-    <Reference Include="Microsoft.Build.Utilities.v3.5" />
+    <Reference Include="Microsoft.Build.Utilities.v4.0" />
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -44,6 +45,7 @@
   <ItemGroup>
     <Compile Include="DatabaseToXsd.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.Net40.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Cobos.Data.Oracle\Cobos.Data.Oracle.csproj">
@@ -57,12 +59,12 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>mkdir $(ProjectDir)..\~bin
-copy /y $(TargetDir)*.dll  $(ProjectDir)..\~bin
-copy /y $(ProjectDir)..\..\..\TOOLS\Oracle\*.dll $(ProjectDir)..\~bin
-copy /y \QualitySystem\BUILD\MSBUILD\cobos.clean.generated.targets $(ProjectDir)..\Cobos.Codegen\MSBuild
-copy /y \QualitySystem\BUILD\MSBUILD\cobos.definitions.targets $(ProjectDir)..\Cobos.Codegen\MSBuild
-copy /y \QualitySystem\BUILD\MSBUILD\cobos.runxsd.targets $(ProjectDir)..\Cobos.Codegen\MSBuild
+    <PostBuildEvent>mkdir "$(ProjectDir)..\~bin\net40"
+copy /y "$(TargetDir)*.dll" "$(ProjectDir)..\~bin\net40"
+copy /y "$(ProjectDir)..\..\..\TOOLS\Oracle\net40\x86\*.dll" "$(ProjectDir)..\~bin\net40"
+copy /y \QualitySystem\BUILD\MSBUILD\cobos.clean.generated.targets "$(ProjectDir)..\Cobos.Codegen\MSBuild"
+copy /y \QualitySystem\BUILD\MSBUILD\cobos.definitions.targets "$(ProjectDir)..\Cobos.Codegen\MSBuild"
+copy /y \QualitySystem\BUILD\MSBUILD\cobos.runxsd.targets "$(ProjectDir)..\Cobos.Codegen\MSBuild"
 
 </PostBuildEvent>
   </PropertyGroup>

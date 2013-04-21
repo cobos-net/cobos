@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- 
+	=============================================================================
+	Filename: cobos.codegen.targets
+	Description: Main build file for Cobos Code Generation.
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Created by: N.Davis                        Date: 2010-02-09
+	Modified by:                               Date:
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Notes: See template.targets for examples.
+
+
+	============================================================================
+	-->
+  <Import Project="cobos.clean.generated.targets" />
+  <!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Build Definitions
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+  <PropertyGroup>
+    <CodegenTargetDir>$(ProjectDir)~build\</CodegenTargetDir>
+    <CodegenAssembly>..\..\~bin\net40\Cobos.Build.Targets.dll</CodegenAssembly>
+  </PropertyGroup>
+  <UsingTask AssemblyFile="$(MSBuildThisFileDirectory)$(CodegenAssembly)" TaskName="Cobos.Build.Targets.DatabaseToXsd" />
+  <ItemGroup>
+    <CodegenStylesheets Include="$(MSBuildThisFileDirectory)..\Stylesheets\**\*.*" />
+    <CodegenCustomStylesheets Include="$(CodegenCustomStylesheetsDirectory)\**\*.*" Condition="Exists($(CodegenCustomStylesheetsDirectory))" />
+  </ItemGroup>
+  <!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Build Targets
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+  <!-- Hook into the pre build extension point -->
+  <Target Name="BeforeBuild">
+    <!-- Create or clean the temporary build folder -->
+    <MakeDir Directories="$(CodegenTargetDir)" Condition="!Exists($(CodegenTargetDir))" />
+    <Delete Files="$(CodegenTargetDir)**\*.*" />
+    <!-- Copy the codegen stylesheets -->
+    <Copy SourceFiles="@(CodegenStylesheets)" DestinationFiles="@(CodegenStylesheets-&gt;'$(CodegenTargetDir)%(RecursiveDir)%(Filename)%(Extension)')" />
+    <!-- Copy the custom stylesheets -->
+    <Copy SourceFiles="@(CodegenCustomStylesheets)" DestinationFiles="@(CodegenCustomStylesheets-&gt;'$(CodegenTargetDir)%(RecursiveDir)%(Filename)%(Extension)')" />
+    <!-- Generate the database schemas -->
+    <CallTarget Targets="GenerateDatabaseSchema" Condition=" '@(DatabaseToXsdTable)' != '' " />
+    <!-- Process the Data Models -->
+    <CallTarget Targets="ProcessDataModel" Condition=" '@(DataModel)' != '' " />
+  </Target>
+  <!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Read the database metadata and generate schemas
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+  <Target Name="GenerateDatabaseSchema">
+    <!-- Read the metadata from the database -->
+    <DatabaseToXsd ConnectionString="$(DatabaseToXsdConnectionString)" DatabasePlatform="$(DatabaseToXsdDatabasePlatform)" DatabaseSchema="$(DatabaseToXsdDatabaseSchema)" DatabaseTables="@(DatabaseToXsdTable)" OutputFile="$(CodegenTargetDir)Database\Schema.xsd" />
+    <!-- Transform the database schema into XSLT variables -->
+    <XslTransformation XmlInputPaths="$(CodegenTargetDir)Database\Schema.xsd" XslInputPath="$(CodegenTargetDir)Database\$(DatabaseToXsdDatabasePlatform)\Merge.xslt" OutputPaths="$(CodegenTargetDir)Database\Schema.xslt" />
+  </Target>
+  <!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Process the Data Models into code artefacts
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+  <Target Name="ProcessDataModel">
+    <!-- Create the output folders -->
+    <MakeDir Directories="%(DataModel.RootDir)%(DataModel.Directory)Generated" />
+    <!-- Expand the data model -->
+    <XslTransformation XmlInputPaths="%(DataModel.Identity)" XslInputPath="$(CodegenTargetDir)DataModel\Expand.xslt" OutputPaths="%(DataModel.RootDir)%(DataModel.Directory)Generated\%(DataModel.Filename).Processed.xml" />
+    <!-- Create the schema for the strongly typed dataset -->
+    <XslTransformation XmlInputPaths="%(DataModel.RootDir)%(DataModel.Directory)Generated\%(DataModel.Filename).Processed.xml" XslInputPath="$(CodegenTargetDir)DataModel\Dataset.xslt" OutputPaths="%(DataModel.RootDir)%(DataModel.Directory)Generated\Dataset.xsd" />
+    <!-- Create the strongly typed dataset -->
+    <MSBuild Projects="$(MSBuildThisFileDirectory)cobos.runxsd.targets" Targets="RunXsd" Properties="XsdInput=%(DataModel.RootDir)%(DataModel.Directory)Generated\Dataset.xsd;XsdTarget=dataset;XsdNamespace=$(CodegenNamespaceCode).%(DataModel.Id);XsdOutputFolder=%(DataModel.RootDir)%(DataModel.Directory)Generated" />
+    <!-- Create the view model class -->
+    <XslTransformation XmlInputPaths="%(DataModel.RootDir)%(DataModel.Directory)Generated\%(DataModel.Filename).Processed.xml" XslInputPath="$(CodegenTargetDir)Classes\$(CodegenCodeLanguage)\Classes.xslt" OutputPaths="%(DataModel.RootDir)%(DataModel.Directory)Generated\DataModel.cs" Parameters="&lt;Parameter Name='codeNamespace' Value='$(CodegenNamespaceCode).%(DataModel.Id)'/&gt;&lt;Parameter Name='xmlNamespace' Value='$(CodegenNamespaceXml)'/&gt;" />
+    <!-- Create a schema for the view model class -->
+    <XslTransformation XmlInputPaths="%(DataModel.Identity)" XslInputPath="$(CodegenTargetDir)DataModel\Schema.xslt" OutputPaths="%(DataModel.RootDir)%(DataModel.Directory)Generated\DataModel.xsd" Parameters="&lt;Parameter Name='xmlNamespace' Value='$(CodegenNamespaceXml)'/&gt;@(%(DataModel.SchemaOptions))" />
+  </Target>
+</Project>

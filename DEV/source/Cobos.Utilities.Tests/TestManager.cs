@@ -27,27 +27,39 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 namespace Cobos.Utilities.Tests
 {
+    using System.Diagnostics;
+    using System.IO;
+
     public static class TestManager
     {
         /// <summary>
-        /// Obviously this is a bit of a hacky solution to locating the test files.
-        /// Given time, this should be implemented as configuration.
+        /// Path to an accessible UNC location.
         /// </summary>
-
-        public const string TestFilesLocation = @"C:\Projects\Cobos.Core\DEV\Code\Cobos.Utilities.Tests\TestFiles";
-
         public const string UncSharedFolder = @"\\ap-sgisourcectrl\cad_795\include";
 
+        /// <summary>
+        /// Resolve the path to a test file using the relative path and filename.
+        /// </summary>
+        /// <param name="relative">The relative path and filename to resolve.</param>
+        /// <returns>A fully qualified path for the test resource.</returns>
         public static string ResolvePath(string relative)
         {
-            return System.IO.Path.Combine(TestFilesLocation, relative);
+            return Path.Combine(TestFilesLocation, relative);
+        }
+
+        /// <summary>
+        /// Gets the location of the test files.
+        /// </summary>
+        public static string TestFilesLocation
+        {
+            get
+            {
+                StackTrace st = new StackTrace(new StackFrame(true));
+                StackFrame sf = st.GetFrame(0);
+                return Path.GetDirectoryName(sf.GetFileName()) + @"\TestFiles\";
+            }
         }
     }
 }

@@ -87,7 +87,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sql", "Sql", "{3C69F362-12A
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MSBuild", "MSBuild", "{B7F60FFC-70E9-419C-A7E9-055458CA5BBB}"
 	ProjectSection(SolutionItems) = preProject
-		Cobos.Codegen\MSBuild\cobos.codegen.targets = Cobos.Codegen\MSBuild\cobos.codegen.targets
+		Cobos.Codegen\MSBuild\cobos.codegen.net35.targets = Cobos.Codegen\MSBuild\cobos.codegen.net35.targets
+		Cobos.Codegen\MSBuild\cobos.codegen.net40.targets = Cobos.Codegen\MSBuild\cobos.codegen.net40.targets
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.Utilities", "Cobos.Utilities\Cobos.Utilities.csproj", "{5EC3C9B9-DAE8-481C-8495-2A0A737D87A3}"

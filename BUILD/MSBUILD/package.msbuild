@@ -27,9 +27,12 @@
 	<PropertyGroup>
 		<CobosSource>$(DevSourceDirectory)\source\</CobosSource>
 		<BinFolder>$(DevSourceDirectory)\bin\</BinFolder>
-		<BinFolderX86>$(DevSourceDirectory)\bin\x86\</BinFolderX86>
-		<BinFolderX64>$(DevSourceDirectory)\bin\x64\</BinFolderX64>
-	</PropertyGroup>
+    <BinFolderNet35>$(BinFolder)net35\</BinFolderNet35>
+    <BinFolderNet40>$(BinFolder)net40\</BinFolderNet40>
+    <BinFolderRedist>$(BinFolder)redist\</BinFolderRedist>
+    <BinFolderX86>$(BinFolder)x86\</BinFolderX86>
+    <BinFolderX64>$(BinFolder)x64\</BinFolderX64>
+  </PropertyGroup>
 
 	<ItemGroup>
 		<!-- Include all of the files to clean -->
@@ -53,20 +56,35 @@
 		
 		<!-- Gather up all build binaries -->
 		<ItemGroup>
-			<CobosBinaries Include="$(DevSourceDirectory)\source\**\bin\Release\*.dll" 
-							Exclude="$(DevSourceDirectory)\source\**\*.Tests\bin\Release\*.dll" />
-			<CobosBinaries Include="$(DevSourceDirectory)\source\**\bin\Release\*.exe" 
-							Exclude="$(DevSourceDirectory)\source\**\*.Tests\bin\Release\*.exe" />
-			<CobosBinaries Include="$(DevSourceDirectory)\source\**\bin\Release\*.pdb" 
-							Exclude="$(DevSourceDirectory)\source\**\*.Tests\bin\Release\*.pdb" />
-			<CobosBinariesX86 Include="$(DevSourceDirectory)\source\**\bin\x86\Release\*.dll" 
+      <!-- .NET 4.0 targeted builds -->
+			<CobosBinariesNet40 Include="$(DevSourceDirectory)\source\**\bin\Release\*.dll" 
+							Exclude="$(DevSourceDirectory)\source\**\*.Tests\bin\Release\*.dll;
+                      $(DevSourceDirectory)\source\**\*(NET35)\bin\Release\*.dll" />
+      <CobosBinariesNet40 Include="$(DevSourceDirectory)\source\**\bin\Release\*.exe" 
+							Exclude="$(DevSourceDirectory)\source\**\*.Tests\bin\Release\*.exe;
+                      $(DevSourceDirectory)\source\**\*(NET35)\bin\Release\*.exe" />
+      <CobosBinariesNet40 Include="$(DevSourceDirectory)\source\**\bin\Release\*.pdb" 
+							Exclude="$(DevSourceDirectory)\source\**\*.Tests\bin\Release\*.pdb;
+                      $(DevSourceDirectory)\source\**\*(NET35)\bin\Release\*.pdb" />
+      <!-- .NET 3.5 targeted builds -->
+      <CobosBinariesNet35 Include="$(DevSourceDirectory)\source\**\*(NET35)\bin\Release\*.dll"
+							Exclude="$(DevSourceDirectory)\source\**\*.Tests (NET35)\bin\Release\*.dll" />
+      <CobosBinariesNet35 Include="$(DevSourceDirectory)\source\**\*(NET35)\bin\Release\*.exe"
+							Exclude="$(DevSourceDirectory)\source\**\*.Tests (NET35)\bin\Release\*.exe" />
+      <CobosBinariesNet35 Include="$(DevSourceDirectory)\source\**\*(NET35)\bin\Release\*.pdb"
+							Exclude="$(DevSourceDirectory)\source\**\*.Tests (NET35)\bin\Release\*.pdb" />
+      <!-- x86 and x64 targeted builds -->
+      <CobosBinariesX86 Include="$(DevSourceDirectory)\source\**\bin\x86\Release\*.dll" 
 								Exclude="$(DevSourceDirectory)\source\**\*.Tests\bin\x86\Release\*.dll" />
 			<CobosBinariesX64 Include="$(DevSourceDirectory)\source\**\bin\x64\Release\*.dll" 
 								Exclude="$(DevSourceDirectory)\source\**\*.Tests\bin\x64\Release\*.dll" />
 		</ItemGroup>
 
 		<!-- Make the target folders -->
-		<!--
+    <MakeDir Directories="BinFolderNet35" ContinueOnError="true" />
+    <MakeDir Directories="BinFolderNet40" ContinueOnError="true" />
+    <MakeDir Directories="BinFolderRedist" ContinueOnError="true" />
+    <!--
 		<MakeDir Directories="BinFolderX86" ContinueOnError="true" />
 		<MakeDir Directories="BinFolderX64" ContinueOnError="true" />
 		-->
@@ -97,17 +115,25 @@
 	-->
 
   <Target Name="CustomConfigPathForInstaller" BeforeTargets="BuildInstallations">
-    <XmlPoke XmlInputPath="$(DevSourceDirectory)\source\Cobos.Codegen\MSBuild\cobos.codegen.targets"
+    <XmlPoke XmlInputPath="$(DevSourceDirectory)\source\Cobos.Codegen\MSBuild\cobos.codegen.net35.targets"
              Namespaces="&lt;Namespace Prefix='x' Uri='http://schemas.microsoft.com/developer/msbuild/2003' /&gt;"
              Query="/x:Project/x:PropertyGroup/x:CodegenAssembly"
-             Value="..\..\bin\Cobos.Build.Targets.dll" />
+             Value="..\..\bin\net35\Cobos.Build.Targets.dll" />
+    <XmlPoke XmlInputPath="$(DevSourceDirectory)\source\Cobos.Codegen\MSBuild\cobos.codegen.net40.targets"
+             Namespaces="&lt;Namespace Prefix='x' Uri='http://schemas.microsoft.com/developer/msbuild/2003' /&gt;"
+             Query="/x:Project/x:PropertyGroup/x:CodegenAssembly"
+             Value="..\..\bin\net40\Cobos.Build.Targets.dll" />
   </Target>
 
   <Target Name="CustomConfigPathForDevelopment" AfterTargets="BuildInstallations">
-    <XmlPoke XmlInputPath="$(DevSourceDirectory)\source\Cobos.Codegen\MSBuild\cobos.codegen.targets"
+    <XmlPoke XmlInputPath="$(DevSourceDirectory)\source\Cobos.Codegen\MSBuild\cobos.codegen.net35.targets"
              Namespaces="&lt;Namespace Prefix='x' Uri='http://schemas.microsoft.com/developer/msbuild/2003' /&gt;"
-             Query="/Project/PropertyGroup/CodegenAssembly"
-             Value="..\..\~bin\Cobos.Build.Targets.dll" />
+             Query="/x:Project/x:PropertyGroup/x:CodegenAssembly"
+             Value="..\..\~bin\net35\Cobos.Build.Targets.dll" />
+    <XmlPoke XmlInputPath="$(DevSourceDirectory)\source\Cobos.Codegen\MSBuild\cobos.codegen.net40.targets"
+             Namespaces="&lt;Namespace Prefix='x' Uri='http://schemas.microsoft.com/developer/msbuild/2003' /&gt;"
+             Query="/x:Project/x:PropertyGroup/x:CodegenAssembly"
+             Value="..\..\~bin\net40\Cobos.Build.Targets.dll" />
   </Target>
 
   <!-- 
@@ -119,7 +145,25 @@
 	<Target Name="CobosBuildProjects" BeforeTargets="DefineBuildProjects">
 
 		<ItemGroup>
-			<DotNetBuildFiles Include="$(CobosSource)Cobos.Build.Targets\Cobos.Build.Targets.csproj;
+      <!-- .NET 3.5 -->
+      <DotNetBuildFiles Include="$(CobosSource)Cobos.Build.Targets (NET35)\Cobos.Build.Targets (NET35).csproj;
+										$(CobosSource)Cobos.Build.Targets.Tests (NET35)\Cobos.Build.Targets.Tests (NET35).csproj;
+										$(CobosSource)Cobos.Data (NET35)\Cobos.Data (NET35).csproj;
+										$(CobosSource)Cobos.Data.Tests (NET35)\Cobos.Data.Tests (NET35).csproj;
+										$(CobosSource)Cobos.Data.MySql (NET35)\Cobos.Data.MySql (NET35).csproj;
+										$(CobosSource)Cobos.Data.MySql.Tests (NET35)\Cobos.Data.MySql.Tests (NET35).csproj;
+										$(CobosSource)Cobos.Data.Oracle (NET35)\Cobos.Data.Oracle (NET35).csproj;
+										$(CobosSource)Cobos.Data.Oracle.Tests (NET35)\Cobos.Data.Oracle.Tests (NET35).csproj;
+										$(CobosSource)Cobos.Utilities (NET35)\Cobos.Utilities (NET35).csproj;
+										$(CobosSource)Cobos.Utilities.Tests (NET35)\Cobos.Utilities.Tests (NET35).csproj;
+										$(CobosSource)Cobos.Web.Utilities (NET35)\Cobos.Web.Utilities (NET35).csproj;
+										$(CobosSource)Cobos.WpfApplication (NET35)\Cobos.WpfApplication (NET35).csproj;
+										$(CobosSource)Cobos.WpfApplication.Tests (NET35)\Cobos.WpfApplication.Tests (NET35).csproj;">
+				<Configuration>%(DotNetBuildConfigurations.Identity)</Configuration>
+				<Platform>%(DotNetBuildConfigurations.Platform)</Platform>
+			</DotNetBuildFiles>
+      <!-- .NET 4.0 -->
+      <DotNetBuildFiles Include="$(CobosSource)Cobos.Build.Targets\Cobos.Build.Targets.csproj;
 										$(CobosSource)Cobos.Build.Targets.Tests\Cobos.Build.Targets.Tests.csproj;
 										$(CobosSource)Cobos.Data\Cobos.Data.csproj;
 										$(CobosSource)Cobos.Data.Tests\Cobos.Data.Tests.csproj;
@@ -132,11 +176,10 @@
 										$(CobosSource)Cobos.Web.Utilities\Cobos.Web.Utilities.csproj;
 										$(CobosSource)Cobos.WpfApplication\Cobos.WpfApplication.csproj;
 										$(CobosSource)Cobos.WpfApplication.Tests\Cobos.WpfApplication.Tests.csproj;">
-				<Configuration>%(DotNetBuildConfigurations.Identity)</Configuration>
-				<Platform>%(DotNetBuildConfigurations.Platform)</Platform>
-			</DotNetBuildFiles>
-		
-		</ItemGroup>
+        <Configuration>%(DotNetBuildConfigurations.Identity)</Configuration>
+        <Platform>%(DotNetBuildConfigurations.Platform)</Platform>
+      </DotNetBuildFiles>
+    </ItemGroup>
 
 		<!--
 		<ItemGroup>

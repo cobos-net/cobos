@@ -27,20 +27,29 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-
 namespace Cobos.Script.Tests
 {
+    using System.Diagnostics;
+    using System.IO;
+
     public static class TestManager
     {
-        const string TestDirectory = @"C:\Projects\Cobos\DEV\source\Cobos.Script.Tests\TestFiles";
-
         public static string ResolvePath(string relative)
         {
-            return Path.Combine(TestDirectory, relative);
+            return Path.Combine(TestFiles, relative);
+        }
+
+        /// <summary>
+        /// Gets the location of the test files.
+        /// </summary>
+        public static string TestFiles
+        {
+            get
+            {
+                StackTrace st = new StackTrace(new StackFrame(true));
+                StackFrame sf = st.GetFrame(0);
+                return Path.GetDirectoryName(sf.GetFileName()) + @"\TestFiles\";
+            }
         }
     }
 }

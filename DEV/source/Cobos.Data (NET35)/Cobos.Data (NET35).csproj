@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F2609602-12E4-47FD-90FB-CC17526EC27B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Cobos.Data</RootNamespace>
+    <AssemblyName>Cobos.Data</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Cobos.Data\Adapters\SqlDatabaseAdapter.cs">
+      <Link>Adapters\SqlDatabaseAdapter</Link>
+    </Compile>	
+    <Compile Include="..\Cobos.Data\AsyncTask.cs">
+      <Link>AsyncTask.cs</Link>
+    </Compile>	
+    <Compile Include="..\Cobos.Data\SimpleDataSet.cs">
+	  <Link>SimpleDataSet.cs</Link>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="..\Cobos.Data\DatabaseAdapter.cs">
+      <Link>DatabaseAdapter.cs</Link>
+    </Compile>	
+    <Compile Include="..\Cobos.Data\DatabaseQuery.cs">
+      <Link>DatabasesQuery.cs</Link>
+    </Compile>	
+    <Compile Include="..\Cobos.Data\IDatabaseAdapter.cs">
+      <Link>IDatabaseAdapter.cs</Link>
+    </Compile>	
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.Net35.cs" />
+    <Compile Include="..\Cobos.Data\Statements\SqlDeleteTemplate.cs">
+      <Link>Statements\SqlDeleteTemplate.cs</Link>
+    </Compile>	
+    <Compile Include="..\Cobos.Data\Statements\SqlInsertTemplate.cs">
+      <Link>Statements\SqlInsertTemplate.cs</Link>
+    </Compile>	
+    <Compile Include="..\Cobos.Data\Statements\SqlSelectTemplate.cs">
+      <Link>Statements\SqlSelectTemplate.cs</Link>
+    </Compile>	
+    <Compile Include="..\Cobos.Data\Statements\SqlUpdateTemplate.cs">
+      <Link>Statements\SqlUpdateTemplate.cs</Link>
+    </Compile>	
+    <Compile Include="..\Cobos.Data\Utilities\DataColumnDescriptor.cs">
+      <Link>Utilities\DataColumnDescriptor.cs</Link>
+    </Compile>	
+    <Compile Include="..\Cobos.Data\Utilities\DataRowColumnAggregator.cs">
+      <Link>Utilities\DataRowColumnAggregator.cs</Link>
+    </Compile>	
+    <Compile Include="..\Cobos.Data\Utilities\DataRowHelper.cs">
+      <Link>Utilities\DataRowHelper.cs</Link>
+    </Compile>	
+    <Compile Include="..\Cobos.Data\Utilities\DataRowColumnComparer.cs">
+      <Link>Utilities\DataRowColumnComparer.cs</Link>
+    </Compile>	
+    <Compile Include="..\Cobos.Data\Utilities\IDataRowAggregator.cs">
+      <Link>Utilities\IDataRowAggregator.cs</Link>
+    </Compile>	
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Cobos.Utilities (NET35)\Cobos.Utilities (NET35).csproj">
+      <Project>{97E05107-67B6-401E-B34F-9EFBEC81EB05}</Project>
+      <Name>Cobos.Utilities</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Cobos.Codegen\Stylesheets\Database\Oracle\DatabaseSchema.xslt">
+      <Link>Stylesheets\Database\Oracle\DatabaseSchema.xslt</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Cobos.Codegen\Stylesheets\Utilities.xslt">
+      <Link>Stylesheets\Utilities.xslt</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

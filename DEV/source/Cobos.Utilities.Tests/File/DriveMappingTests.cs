@@ -42,7 +42,7 @@ namespace Cobos.Utilities.Tests.File
         [TestCase]
         public void Can_map_and_unmap_a_local_folder()
         {
-            const string testFilePath = TestManager.TestFilesLocation + @"\drivemappingtest.txt";
+            string testFilePath = TestManager.TestFilesLocation + @"\drivemappingtest.txt";
 
             // create dummy file to test that the mapping succeeded
             FileStream fs = SysFile.Create(testFilePath);

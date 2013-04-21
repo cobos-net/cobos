@@ -27,17 +27,26 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Cobos.Data.Adapters;
-
 namespace Cobos.Data.Tests
 {
+    using System.Diagnostics;
+    using System.IO;
+
     public static class TestManager
     {
         public readonly static string ConnectionString = "Data Source=VEA795DB2.WORLD;User Id=eadev;Password=eadev";
 
-        public readonly static string TestFiles = @"\Projects\Cobos.Core\DEV\Code\Cobos.Data.Oracle.Tests\TestData\";
+        /// <summary>
+        /// Gets the location of the test files.
+        /// </summary>
+        public static string TestFiles
+        {
+            get
+            {
+                StackTrace st = new StackTrace(new StackFrame(true));
+                StackFrame sf = st.GetFrame(0);
+                return Path.GetDirectoryName(sf.GetFileName()) + @"\TestData\";
+            }
+        }
     }
 }

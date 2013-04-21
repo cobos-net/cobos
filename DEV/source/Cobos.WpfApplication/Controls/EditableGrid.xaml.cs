@@ -42,7 +42,6 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Cobos.WpfApplication.Views;
 using Cobos.WpfApplication.ViewModels;
-using Microsoft.Windows.Controls;
 
 namespace Cobos.WpfApplication.Controls
 {
