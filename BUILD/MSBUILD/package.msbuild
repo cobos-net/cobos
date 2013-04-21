@@ -29,9 +29,9 @@
 		<BinFolder>$(DevSourceDirectory)\bin\</BinFolder>
     <BinFolderNet35>$(BinFolder)net35\</BinFolderNet35>
     <BinFolderNet40>$(BinFolder)net40\</BinFolderNet40>
-    <BinFolderRedist>$(BinFolder)redist\</BinFolderRedist>
     <BinFolderX86>$(BinFolder)x86\</BinFolderX86>
     <BinFolderX64>$(BinFolder)x64\</BinFolderX64>
+    <ToolsFolder>$(DevSourceDirectory)..\TOOLS\</ToolsFolder>
   </PropertyGroup>
 
 	<ItemGroup>
@@ -78,30 +78,41 @@
 								Exclude="$(DevSourceDirectory)\source\**\*.Tests\bin\x86\Release\*.dll" />
 			<CobosBinariesX64 Include="$(DevSourceDirectory)\source\**\bin\x64\Release\*.dll" 
 								Exclude="$(DevSourceDirectory)\source\**\*.Tests\bin\x64\Release\*.dll" />
-		</ItemGroup>
+      <!-- Oracle redist -->
+      <OracleNet20 Include="$(ToolsFolder)Oracle\net20\**\*.*" />
+      <OracleNet40 Include="$(ToolsFolder)Oracle\net20\**\*.*" />
+    </ItemGroup>
 
 		<!-- Make the target folders -->
     <MakeDir Directories="BinFolderNet35" ContinueOnError="true" />
     <MakeDir Directories="BinFolderNet40" ContinueOnError="true" />
-    <MakeDir Directories="BinFolderRedist" ContinueOnError="true" />
     <!--
 		<MakeDir Directories="BinFolderX86" ContinueOnError="true" />
 		<MakeDir Directories="BinFolderX64" ContinueOnError="true" />
 		-->
-	
-		<RemoveDuplicates
-            Inputs="@(CobosBinaries)">
-            <Output
-                TaskParameter="Filtered"
-                ItemName="FilteredCobosBinaries"/>
-        </RemoveDuplicates>		
-	
-		<Copy SourceFiles="@(FilteredCobosBinaries)" DestinationFolder="$(BinFolder)" />
-		<!--
+
+    <RemoveDuplicates
+            Inputs="@(CobosBinariesNet35)">
+      <Output
+          TaskParameter="Filtered"
+          ItemName="FilteredCobosBinariesNet35"/>
+    </RemoveDuplicates>
+
+    <RemoveDuplicates
+            Inputs="@(CobosBinariesNet40)">
+      <Output
+          TaskParameter="Filtered"
+          ItemName="FilteredCobosBinariesNet40"/>
+    </RemoveDuplicates>
+
+    <Copy SourceFiles="@(FilteredCobosBinariesNet35)" DestinationFolder="$(BinFolderNet35)" />
+    <Copy SourceFiles="@(FilteredCobosBinariesNet40)" DestinationFolder="$(BinFolderNet40)" />
+    <Copy SourceFiles="@(OracleNet20)" DestinationFiles="@(OracleNet20->'$(BinFolderNet35)\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(OracleNet40)" DestinationFiles="@(OracleNet40->'$(BinFolderNet40)\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <!--
 		<Copy SourceFiles="@(CobosBinariesX86)" DestinationFolder="$(BinFolderX86)" />
 		<Copy SourceFiles="@(CobosBinariesX64)" DestinationFolder="$(BinFolderX64)" />
-		-->
-	
+		-->	
 	</Target>
 
 	<!--
