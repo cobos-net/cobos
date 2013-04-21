@@ -5,9 +5,9 @@
 	Product settings
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
-	<?define ProductId={F346EB63-E8F3-460A-A4EA-38DA61B32D05}?>
+	<?define ProductId={3C209F5E-5B21-4CA1-B28E-7BF71C2DA3AA}?>
 	<?define ProductName="Cobos Core SDK"?>
-	<?define ProductPlatform=".NET 4.0"?>
+	<?define ProductPlatform=".NET 3.5"?>
 	
 	<!-- 
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

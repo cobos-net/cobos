@@ -32,7 +32,7 @@
 
   <!-- Database properties -->
   <PropertyGroup>
-    <DatabaseToXsdConnectionString>Data Source=vea795db2.world;User Id=eadev;Password=eadev</DatabaseToXsdConnectionString>
+    <DatabaseToXsdConnectionString>Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=vea795db1.ingrnet.com)(PORT= 1521))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=ORC102.VEA795DB1)));User Id=eadev;Password=eadev</DatabaseToXsdConnectionString>
     <DatabaseToXsdDatabasePlatform>Oracle</DatabaseToXsdDatabasePlatform>
     <DatabaseToXsdDatabaseSchema>EADEV</DatabaseToXsdDatabaseSchema>
   </PropertyGroup>

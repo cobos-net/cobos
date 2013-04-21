@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Cobos.Codegen.Tests</RootNamespace>
     <AssemblyName>Cobos.Codegen.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -36,7 +36,6 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -45,11 +44,6 @@
     <Compile Include="Data\Event\Generated\Dataset.cs">
       <DependentUpon>Dataset.xsd</DependentUpon>
       <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Data\Event\Generated\Dataset.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Dataset.xsd</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -60,16 +54,10 @@
     <None Include="Data\Event\Generated\DataModel.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Data\Event\Generated\Dataset.xsc">
-      <DependentUpon>Dataset.xsd</DependentUpon>
-    </None>
     <None Include="Data\Event\Generated\Dataset.xsd">
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>Dataset.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
-    </None>
-    <None Include="Data\Event\Generated\Dataset.xss">
-      <DependentUpon>Dataset.xsd</DependentUpon>
     </None>
   </ItemGroup>
   <ItemGroup>

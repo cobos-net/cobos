@@ -13,9 +13,9 @@
 			<MSBuild Projects="cobos.runxsd.targets.targets"
 						Targets="RunXsd"
 						Properties="XsdInput=<XsdInput>;
-										XsdTarget=<XsdTarget>;
-										XsdNamespace=<XsdNamespace>;
-										XsdOutputFolder=<XsdOutputFolder>" />
+						XsdTarget=<XsdTarget>;
+						XsdNamespace=<XsdNamespace>;
+						XsdOutputFolder=<XsdOutputFolder>" />
 	Description:
 			XsdInput:			The input schema document.
 			XsdTarget:			Either dataset or classes
@@ -25,10 +25,10 @@
 	Example:
 			<MSBuild Projects="cobos.runxsd.targets"
 						Targets="RunXsd"
-						Properties="XsdInput=MySchema.xsd;
+						Properties="XsdInput=&quot;$(ProjectDir)MySchema.xsd&quot;;
 										XsdTarget=dataset;
 										XsdNamespace=Cobos.Example.Data;
-										XsdOutputFolder=$(GeneratedDir)" />
+										XsdOutputFolder=&quot;$(GeneratedDir)&quot;" />
 	===========================================================================
 	-->
 	
@@ -63,13 +63,15 @@
 	<Target Name="RunXsd">
 		
 		<!-- Error checking -->
-		<Error Condition=" '$(XsdInput)'=='' " Text="RunXsd: You must supply an input file." />
-		<Error Condition=" '$(XsdTarget)'=='' " Text="RunXsd: You must supply a target: dataset or classes." />
-		<Error Condition=" '$(XsdNamespace)'=='' " Text="RunXsd: You must supply a namespace identifier." />
-		<Error Condition=" '$(XsdOutputFolder)'=='' " Text="RunXsd: You must supply an output folder." />
+		<Error Condition=" '$(XsdInput)' == '' " Text="RunXsd: You must supply an input file." />
+		<Error Condition=" '$(XsdTarget)' == '' " Text="RunXsd: You must supply a target: dataset or classes." />
+		<Error Condition=" '$(XsdNamespace)' == '' " Text="RunXsd: You must supply a namespace identifier." />
+		<Error Condition=" '$(XsdOutputFolder)' == '' " Text="RunXsd: You must supply an output folder." />
+        
+        <Message Text="Calling XSD.EXE for: $(XsdInput)" />
 		
 		<!-- Run Xsd.exe -->
-		<Exec Command="&quot;$(XsdExe)&quot; &quot;$(XsdInput)&quot; /$(XsdTarget) /n:$(XsdNamespace) /out:&quot;$(XsdOutputFolder)&quot;" />
+		<Exec Command="&quot;$(XsdExe)&quot; $(XsdInput) /$(XsdTarget) /n:$(XsdNamespace) /out:$(XsdOutputFolder)" />
 	
 	</Target>
 	

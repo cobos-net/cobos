@@ -191,17 +191,20 @@ namespace Cobos.Web.Utilities.Handlers
                     target.ContentType = source.ContentType;
                     break;
 
+#if NET_4
                 case "Date":
                     target.Date = DateTime.Parse(headers[name]);
                     break;
-
+#endif
                 case "Expect":
                     target.Expect = headers[name];
                     break;
 
+#if NET_4
                 case "Host":
                     target.Host = headers[name];
                     break;
+#endif
 
                 case "If-Modified-Since":
                     target.IfModifiedSince = DateTime.Parse(headers[name]);
