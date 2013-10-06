@@ -1,5 +1,5 @@
 ﻿// ----------------------------------------------------------------------------
-// <copyright file="AssemblyInfo.Net40.cs" company="Cobos SDK">
+// <copyright file="AssemblyInfo.Net45.cs" company="Cobos SDK">
 //
 //      Copyright (c) 2009-2012 Nicholas Davis - nick@cobos.co.uk
 //
@@ -31,4 +31,4 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-[assembly: Guid("732436f1-6335-4576-89d2-49195c5912b9")]
+[assembly: Guid( "15895418-be3f-459f-8bf7-49d4f9796f64" )]

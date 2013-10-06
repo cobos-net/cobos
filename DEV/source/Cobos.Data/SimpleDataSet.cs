@@ -27,63 +27,42 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-using System;
-using System.Data;
-using System.Xml;
-using System.Xml.Xsl;
-using System.IO;
-using System.Text;
-using System.Diagnostics;
-
-using Cobos.Utilities.Xml;
-
 namespace Cobos.Data
 {
+    using System;
+    using System.Data;
+    using System.Diagnostics;
+    using System.IO;
+    using System.Text;
+    using System.Xml;
+    using System.Xml.Xsl;
+    using Cobos.Utilities.Xml;
+
+    /// <summary>
+    /// A simple extension to the <see cref="DataSet"/> class.
+    /// </summary>
     public class SimpleDataSet : DataSet
     {
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="SimpleDataSet"/> class.
         /// </summary>
-        public class Relationship
+        public SimpleDataSet()
         {
-            public readonly string Name;
-            public readonly string ParentTable;
-            public readonly string ParentColumn;
-            public readonly string ChildTable;
-            public readonly string ChildColumn;
-
-            public Relationship(string name, string parentTable, string parentColumn, string childTable, string childColumn)
-            {
-                Name = name;
-                ParentTable = parentTable;
-                ParentColumn = parentColumn;
-                ChildTable = childTable;
-                ChildColumn = childColumn;
-            }
         }
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="SimpleDataSet"/> class.
         /// </summary>
-        /// <param name="dataSetName"></param>
+        /// <param name="dataSetName">The name of the data set.</param>
         public SimpleDataSet(string dataSetName)
             : base(dataSetName)
         {
         }
 
         /// <summary>
-        /// 
+        /// Create the specified relationships in the data set.
         /// </summary>
-        /// <param name="dataSet"></param>
-        public SimpleDataSet()
-            : base()
-        {
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="relationships"></param>
+        /// <param name="relationships">The relationships to create.</param>
         public void CreateRelationships(Relationship[] relationships)
         {
             // create any relationships that may be required
@@ -113,7 +92,7 @@ namespace Cobos.Data
         }
 
         /// <summary>
-        /// 
+        /// Clear all data set relationships.
         /// </summary>
         public void ClearRelationships()
         {
@@ -121,82 +100,129 @@ namespace Cobos.Data
         }
 
         /// <summary>
-        /// 
+        /// Serialize the data set to XML.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>An XML document representing the contents of the dataset.</returns>
         public XmlDocument ToXml()
         {
             XmlDocument doc = new XmlDocument();
-            doc.LoadXml(GetXml());
+            doc.LoadXml(this.GetXml());
             return doc;
         }
 
         /// <summary>
-        /// 
+        /// Serialize the data set to XML.
         /// </summary>
-        /// <param name="results"></param>
-        public void ToXml(Stream results)
+        /// <param name="result">The stream to write the result to.</param>
+        public void ToXml(Stream result)
         {
-            XmlDocument doc = ToXml();
-
-            doc.Save(results);
+            XmlDocument doc = this.ToXml();
+            doc.Save(result);
         }
 
         /// <summary>
-        /// 
+        /// Serialize the data set to XML.
         /// </summary>
-        /// <param name="xslt"></param>
-        /// <param name="xsltArgs"></param>
-        /// <param name="results"></param>
-        public void ToXml(XslCompiledTransform xslt, XsltArgumentList xsltArgs, Stream results)
+        /// <param name="xslt">The transform to use.  May be null.</param>
+        /// <param name="xsltArgs">The arguments for the transform.</param>
+        /// <param name="result">The stream to write the result to.</param>
+        public void ToXml(XslCompiledTransform xslt, XsltArgumentList xsltArgs, Stream result)
         {
-            XmlDocument doc = ToXml();
+            XmlDocument doc = this.ToXml();
 
             if (xsltArgs == null)
             {
                 xsltArgs = new XsltArgumentList();
             }
 
-            //xsltArgs.AddParam( "example", "", example );
+            ////xsltArgs.AddParam( "example", "", example );
 
             // do the transform
-            xslt.Transform(doc.CreateNavigator(), xsltArgs, results);
+            xslt.Transform(doc.CreateNavigator(), xsltArgs, result);
         }
 
         /// <summary>
-        /// 
+        /// Serialize the data set to an object.
         /// </summary>
-        /// <typeparam name="TObject"></typeparam>
-        /// <param name="xslt"></param>
-        /// <param name="xsltArgs"></param>
-        /// <returns></returns>
+        /// <typeparam name="TObject">The type of object to serialize to.</typeparam>
+        /// <param name="xslt">The transform to use.  May be null.</param>
+        /// <param name="xsltArgs">The arguments for the transform.</param>
+        /// <returns>The serialized object.</returns>
         public TObject ToObject<TObject>(XslCompiledTransform xslt, XsltArgumentList xsltArgs)
         {
             TObject result = default(TObject);
 
-            XmlDocument doc = ToXml();
+            XmlDocument doc = this.ToXml();
 
             if (xsltArgs == null)
             {
                 xsltArgs = new XsltArgumentList();
             }
 
-            //xsltArgs.AddParam( "example", "", example );
+            ////xsltArgs.AddParam( "example", "", example );
 
             using (MemoryStream stream = new MemoryStream())
             {
                 xslt.Transform(doc.CreateNavigator(), xsltArgs, stream);
                 stream.Seek(0, SeekOrigin.Begin);
 
-                /*FileStream fstream = new FileStream( @"C:\temp\test.xml", FileMode.Create );
-                stream.WriteTo( fstream );
-                fstream.Close();
-                stream.Seek( 0, SeekOrigin.Begin );*/
+                ////FileStream fstream = new FileStream( @"C:\temp\test.xml", FileMode.Create );
+                ////stream.WriteTo( fstream );
+                ////fstream.Close();
+                ////stream.Seek( 0, SeekOrigin.Begin );
 
                 result = XmlHelper<TObject>.Deserialize(stream);
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Represents a relationship in the data set.
+        /// </summary>
+        public class Relationship
+        {
+            /// <summary>
+            /// The name of the relationship.
+            /// </summary>
+            public readonly string Name;
+            
+            /// <summary>
+            /// The name of the parent table.
+            /// </summary>
+            public readonly string ParentTable;
+            
+            /// <summary>
+            /// The name of the column in the parent table.
+            /// </summary>
+            public readonly string ParentColumn;
+            
+            /// <summary>
+            /// The name of the child table.
+            /// </summary>
+            public readonly string ChildTable;
+            
+            /// <summary>
+            /// The name of the column in the child table.
+            /// </summary>
+            public readonly string ChildColumn;
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="Relationship"/> class.
+            /// </summary>
+            /// <param name="name">The name of the relationship.</param>
+            /// <param name="parentTable">The name of the parent table.</param>
+            /// <param name="parentColumn">The name of the column in the parent table.</param>
+            /// <param name="childTable">The name of the child table.</param>
+            /// <param name="childColumn">The name of the column in the child table.</param>
+            public Relationship(string name, string parentTable, string parentColumn, string childTable, string childColumn)
+            {
+                this.Name = name;
+                this.ParentTable = parentTable;
+                this.ParentColumn = parentColumn;
+                this.ChildTable = childTable;
+                this.ChildColumn = childColumn;
+            }
         }
     }
 }

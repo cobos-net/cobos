@@ -66,9 +66,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Cobos.Utilities (NET35)\Cobos.Utilities (NET35).csproj">
+    <ProjectReference Include="..\Cobos.Utilities %28NET35%29\Cobos.Utilities %28NET35%29.csproj">
       <Project>{97E05107-67B6-401E-B34F-9EFBEC81EB05}</Project>
-      <Name>Cobos.Utilities</Name>
+      <Name>Cobos.Utilities %28NET35%29</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

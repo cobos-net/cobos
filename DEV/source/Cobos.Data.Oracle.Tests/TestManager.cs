@@ -27,14 +27,20 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-namespace Cobos.Data.Tests
+namespace Cobos.Data.Oracle.Tests
 {
     using System.Diagnostics;
     using System.IO;
 
+    /// <summary>
+    /// Manages test data.
+    /// </summary>
     public static class TestManager
     {
-        public readonly static string ConnectionString = "Data Source=VEA795DB2.WORLD;User Id=eadev;Password=eadev";
+        /// <summary>
+        /// The connection string to the database.
+        /// </summary>
+        public static readonly string ConnectionString = "Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=localhost)(PORT= 1521))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=NORTHWIND)));User Id=northwind;Password=oracle";
 
         /// <summary>
         /// Gets the location of the test files.

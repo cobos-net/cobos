@@ -14,7 +14,7 @@
 	============================================================================
 	-->
 
-  <Import Project="$(ProjectDir)..\Cobos.Codegen\MSBuild\cobos.codegen.net40.targets"/>
+  <Import Project="$(ProjectDir)..\Cobos.Codegen\MSBuild\cobos.codegen.net45.targets"/>
 
   <!--
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

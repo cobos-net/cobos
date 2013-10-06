@@ -11,7 +11,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Stylesheets", "Stylesheets", "{734596B3-3329-4336-B41D-A0804C78B745}"
 	ProjectSection(SolutionItems) = preProject
 		Cobos.Codegen\Stylesheets\Common.xslt = Cobos.Codegen\Stylesheets\Common.xslt
-		Cobos.Codegen\Stylesheets\Utilities.xslt = Cobos.Codegen\Stylesheets\Utilities.xslt
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataModel", "DataModel", "{AA03B289-390E-4A38-93A7-B4E9856B769D}"
@@ -23,14 +22,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataModel", "DataModel", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{431A7087-1C7A-4C5E-8619-3FE737D0C75C}"
 	ProjectSection(SolutionItems) = preProject
+		Cobos.Codegen\Stylesheets\Database\DatabaseSchema.xslt = Cobos.Codegen\Stylesheets\Database\DatabaseSchema.xslt
+		Cobos.Codegen\Stylesheets\Database\Merge.xslt = Cobos.Codegen\Stylesheets\Database\Merge.xslt
 		Cobos.Codegen\Stylesheets\Database\Schema.xsd = Cobos.Codegen\Stylesheets\Database\Schema.xsd
 		Cobos.Codegen\Stylesheets\Database\Schema.xslt = Cobos.Codegen\Stylesheets\Database\Schema.xslt
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Oracle", "Oracle", "{0C8EFEDC-4DEB-4890-8BF9-B9E00B321FA6}"
-	ProjectSection(SolutionItems) = preProject
-		Cobos.Codegen\Stylesheets\Database\Oracle\DatabaseSchema.xslt = Cobos.Codegen\Stylesheets\Database\Oracle\DatabaseSchema.xslt
-		Cobos.Codegen\Stylesheets\Database\Oracle\Merge.xslt = Cobos.Codegen\Stylesheets\Database\Oracle\Merge.xslt
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Classes", "Classes", "{6B8454F6-62C2-4A7F-A6A7-C3B9246836D2}"
@@ -88,18 +83,14 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MSBuild", "MSBuild", "{B7F60FFC-70E9-419C-A7E9-055458CA5BBB}"
 	ProjectSection(SolutionItems) = preProject
 		Cobos.Codegen\MSBuild\cobos.codegen.net35.targets = Cobos.Codegen\MSBuild\cobos.codegen.net35.targets
-		Cobos.Codegen\MSBuild\cobos.codegen.net40.targets = Cobos.Codegen\MSBuild\cobos.codegen.net40.targets
+		Cobos.Codegen\MSBuild\cobos.codegen.net45.targets = Cobos.Codegen\MSBuild\cobos.codegen.net45.targets
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.Utilities (NET35)", "Cobos.Utilities (NET35)\Cobos.Utilities (NET35).csproj", "{97E05107-67B6-401E-B34F-9EFBEC81EB05}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.Utilities.Tests (NET35)", "Cobos.Utilities.Tests (NET35)\Cobos.Utilities.Tests (NET35).csproj", "{3C92257A-8265-4787-B8CA-B8F70357F4B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.WpfApplication (NET35)", "Cobos.WpfApplication (NET35)\Cobos.WpfApplication (NET35).csproj", "{6BA79D0F-DF26-41F6-99EF-F23E49C48645}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.Web.Utilities (NET35)", "Cobos.Web.Utilities (NET35)\Cobos.Web.Utilities (NET35).csproj", "{582F9F9B-E6E8-4D7D-B5AD-AAE116C47029}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.WpfApplication.Tests (NET35)", "Cobos.WpfApplication.Tests (NET35)\Cobos.WpfApplication.Tests (NET35).csproj", "{7635B9D1-14E7-4BAF-A4B0-116E3AE4D9EE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.Data (NET35)", "Cobos.Data (NET35)\Cobos.Data (NET35).csproj", "{F2609602-12E4-47FD-90FB-CC17526EC27B}"
 EndProject
@@ -111,10 +102,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.Data.MySql (NET35)", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.Data.Oracle (NET35)", "Cobos.Data.Oracle (NET35)\Cobos.Data.Oracle (NET35).csproj", "{BE371019-2B99-4766-A47B-0A438B42E8B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.Data.Oracle.Tests (NET35)", "Cobos.Data.Oracle.Tests (NET35)\Cobos.Data.Oracle.Tests (NET35).csproj", "{8625748D-93E2-4C3E-99AF-165B89C23EE8}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.Data.MySql.Tests (NET35)", "Cobos.Data.MySql.Tests (NET35)\Cobos.Data.MySql.Tests (NET35).csproj", "{E446DDD0-4E47-4259-BDFF-A38F0C5211C7}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.Script (NET35)", "Cobos.Script (NET35)\Cobos.Script (NET35).csproj", "{E63897F1-8E05-44E4-A050-AD53029E6B7D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.ScriptEngine (NET35)", "Cobos.ScriptEngine (NET35)\Cobos.ScriptEngine (NET35).csproj", "{3E4222B3-81D7-48CE-B810-0F64BFB19516}"
@@ -124,6 +111,14 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.Build.Targets (NET35)", "Cobos.Build.Targets (NET35)\Cobos.Build.Targets (NET35).csproj", "{FBB19ED0-C1E5-43D0-A54D-8A55D9B4F356}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.Build.Targets.Tests (NET35)", "Cobos.Build.Targets.Tests (NET35)\Cobos.Build.Targets.Tests (NET35).csproj", "{90F7BC89-6D9F-4404-9E13-A14F52654D49}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utilities", "Utilities", "{273790B0-BE8F-4F32-BEA9-78C50ADD1E23}"
+	ProjectSection(SolutionItems) = preProject
+		Cobos.Codegen\Stylesheets\Utilities\Boilerplate.xslt = Cobos.Codegen\Stylesheets\Utilities\Boilerplate.xslt
+		Cobos.Codegen\Stylesheets\Utilities\Formatting.xslt = Cobos.Codegen\Stylesheets\Utilities\Formatting.xslt
+		Cobos.Codegen\Stylesheets\Utilities\Nodes.xslt = Cobos.Codegen\Stylesheets\Utilities\Nodes.xslt
+		Cobos.Codegen\Stylesheets\Utilities\Strings.xslt = Cobos.Codegen\Stylesheets\Utilities\Strings.xslt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -139,18 +134,10 @@ Global
 		{3C92257A-8265-4787-B8CA-B8F70357F4B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C92257A-8265-4787-B8CA-B8F70357F4B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3C92257A-8265-4787-B8CA-B8F70357F4B3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6BA79D0F-DF26-41F6-99EF-F23E49C48645}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6BA79D0F-DF26-41F6-99EF-F23E49C48645}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6BA79D0F-DF26-41F6-99EF-F23E49C48645}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6BA79D0F-DF26-41F6-99EF-F23E49C48645}.Release|Any CPU.Build.0 = Release|Any CPU
 		{582F9F9B-E6E8-4D7D-B5AD-AAE116C47029}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{582F9F9B-E6E8-4D7D-B5AD-AAE116C47029}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{582F9F9B-E6E8-4D7D-B5AD-AAE116C47029}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{582F9F9B-E6E8-4D7D-B5AD-AAE116C47029}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7635B9D1-14E7-4BAF-A4B0-116E3AE4D9EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7635B9D1-14E7-4BAF-A4B0-116E3AE4D9EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7635B9D1-14E7-4BAF-A4B0-116E3AE4D9EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7635B9D1-14E7-4BAF-A4B0-116E3AE4D9EE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F2609602-12E4-47FD-90FB-CC17526EC27B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F2609602-12E4-47FD-90FB-CC17526EC27B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F2609602-12E4-47FD-90FB-CC17526EC27B}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -171,14 +158,6 @@ Global
 		{BE371019-2B99-4766-A47B-0A438B42E8B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BE371019-2B99-4766-A47B-0A438B42E8B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BE371019-2B99-4766-A47B-0A438B42E8B7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8625748D-93E2-4C3E-99AF-165B89C23EE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8625748D-93E2-4C3E-99AF-165B89C23EE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8625748D-93E2-4C3E-99AF-165B89C23EE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8625748D-93E2-4C3E-99AF-165B89C23EE8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E446DDD0-4E47-4259-BDFF-A38F0C5211C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E446DDD0-4E47-4259-BDFF-A38F0C5211C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E446DDD0-4E47-4259-BDFF-A38F0C5211C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E446DDD0-4E47-4259-BDFF-A38F0C5211C7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E63897F1-8E05-44E4-A050-AD53029E6B7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E63897F1-8E05-44E4-A050-AD53029E6B7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E63897F1-8E05-44E4-A050-AD53029E6B7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -211,7 +190,7 @@ Global
 		{AA03B289-390E-4A38-93A7-B4E9856B769D} = {734596B3-3329-4336-B41D-A0804C78B745}
 		{431A7087-1C7A-4C5E-8619-3FE737D0C75C} = {734596B3-3329-4336-B41D-A0804C78B745}
 		{6B8454F6-62C2-4A7F-A6A7-C3B9246836D2} = {734596B3-3329-4336-B41D-A0804C78B745}
-		{0C8EFEDC-4DEB-4890-8BF9-B9E00B321FA6} = {431A7087-1C7A-4C5E-8619-3FE737D0C75C}
+		{273790B0-BE8F-4F32-BEA9-78C50ADD1E23} = {734596B3-3329-4336-B41D-A0804C78B745}
 		{B9BB1932-D08F-4904-A8FC-A5F0AC25644A} = {6B8454F6-62C2-4A7F-A6A7-C3B9246836D2}
 		{150D932B-1FB2-49B0-8FC0-C94A3711DBA9} = {B9BB1932-D08F-4904-A8FC-A5F0AC25644A}
 		{7472F69A-82C6-4544-8FDC-346852767FD4} = {B9BB1932-D08F-4904-A8FC-A5F0AC25644A}

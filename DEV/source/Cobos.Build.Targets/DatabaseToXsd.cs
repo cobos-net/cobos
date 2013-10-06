@@ -68,9 +68,24 @@ namespace Cobos.Build.Targets
         public enum DatabasePlatformEnum
         {
             /// <summary>
-            /// Oracle Database
+            /// Oracle Database.
             /// </summary>
-            Oracle
+            Oracle,
+
+            /// <summary>
+            /// MySQL Database.
+            /// </summary>
+            MySQL,
+
+            /// <summary>
+            /// <c>PostgreSQL</c> Database.
+            /// </summary>
+            PostgreSQL,
+
+            /// <summary>
+            /// SQL Server Database.
+            /// </summary>
+            SqlServer
         }
 
         #endregion
@@ -155,9 +170,20 @@ namespace Cobos.Build.Targets
             // Create the database adapter
             switch (this.databasePlatform)
             {
-            case DatabasePlatformEnum.Oracle:
-                database = new Cobos.Data.Oracle.OracleDatabaseAdapter(this.ConnectionString);
-                break;
+                case DatabasePlatformEnum.Oracle:
+                    database = new Cobos.Data.Oracle.OracleDatabaseAdapter(this.ConnectionString);
+                    break;
+
+                case DatabasePlatformEnum.MySQL:
+                    database = new Cobos.Data.MySql.MySqlDatabaseAdapter(this.ConnectionString);
+                    break;
+
+                case DatabasePlatformEnum.PostgreSQL:
+                    throw new NotImplementedException("The PostgreSQL adapter is not implemented in this version.");
+
+                case DatabasePlatformEnum.SqlServer:
+                    database = new Cobos.Data.SqlServer.SqlDatabaseAdapter(this.ConnectionString);
+                    break;
             }
 
             if (database == null)
@@ -182,11 +208,11 @@ namespace Cobos.Build.Targets
             }
             finally
             {
-                IDisposable toDispose = database as IDisposable;
+                IDisposable disposable = database as IDisposable;
 
-                if (toDispose != null)
+                if (disposable != null)
                 {
-                    toDispose.Dispose();
+                    disposable.Dispose();
                 }
             }
 

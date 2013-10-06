@@ -1,5 +1,5 @@
 ﻿// ----------------------------------------------------------------------------
-// <copyright file="AsynchTask.cs" company="Cobos SDK">
+// <copyright file="AsyncTask.cs" company="Cobos SDK">
 //
 //      Copyright (c) 2009-2012 Nicholas Davis - nick@cobos.co.uk
 //
@@ -27,22 +27,30 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 namespace Cobos.Data
 {
+    using System;
+
     /// <summary>
-    /// 
+    /// Represents an asynchronous task.
     /// </summary>
-    /// <typeparam name="TObject"></typeparam>
-    /// <typeparam name="TDelegate"></typeparam>
+    /// <typeparam name="TObject">The type of the object for the task.</typeparam>
+    /// <typeparam name="TDelegate">The type of the delegate callback for the task.</typeparam>
     public struct AsyncTask<TObject, TDelegate>
     {
+        /// <summary>
+        /// The task object.
+        /// </summary>
         public TObject Object;
+        
+        /// <summary>
+        /// The delegate callback method.
+        /// </summary>
         public TDelegate Caller;
+
+        /// <summary>
+        /// The result of the asynchronous task.
+        /// </summary>
         public IAsyncResult AsyncResult;
     }
 }

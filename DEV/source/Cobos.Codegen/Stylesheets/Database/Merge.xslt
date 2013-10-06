@@ -22,7 +22,8 @@
 	============================================================================
 	-->
 
-	<xsl:include href="../../Utilities.xslt"/>
+	<xsl:include href="../../Utilities/Boilerplate.xslt"/>
+	<xsl:include href="../../Utilities/Nodes.xslt"/>
 
 	<xsl:template name="nsdecl">
 		<xsl:variable name="nsdecl">
@@ -60,7 +61,7 @@
 			</xsl:element>
 			<xsl:element name="xsl:variable">
 				<xsl:attribute name="name">databaseTypesNodeSet</xsl:attribute>
-				<xsl:attribute name="select">msxsl:node-set( $databaseTypes )</xsl:attribute>
+				<xsl:attribute name="select">msxsl:node-set($databaseTypes)</xsl:attribute>
 			</xsl:element>
 
 			<xsl:element name="xsl:variable">
@@ -69,16 +70,16 @@
 			</xsl:element>
 			<xsl:element name="xsl:variable">
 				<xsl:attribute name="name">databaseTablesNodeSet</xsl:attribute>
-				<xsl:attribute name="select">msxsl:node-set( $databaseTables )</xsl:attribute>
+				<xsl:attribute name="select">msxsl:node-set($databaseTables)</xsl:attribute>
 			</xsl:element>
 
 			<xsl:element name="xsl:variable">
 				<xsl:attribute name="name">databaseConstraints</xsl:attribute>
-				<xsl:copy-of select="xsd:element//*[ self::xsd:key | self::xsd:unique | self::xsd:keyref ]" />
+				<xsl:copy-of select="xsd:element//*[self::xsd:key | self::xsd:unique | self::xsd:keyref]" />
 			</xsl:element>
 			<xsl:element name="xsl:variable">
 				<xsl:attribute name="name">databaseConstraintsNodeSet</xsl:attribute>
-				<xsl:attribute name="select">msxsl:node-set( $databaseConstraints )</xsl:attribute>
+				<xsl:attribute name="select">msxsl:node-set($databaseConstraints)</xsl:attribute>
 			</xsl:element>
 		</xsl:element>
 

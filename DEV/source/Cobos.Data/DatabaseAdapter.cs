@@ -27,54 +27,66 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-using System;
-using System.Data;
-using System.Data.Common;
-using System.Xml;
-using System.Xml.Xsl;
-using System.IO;
-using System.Diagnostics;
-
-using Cobos.Utilities;
-using Cobos.Utilities.Xml;
-
 namespace Cobos.Data
 {
+    using System;
+    using System.Data;
+    using System.Data.Common;
+    using System.Diagnostics;
+    using System.IO;
+    using System.Xml;
+    using System.Xml.Xsl;
+    using Cobos.Utilities;
+    using Cobos.Utilities.Xml;
+
+    /// <summary>
+    /// Base class implementation of <see cref="IDatabaseAdapter"/>.
+    /// </summary>
+    /// <typeparam name="ConnectionType">The Database connection type.</typeparam>
+    /// <typeparam name="CommandType">The Database command type.</typeparam>
+    /// <typeparam name="DataAdapterType">The Data Adapter type.</typeparam>
     public abstract class DatabaseAdapter<ConnectionType, CommandType, DataAdapterType> : IDatabaseAdapter
         where ConnectionType : IDbConnection, new()
         where CommandType : IDbCommand, new()
         where DataAdapterType : DbDataAdapter, IDbDataAdapter, new()
     {
-        #region Private data
+        #region Instance data
+
+        /// <summary>
+        /// The connection string
+        /// </summary>
+        public readonly string ConnectionString;
 
         #endregion
 
         #region Construction
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DatabaseAdapter{ConnectionType,CommandType,DataAdapterType}"/> class.
+        /// </summary>
+        /// <param name="connectionString">The database connection string.</param>
         public DatabaseAdapter(string connectionString)
         {
-            ConnectionString = connectionString;
+            this.ConnectionString = connectionString;
         }
 
         #endregion
 
-        #region Database Connection
-
-        public readonly string ConnectionString;
-
-        #endregion
-
         /// <summary>
-        /// 
+        /// Asynchronous database callback.
         /// </summary>
-        /// <param name="sql"></param>
-        /// <param name="tableName"></param>
-        /// <returns></returns>
+        /// <param name="sql">The query to execute.</param>
+        /// <param name="table">The DataTable to hold the query results.</param>
         public delegate void QueryDatabaseAsync(string sql, DataTable table);
 
         /// <summary>
-        /// Can be ignored for most DB connection types.
+        /// Gets or sets a value indicating whether the connection is read only.
         /// </summary>
+        /// <remarks>
+        /// In some implementations this may result in performance 
+        /// improvements if read-write access is not required.
+        /// Set via the connection string. Not supported on all platforms.
+        /// </remarks>
         public bool ReadOnly
         {
             get;
@@ -82,78 +94,60 @@ namespace Cobos.Data
         }
 
         /// <summary>
-        /// Gets the DB Connection.  Can be overridden to provide
-        /// custom connection opening behaviour.
+        /// Executes an SQL statement against the Connection object of a .NET Framework
+        /// data provider, and returns the number of rows affected.
         /// </summary>
-        /// <returns></returns>
-        protected virtual ConnectionType GetConnection()
+        /// <returns>The number of rows affected.</returns>
+        public int ExecuteNonQuery()
         {
-            ConnectionType connection = new ConnectionType();
-            connection.ConnectionString = ConnectionString;
-            return connection;
+            throw new NotImplementedException();
         }
 
         /// <summary>
-        /// Gets a DB command object.  Can be overriden to provide
-        /// custom command behaviour.
+        /// Executes the <c>System.Data.IDbCommand.CommandText</c> against the <c>System.Data.IDbCommand.Connection</c>
+        /// and builds an <c>System.Data.IDataReader</c>.
         /// </summary>
-        /// <returns></returns>
-        protected virtual CommandType GetCommand(ConnectionType connection)
+        /// <returns>An <c>System.Data.IDataReader</c> object.</returns>
+        public IDataReader ExecuteReader()
         {
-            CommandType command = new CommandType();
-            command.Connection = connection;
-            return command;
+            throw new NotImplementedException();
         }
 
         /// <summary>
-        /// Get the Data Adapter type.  Can be overridden to provide
-        /// custom data adapter behaviour.
+        /// Executes the query, and returns the first column of the first row in the
+        /// result set returned by the query. Extra columns or rows are ignored.
         /// </summary>
-        /// <returns></returns>
-        protected virtual DataAdapterType GetDataAdapter()
+        /// <returns>The first column of the first row in the result set.</returns>
+        public object ExecuteScalar()
         {
-            return new DataAdapterType();
+            throw new NotImplementedException();
         }
 
         /// <summary>
-        /// 
+        /// Executes the script.
         /// </summary>
-        /// <param name="sql"></param>
-        /// <param name="tableName"></param>
-        /// <returns></returns>
-        public DataTable Fill(string sql, string tableName)
+        /// <param name="script">The SQL script.</param>
+        public void ExecuteScript(string script)
         {
-            DataTable dataTable = null;
-
-            try
-            {
-                dataTable = new DataTable(tableName);
-
-                Fill(sql, dataTable);
-
-                return dataTable;
-            }
-            catch (Exception)
-            {
-                if (dataTable != null)
-                {
-                    dataTable.Dispose();
-                }
-                throw;
-            }
+            throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Fill a DataTable with the query result.
+        /// </summary>
+        /// <param name="sql">The query to execute.</param>
+        /// <param name="result">The table to fill with the query result.</param>
         public virtual void Fill(string sql, DataTable result)
         {
-            using (ConnectionType connection = GetConnection())
+            using (var connection = this.GetConnection())
             {
                 connection.Open();
 
-                using (CommandType command = GetCommand(connection))
+                using (var command = this.GetCommand(connection))
                 {
                     command.CommandText = sql;
 
-                    using (DataAdapterType adapter = GetDataAdapter())
+                    using (var adapter = (DbDataAdapter)this.GetDataAdapter())
                     {
                         ((IDbDataAdapter)adapter).SelectCommand = command;
                         adapter.Fill(result);
@@ -165,180 +159,114 @@ namespace Cobos.Data
         }
 
         /// <summary>
-        /// Fill a strongly typed datatable
+        /// Fill the DatabaseQuery objects synchronously.
         /// </summary>
-        /// <typeparam name="DataTableType"></typeparam>
-        /// <param name="sql"></param>
-        /// <returns></returns>
-        public DataTableType Fill<DataTableType>(string sql) where DataTableType : DataTable, new()
-        {
-            DataTableType dataTable = default(DataTableType);
-
-            try
-            {
-                dataTable = new DataTableType();
-
-                Fill(sql, dataTable);
-
-                return dataTable;
-            }
-            catch (Exception)
-            {
-                if (dataTable != null)
-                {
-                    dataTable.Dispose();
-                }
-                throw;
-            }
-        }
-
-        /// <summary>
-        /// Fill a strongly typed set
-        /// </summary>
-        /// <typeparam name="DataTableType"></typeparam>
-        /// <param name="sql"></param>
-        /// <returns></returns>
-        public DataSetType Fill<DataSetType>(string sql, string tableName) where DataSetType : DataSet, new()
-        {
-            DataSetType dataSet = default(DataSetType);
-
-            try
-            {
-                Fill(sql, tableName, dataSet);
-
-                return dataSet;
-            }
-            catch (Exception)
-            {
-                if (dataSet != null)
-                {
-                    dataSet.Dispose();
-                }
-                throw;
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sql"></param>
-        /// <param name="tableName"></param>
-        /// <param name="dataSetName"></param>
-        /// <returns></returns>
-        public SimpleDataSet Fill(string sql, string tableName, string dataSetName)
-        {
-            DataTable dataTable = Fill(sql, tableName);
-
-            SimpleDataSet dataSet = new SimpleDataSet(dataSetName);
-            dataSet.Tables.Add(dataTable);
-
-            return dataSet;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="queries"></param>
-        /// <param name="dataset"></param>
+        /// <param name="queries">The queries to process.</param>
         public void Fill(DatabaseQuery[] queries)
         {
-            for (int q = 0; q != queries.Length; ++q)
+            foreach (var query in queries)
             {
-                Fill(queries[q].Sql, queries[q].Table);
+                this.Fill(query.Sql, query.Table);
             }
         }
 
         /// <summary>
-        /// 
+        /// Fill the DatabaseQuery objects asynchronously.
         /// </summary>
-        /// <param name="queries"></param>
-        /// <param name="dataset"></param>
-        public void Fill(DatabaseQuery query)
-        {
-            Fill(query.Sql, query.Table);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="query"></param>
-        /// <param name="dataset"></param>
-        public void Fill(string sql, string tableName, DataSet dataset)
-        {
-            DataTable table = dataset.Tables[tableName];
-
-            if (table == null)
-            {
-                table = Fill(sql, tableName);
-
-                if (table != null)
-                {
-                    dataset.Tables.Add(table);
-                }
-            }
-            else
-            {
-                Fill(sql, table);
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="queries"></param>
-        /// <param name="dataSetName"></param>
-        /// <returns></returns>
+        /// <param name="queries">The queries to process.</param>
         public void FillAsynch(DatabaseQuery[] queries)
         {
             // create a new helpers list
-            AsyncTask<DataTable, DatabaseAdapter<ConnectionType, CommandType, DataAdapterType>.QueryDatabaseAsync>[] tasks = new AsyncTask<DataTable, DatabaseAdapter<ConnectionType, CommandType, DataAdapterType>.QueryDatabaseAsync>[queries.Length];
+            var tasks = new AsyncTask<DataTable, DatabaseAdapter<ConnectionType, CommandType, DataAdapterType>.QueryDatabaseAsync>[queries.Length];
 
             // initiate the queries
-            for (int i = 0; i != queries.Length; ++i)
+            for (int i = 0; i < queries.Length; ++i)
             {
                 DatabaseQuery q = queries[i];
 
                 // create a new query helper
                 tasks[i] = new AsyncTask<DataTable, DatabaseAdapter<ConnectionType, CommandType, DataAdapterType>.QueryDatabaseAsync>();
                 tasks[i].Object = q.Table;
-                tasks[i].Caller = Fill;
+                tasks[i].Caller = this.Fill;
                 tasks[i].AsyncResult = tasks[i].Caller.BeginInvoke(q.Sql, q.Table, null, null);
             }
 
             // get the results from the queries
-            foreach (AsyncTask<DataTable, DatabaseAdapter<ConnectionType, CommandType, DataAdapterType>.QueryDatabaseAsync> task in tasks)
+            foreach (var task in tasks)
             {
                 task.Caller.EndInvoke(task.AsyncResult);
             }
         }
 
         /// <summary>
-        /// Get a raw Xml description of the specified tables
+        /// Gets a new database connection object.
         /// </summary>
-        /// <param name="schema"></param>
-        /// <param name="tables"></param>
-        /// <param name="result"></param>
+        /// <returns>An object representing a valid database connection.</returns>
+        public virtual IDbConnection GetConnection()
+        {
+            ConnectionType connection = new ConnectionType();
+            connection.ConnectionString = this.ConnectionString;
+            return connection;
+        }
+
+        /// <summary>
+        /// Get a new database command object.
+        /// </summary>
+        /// <param name="connection">The database connection.</param>
+        /// <returns>An object representing a valid database command.</returns>
+        public virtual IDbCommand GetCommand(IDbConnection connection)
+        {
+            CommandType command = new CommandType();
+            command.Connection = connection;
+            return command;
+        }
+
+        /// <summary>
+        /// Get a new database adapter object.
+        /// </summary>
+        /// <returns>An object representing a valid database adapter.</returns>
+        public virtual IDbDataAdapter GetDataAdapter()
+        {
+            return new DataAdapterType();
+        }
+
+        /// <summary>
+        /// Get the basic metadata from the RDBMS for the specified tables.
+        /// </summary>
+        /// <remarks>
+        /// This queries the column types and constraints for the specified
+        /// tables from the RDBMS.  The result is written to the stream
+        /// in a basic XML format.
+        /// </remarks>
+        /// <param name="schema">The schema that owns the tables.</param>
+        /// <param name="tables">The table names to query for.</param>
+        /// <param name="result">The stream to write the result to.</param>
         public void GetTableMetadata(string schema, string[] tables, Stream result)
         {
-            SimpleDataSet dataset = TableMetadata(schema, tables);
+            SimpleDataSet dataset = this.TableMetadata(schema, tables);
             dataset.ToXml(result);
         }
 
         /// <summary>
-        /// Get an XSD schema document for the specified tables.
+        /// Get an XSD document from the RDBMS for the specified tables.
         /// </summary>
-        /// <param name="schema"></param>
-        /// <param name="tables"></param>
-        /// <param name="result"></param>
+        /// <remarks>
+        /// This queries the column types and constraints for the specified
+        /// tables from the RDBMS.  The result is written to the stream
+        /// in an XSD format.
+        /// </remarks>
+        /// <param name="schema">The schema that owns the tables.</param>
+        /// <param name="tables">The table names to query for.</param>
+        /// <param name="result">The stream to write the result to.</param>
         public void GetTableSchema(string schema, string[] tables, Stream result)
         {
-            SimpleDataSet dataset = TableMetadata(schema, tables);
+            SimpleDataSet dataset = this.TableMetadata(schema, tables);
 
-            XslCompiledTransform xslTableToXsd = XsltHelper.Load("Database/Oracle/DatabaseSchema.xslt", "Cobos.Data.Stylesheets");
+            XslCompiledTransform transform = XsltHelper.Load("Database/DatabaseSchema.xslt", "Cobos.Data.Stylesheets");
 
-            if (xslTableToXsd != null)
+            if (transform != null)
             {
-                dataset.ToXml(xslTableToXsd, null, result);
+                dataset.ToXml(transform, null, result);
             }
             else
             {
@@ -347,18 +275,70 @@ namespace Cobos.Data
         }
 
         /// <summary>
-        /// Querying metadata varies between platforms, each platform specific derived class must provide
-        /// its own implementation of this method.
+        /// Test the connection to the database to ensure that the adapter 
+        /// is correctly configured.
         /// </summary>
-        /// <param name="schema"></param>
-        /// <param name="tables"></param>
-        /// <returns></returns>
-        protected abstract SimpleDataSet TableMetadata(string schema, string[] tables);
+        /// <returns>True if the test was successful; Otherwise false.</returns>
+        public abstract bool TestConnection();
 
         /// <summary>
-        /// Test that a connection to the database can be made
+        /// SQL to query the DB metadata to get the columns for the specified tables.
         /// </summary>
-        /// <returns>True if the test succeeded, otherwise false.</returns>
-        public abstract bool TestConnection();
+        /// <param name="schema">The schema name.</param>
+        /// <param name="tableNames">The table names to query for.</param>
+        /// <returns>A platform specific SQL query.</returns>
+        protected abstract string GetMetadataColumnsSQL(string schema, string tableNames);
+
+        /// <summary>
+        /// SQL to query the DB metadata to get the constraints for the specified tables.
+        /// </summary>
+        /// <param name="schema">The schema name.</param>
+        /// <param name="tableNames">The table names to query for.</param>
+        /// <returns>A platform specific SQL query.</returns>
+        protected abstract string GetMetadataConstraintsSQL(string schema, string tableNames);
+
+        /// <summary>
+        /// Query the table metadata for the specified schema.
+        /// </summary>
+        /// <param name="schema">The schema that owns the tables.</param>
+        /// <param name="tables">The table names to query for.</param>
+        /// <returns>A dataset containing column and constraint definitions for the tables.</returns>
+        private SimpleDataSet TableMetadata(string schema, string[] tables)
+        {
+            schema = schema.ToUpper();
+            var tableNames = string.Join("', '", tables).ToUpper();
+
+            var result = new SimpleDataSet("TABLE_METADATA");
+
+            var table = new DataTable("TABLE");
+            var column = new DataTable("COLUMN");
+            var constraint = new DataTable("CONSTRAINT");
+
+            result.Tables.Add(table);
+            result.Tables.Add(column);
+            result.Tables.Add(constraint);
+
+            table.Columns.Add(new DataColumn("NAME", typeof(string)));
+
+            foreach (string t in tables)
+            {
+                var row = table.NewRow();
+                row["NAME"] = t;
+                table.Rows.Add(row);
+            }
+
+            this.Fill(this.GetMetadataColumnsSQL(schema, tableNames), column);
+            this.Fill(this.GetMetadataConstraintsSQL(schema, tableNames), constraint);
+
+            SimpleDataSet.Relationship[] relations = new SimpleDataSet.Relationship[]
+            {
+                new SimpleDataSet.Relationship("COLUMNS", "TABLE", "NAME", "COLUMN", "TABLE_NAME"),
+                new SimpleDataSet.Relationship("CONSTRAINTS", "TABLE", "NAME", "CONSTRAINT", "TABLE_NAME")
+            };
+
+            result.CreateRelationships(relations);
+
+            return result;
+        }
     }
 }

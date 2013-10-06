@@ -74,45 +74,45 @@
   <ItemGroup>
     <Compile Include="..\Cobos.Utilities.Tests\Cache\CacheFileTests.cs">
       <Link>Cache\CacheFileTests.cs</Link>
-    </Compile>	
+    </Compile>
     <Compile Include="..\Cobos.Utilities.Tests\Extensions\ArrayExtensionsTests.cs">
       <Link>Extensions\ArrayExtensionsTests.cs</Link>
-    </Compile>	
+    </Compile>
     <Compile Include="..\Cobos.Utilities.Tests\File\DriveMappingTests.cs">
       <Link>File\DriveMappingTests.cs</Link>
-    </Compile>	
+    </Compile>
     <Compile Include="..\Cobos.Utilities.Tests\File\FileHandleTests.cs">
       <Link>File\FileHandleTests.cs</Link>
-    </Compile>	
+    </Compile>
     <Compile Include="..\Cobos.Utilities.Tests\File\FileUtilityTests.cs">
       <Link>File\FileUtilityTests.cs</Link>
-    </Compile>	
+    </Compile>
     <Compile Include="..\Cobos.Utilities.Tests\File\NormalisedPathTests.cs">
       <Link>File\NormalisedPathTests.cs</Link>
-    </Compile>	
+    </Compile>
     <Compile Include="..\Cobos.Utilities.Tests\File\PathResolverTests.cs">
       <Link>File\PathResolverTests.cs</Link>
-    </Compile>	
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.Net35.cs" />
     <Compile Include="..\Cobos.Utilities.Tests\TestManager.cs">
       <Link>TestManager.cs</Link>
-    </Compile>	
+    </Compile>
     <Compile Include="..\Cobos.Utilities.Tests\Text\MacroExpanderTests.cs">
       <Link>Text\MacroExpanderTests.cs</Link>
-    </Compile>	
+    </Compile>
     <Compile Include="..\Cobos.Utilities.Tests\Text\StringSeparatorTests.cs">
       <Link>Text\StringSeperatorTests.cs</Link>
-    </Compile>	
+    </Compile>
     <Compile Include="..\Cobos.Utilities.Tests\Threading\Resource\ResourcePoolTests.cs">
       <Link>Threading\Resource\ResourcePoolTests.cs</Link>
-    </Compile>	
+    </Compile>
     <Compile Include="..\Cobos.Utilities.Tests\Threading\Resource\TestResource.cs">
       <Link>Threading\Resource\TestResource.cs</Link>
-    </Compile>	
+    </Compile>
     <Compile Include="..\Cobos.Utilities.Tests\Win32\DesktopTests.cs">
       <Link>Win32\DesktopTests.cs</Link>
-    </Compile>	
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="TestFiles\Images\wallpaper.bmp" />
@@ -135,9 +135,9 @@
     <None Include="TestFiles\TestProject\Cad Referral Client Module.vcproj" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Cobos.Utilities (NET35)\Cobos.Utilities (NET35).csproj">
+    <ProjectReference Include="..\Cobos.Utilities %28NET35%29\Cobos.Utilities %28NET35%29.csproj">
       <Project>{97E05107-67B6-401E-B34F-9EFBEC81EB05}</Project>
-      <Name>Cobos.Utilities</Name>
+      <Name>Cobos.Utilities %28NET35%29</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

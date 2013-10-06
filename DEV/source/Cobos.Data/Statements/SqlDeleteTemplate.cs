@@ -27,15 +27,15 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 namespace Cobos.Data.Statements
 {
+    using System;
+    using System.Text;
+
+    /// <summary>
+    /// Construct a SQL DELETE statement.
+    /// </summary>
     public class SqlDeleteTemplate
     {
-
     }
 }

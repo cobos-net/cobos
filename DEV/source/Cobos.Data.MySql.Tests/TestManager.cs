@@ -27,14 +27,20 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-namespace Cobos.Data.Tests
+namespace Cobos.Data.MySql.Tests
 {
     using System.Diagnostics;
     using System.IO;
 
+    /// <summary>
+    /// Manages test data.
+    /// </summary>
     public static class TestManager
     {
-        public readonly static string ConnectionString = "Data Source=VEA795DB2.WORLD;User Id=eadev;Password=eadev";
+        /// <summary>
+        /// The connection string to the database.
+        /// </summary>
+        public static readonly string ConnectionString = "Server=localhost;Database=Northwind;Uid=root;Pwd=mysql;";
 
         /// <summary>
         /// Gets the location of the test files.

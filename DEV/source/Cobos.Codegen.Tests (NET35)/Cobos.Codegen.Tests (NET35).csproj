@@ -63,22 +63,22 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\Cobos.Codegen.Tests\Data\Event\DataModel.xml">
-	  <Link>Data\Event\DataModel.xml</Link>
+      <Link>Data\Event\DataModel.xml</Link>
       <SubType>Designer</SubType>
     </Content>
     <Content Include="..\Cobos.Codegen.Tests\Stylesheets\Classes\CSharp\Custom.xslt">
-	  <Link>Stylesheets\Classes\CSharp\Custom.xslt</Link>
+      <Link>Stylesheets\Classes\CSharp\Custom.xslt</Link>
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Cobos.Data (NET35)\Cobos.Data (NET35).csproj">
+    <ProjectReference Include="..\Cobos.Data %28NET35%29\Cobos.Data %28NET35%29.csproj">
       <Project>{F2609602-12E4-47FD-90FB-CC17526EC27B}</Project>
-      <Name>Cobos.Data</Name>
+      <Name>Cobos.Data %28NET35%29</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Cobos.Utilities (NET35)\Cobos.Utilities (NET35).csproj">
+    <ProjectReference Include="..\Cobos.Utilities %28NET35%29\Cobos.Utilities %28NET35%29.csproj">
       <Project>{97E05107-67B6-401E-B34F-9EFBEC81EB05}</Project>
-      <Name>Cobos.Utilities</Name>
+      <Name>Cobos.Utilities %28NET35%29</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

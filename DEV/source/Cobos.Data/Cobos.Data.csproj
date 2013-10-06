@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Cobos.Data</RootNamespace>
     <AssemblyName>Cobos.Data</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -43,7 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Adapters\SqlDatabaseAdapter.cs" />
+    <Compile Include="SqlServer\SqlDatabaseAdapter.cs" />
     <Compile Include="AsyncTask.cs" />
     <Compile Include="SimpleDataSet.cs">
       <SubType>Component</SubType>
@@ -52,7 +52,7 @@
     <Compile Include="DatabaseQuery.cs" />
     <Compile Include="IDatabaseAdapter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\AssemblyInfo.Net40.cs" />
+    <Compile Include="Properties\AssemblyInfo.Net45.cs" />
     <Compile Include="Statements\SqlDeleteTemplate.cs" />
     <Compile Include="Statements\SqlInsertTemplate.cs" />
     <Compile Include="Statements\SqlSelectTemplate.cs" />
@@ -69,12 +69,10 @@
       <Name>Cobos.Utilities</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <EmbeddedResource Include="..\Cobos.Codegen\Stylesheets\Database\Oracle\DatabaseSchema.xslt">
-      <Link>Stylesheets\Database\Oracle\DatabaseSchema.xslt</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\Cobos.Codegen\Stylesheets\Utilities.xslt">
-      <Link>Stylesheets\Utilities.xslt</Link>
+    <EmbeddedResource Include="..\Cobos.Codegen\Stylesheets\Database\DatabaseSchema.xslt">
+      <Link>Stylesheets\Database\DatabaseSchema.xslt</Link>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -31,31 +31,39 @@ namespace Cobos.Data.Oracle
 {
     using System;
     using System.Data;
-    using global::Oracle.DataAccess.Client;
     using Cobos.Data;
+    using global::Oracle.DataAccess.Client;
 
+    /// <summary>
+    /// Represents a connection to an Oracle database.
+    /// </summary>
     public class OracleDatabaseAdapter : DatabaseAdapter<OracleConnection, OracleCommand, OracleDataAdapter>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OracleDatabaseAdapter"/> class.
+        /// </summary>
+        /// <param name="connectionString">The database connection string.</param>
         public OracleDatabaseAdapter(string connectionString)
             : base(connectionString)
         {
         }
 
         /// <summary>
-        /// Test the connection with a simple query.
+        /// Test the connection to the database to ensure that the adapter 
+        /// is correctly configured.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>True if the test was successful; Otherwise false.</returns>
         public override bool TestConnection()
         {
             bool result = false;
 
             try
             {
-                using (OracleConnection connection = GetConnection())
+                using (var connection = GetConnection())
                 {
                     connection.Open();
 
-                    using (OracleCommand command = GetCommand(connection))
+                    using (var command = GetCommand(connection))
                     {
                         command.CommandText = "select 1 from dual";
 
@@ -79,56 +87,67 @@ namespace Cobos.Data.Oracle
         }
 
         /// <summary>
-        /// Oracle specific implementation of the metadata query.
+        /// SQL to query the DB metadata to get the columns for the specified tables.
         /// </summary>
-        /// <param name="schema"></param>
-        /// <param name="tables"></param>
-        /// <returns></returns>
-        protected override SimpleDataSet TableMetadata(string schema, string[] tables)
+        /// <param name="schema">The schema name.</param>
+        /// <param name="tableNames">The table names to query for.</param>
+        /// <returns>A platform specific SQL query.</returns>
+        protected override string GetMetadataColumnsSQL(string schema, string tableNames)
         {
-            SimpleDataSet result = new SimpleDataSet("TABLE_METADATA");
+            return @"SELECT 
+                        table_name AS TABLE_NAME, 
+                        column_name AS COLUMN_NAME,
+                        column_id AS ORDINAL_POSITION,
+                        data_default AS COLUMN_DEFAULT,
+                        CASE
+                            WHEN nullable = 'Y' THEN 'YES'  
+                            WHEN nullable = 'N' THEN 'NO'
+                        END AS IS_NULLABLE,
+                        UPPER(data_type) AS DATA_TYPE, 
+                        char_length AS CHARACTER_MAXIMUM_LENGTH,
+                        data_length AS CHARACTER_OCTET_LENGTH, 
+                        data_precision AS NUMERIC_PRECISION, 
+                        data_scale AS NUMERIC_SCALE
+                    FROM 
+                        all_tab_columns 
+                    WHERE 
+                        UPPER(owner) = '" + schema + @"' 
+                        AND UPPER(table_name) IN ('" + tableNames + @"') 
+                    ORDER BY 
+                        table_name, column_id";
+        }
 
-            DataTable table = new DataTable("TABLE");
-            table.Columns.Add(new DataColumn("NAME", Type.GetType("System.String")));
-
-            foreach (string t in tables)
-            {
-                DataRow row = table.NewRow();
-                row["NAME"] = t;
-                table.Rows.Add(row);
-            }
-
-            result.Tables.Add(table);
-
-            string columns = @"SELECT table_name, column_name, data_type, data_length, "
-                                    + "data_precision, data_scale, nullable, data_default, char_length "
-                                    + "FROM all_tab_columns "
-                                    + "WHERE UPPER( owner ) = '" + schema.ToUpper() + "' "
-                                    + "AND UPPER( table_name ) IN ('" + string.Join("', '", tables).ToUpper() + "') "
-                                    + "ORDER BY table_name ASC, column_id ASC";
-
-            Fill(columns, "COLUMN", result);
-
-            string constraints = "SELECT cols.table_name, cols.column_name, cols.position, cons.constraint_type, cons.constraint_name, cons.status "
-                                                 + "FROM all_constraints cons, all_cons_columns cols "
-                                                 + "WHERE cols.table_name IN ('" + string.Join("', '", tables).ToUpper() + "') "
-                                                 + "AND cons.constraint_type IN ('P', 'R', 'U') "
-                                                 + "AND cons.constraint_name = cols.constraint_name "
-                                                 + "AND cons.owner = '" + schema.ToUpper() + "' "
-                                                 + "AND cons.owner = cols.owner "
-                                                 + "ORDER BY cols.table_name, cols.position";
-
-            Fill(constraints, "CONSTRAINT", result);
-
-            SimpleDataSet.Relationship[] relations = new SimpleDataSet.Relationship[]
-			{
-				new SimpleDataSet.Relationship( "COLUMNS", "TABLE", "NAME", "COLUMN", "TABLE_NAME" ),
-				new SimpleDataSet.Relationship( "CONSTRAINTS", "TABLE", "NAME", "CONSTRAINT", "TABLE_NAME" )
-			};
-
-            result.CreateRelationships(relations);
-
-            return result;
+        /// <summary>
+        /// SQL to query the DB metadata to get the constraints for the specified tables.
+        /// </summary>
+        /// <param name="schema">The schema name.</param>
+        /// <param name="tableNames">The table names to query for.</param>
+        /// <returns>A platform specific SQL query.</returns>
+        protected override string GetMetadataConstraintsSQL(string schema, string tableNames)
+        {
+            return @"SELECT 
+                        cols.table_name AS TABLE_NAME, 
+                        cols.column_name AS COLUMN_NAME, 
+                        cols.position AS ORDINAL_POSITION, 
+                        CASE 
+                            WHEN cons.constraint_type = 'P' THEN 'PRIMARY KEY'
+                            WHEN cons.constraint_type = 'R' THEN 'FOREIGN KEY'
+                            WHEN cons.constraint_type = 'U' THEN 'UNIQUE'
+                        END AS CONSTRAINT_TYPE, 
+                        cons.constraint_name AS CONSTRAINT_NAME, 
+                        cons.status AS STATUS 
+                    FROM 
+                        all_constraints cons, 
+                        all_cons_columns cols 
+                    WHERE 
+                        UPPER(cons.owner) = '" + schema + @"' 
+                        AND UPPER(cons.table_name) IN ('" + tableNames + @"')  
+                        AND cons.constraint_type IN ('P', 'R', 'U') 
+                        AND cons.constraint_name = cols.constraint_name 
+                        AND cons.owner = cols.owner 
+                        AND cons.table_name = cols.table_name
+                    ORDER BY 
+                        cols.table_name, cols.position";
         }
     }
 }

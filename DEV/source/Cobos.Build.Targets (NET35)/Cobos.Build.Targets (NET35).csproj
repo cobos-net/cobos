@@ -49,13 +49,17 @@
     <Compile Include="Properties\AssemblyInfo.Net35.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Cobos.Data.Oracle (NET35)\Cobos.Data.Oracle (NET35).csproj">
-      <Project>{BE371019-2B99-4766-A47B-0A438B42E8B7}</Project>
-      <Name>Cobos.Data.Oracle</Name>
+    <ProjectReference Include="..\Cobos.Data.MySql %28NET35%29\Cobos.Data.MySql %28NET35%29.csproj">
+      <Project>{a7879f26-9b47-478a-9675-4d926638418a}</Project>
+      <Name>Cobos.Data.MySql %28NET35%29</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Cobos.Data (NET35)\Cobos.Data (NET35).csproj">
+    <ProjectReference Include="..\Cobos.Data.Oracle %28NET35%29\Cobos.Data.Oracle %28NET35%29.csproj">
+      <Project>{BE371019-2B99-4766-A47B-0A438B42E8B7}</Project>
+      <Name>Cobos.Data.Oracle %28NET35%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Cobos.Data %28NET35%29\Cobos.Data %28NET35%29.csproj">
       <Project>{F2609602-12E4-47FD-90FB-CC17526EC27B}</Project>
-      <Name>Cobos.Data</Name>
+      <Name>Cobos.Data %28NET35%29</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

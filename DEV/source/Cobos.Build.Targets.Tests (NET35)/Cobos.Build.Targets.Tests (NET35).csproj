@@ -50,17 +50,31 @@
     <Compile Include="..\Cobos.Build.Targets.Tests\DatabaseToXsdTests.cs">
       <Link>DatabaseToXsdTests.cs</Link>
     </Compile>
+    <Compile Include="..\Cobos.Build.Targets.Tests\TestManager.cs">
+      <Link>TestManager.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.Net35.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Cobos.Build.Targets (NET35)\Cobos.Build.Targets (NET35).csproj">
+    <ProjectReference Include="..\Cobos.Build.Targets %28NET35%29\Cobos.Build.Targets %28NET35%29.csproj">
       <Project>{FBB19ED0-C1E5-43D0-A54D-8A55D9B4F356}</Project>
-      <Name>Cobos.Build.Targets</Name>
+      <Name>Cobos.Build.Targets %28NET35%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Cobos.Data.MySql %28NET35%29\Cobos.Data.MySql %28NET35%29.csproj">
+      <Project>{a7879f26-9b47-478a-9675-4d926638418a}</Project>
+      <Name>Cobos.Data.MySql %28NET35%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Cobos.Data.Oracle %28NET35%29\Cobos.Data.Oracle %28NET35%29.csproj">
+      <Project>{be371019-2b99-4766-a47b-0a438b42e8b7}</Project>
+      <Name>Cobos.Data.Oracle %28NET35%29</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="TestData\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

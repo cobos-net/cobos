@@ -27,20 +27,19 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-using System;
-using System.Data;
-
-using Cobos.Data.Utilities;
-
 namespace Cobos.Data
 {
+    using System;
+    using System.Data;
+    using Cobos.Data.Utilities;
+
     /// <summary>
-    /// Allow multiple table queries to be processed ansynchronously
+    /// Allow multiple table queries to be processed asynchronously
     /// </summary>
     public class DatabaseQuery
     {
         /// <summary>
-        /// The sql statement to run to fill the Table object
+        /// The SQL statement to run to fill the Table object
         /// </summary>
         public readonly string Sql;
 
@@ -50,47 +49,47 @@ namespace Cobos.Data
         public readonly DataTable Table;
 
         /// <summary>
-        /// Attach a custom aggregator to the query
+        /// Attach a custom aggregator to the query.
         /// </summary>
         public readonly IDataRowAggregator Aggregator;
 
         /// <summary>
-        /// Simple constructor to create a query
+        /// Initializes a new instance of the <see cref="DatabaseQuery"/> class.
         /// </summary>
-        /// <param name="sql"></param>
-        /// <param name="table"></param>
+        /// <param name="sql">The query to execute.</param>
+        /// <param name="table">The DataTable to fill with the query result.</param>
         public DatabaseQuery(string sql, DataTable table)
         {
-            Sql = sql;
-            Table = table;
+            this.Sql = sql;
+            this.Table = table;
         }
 
         /// <summary>
-        /// Constructor to create a query with a custom aggregator
+        /// Initializes a new instance of the <see cref="DatabaseQuery"/> class with a custom aggregator.
         /// </summary>
-        /// <param name="sql"></param>
-        /// <param name="table"></param>
-        /// <param name="aggregator"></param>
+        /// <param name="sql">The query to execute.</param>
+        /// <param name="table">The table to fill with the result.</param>
+        /// <param name="aggregator">The row aggregator to use for collating row data.</param>
         public DatabaseQuery(string sql, DataTable table, IDataRowAggregator aggregator)
             : this(sql, table)
         {
-            Aggregator = aggregator;
+            this.Aggregator = aggregator;
         }
 
         /// <summary>
-        /// Get the table result.  If an aggregator is provided, it will
-        /// return the processed table.
+        /// Get the table result.  
+        /// If an aggregator is provided, it will return the processed table.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>An object representing </returns>
         public DataTable GetResult()
         {
-            if (Aggregator != null)
+            if (this.Aggregator != null)
             {
-                return Aggregator.Process(Table);
+                return this.Aggregator.Process(this.Table);
             }
             else
             {
-                return Table;
+                return this.Table;
             }
         }
     }

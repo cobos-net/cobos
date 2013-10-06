@@ -53,9 +53,9 @@
     <Compile Include="Properties\AssemblyInfo.Net35.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Cobos.Data (NET35)\Cobos.Data (NET35).csproj">
+    <ProjectReference Include="..\Cobos.Data %28NET35%29\Cobos.Data %28NET35%29.csproj">
       <Project>{F2609602-12E4-47FD-90FB-CC17526EC27B}</Project>
-      <Name>Cobos.Data</Name>
+      <Name>Cobos.Data %28NET35%29</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

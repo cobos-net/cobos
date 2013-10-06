@@ -42,68 +42,65 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Cobos.Data\Adapters\SqlDatabaseAdapter.cs">
-      <Link>Adapters\SqlDatabaseAdapter</Link>
-    </Compile>	
     <Compile Include="..\Cobos.Data\AsyncTask.cs">
       <Link>AsyncTask.cs</Link>
-    </Compile>	
+    </Compile>
     <Compile Include="..\Cobos.Data\SimpleDataSet.cs">
-	  <Link>SimpleDataSet.cs</Link>
+      <Link>SimpleDataSet.cs</Link>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="..\Cobos.Data\DatabaseAdapter.cs">
       <Link>DatabaseAdapter.cs</Link>
-    </Compile>	
+    </Compile>
     <Compile Include="..\Cobos.Data\DatabaseQuery.cs">
       <Link>DatabasesQuery.cs</Link>
-    </Compile>	
+    </Compile>
     <Compile Include="..\Cobos.Data\IDatabaseAdapter.cs">
       <Link>IDatabaseAdapter.cs</Link>
-    </Compile>	
+    </Compile>
+    <Compile Include="..\Cobos.Data\SqlServer\SqlDatabaseAdapter.cs">
+      <Link>SqlServer\SqlDatabaseAdapter.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.Net35.cs" />
     <Compile Include="..\Cobos.Data\Statements\SqlDeleteTemplate.cs">
       <Link>Statements\SqlDeleteTemplate.cs</Link>
-    </Compile>	
+    </Compile>
     <Compile Include="..\Cobos.Data\Statements\SqlInsertTemplate.cs">
       <Link>Statements\SqlInsertTemplate.cs</Link>
-    </Compile>	
+    </Compile>
     <Compile Include="..\Cobos.Data\Statements\SqlSelectTemplate.cs">
       <Link>Statements\SqlSelectTemplate.cs</Link>
-    </Compile>	
+    </Compile>
     <Compile Include="..\Cobos.Data\Statements\SqlUpdateTemplate.cs">
       <Link>Statements\SqlUpdateTemplate.cs</Link>
-    </Compile>	
+    </Compile>
     <Compile Include="..\Cobos.Data\Utilities\DataColumnDescriptor.cs">
       <Link>Utilities\DataColumnDescriptor.cs</Link>
-    </Compile>	
+    </Compile>
     <Compile Include="..\Cobos.Data\Utilities\DataRowColumnAggregator.cs">
       <Link>Utilities\DataRowColumnAggregator.cs</Link>
-    </Compile>	
+    </Compile>
     <Compile Include="..\Cobos.Data\Utilities\DataRowHelper.cs">
       <Link>Utilities\DataRowHelper.cs</Link>
-    </Compile>	
+    </Compile>
     <Compile Include="..\Cobos.Data\Utilities\DataRowColumnComparer.cs">
       <Link>Utilities\DataRowColumnComparer.cs</Link>
-    </Compile>	
+    </Compile>
     <Compile Include="..\Cobos.Data\Utilities\IDataRowAggregator.cs">
       <Link>Utilities\IDataRowAggregator.cs</Link>
-    </Compile>	
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Cobos.Utilities (NET35)\Cobos.Utilities (NET35).csproj">
+    <ProjectReference Include="..\Cobos.Utilities %28NET35%29\Cobos.Utilities %28NET35%29.csproj">
       <Project>{97E05107-67B6-401E-B34F-9EFBEC81EB05}</Project>
-      <Name>Cobos.Utilities</Name>
+      <Name>Cobos.Utilities %28NET35%29</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="..\Cobos.Codegen\Stylesheets\Database\Oracle\DatabaseSchema.xslt">
-      <Link>Stylesheets\Database\Oracle\DatabaseSchema.xslt</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\Cobos.Codegen\Stylesheets\Utilities.xslt">
-      <Link>Stylesheets\Utilities.xslt</Link>
-    </EmbeddedResource>
+    <Content Include="..\Cobos.Codegen\Stylesheets\Database\DatabaseSchema.xslt">
+      <Link>Stylesheets\Database\DatabaseSchema.xslt</Link>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

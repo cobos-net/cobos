@@ -27,36 +27,36 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Text;
-
 namespace Cobos.Data.Utilities
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Text;
+
     /// <summary>
-    /// 
+    /// Implementation of IDataRowAggregator for string columns.
     /// </summary>
     public class DataRowColumnAggregator : IDataRowAggregator
     {
         /// <summary>
         /// Specifies the column to aggregate on.
         /// </summary>
-        readonly DataColumnDescriptor AggregateOn;
+        private readonly DataColumnDescriptor aggregateOn;
 
         /// <summary>
         /// Specifies the column order to perform the groupings for key generation.
         /// </summary>
-        readonly DataColumnDescriptor[] GroupBy;
+        private readonly DataColumnDescriptor[] groupBy;
 
         /// <summary>
         /// Specifies the column order to sort the groupings by. Can be null if
         /// the columns are already sorted by the database query.
         /// </summary>
-        readonly DataRowColumnComparer SortBy;
+        private readonly DataRowColumnComparer sortBy;
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="DataRowColumnAggregator"/> class.
         /// </summary>
         /// <param name="aggregateOn">The column to aggregate on.</param>
         /// <param name="groupBy">The columns to group the aggregation by.</param>
@@ -68,30 +68,30 @@ namespace Cobos.Data.Utilities
                 throw new InvalidOperationException("DataColumnAggregator.DataColumnAggregator: Can only aggregate on string columns.  Column is type: " + aggregateOn.DataType.Name);
             }
 
-            AggregateOn = aggregateOn;
-            GroupBy = groupBy;
-            SortBy = sortBy;
+            this.aggregateOn = aggregateOn;
+            this.groupBy = groupBy;
+            this.sortBy = sortBy;
         }
 
         /// <summary>
-        /// Convenience constructor for creating from DataTable objects
+        /// Initializes a new instance of the <see cref="DataRowColumnAggregator"/> class.
         /// </summary>
-        /// <param name="aggregateOn"></param>
-        /// <param name="groupBy"></param>
-        /// <param name="sortBy"></param>
+        /// <param name="aggregateOn">The column to aggregate on.</param>
+        /// <param name="groupBy">The columns to group the aggregation by.</param>
+        /// <param name="sortBy">The sort order for performing the aggregation.</param>
         public DataRowColumnAggregator(DataColumn aggregateOn, DataColumn[] groupBy, DataRowColumnComparer sortBy)
             : this(new DataColumnDescriptor(aggregateOn), DataColumnDescriptor.ConstructFrom(groupBy), sortBy)
         {
         }
 
         /// <summary>
-        /// 
+        /// Process the DataTable to produce an aggregated result.
         /// </summary>
-        /// <param name="table"></param>
-        /// <returns></returns>
+        /// <param name="table">The DataTable to process.</param>
+        /// <returns>An aggregated DataTable.</returns>
         public DataTable Process(DataTable table)
         {
-            return DataRowHelper.Aggregate(table, AggregateOn, this, true);
+            return DataRowHelper.Aggregate(table, this.aggregateOn, this, true);
         }
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace Cobos.Data.Utilities
         /// <returns>The string key for the row.</returns>
         public string GetKey(DataRow row)
         {
-            return DataRowHelper.GenerateRowKey(row, GroupBy);
+            return DataRowHelper.GenerateRowKey(row, this.groupBy);
         }
 
         /// <summary>
@@ -112,12 +112,12 @@ namespace Cobos.Data.Utilities
         /// <param name="result">The row to store the aggregated result.</param>
         public void Aggregate(List<DataRow> rows, DataRow result)
         {
-            if (SortBy != null)
+            if (this.sortBy != null)
             {
-                rows.Sort(SortBy);
+                rows.Sort(this.sortBy);
             }
 
-            int ordinal = AggregateOn.Ordinal;
+            int ordinal = this.aggregateOn.Ordinal;
 
             // construct the aggregate string.  each string value is trimmed
             // and the values are concatenated with a delimiting ' ' space.
@@ -149,6 +149,5 @@ namespace Cobos.Data.Utilities
             // replace the aggregated column with the result
             result[ordinal] = aggregate.ToString();
         }
-
     }
 }

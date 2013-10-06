@@ -27,71 +27,110 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Text;
-
 namespace Cobos.Data.Utilities
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Text;
+
+    /// <summary>
+    /// Compares tow DataRow objects by column value.
+    /// </summary>
     public class DataRowColumnComparer : IComparer<DataRow>
     {
         /// <summary>
-        /// Specifiy the sort order
+        /// The requested sort order.
         /// </summary>
-        public enum SortOrderEnum
-        {
-            Ascending,
-            Descending
-        }
-
-        readonly SortOrderEnum SortOrder;
+        private readonly SortOrderEnum sortOrder;
 
         /// <summary>
-        /// Column order for sort comparison
+        /// Column order for sort comparison.
         /// </summary>
-        readonly DataColumnDescriptor[] Columns;
+        private readonly DataColumnDescriptor[] columns;
 
         /// <summary>
-        /// Ignore case for string comparisons
+        /// Ignore case for string comparisons.
         /// </summary>
-        readonly bool IgnoreCase;
+        private readonly bool ignoreCase;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DataRowColumnComparer"/> class.
+        /// </summary>
+        /// <param name="sortColumns">The columns to sort by.</param>
+        /// <param name="sortOrder">The order to sort the columns by.</param>
+        /// <param name="ignoreCase">Indicates whether comparisons should be case-insensitive.</param>
         public DataRowColumnComparer(DataColumnDescriptor[] sortColumns, SortOrderEnum sortOrder, bool ignoreCase)
         {
-            Columns = sortColumns;
-            SortOrder = sortOrder;
-            IgnoreCase = ignoreCase;
+            this.columns = sortColumns;
+            this.sortOrder = sortOrder;
+            this.ignoreCase = ignoreCase;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DataRowColumnComparer"/> class.
+        /// </summary>
+        /// <param name="sortColumns">The columns to sort by.</param>
+        /// <param name="sortOrder">The order to sort the columns by.</param>
+        /// <param name="ignoreCase">Indicates whether comparisons should be case-insensitive.</param>
         public DataRowColumnComparer(DataColumn[] sortColumns, SortOrderEnum sortOrder, bool ignoreCase)
             : this(DataColumnDescriptor.ConstructFrom(sortColumns), sortOrder, ignoreCase)
         {
         }
 
-
         /// <summary>
-        /// Simple constructor for creating a case-sensitive ascending sort
+        /// Initializes a new instance of the <see cref="DataRowColumnComparer"/> class.
         /// </summary>
-        /// <param name="sortColumns"></param>
+        /// <remarks>
+        /// Simple constructor for creating a case-sensitive ascending sort.
+        /// </remarks>
+        /// <param name="sortColumns">The columns to sort by.</param>
         public DataRowColumnComparer(DataColumn[] sortColumns)
             : this(sortColumns, SortOrderEnum.Ascending, false)
         {
         }
 
         /// <summary>
-        /// Compare the two rows for sort order based on the class' sort columns.
-        /// this assumces that both rows either belong to the
-        /// same table or that they have the same column format.
+        /// Specify the sort order.
         /// </summary>
-        /// <param name="lhs"></param>
-        /// <param name="rhs"></param>
-        /// <returns></returns>
+        public enum SortOrderEnum
+        {
+            /// <summary>
+            /// Sort ascending.
+            /// </summary>
+            Ascending,
+
+            /// <summary>
+            /// Sort descending.
+            /// </summary>
+            Descending
+        }
+
+        /// <summary>
+        /// Compare the two rows for sort order based on the instance's sort columns.
+        /// This assumes that both rows either belong to the same table or that 
+        /// they have the same column format.
+        /// </summary>
+        /// <param name="lhs">The first object to compare.</param>
+        /// <param name="rhs">The second object to compare.</param>
+        /// <returns>
+        /// <para>
+        /// A signed integer that indicates the relative values of x and y, as shown
+        /// in the following table:
+        /// </para>
+        /// <para>
+        /// Value               | Meaning 
+        /// --------------------|------------------------
+        /// Less than zero      | x is less than y.
+        /// Zero                | x equals y.
+        /// Greater than zero   | x is greater than y.
+        /// </para>
+        /// </returns>
         public int Compare(DataRow lhs, DataRow rhs)
         {
-            for (int c = 0; c < Columns.Length; ++c)
+            for (int c = 0; c < this.columns.Length; ++c)
             {
-                DataColumnDescriptor column = Columns[c];
+                DataColumnDescriptor column = this.columns[c];
                 int ordinal = column.Ordinal;
 
                 int result;
@@ -115,11 +154,12 @@ namespace Cobos.Data.Utilities
                 else if (column.DataType == typeof(string))
                 {
                     // special case for strings, use the case sensitive matching if required.
-                    result = string.Compare((string)lhs[ordinal], (string)rhs[ordinal], IgnoreCase);
+                    result = string.Compare((string)lhs[ordinal], (string)rhs[ordinal], this.ignoreCase);
                 }
-                else // any other primitive type (including DateTime)
+                else 
                 {
-                    // both objects *should* be of the same type based on the assumptions listed 
+                    // Any other primitive type (including DateTime).
+                    // Both objects *should* be of the same type based on the assumptions listed 
                     // in the method summary.
                     IComparable comparable = lhs[ordinal] as IComparable;
 
@@ -131,19 +171,17 @@ namespace Cobos.Data.Utilities
                     {
                         // all primitive types implement IComparable, so if we get here,
                         // all that we can do is do a ToString comparison.
-                        result = string.Compare(lhs[ordinal].ToString(), rhs[ordinal].ToString(), IgnoreCase);
+                        result = string.Compare(lhs[ordinal].ToString(), rhs[ordinal].ToString(), this.ignoreCase);
                     }
                 }
 
                 if (result != 0)
                 {
-                    return SortOrder == SortOrderEnum.Ascending ? result : -result;
+                    return this.sortOrder == SortOrderEnum.Ascending ? result : -result;
                 }
-
             }
 
             return 0; // rows are equal based on column comparison
         }
-
     }
 }

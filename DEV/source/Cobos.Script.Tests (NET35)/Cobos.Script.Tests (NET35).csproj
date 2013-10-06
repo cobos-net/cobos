@@ -76,12 +76,12 @@
     <Compile Include="Properties\AssemblyInfo.Net35.cs" />
     <Compile Include="..\Cobos.Script.Tests\TestManager.cs">
       <Link>TestManager.cs</Link>
-    </Compile>	
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Cobos.Script (NET35)\Cobos.Script (NET35).csproj">
+    <ProjectReference Include="..\Cobos.Script %28NET35%29\Cobos.Script %28NET35%29.csproj">
       <Project>{E63897F1-8E05-44E4-A050-AD53029E6B7D}</Project>
-      <Name>Cobos.Script</Name>
+      <Name>Cobos.Script %28NET35%29</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

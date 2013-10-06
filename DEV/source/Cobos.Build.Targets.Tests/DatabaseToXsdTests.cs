@@ -41,33 +41,44 @@ namespace Cobos.Build.Targets.Tests
     public class DatabaseToXsdTests
     {
         /// <summary>
+        /// Test case source.
+        /// </summary>
+        private static object[] DataSource =
+        {
+            ////new object[] { "Oracle", "Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=vea795db1.ingrnet.com)(PORT= 1521))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=ORC102.VEA795DB1)));User Id=eadev;Password=eadev" },
+            new object[] { "MySQL", "Server=localhost;Database=Northwind;Uid=root;Pwd=mysql;" }
+        };
+
+        /// <summary>
         /// Strategy:
         /// ---------
-        /// 1. 
+        /// 1. Create test schemas for all providers.
         /// </summary>
         [Test]
-        public void Can_generate_oracle_schema()
+        [TestCaseSource("DataSource")]
+        public void Can_generate_database_schema(string platform, string connectionString)
 		{
-            const string outputFile = @"C:\temp\database.xsd";
+            string output = TestManager.TestFiles + platform  + ".xsd";
 
-            if (File.Exists(outputFile))
+            if (File.Exists(output))
             {
-                File.Delete(outputFile);
+                File.Delete(output);
             }
 
 			DatabaseToXsd target = new DatabaseToXsd();
 			
             target.BuildEngine = Substitute.For<IBuildEngine>();
-            target.ConnectionString = "Data Source=vea795db2.world;User Id=eadev;Password=eadev";
-            target.DatabasePlatform = "Oracle";
-            target.DatabaseSchema = "EADEV";
-            target.DatabaseTables = new TaskItem[] { new TaskItem("AEVEN"), new TaskItem("EVENT") };
-            target.OutputFile = outputFile;
+            target.ConnectionString = connectionString;
+            target.DatabasePlatform = platform;
+            target.DatabaseSchema = "Northwind";
+            target.DatabaseTables = new TaskItem[] { new TaskItem("Customers"), new TaskItem("Employees"), new TaskItem("Products") };
+            target.OutputFile = output;
 
             Assert.True(target.Execute());
-            Assert.True(File.Exists(outputFile));
 
-            //File.Delete(outputFile);
+            FileInfo info = new FileInfo(output);
+            Assert.True(info.Exists);
+            Assert.AreNotEqual(0, info.Length);
 		}
     }
 }
