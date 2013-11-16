@@ -40,17 +40,20 @@ namespace Cobos.Script
     using System.Text;
     using Microsoft.CSharp;
 
+    /// <summary>
+    /// Represents a script source file.
+    /// </summary>
     public class ScriptSource
     {
         /// <summary>
-        /// 
+        /// The script source file path.
         /// </summary>
         public readonly string SourcePath;
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="ScriptSource"/> class.
         /// </summary>
-        /// <param name="sourcePath"></param>
+        /// <param name="sourcePath">The script source file path.</param>
         public ScriptSource(string sourcePath)
         {
             if (!Path.IsPathRooted(sourcePath))
@@ -58,70 +61,68 @@ namespace Cobos.Script
                 sourcePath = Path.Combine(Environment.CurrentDirectory, sourcePath);
             }
 
-            SourcePath = sourcePath;
+            this.SourcePath = sourcePath;
         }
 
         /// <summary>
-        /// 
+        /// Compile the script into an assembly.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>An assembly containing the compiled byte code.</returns>
         public ScriptAssembly Compile()
         {
-            if (!File.Exists(SourcePath))
+            if (!File.Exists(this.SourcePath))
             {
-                throw new ScriptException("The script path does not exist: {0}", SourcePath);
+                throw new ScriptException("The script path does not exist: {0}", this.SourcePath);
             }
 
-            LogSingleton.Instance.TraceInformation("Compiling script {0}", SourcePath);
+            ScriptTrace.Instance.TraceInformation("Compiling script {0}", this.SourcePath);
 
             // resolve the source and compiled assembly path
-            string scriptSource = File.ReadAllText(SourcePath);
-            string assemblyPath = Path.Combine(Environment.CurrentDirectory, Path.GetFileNameWithoutExtension(SourcePath) + ".dll");
+            string scriptSource = File.ReadAllText(this.SourcePath);
+            string assemblyPath = Path.Combine(Environment.CurrentDirectory, Path.GetFileNameWithoutExtension(this.SourcePath) + ".dll");
 
             // check for modifications
             if (File.Exists(assemblyPath))
             {
-                if (File.GetLastWriteTime(SourcePath) < File.GetLastWriteTime(assemblyPath))
+                if (File.GetLastWriteTime(this.SourcePath) < File.GetLastWriteTime(assemblyPath))
                 {
-                    LogSingleton.Instance.TraceInformation("No modifications detected, skipping compilation");
+                    ScriptTrace.Instance.TraceInformation("No modifications detected, skipping compilation");
                     return new ScriptAssembly(assemblyPath);
                 }
             }
 
-            LogSingleton.Instance.TraceInformation("Starting compilation...");
+            ScriptTrace.Instance.TraceInformation("Starting compilation...");
 
             CSharpCodeProvider compiler = new CSharpCodeProvider(new Dictionary<string, string>() { { "CompilerVersion", "v3.5" } });
 
-            CompilerParameters parameters = GetParameters(assemblyPath);
+            CompilerParameters parameters = this.GetParameters(assemblyPath);
 
             CompilerResults results = compiler.CompileAssemblyFromSource(parameters, scriptSource);
 
-            CheckResults(results);
+            this.CheckResults(results);
 
-            LogSingleton.Instance.TraceInformation("Compilation complete");
+            ScriptTrace.Instance.TraceInformation("Compilation complete");
 
             return new ScriptAssembly(assemblyPath);
         }
 
         /// <summary>
-        /// 
+        /// Get all of the parameters for the compiler.
         /// </summary>
-        /// <param name="assemblyPath"></param>
-        /// <returns></returns>
+        /// <param name="assemblyPath">The path of the output assembly.</param>
+        /// <returns>An object representing the compiler parameters.</returns>
         private CompilerParameters GetParameters(string assemblyPath)
         {
             // find all referenced assemblies in app.config
             string[] references = ((string)ConfigurationManager.AppSettings["AssemblyReferences"]).Split(' ');
 
             // initialise the compiler parameters
-
             CompilerParameters parameters = new CompilerParameters(references, assemblyPath, true);
             parameters.GenerateExecutable = false;
 
-            LogSingleton.Instance.TraceInformation("Resolving all assembly references... (this may take some time)");
+            ScriptTrace.Instance.TraceInformation("Resolving all assembly references... (this may take some time)");
 
             // resolve paths to all referenced assemblies
-
             List<string> paths = AssemblyReferenceResolver.Resolve(references);
 
             if (paths != null)
@@ -136,33 +137,32 @@ namespace Cobos.Script
 
                 parameters.CompilerOptions = buffer.ToString();
 
-                LogSingleton.Instance.TraceEvent(TraceEventType.Verbose, 0, "Compiler Options: {0}", parameters.CompilerOptions);
+                ScriptTrace.Instance.TraceEvent(TraceEventType.Verbose, 0, "Compiler Options: {0}", parameters.CompilerOptions);
             }
 
             return parameters;
         }
 
         /// <summary>
-        /// 
+        /// Check the results after compilation.
         /// </summary>
-        /// <param name="results"></param>
+        /// <param name="results">The compiler results.</param>
         private void CheckResults(CompilerResults results)
         {
             // check for errors, if any then abort the script runtime
             if (results.Errors.HasErrors)
             {
-                string errorMessage = "";
+                string errorMessage = string.Empty;
                 results.Errors.Cast<CompilerError>().ToList().ForEach(error => errorMessage += error.ErrorText + "\n");
 
-                throw new ScriptException("Failed to compile the script {0}:\n{1}", SourcePath, errorMessage);
+                throw new ScriptException("Failed to compile the script {0}:\n{1}", this.SourcePath, errorMessage);
             }
 
             // check for warnings, just report these to the console
             if (results.Errors.HasWarnings)
             {
-                results.Errors.Cast<CompilerError>().ToList().ForEach(error => LogSingleton.Instance.TraceEvent(TraceEventType.Warning, 0, error.ErrorText));
+                results.Errors.Cast<CompilerError>().ToList().ForEach(error => ScriptTrace.Instance.TraceEvent(TraceEventType.Warning, 0, error.ErrorText));
             }
         }
-
     }
 }

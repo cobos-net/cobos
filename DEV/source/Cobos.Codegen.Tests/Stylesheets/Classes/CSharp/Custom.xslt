@@ -78,7 +78,7 @@
 	-->
 
   <xsl:template match="cobos:Object" mode="customCodeExtensions">
-    public static class <xsl:value-of select="@className"/>TableAdapter
+    public static class <xsl:value-of select="@className"/>TableAdapter2
     {
         #region Public properties
 
@@ -120,16 +120,16 @@
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-  <xsl:template match="cobos:Property[ @stringFormat = 'Separator' ]" mode="propertyType">
+  <xsl:template match="cobos:Property[@stringFormat = 'Separator']" mode="propertyType">
     <xsl:text>string </xsl:text>
   </xsl:template>
 
-  <xsl:template match="cobos:Property[ @stringFormat = 'CadDts' ]" mode="propertyType">
+  <xsl:template match="cobos:Property[@stringFormat = 'CadDts']" mode="propertyType">
     <xsl:text>DateTime</xsl:text>
     <xsl:apply-templates select="@minOccurs" mode="propertyType"/>
   </xsl:template>
 
-  <xsl:template match="cobos:Property[ @stringFormat = 'CadBoolean' ]" mode="propertyType">
+  <xsl:template match="cobos:Property[@stringFormat = 'CadBoolean']" mode="propertyType">
     <xsl:text>bool</xsl:text>
     <xsl:apply-templates select="@minOccurs" mode="propertyType"/>
   </xsl:template>
@@ -140,33 +140,33 @@
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-  <xsl:template match="cobos:Property[ @stringFormat = 'CadDts' ]" mode="propertyGet">
+  <xsl:template match="cobos:Property[@stringFormat = 'CadDts']" mode="propertyGet">
     <xsl:variable name="columnName">
       <xsl:apply-templates mode="qualifiedName" select="."/>
     </xsl:variable>
-    <xsl:value-of select="concat( 'return ServiceConfiguration.DataFormat.ConvertFromDTS(this.ObjectDataRow.', $columnName, ');' )"/>
+    <xsl:value-of select="concat('return ServiceConfiguration.DataFormat.ConvertFromDTS(this.ObjectDataRow.', $columnName, ');')"/>
   </xsl:template>
 
-  <xsl:template match="cobos:Property[ @stringFormat = 'CadBoolean' ]" mode="propertyGet">
+  <xsl:template match="cobos:Property[@stringFormat = 'CadBoolean']" mode="propertyGet">
     <xsl:variable name="columnName">
       <xsl:apply-templates mode="qualifiedName" select="."/>
     </xsl:variable>
-    <xsl:value-of select="concat( 'return ServiceConfiguration.DataFormat.ParseCadBooleanString(this.ObjectDataRow.', $columnName, ');' )"/>
+    <xsl:value-of select="concat('return ServiceConfiguration.DataFormat.ParseCadBooleanString(this.ObjectDataRow.', $columnName, ');')"/>
   </xsl:template>
 
-  <xsl:template match="cobos:Property[ @stringFormat = 'Separator' ]" mode="propertyGet">
+  <xsl:template match="cobos:Property[@stringFormat = 'Separator']" mode="propertyGet">
     <xsl:variable name="separator">
       <xsl:text>'</xsl:text>
-      <xsl:value-of select="substring-before( @formatArgs, ' ' )"/>
+      <xsl:value-of select="substring-before(@formatArgs, ' ')"/>
       <xsl:text>'</xsl:text>
     </xsl:variable>
     <xsl:variable name="index">
-      <xsl:value-of select="substring-after( @formatArgs, ' ' )"/>
+      <xsl:value-of select="substring-after(@formatArgs, ' ')"/>
     </xsl:variable>
     <xsl:variable name="columnName">
       <xsl:apply-templates mode="qualifiedName" select="."/>
     </xsl:variable>
-    <xsl:value-of select="concat( 'return StringSeparator.GetTokenAt( this.ObjectDataRow.', $columnName, ', ', $separator, ', ', $index, ' );' )"/>
+    <xsl:value-of select="concat('return StringSeparator.GetTokenAt(this.ObjectDataRow.', $columnName, ', ', $separator, ', ', $index, ');')"/>
   </xsl:template>
 
   <!--
@@ -175,48 +175,48 @@
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-  <xsl:template match="cobos:Property[ @stringFormat = 'CadDts' ]" mode="propertySet">
+  <xsl:template match="cobos:Property[@stringFormat = 'CadDts']" mode="propertySet">
     <xsl:variable name="columnName">
       <xsl:apply-templates mode="qualifiedName" select="."/>
     </xsl:variable>
     <xsl:variable name="value">
       <xsl:apply-templates mode="propertySetValue" select="."/>
     </xsl:variable>
-    <xsl:value-of select="concat( 'this.ObjectDataRow.', $columnName, ' = ServiceConfiguration.DataFormat.ConvertToDTS(', $value, ');' )"/>
+    <xsl:value-of select="concat('this.ObjectDataRow.', $columnName, ' = ServiceConfiguration.DataFormat.ConvertToDTS(', $value, ');')"/>
   </xsl:template>
 
-  <xsl:template match="cobos:Property[ @stringFormat = 'CadBoolean' ]" mode="propertySet">
+  <xsl:template match="cobos:Property[@stringFormat = 'CadBoolean']" mode="propertySet">
     <xsl:variable name="columnName">
       <xsl:apply-templates mode="qualifiedName" select="."/>
     </xsl:variable>
     <xsl:variable name="value">
       <xsl:apply-templates mode="propertySetValue" select="."/>
     </xsl:variable>
-    <xsl:value-of select="concat( 'this.ObjectDataRow.', $columnName, ' = ServiceConfiguration.DataFormat.GetCadBooleanString(', $value, ');' )"/>
+    <xsl:value-of select="concat('this.ObjectDataRow.', $columnName, ' = ServiceConfiguration.DataFormat.GetCadBooleanString(', $value, ');')"/>
   </xsl:template>
 
-  <xsl:template match="cobos:Property[ @stringFormat = 'Separator' ]" mode="propertySet">
+  <xsl:template match="cobos:Property[@stringFormat = 'Separator']" mode="propertySet">
     <xsl:variable name="separator">
       <xsl:text>'</xsl:text>
-      <xsl:value-of select="substring-before( @formatArgs, ' ' )"/>
+      <xsl:value-of select="substring-before(@formatArgs, ' ')"/>
       <xsl:text>'</xsl:text>
     </xsl:variable>
     <xsl:variable name="index">
-      <xsl:value-of select="substring-after( @formatArgs, ' ' )"/>
+      <xsl:value-of select="substring-after(@formatArgs, ' ')"/>
     </xsl:variable>
     <xsl:variable name="columnName">
       <xsl:apply-templates mode="qualifiedName" select="."/>
     </xsl:variable>
-    <xsl:value-of select="concat( '/*this.ObjectDataRow.', $columnName, ' = StringSeparator.SetTokenAt( this.ObjectDataRow.', $columnName, ', ', $separator, ', ', $index, ', value );*/' )"/>
+    <xsl:value-of select="concat('/*this.ObjectDataRow.', $columnName, ' = StringSeparator.SetTokenAt(this.ObjectDataRow.', $columnName, ', ', $separator, ', ', $index, ', value);*/')"/>
   </xsl:template>
 
   <!-- Nullable string formatted types -->
-  <xsl:template match="cobos:Property[ @minOccurs = 0 and ( @stringFormat = 'CadDts' or @stringFormat = 'CadBoolean' ) ]" mode="propertySetValue">
+  <xsl:template match="cobos:Property[@minOccurs = 0 and (@stringFormat = 'CadDts' or @stringFormat = 'CadBoolean')]" mode="propertySetValue">
     <xsl:text>value.Value</xsl:text>
   </xsl:template>
 
   <!-- string token separator -->
-  <xsl:template match="cobos:Property[ @minOccurs = 0 and @stringFormat = 'Separator' ]" mode="propertySetValue">
+  <xsl:template match="cobos:Property[@minOccurs = 0 and @stringFormat = 'Separator']" mode="propertySetValue">
     <xsl:text>value</xsl:text>
   </xsl:template>
 
@@ -226,11 +226,11 @@
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-  <xsl:template match="cobos:Property[ @stringFormat = 'CadDts' ]" mode="findByMethodParamValue">
-    <xsl:value-of select="concat( 'ServiceConfiguration.DataFormat.ConvertToDTS(', @name, ')' )"/>
+  <xsl:template match="cobos:Property[@stringFormat = 'CadDts']" mode="findByMethodParamValue">
+    <xsl:value-of select="concat('ServiceConfiguration.DataFormat.ConvertToDTS(', @name, ')')"/>
   </xsl:template>
 
-  <xsl:template match="cobos:Property[ @stringFormat = 'Separator' ]" mode="findByMethodParamValue">
+  <xsl:template match="cobos:Property[@stringFormat = 'Separator']" mode="findByMethodParamValue">
     <!-- can't find by seperator values... yet -->
   </xsl:template>
 
@@ -252,7 +252,7 @@
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-  <xsl:template match="cobos:Object[ not( ./cobos:Metadata/cobos:StringAggregate ) ]" mode="getQueryMethodBody">
+  <xsl:template match="cobos:Object[not(./cobos:Metadata/cobos:StringAggregate)]" mode="getQueryMethodBody">
         public static DatabaseQuery GetQuery(string[] where, string orderBy)
         {
             return new DatabaseQuery(SelectTemplate.ToString(where, null, orderBy), new <xsl:value-of select="@datasetTableType"/>());
@@ -265,7 +265,7 @@
   </xsl:template>
 
 
-  <xsl:template match="cobos:Object[ ./cobos:Metadata/cobos:StringAggregate ]" mode="getQueryMethodBody">
+  <xsl:template match="cobos:Object[./cobos:Metadata/cobos:StringAggregate]" mode="getQueryMethodBody">
         public static DatabaseQuery GetQuery(string[] where, string orderBy)
         {
             return new DatabaseQuery(SelectTemplate.ToString(where, null, orderBy), new <xsl:value-of select="@datasetTableType"/>(), Aggregator);
@@ -301,7 +301,7 @@
         {
     <xsl:value-of select="concat($indent2, ../../@datasetTableType, ' table = new ', ../../@datasetTableType, '();')" />
 
-            DataColumn aggregateOn = table.<xsl:apply-templates mode="qualifiedName" select="ancestor::cobos:Object[ position() = last() ]//cobos:Property[ @name = current()/cobos:On/text() ]"/>Column;
+            DataColumn aggregateOn = table.<xsl:apply-templates mode="qualifiedName" select="ancestor::cobos:Object[position() = last()]//cobos:Property[@name = current()/cobos:On/text()]"/>Column;
 
             DataColumn[] groupBy = new DataColumn[]
             {<xsl:value-of select="$newline" />
@@ -346,21 +346,21 @@
 	
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
-		public static List<AgencyEventSummary> GetData( IDatabaseAdapter database, string[] where, string orderBy )
+		public static List<AgencyEventSummary> GetData(IDatabaseAdapter database, string[] where, string orderBy)
 		{
-			DatabaseQuery query = GetQuery( where, orderBy );
+			DatabaseQuery query = GetQuery(where, orderBy);
 
-			database.Fill( query );
+			database.Fill(query.CommandText, query.Table);
 
 			EventDataModel.AgencyEventSummaryDataTable table = (EventDataModel.AgencyEventSummaryDataTable)query.GetResult();
 
 			int numRows = table.Rows.Count;
 
-			List<AgencyEventSummary> results = new List<AgencyEventSummary>( numRows );
+			List<AgencyEventSummary> results = new List<AgencyEventSummary>(numRows);
 
-			for ( int row = 0; row < numRows; ++row )
+			for (int row = 0; row < numRows; ++row)
 			{
-				results.Add( new AgencyEventSummary( table[ row ] ) );			
+				results.Add(new AgencyEventSummary(table[row]));			
 			}
 		
 			return results;
@@ -373,7 +373,7 @@
         {
             DatabaseQuery query = GetQuery(where, orderBy);
 
-            database.Fill(query);
+            database.Fill(query.CommandText, query.Table);
 
     <xsl:value-of select="concat($indent2, @datasetTableType, ' table = (', @datasetTableType, ')query.GetResult();')" />
 
@@ -410,7 +410,7 @@
 	
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
-  <xsl:template match="cobos:Object[ cobos:Reference ]" mode="getDataMethodBody">
+  <xsl:template match="cobos:Object[cobos:Reference]" mode="getDataMethodBody">
         public static <xsl:apply-templates select="." mode="listDecl"/> GetData(IDatabaseAdapter database, string[] where, string orderBy)
         {
     <xsl:value-of select="$indent2" />
@@ -459,16 +459,16 @@
 	-->
 
   <xsl:template match="cobos:Object" mode="getDataMethodQueryInstance">
-    <xsl:value-of select="concat( 'query', @className )"/>
-    <xsl:if test="not( position() = last() )">
-      <xsl:value-of select="concat( ',', $newlineIndent4 )"/>
+    <xsl:value-of select="concat('query', @className)"/>
+    <xsl:if test="not(position() = last())">
+      <xsl:value-of select="concat(',', $newlineIndent4)"/>
     </xsl:if>
   </xsl:template>
 
   <xsl:template match="cobos:Reference" mode="getDataMethodQueryInstance">
-    <xsl:value-of select="concat( 'query', @ref )"/>
-    <xsl:if test="not( position() = last() )">
-      <xsl:value-of select="concat( ',', $newlineIndent4 )"/>
+    <xsl:value-of select="concat('query', @ref)"/>
+    <xsl:if test="not(position() = last())">
+      <xsl:value-of select="concat(',', $newlineIndent4)"/>
     </xsl:if>
   </xsl:template>
 
@@ -485,15 +485,15 @@
 	-->
 
   <xsl:template match="cobos:Object" mode="getDataMethodTableDecl">
-    <xsl:value-of select="concat( @datasetTableType, ' table', @className, ' = (', @datasetTableType, ')query', @className, '.GetResult();' )"/>
-    <xsl:if test="not( position() = last() )">
+    <xsl:value-of select="concat(@datasetTableType, ' table', @className, ' = (', @datasetTableType, ')query', @className, '.GetResult();')"/>
+    <xsl:if test="not(position() = last())">
       <xsl:value-of select="$newlineIndent3"/>
     </xsl:if>
   </xsl:template>
 
   <xsl:template match="cobos:Reference" mode="getDataMethodTableDecl">
-    <xsl:value-of select="concat( @datasetTableType, ' table', @ref, ' = (', @datasetTableType, ')query', @ref, '.GetResult();' )"/>
-    <xsl:if test="not( position() = last() )">
+    <xsl:value-of select="concat(@datasetTableType, ' table', @ref, ' = (', @datasetTableType, ')query', @ref, '.GetResult();')"/>
+    <xsl:if test="not(position() = last())">
       <xsl:value-of select="$newlineIndent3"/>
     </xsl:if>
   </xsl:template>
@@ -509,8 +509,8 @@
 	-->
 
   <xsl:template match="cobos:Object" mode="getDataMethodQueryDecl">
-    <xsl:value-of select="concat( 'DatabaseQuery query', @name, ' = GetQuery(where, orderBy);' )"/>
-    <xsl:if test="not( position() = last() )">
+    <xsl:value-of select="concat('DatabaseQuery query', @name, ' = GetQuery(where, orderBy);')"/>
+    <xsl:if test="not(position() = last())">
       <xsl:value-of select="$newlineIndent3"/>
     </xsl:if>
   </xsl:template>
@@ -521,14 +521,14 @@
 	(no filter metadata for the reference)	
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
-		DatabaseQuery queryEventComment = EventCommentTableAdapter<DbConnectionType, DbCommandType, DataAdapterType>.GetQuery( where, null );
+		DatabaseQuery queryEventComment = EventCommentTableAdapter<DbConnectionType, DbCommandType, DataAdapterType>.GetQuery(where, null);
 	
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-  <xsl:template match="cobos:Reference[ not( descendant::cobos:Filters ) ]" mode="getDataMethodQueryDecl">
-    <xsl:value-of select="concat( 'DatabaseQuery query', @ref, ' = ', @ref, 'TableAdapter.GetQuery(where, null);' )"/>
-    <xsl:if test="not( position() = last() )">
+  <xsl:template match="cobos:Reference[not(descendant::cobos:Filters)]" mode="getDataMethodQueryDecl">
+    <xsl:value-of select="concat('DatabaseQuery query', @ref, ' = ', @ref, 'TableAdapter.GetQuery(where, null);')"/>
+    <xsl:if test="not(position() = last())">
       <xsl:value-of select="$newlineIndent3"/>
     </xsl:if>
   </xsl:template>
@@ -539,24 +539,24 @@
 	(with filter metadata for the reference)
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
-		DatabaseQuery queryEventComment = EventCommentTableAdapter<DbConnectionType, DbCommandType, DataAdapterType>.GetQuery( ArrayExtensions.ConcatenateAll<string>(where, new string[] {"EVCOM.comm_scope is null or EVCOM.comm_scope = AEVEN.ag_id"}), null );
+		DatabaseQuery queryEventComment = EventCommentTableAdapter<DbConnectionType, DbCommandType, DataAdapterType>.GetQuery(ArrayExtensions.ConcatenateAll<string>(where, new string[] {"EVCOM.comm_scope is null or EVCOM.comm_scope = AEVEN.ag_id"}), null);
 	
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-  <xsl:template match="cobos:Reference[ descendant::cobos:Filters ]" mode="getDataMethodQueryDecl">
+  <xsl:template match="cobos:Reference[descendant::cobos:Filters]" mode="getDataMethodQueryDecl">
     <xsl:variable name="filter">
       <xsl:text>new string[] { </xsl:text>
       <xsl:apply-templates select="descendant::cobos:Filters" mode="sqlWhere"/>
       <xsl:text> }</xsl:text>
     </xsl:variable>
 
-    <xsl:value-of select="concat( 'DatabaseQuery query', @ref, ' = ', @ref, 'TableAdapter' )"/>
+    <xsl:value-of select="concat('DatabaseQuery query', @ref, ' = ', @ref, 'TableAdapter')"/>
     <xsl:text disable-output-escaping="yes"><![CDATA[<DbConnectionType, DbCommandType, DataAdapterType>]]></xsl:text>
     <xsl:text>.GetQuery(</xsl:text>
     <xsl:text disable-output-escaping="yes"><![CDATA[ArrayExtensions.ConcatenateAll<string>]]></xsl:text>
-    <xsl:value-of select="concat( '(new string[][] { where, ', $filter, ' }), null);' )"/>
-    <xsl:if test="not( position() = last() )">
+    <xsl:value-of select="concat('(new string[][] { where, ', $filter, ' }), null);')"/>
+    <xsl:if test="not(position() = last())">
       <xsl:value-of select="$newlineIndent3"/>
     </xsl:if>
   </xsl:template>
@@ -570,23 +570,23 @@
 	-->
 
   <xsl:template match="cobos:Object" mode="getDataMethodCreateDataSetArgs">
-    <xsl:value-of select="concat( 'table', @className )"/>
-    <xsl:if test="not( position() = last() )">, </xsl:if>
+    <xsl:value-of select="concat('table', @className)"/>
+    <xsl:if test="not(position() = last())">, </xsl:if>
   </xsl:template>
 
   <xsl:template match="cobos:Reference" mode="getDataMethodCreateDataSetArgs">
-    <xsl:value-of select="concat( 'table', @ref )"/>
-    <xsl:if test="not( position() = last() )">, </xsl:if>
+    <xsl:value-of select="concat('table', @ref)"/>
+    <xsl:if test="not(position() = last())">, </xsl:if>
   </xsl:template>
 
   <xsl:template match="cobos:Object" mode="getDataMethodCreateDataSetArgsDecl">
-    <xsl:value-of select="concat( @datasetTableType, ' table', @className )"/>
-    <xsl:if test="not( position() = last() )">, </xsl:if>
+    <xsl:value-of select="concat(@datasetTableType, ' table', @className)"/>
+    <xsl:if test="not(position() = last())">, </xsl:if>
   </xsl:template>
 
   <xsl:template match="cobos:Reference" mode="getDataMethodCreateDataSetArgsDecl">
-    <xsl:value-of select="concat( @datasetTableType, ' table', @ref )"/>
-    <xsl:if test="not( position() = last() )">, </xsl:if>
+    <xsl:value-of select="concat(@datasetTableType, ' table', @ref)"/>
+    <xsl:if test="not(position() = last())">, </xsl:if>
   </xsl:template>
 
   <!--
@@ -606,7 +606,7 @@
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-  <xsl:template match="cobos:Object[ cobos:Reference ]" mode="createDataSetMethodBody">
+  <xsl:template match="cobos:Object[cobos:Reference]" mode="createDataSetMethodBody">
         public static DataSet CreateDataSet(<xsl:apply-templates select=".|./cobos:Reference" mode="getDataMethodCreateDataSetArgsDecl"/>)
         {
             DataSet dataset = new DataSet();
@@ -629,15 +629,15 @@
 	-->
 
   <xsl:template match="cobos:Object" mode="createDataSetAddTable">
-    <xsl:value-of select="concat( 'dataset.Tables.Add(table', @className, ');' )"/>
-    <xsl:if test="not( position() = last() )">
+    <xsl:value-of select="concat('dataset.Tables.Add(table', @className, ');')"/>
+    <xsl:if test="not(position() = last())">
       <xsl:value-of select="$newlineIndent3"/>
     </xsl:if>
   </xsl:template>
 
   <xsl:template match="cobos:Reference" mode="createDataSetAddTable">
-    <xsl:value-of select="concat( 'dataset.Tables.Add(table', @ref, ');' )"/>
-    <xsl:if test="not( position() = last() )">
+    <xsl:value-of select="concat('dataset.Tables.Add(table', @ref, ');')"/>
+    <xsl:if test="not(position() = last())">
       <xsl:value-of select="$newlineIndent3"/>
     </xsl:if>
   </xsl:template>
@@ -647,33 +647,33 @@
 	CreateDataSet method body - create the data relation object
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		
-		DataRelation relationAgencyEventEventComment = new ( "AgencyEventEventComment", 
+		DataRelation relationAgencyEventEventComment = new ("AgencyEventEventComment", 
 																				tableAgencyEvent.AgencyEventIdColumn,
 																				tableEventComment.AgencyEventIdColumn, 
-																				false );
+																				false);
 
-		relationAgencyEventEventComment.ExtendedProperties.Add( "typedChildren", "GetComments" );
-		relationAgencyEventEventComment.ExtendedProperties.Add( "typedParent", "AgencyEvent" );
+		relationAgencyEventEventComment.ExtendedProperties.Add("typedChildren", "GetComments");
+		relationAgencyEventEventComment.ExtendedProperties.Add("typedParent", "AgencyEvent");
 
-		dataset.Relations.Add( relationAgencyEventEventComment );
+		dataset.Relations.Add(relationAgencyEventEventComment);
 	
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
   <xsl:template match="cobos:Reference" mode="createDataSetDataRelation">
-    <xsl:variable name="relationName" select="concat( 'relation', ../@className, @ref )"/>
+    <xsl:variable name="relationName" select="concat('relation', ../@className, @ref)"/>
 
     <xsl:value-of select="$newlineIndent3"/>
-    <xsl:value-of select="concat( 'DataRelation ', $relationName, ' = new DataRelation(&quot;', ../@className, @ref, '&quot;, ', 'table', ../@className, '.', @key, 'Column, ', 'table', @ref, '.', @refer, 'Column, false);' )" />
+    <xsl:value-of select="concat('DataRelation ', $relationName, ' = new DataRelation(&quot;', ../@className, @ref, '&quot;, ', 'table', ../@className, '.', @key, 'Column, ', 'table', @ref, '.', @refer, 'Column, false);')" />
     <xsl:value-of select="$newlineIndent3"/>
 
-    <xsl:value-of select="concat( $relationName, '.ExtendedProperties.Add(&quot;typedChildren&quot;, &quot;Get', @name, '&quot;);' )"/>
+    <xsl:value-of select="concat($relationName, '.ExtendedProperties.Add(&quot;typedChildren&quot;, &quot;Get', @name, '&quot;);')"/>
     <xsl:value-of select="$newlineIndent3"/>
 
-    <xsl:value-of select="concat( $relationName, '.ExtendedProperties.Add(&quot;typedParent&quot;, &quot;', ../@name, '&quot;);' )"/>
+    <xsl:value-of select="concat($relationName, '.ExtendedProperties.Add(&quot;typedParent&quot;, &quot;', ../@name, '&quot;);')"/>
     <xsl:value-of select="$newlineIndent3"/>
 
-    <xsl:value-of select="concat( 'dataset.Relations.Add(', $relationName, ');' )"/>
+    <xsl:value-of select="concat('dataset.Relations.Add(', $relationName, ');')"/>
     <xsl:value-of select="$newlineIndent3"/>
 
   </xsl:template>

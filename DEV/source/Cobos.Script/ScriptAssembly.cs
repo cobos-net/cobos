@@ -27,26 +27,29 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using System.Reflection;
-using System.Text;
-
 namespace Cobos.Script
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.IO;
+    using System.Reflection;
+    using System.Text;
+
+    /// <summary>
+    /// Represents an assembly containing scripts.
+    /// </summary>
     public class ScriptAssembly
     {
         /// <summary>
-        /// 
+        /// The path of the assembly.
         /// </summary>
         public readonly string AssemblyPath;
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="ScriptAssembly"/> class.
         /// </summary>
-        /// <param name="assemblyPath"></param>
+        /// <param name="assemblyPath">The assembly path.</param>
         public ScriptAssembly(string assemblyPath)
         {
             if (!Path.IsPathRooted(assemblyPath))
@@ -54,41 +57,42 @@ namespace Cobos.Script
                 assemblyPath = Path.Combine(Environment.CurrentDirectory, assemblyPath);
             }
 
-            AssemblyPath = assemblyPath;
+            this.AssemblyPath = assemblyPath;
         }
 
         /// <summary>
-        /// 
+        /// Invoke the named method.
         /// </summary>
-        /// <param name="scriptName"></param>
-        /// <param name="args"></param>
+        /// <param name="class">The name of the script class.</param>
+        /// <param name="method">The name of the method.</param>
+        /// <param name="args">The method arguments.</param>
         public void Invoke(string @class, string method, string[] args)
         {
-            Type objectType = GetScriptClass(@class);
+            Type objectType = this.GetScriptClass(@class);
 
             if (objectType == null)
             {
                 if (string.IsNullOrEmpty(@class))
                 {
-                    throw new ScriptException("Failed to find any script classes in the compiled script: {0}", AssemblyPath);
+                    throw new ScriptException("Failed to find any script classes in the compiled script: {0}", this.AssemblyPath);
                 }
                 else
                 {
-                    throw new ScriptException("Failed to find the script class {0} in the compiled script: {1}", @class, AssemblyPath);
+                    throw new ScriptException("Failed to find the script class {0} in the compiled script: {1}", @class, this.AssemblyPath);
                 }
             }
 
-            MethodInfo methodInfo = GetClassMethod(objectType, method);
+            MethodInfo methodInfo = this.GetClassMethod(objectType, method);
 
             if (methodInfo == null)
             {
                 if (string.IsNullOrEmpty(method))
                 {
-                    throw new ScriptException("Failed to find any script methods in the compiled script: {0}", AssemblyPath);
+                    throw new ScriptException("Failed to find any script methods in the compiled script: {0}", this.AssemblyPath);
                 }
                 else
                 {
-                    throw new ScriptException("Failed to find the script method {0} in the compiled script: {1}", method, AssemblyPath);
+                    throw new ScriptException("Failed to find the script method {0} in the compiled script: {1}", method, this.AssemblyPath);
                 }
             }
 
@@ -99,9 +103,9 @@ namespace Cobos.Script
                 throw new ScriptException("Failed to instantiate the scripting object.");
             }
 
-            object[] methodArgs = GetMethodArguments(methodInfo, args);
+            object[] methodArgs = this.GetMethodArguments(methodInfo, args);
 
-            TraceMethodCall(objectType.Name, methodInfo.Name, methodArgs);
+            this.TraceMethodCall(objectType.Name, methodInfo.Name, methodArgs);
 
             IDisposable dispose = instance as IDisposable;
 
@@ -117,15 +121,15 @@ namespace Cobos.Script
                 methodInfo.Invoke(instance, methodArgs);
             }
 
-            LogSingleton.Instance.TraceInformation("Script finished!");
+            ScriptTrace.Instance.TraceInformation("Script finished!");
         }
 
         /// <summary>
-        /// 
+        /// Trace a method call for diagnostic purposes.
         /// </summary>
-        /// <param name="className"></param>
-        /// <param name="methodName"></param>
-        /// <param name="args"></param>
+        /// <param name="className">The name of the class.</param>
+        /// <param name="methodName">The name of the method.</param>
+        /// <param name="methodArgs">The method arguments.</param>
         private void TraceMethodCall(string className, string methodName, object[] methodArgs)
         {
             StringBuilder trace = new StringBuilder(128);
@@ -155,22 +159,22 @@ namespace Cobos.Script
 
             trace.Append(")");
 
-            LogSingleton.Instance.TraceInformation(trace.ToString());
+            ScriptTrace.Instance.TraceInformation(trace.ToString());
         }
 
         /// <summary>
-        /// 
+        /// Get the named script class.
         /// </summary>
-        /// <param name="object"></param>
-        /// <returns></returns>
-        private Type GetScriptClass(string @object)
+        /// <param name="name">The name of the class to find.  May be null to return the first script class found.</param>
+        /// <returns>The script class if found; otherwise null.</returns>
+        private Type GetScriptClass(string name)
         {
-            if (!File.Exists(AssemblyPath))
+            if (!File.Exists(this.AssemblyPath))
             {
-                throw new ScriptException("The assembly path does not exist: {0}", AssemblyPath);
+                throw new ScriptException("The assembly path does not exist: {0}", this.AssemblyPath);
             }
 
-            Assembly assembly = Assembly.Load(AssemblyName.GetAssemblyName(AssemblyPath));
+            Assembly assembly = Assembly.Load(AssemblyName.GetAssemblyName(this.AssemblyPath));
 
             foreach (Type type in assembly.GetTypes())
             {
@@ -183,7 +187,7 @@ namespace Cobos.Script
 
                 if (attrs.Length > 0)
                 {
-                    if (string.IsNullOrEmpty(@object) || String.Compare(type.Name, @object, true) == 0)
+                    if (string.IsNullOrEmpty(name) || string.Compare(type.Name, name, true) == 0)
                     {
                         return type;
                     }
@@ -194,11 +198,11 @@ namespace Cobos.Script
         }
 
         /// <summary>
-        /// 
+        /// Get the named method from the type.
         /// </summary>
-        /// <param name="type"></param>
-        /// <param name="method"></param>
-        /// <returns></returns>
+        /// <param name="type">The type to look in.</param>
+        /// <param name="method">The method to find.</param>
+        /// <returns>The named method if found; otherwise null.</returns>
         private MethodInfo GetClassMethod(Type type, string method)
         {
             foreach (MethodInfo info in type.GetMethods())
@@ -207,7 +211,7 @@ namespace Cobos.Script
 
                 if (attrs.Length > 0)
                 {
-                    if (string.IsNullOrEmpty(method) || String.Compare(info.Name, method, true) == 0)
+                    if (string.IsNullOrEmpty(method) || string.Compare(info.Name, method, true) == 0)
                     {
                         return info;
                     }
@@ -218,11 +222,11 @@ namespace Cobos.Script
         }
 
         /// <summary>
-        /// 
+        /// Get the arguments for a method.
         /// </summary>
-        /// <param name="method"></param>
-        /// <param name="args">An array of name=value pairs of arugments</param>
-        /// <returns></returns>
+        /// <param name="method">The method information.</param>
+        /// <param name="args">An array of name=value pairs of arguments</param>
+        /// <returns>The arguments.</returns>
         private object[] GetMethodArguments(MethodInfo method, string[] args)
         {
             // Check the parameters match the supplied arguments
@@ -238,10 +242,10 @@ namespace Cobos.Script
                 return null;
             }
 
-            //if ( paramInfos.Length != args.Length )
-            //{
-            //    throw new ScriptException( "There is a mismatch between the number of arguments for method {0}: Expected {1}; Actual {2}", method.Name, paramInfos.Length, args.Length );
-            //}
+            ////if ( paramInfos.Length != args.Length )
+            ////{
+            ////    throw new ScriptException( "There is a mismatch between the number of arguments for method {0}: Expected {1}; Actual {2}", method.Name, paramInfos.Length, args.Length );
+            ////}
 
             // Tokenise all of the arguments into name value pairs
             Dictionary<string, string> nameValue = new Dictionary<string, string>(paramInfos.Length, StringComparer.CurrentCultureIgnoreCase);
@@ -281,7 +285,6 @@ namespace Cobos.Script
                 }
                 else
                 {
-                    //throw new ScriptException( "The parameter {0} for method {1} was not found in the list of script arguments", paramInfo.Name, method.Name );
                     // just assign the default value
                     @params[i] = paramType.IsValueType ? Activator.CreateInstance(paramType) : null;
                 }

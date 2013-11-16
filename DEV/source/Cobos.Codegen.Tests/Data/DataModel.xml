@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<DataModel name="NorthwindDataModel" xmlns="http://schemas.cobos.co.uk/datamodel/1.0.0" xmlns:cobos="http://schemas.cobos.co.uk/datamodel/1.0.0">
+
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Customer object
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<Object name="Customer" dbTable="Customers">
+    <Property name="CustomerID" dbColumn="CustomerID" />
+    <Property name="CompanyName" dbColumn="CompanyName" />
+    <Object name="Contact" type="CustomerContact" />
+    <Object name="Address" type="CustomerAddress" />
+    <!--
+		<Reference ref="AgencyEventComment" name="Comments" isCollection="true" key="AgencyEventId" refer="AgencyEventId"/>
+		<Property name="RevisionNumber" dbColumn="rev_num" hidden="true"/>
+    -->
+		<Metadata>
+			<Filters>
+				<!--<Filter></Filter>-->
+			</Filters>
+			<Joins>
+				<!--<InnerJoin foreignKey="eid" references="EVENT" referenceKey="eid"/>-->
+			</Joins>
+		</Metadata>
+	</Object>
+
+  <!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Customer contact type
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+  <Type name="CustomerContact" dbTable="Customers">
+    <Property name="Name" dbColumn="ContactName" />
+    <Property name="Title" dbColumn="ContactTitle" />
+  </Type>
+
+  <!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Customer address type
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+  <Type name="CustomerAddress" dbTable="Customers">
+    <Property name="Address" dbColumn="Address" />
+    <Property name="City" dbColumn="City" />
+    <Property name="Region" dbColumn="Region" />
+    <Property name="PostalCode" dbColumn="PostalCode" />
+    <Property name="Country" dbColumn="Country" />
+    <Property name="Phone" dbColumn="Phone" />
+    <Property name="Fax" dbColumn="Fax" />
+  </Type>
+
+  <!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Employee object
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+  <Object name="Employee" dbTable="Employees">
+    <Property name="EmployeeID" dbColumn="EmployeeID" />
+    <Object name="Personal">
+      <Property name="LastName" dbColumn="LastName" />
+      <Property name="FirstName" dbColumn="FirstName" />
+      <Property name="Title" dbColumn="Title" />
+      <Property name="TitleOfCourtesy" dbColumn="TitleOfCourtesy" />
+      <Property name="BirthDate" dbColumn="BirthDate" />
+    </Object>
+    <Object name="Employment">
+      <Property name="Extension" dbColumn="Extension" />
+      <Property name="ReportsTo" dbColumn="ReportsTo" />
+      <Property name="HireDate" dbColumn="HireDate" />
+      <Property name="Notes" dbColumn="Notes" />
+      <Property name="PhotoPath" dbColumn="PhotoPath" />
+      <Property name="Photo" dbColumn="Photo" />
+    </Object>
+    <Object name="Contact">
+      <Property name="Address" dbColumn="Address" />
+      <Property name="City" dbColumn="City" />
+      <Property name="Region" dbColumn="Region" />
+      <Property name="PostalCode" dbColumn="PostalCode" />
+      <Property name="Country" dbColumn="Country" />
+      <Property name="HomePhone" dbColumn="HomePhone" />
+    </Object>
+  </Object>
+
+  <!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	Employee object
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+</DataModel>

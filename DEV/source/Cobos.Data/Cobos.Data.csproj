@@ -43,12 +43,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SqlServer\SqlDatabaseAdapter.cs" />
-    <Compile Include="AsyncTask.cs" />
+    <Compile Include="Adapters\AnsiDatabaseAdapter.cs" />
     <Compile Include="SimpleDataSet.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="DatabaseAdapter.cs" />
+    <Compile Include="Adapters\DatabaseAdapter.cs" />
     <Compile Include="DatabaseQuery.cs" />
     <Compile Include="IDatabaseAdapter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

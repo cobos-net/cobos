@@ -39,9 +39,9 @@ namespace Cobos.Data
     public class DatabaseQuery
     {
         /// <summary>
-        /// The SQL statement to run to fill the Table object
+        /// The statement to run to fill the Table object
         /// </summary>
-        public readonly string Sql;
+        public readonly string CommandText;
 
         /// <summary>
         /// The data table to populate with the query result.
@@ -56,22 +56,22 @@ namespace Cobos.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="DatabaseQuery"/> class.
         /// </summary>
-        /// <param name="sql">The query to execute.</param>
+        /// <param name="commandText">The query to execute.</param>
         /// <param name="table">The DataTable to fill with the query result.</param>
-        public DatabaseQuery(string sql, DataTable table)
+        public DatabaseQuery(string commandText, DataTable table)
         {
-            this.Sql = sql;
+            this.CommandText = commandText;
             this.Table = table;
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DatabaseQuery"/> class with a custom aggregator.
         /// </summary>
-        /// <param name="sql">The query to execute.</param>
+        /// <param name="commandText">The query to execute.</param>
         /// <param name="table">The table to fill with the result.</param>
         /// <param name="aggregator">The row aggregator to use for collating row data.</param>
-        public DatabaseQuery(string sql, DataTable table, IDataRowAggregator aggregator)
-            : this(sql, table)
+        public DatabaseQuery(string commandText, DataTable table, IDataRowAggregator aggregator)
+            : this(commandText, table)
         {
             this.Aggregator = aggregator;
         }

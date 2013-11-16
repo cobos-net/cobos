@@ -6,71 +6,64 @@
 					 xmlns="http://schemas.cobos.co.uk/datamodel/1.0.0"
 					 xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 					 exclude-result-prefixes="msxsl">
-
-	<!-- 
-	=============================================================================
-	Filename: .xslt
-	Description: 
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	Created by: N.Davis                        Date: 2010-04-09
-	Modified by:                               Date:
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	Notes: 
+  <!-- 
+  =============================================================================
+  Filename: .xslt
+  Description: 
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Created by: N.Davis                        Date: 2010-04-09
+  Modified by:                               Date:
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Notes: 
 	
 	
-	============================================================================
-	-->
+  ============================================================================
+  -->
 					 
-	<!--
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	UpdateRows method body: Update all in-memory modified rows into the database.
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  <!--
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  UpdateRows method body: Update all in-memory modified rows into the database.
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
 
 	
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	-->
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  -->
 
-	<xsl:template match="cobos:Object" mode="updateRowsMethodBody">
-		/// <xsl:text disable-output-escaping="yes"><![CDATA[<summary>]]></xsl:text>
-		/// Update all in-memory modified rows into the database.
-		/// <xsl:text disable-output-escaping="yes"><![CDATA[</summary>]]></xsl:text>
-		private void UpdateRows( <xsl:apply-templates select="." mode="listDeclDataRow"/> changed )
-		{
-			if ( changed.Count == 0 )
-			{
-				return;
-			}
+  <xsl:template match="cobos:Object" mode="updateRowsMethodBody">
+        /// <![CDATA[<summary>]]>
+        /// Update all in-memory modified rows into the database.
+        /// <![CDATA[</summary>]]>
+        private void UpdateRows(IDbConnection connection, <xsl:apply-templates select="." mode="listDeclDataRow"/> changed)
+        {
+            if (changed.Count == 0)
+            {
+                return;
+            }
 
-			using ( DbCommandType command = new DbCommandType() )
-			{
-				command.Connection = _connection;
+            using (IDbCommand command = this.Database.GetCommand())
+            {
+                command.Connection = connection;
 
-				foreach ( <xsl:value-of select="@datasetRowType"/> row in changed )
-				{
-					StringBuilder buffer = new StringBuilder( 1024 );
-				
-					buffer.Append( "UPDATE <xsl:value-of select="@dbTable"/> SET " );
+                foreach (<xsl:value-of select="@datasetRowType"/> row in changed)
+                {
+                    StringBuilder buffer = new StringBuilder(1024);
+                    
+                    buffer.Append("UPDATE <xsl:value-of select="@dbTable"/> SET ");
+                    this.AppendUpdateValues(buffer, row);
+                    buffer.Append(" WHERE " + <xsl:apply-templates select="." mode="sqlUpdateWhere"/>);
 
-					AppendUpdateValues( buffer, row );
+                    command.CommandText = buffer.ToString();
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
 
-					buffer.Append( " WHERE " + <xsl:apply-templates select="." mode="sqlUpdateWhere"/> );
-
-					command.CommandText = buffer.ToString();
-					
-					command.ExecuteNonQuery();
-				}
-			}
-		}
-
-		/// <xsl:text disable-output-escaping="yes"><![CDATA[<summary>]]></xsl:text>
-		/// Append the SQL update fragment for this row.
-		/// <xsl:text disable-output-escaping="yes"><![CDATA[</summary>]]></xsl:text>
-		private void AppendUpdateValues( StringBuilder buffer, <xsl:value-of select="@datasetRowType"/> row )
-		{
-			<xsl:apply-templates select=".//cobos:Property" mode="sqlUpdateValue"/>
-		}
-
-	</xsl:template>
-					 
+        /// <xsl:text disable-output-escaping="yes"><![CDATA[<summary>]]></xsl:text>
+        /// Append the SQL update fragment for this row.
+        /// <xsl:text disable-output-escaping="yes"><![CDATA[</summary>]]></xsl:text>
+        private void AppendUpdateValues(StringBuilder buffer, <xsl:value-of select="@datasetRowType"/> row)
+        {<xsl:apply-templates select=".//cobos:Property" mode="sqlUpdateValue"/>
+        }
+  </xsl:template>
 </xsl:stylesheet>

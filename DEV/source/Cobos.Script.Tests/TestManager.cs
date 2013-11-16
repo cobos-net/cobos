@@ -32,13 +32,11 @@ namespace Cobos.Script.Tests
     using System.Diagnostics;
     using System.IO;
 
+    /// <summary>
+    /// Manages test resources.
+    /// </summary>
     public static class TestManager
     {
-        public static string ResolvePath(string relative)
-        {
-            return Path.Combine(TestFiles, relative);
-        }
-
         /// <summary>
         /// Gets the location of the test files.
         /// </summary>
@@ -50,6 +48,16 @@ namespace Cobos.Script.Tests
                 StackFrame sf = st.GetFrame(0);
                 return Path.GetDirectoryName(sf.GetFileName()) + @"\TestFiles\";
             }
+        }
+
+        /// <summary>
+        /// Resolve the path to the test resource.
+        /// </summary>
+        /// <param name="relative">The relative path for searching.</param>
+        /// <returns>A fully resolved path.</returns>
+        public static string ResolvePath(string relative)
+        {
+            return Path.Combine(TestFiles, relative);
         }
     }
 }

@@ -34,14 +34,14 @@ namespace Cobos.Utilities.Authentication
     using System.Text;
 
     /// <summary>
-    /// PasswordHash - A salted password hashing library 
-    /// WWW: https://defuse.ca/
-    /// Use:
-    ///      Use 'HashPassword' to create the initial hash, store that in your DB
-    ///      Then use 'ValidatePassword' with the hash from the DB to verify a password
-    ///      NOTE: Salting happens automatically, there is no need for a separate salt field in the DB
+    /// PasswordHash - A salted password hashing library <c>https://defuse.ca/</c>
     /// </summary>
-    public class PasswordHash
+    /// <remarks>
+    /// Use 'HashPassword' to create the initial hash, store that in your DB
+    /// Then use 'ValidatePassword' with the hash from the DB to verify a password
+    /// NOTE: Salting happens automatically, there is no need for a separate salt field in the DB
+    /// </remarks>
+    public static class PasswordHash
     {
         /// <summary>
         /// Hashes a password

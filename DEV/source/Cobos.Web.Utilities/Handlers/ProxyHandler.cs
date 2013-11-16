@@ -27,26 +27,30 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-using System;
-using System.Collections.Specialized;
-using System.Data;
-using System.Configuration;
-using System.Linq;
-using System.Web;
-using System.Web.Security;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-using System.Xml.Linq;
-using System.Web.SessionState;
-using System.Net;
-using System.IO;
-
 namespace Cobos.Web.Utilities.Handlers
 {
+    using System;
+    using System.Collections.Specialized;
+    using System.Configuration;
+    using System.IO;
+    using System.Net;
+    using System.Web;
+    using System.Web.Security;
+    using System.Web.SessionState;
+    using System.Web.UI;
+    using System.Web.UI.HtmlControls;
+    using System.Web.UI.WebControls;
+    using System.Web.UI.WebControls.WebParts;
+    using System.Xml.Linq;
+
+    /// <summary>
+    /// HTTP handler for proxy requests.
+    /// </summary>
     public class ProxyHandler : IHttpHandler
     {
+        /// <summary>
+        /// Gets a value indicating whether the handler can be used again.
+        /// </summary>
         public bool IsReusable
         {
             get
@@ -55,16 +59,166 @@ namespace Cobos.Web.Utilities.Handlers
             }
         }
 
+        /// <summary>
+        /// Not all HTTP headers can be set via the Headers Name/Value collection,
+        /// they are considered restricted and can only be set via the API or not
+        /// at all.
+        /// <c>
+        /// http://msdn.microsoft.com/en-us/library/system.net.webheadercollection.aspx
+        /// </c>
+        /// </summary>
+        /// <param name="target">The request to copy to.</param>
+        /// <param name="source">The request to copy from.</param>
+        public static void CopyHeaders(HttpWebRequest target, HttpRequest source)
+        {
+            NameValueCollection headers = source.Headers;
+
+            foreach (string name in headers.Keys)
+            {
+                switch (name)
+                {
+                    case "Accept":
+                        target.Accept = headers[name];
+                        break;
+
+                    case "Connection":
+                        ////target.Connection = headers[ name ];
+                        break;
+
+                    case "Content-Length":
+                        target.ContentLength = source.ContentLength;
+                        break;
+
+                    case "Content-Type":
+                        target.ContentType = source.ContentType;
+                        break;
+
+#if NET_40
+                    case "Date":
+                        target.Date = DateTime.Parse(headers[name]);
+                        break;
+#endif
+                    case "Expect":
+                        target.Expect = headers[name];
+                        break;
+
+#if NET_40
+                    case "Host":
+                        target.Host = headers[name];
+                        break;
+#endif
+
+                    case "If-Modified-Since":
+                        target.IfModifiedSince = DateTime.Parse(headers[name]);
+                        break;
+
+                    case "Range":
+                        // no such property
+                        break;
+
+                    case "Referer":
+                        target.Referer = headers[name];
+                        break;
+
+                    case "Transfer-Encoding":
+                        target.TransferEncoding = headers[name];
+                        break;
+
+                    case "User-Agent":
+                        target.UserAgent = headers[name];
+                        break;
+
+                    case "Proxy-Connection":
+                        // no such property
+                        break;
+
+                    default:
+                        target.Headers.Add(name, headers[name]);
+                        break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Not all HTTP headers can be set via the Headers Name/Value collection,
+        /// they are considered restricted and can only be set via the API or not
+        /// at all.
+        /// <c>
+        /// http://msdn.microsoft.com/en-us/library/system.net.webheadercollection.aspx
+        /// </c>
+        /// </summary>
+        /// <param name="target">The response to copy to.</param>
+        /// <param name="source">The response to copy from.</param>
+        public static void CopyHeaders(HttpResponse target, HttpWebResponse source)
+        {
+            NameValueCollection headers = source.Headers;
+
+            foreach (string name in headers.Keys)
+            {
+                switch (name)
+                {
+                    case "Accept":
+                        // no such property
+                        break;
+
+                    case "Connection":
+                        // no such property
+                        break;
+
+                    case "Content-Length":
+                        break;
+
+                    case "Content-Type":
+                        break;
+
+                    case "Date":
+                        break;
+
+                    case "Expect":
+                        break;
+
+                    case "Host":
+                        break;
+
+                    case "If-Modified-Since":
+                        break;
+
+                    case "Range":
+                        break;
+
+                    case "Referer":
+                        break;
+
+                    case "Transfer-Encoding":
+                        break;
+
+                    case "User-Agent":
+                        break;
+
+                    case "Proxy-Connection":
+                        break;
+
+                    default:
+                        target.Headers.Add(name, source.Headers[name]);
+                        break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Process the proxy request.
+        /// </summary>
+        /// <param name="context">The request context.</param>
         public void ProcessRequest(HttpContext context)
         {
             HttpResponse pageResponse = context.Response;
             HttpRequest pageRequest = context.Request;
-            HttpSessionState Session = context.Session;
+            HttpSessionState session = context.Session;
             string key = "CobosProxyHandler_SessionID";
 
             try
             {
-                Uri url = new Uri(ParseUrl(context.Request.Url.AbsoluteUri));
+                Uri url = new Uri(this.ParseUrl(context.Request.Url.AbsoluteUri));
 
                 HttpWebRequest proxyrequest = (HttpWebRequest)HttpWebRequest.Create(url);
 
@@ -73,7 +227,7 @@ namespace Cobos.Web.Utilities.Handlers
                 proxyrequest.AutomaticDecompression = DecompressionMethods.GZip;
                 proxyrequest.CookieContainer = new CookieContainer();
 
-                string sessionid = Session[key] as string;
+                string sessionid = session[key] as string;
                 if ((sessionid != null) && (sessionid != string.Empty))
                 {
                     proxyrequest.CookieContainer.Add(url, new Cookie("ASP.NET_SessionId", sessionid));
@@ -83,7 +237,6 @@ namespace Cobos.Web.Utilities.Handlers
 
                 if (pageRequest.RequestType.ToUpper() == "POST")
                 {
-                    //Create the first set of binary readers/writers
                     BinaryReader reader1 = new BinaryReader(pageRequest.InputStream);
                     Stream requeststream = proxyrequest.GetRequestStream();
                     requeststream.Write(reader1.ReadBytes((int)pageRequest.ContentLength), 0, (int)pageRequest.ContentLength);
@@ -104,7 +257,7 @@ namespace Cobos.Web.Utilities.Handlers
                     Cookie sessioncookie = proxyresponse.Cookies["ASP.NET_SessionId"];
                     if (sessioncookie != null)
                     {
-                        Session[key] = sessioncookie.Value;
+                        session[key] = sessioncookie.Value;
                     }
 
                     try
@@ -125,12 +278,10 @@ namespace Cobos.Web.Utilities.Handlers
                     writer2.Write(reader2.ReadBytes((int)proxyresponse.ContentLength));
                     reader2.Close();
 
-                    // Copy the page headers
-                    //foreach ( string headerKey in proxyresponse.Headers.Keys )
-                    //{
-                    //   pageResponse.Headers[ headerKey ] = proxyresponse.Headers[ headerKey ];
-                    //}
-
+                    ////foreach ( string headerKey in proxyresponse.Headers.Keys )
+                    ////{
+                    ////   pageResponse.Headers[ headerKey ] = proxyresponse.Headers[ headerKey ];
+                    ////}
                 }
                 finally
                 {
@@ -140,11 +291,16 @@ namespace Cobos.Web.Utilities.Handlers
             catch (Exception ex)
             {
                 pageResponse.StatusCode = 500;
-                pageResponse.StatusDescription = String.Format("InternalServerError: {0}\n{1}", ex.Message, pageRequest["url"]);
-                //pageResponse.Close();
+                pageResponse.StatusDescription = string.Format("InternalServerError: {0}\n{1}", ex.Message, pageRequest["url"]);
+                ////pageResponse.Close();
             }
         }
 
+        /// <summary>
+        /// Parse the Proxy URL.
+        /// </summary>
+        /// <param name="url">The URL to parse.</param>
+        /// <returns>The parsed URL.</returns>
         public string ParseUrl(string url)
         {
             int pos = url.ToLower().IndexOf("__proxy__");
@@ -157,151 +313,6 @@ namespace Cobos.Web.Utilities.Handlers
             {
                 return url;
             }
-        }
-
-        /// <summary>
-        /// Not all HTTP headers can be set via the Headers Name/Value collection,
-        /// they are considered restricted and can only be set via the API or not
-        /// at all.
-        /// http://msdn.microsoft.com/en-us/library/system.net.webheadercollection.aspx
-        /// </summary>
-        /// <param name="target"></param>
-        /// <param name="source"></param>
-        public static void CopyHeaders(HttpWebRequest target, HttpRequest source)
-        {
-            NameValueCollection headers = source.Headers;
-
-            foreach (string name in headers.Keys)
-            {
-                switch (name)
-                {
-                case "Accept":
-                    target.Accept = headers[name];
-                    break;
-
-                case "Connection":
-                    //target.Connection = headers[ name ];
-                    break;
-
-                case "Content-Length":
-                    target.ContentLength = source.ContentLength;
-                    break;
-
-                case "Content-Type":
-                    target.ContentType = source.ContentType;
-                    break;
-
-#if NET_4
-                case "Date":
-                    target.Date = DateTime.Parse(headers[name]);
-                    break;
-#endif
-                case "Expect":
-                    target.Expect = headers[name];
-                    break;
-
-#if NET_4
-                case "Host":
-                    target.Host = headers[name];
-                    break;
-#endif
-
-                case "If-Modified-Since":
-                    target.IfModifiedSince = DateTime.Parse(headers[name]);
-                    break;
-
-                case "Range":
-                    // no such property
-                    break;
-
-                case "Referer":
-                    target.Referer = headers[name];
-                    break;
-
-                case "Transfer-Encoding":
-                    target.TransferEncoding = headers[name];
-                    break;
-
-                case "User-Agent":
-                    target.UserAgent = headers[name];
-                    break;
-
-                case "Proxy-Connection":
-                    // no such property
-                    break;
-
-                default:
-                    target.Headers.Add(name, headers[name]);
-                    break;
-                }
-
-            }
-        }
-
-        /// <summary>
-        /// Not all HTTP headers can be set via the Headers Name/Value collection,
-        /// they are considered restricted and can only be set via the API or not
-        /// at all.
-        /// http://msdn.microsoft.com/en-us/library/system.net.webheadercollection.aspx
-        /// </summary>
-        /// <param name="target"></param>
-        /// <param name="source"></param>
-        public static void CopyHeaders(HttpResponse target, HttpWebResponse source)
-        {
-            NameValueCollection headers = source.Headers;
-
-            foreach (string name in headers.Keys)
-            {
-                switch (name)
-                {
-                case "Accept":
-                    // no such property
-                    break;
-
-                case "Connection":
-                    // no such property
-                    break;
-
-                case "Content-Length":
-                    break;
-
-                case "Content-Type":
-                    break;
-
-                case "Date":
-                    break;
-
-                case "Expect":
-                    break;
-
-                case "Host":
-                    break;
-
-                case "If-Modified-Since":
-                    break;
-
-                case "Range":
-                    break;
-
-                case "Referer":
-                    break;
-
-                case "Transfer-Encoding":
-                    break;
-
-                case "User-Agent":
-                    break;
-
-                case "Proxy-Connection":
-                    break;
-
-                default:
-                    target.Headers.Add(name, source.Headers[name]);
-                    break;
-                }
-
-            }
-
         }
     }
 }

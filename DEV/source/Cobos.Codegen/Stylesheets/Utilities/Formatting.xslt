@@ -61,5 +61,8 @@
   <!-- XML reserved characters for use in concat function -->
 	<xsl:variable name="apos">'</xsl:variable>
 	<xsl:variable name="quot">"</xsl:variable>
-	
+  <xsl:variable name="lt" select="string('&#x3C;')"/>
+  <xsl:variable name="gt" select="string('&#x3E;')"/>
+  <xsl:variable name="amp" select="string('&#x26;')"/>
+
 </xsl:stylesheet>

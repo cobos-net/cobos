@@ -34,16 +34,19 @@ namespace Cobos.Build.Targets.Tests
     using Cobos.Build.Targets;
     using Microsoft.Build.Framework;
     using Microsoft.Build.Utilities;
-    using NUnit.Framework;
     using NSubstitute;
+    using NUnit.Framework;
 
+    /// <summary>
+    /// Unit tests for the <see cref="DatabaseToXsd"/> class.
+    /// </summary>
     [TestFixture]
     public class DatabaseToXsdTests
     {
         /// <summary>
         /// Test case source.
         /// </summary>
-        private static object[] DataSource =
+        private static object[] dataSource =
         {
             ////new object[] { "Oracle", "Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=vea795db1.ingrnet.com)(PORT= 1521))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=ORC102.VEA795DB1)));User Id=eadev;Password=eadev" },
             new object[] { "MySQL", "Server=localhost;Database=Northwind;Uid=root;Pwd=mysql;" }
@@ -54,19 +57,21 @@ namespace Cobos.Build.Targets.Tests
         /// ---------
         /// 1. Create test schemas for all providers.
         /// </summary>
+        /// <param name="platform">The database platform name.</param>
+        /// <param name="connectionString">The database connection string.</param>
         [Test]
-        [TestCaseSource("DataSource")]
+        [TestCaseSource("dataSource")]
         public void Can_generate_database_schema(string platform, string connectionString)
-		{
-            string output = TestManager.TestFiles + platform  + ".xsd";
+        {
+            string output = TestManager.TestFiles + platform + ".xsd";
 
             if (File.Exists(output))
             {
                 File.Delete(output);
             }
 
-			DatabaseToXsd target = new DatabaseToXsd();
-			
+            DatabaseToXsd target = new DatabaseToXsd();
+
             target.BuildEngine = Substitute.For<IBuildEngine>();
             target.ConnectionString = connectionString;
             target.DatabasePlatform = platform;
@@ -79,6 +84,6 @@ namespace Cobos.Build.Targets.Tests
             FileInfo info = new FileInfo(output);
             Assert.True(info.Exists);
             Assert.AreNotEqual(0, info.Length);
-		}
+        }
     }
 }

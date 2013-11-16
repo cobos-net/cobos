@@ -72,8 +72,8 @@
     <Compile Include="..\Cobos.Script\AssemblyReferenceResolver.cs">
       <Link>AssemblyReferenceResolver.cs</Link>
     </Compile>
-    <Compile Include="..\Cobos.Script\LogSingleton.cs">
-      <Link>LogSingleton.cs</Link>
+    <Compile Include="..\Cobos.Script\ScriptTrace.cs">
+      <Link>ScriptTrace.cs</Link>
     </Compile>
     <Compile Include="..\Cobos.Script\ScriptMethod.cs">
       <Link>ScriptMethod.cs</Link>

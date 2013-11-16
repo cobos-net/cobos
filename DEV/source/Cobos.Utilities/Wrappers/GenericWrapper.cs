@@ -27,58 +27,89 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 namespace Cobos.Utilities.Wrappers
 {
+    using System;
+
     /// <summary>
     /// Can be used to implement generic classes that are designed to be used with
-    /// unrelated reference types that cannot satisfy a 'where' constaint with
+    /// unrelated reference types that cannot satisfy a 'where' constraint with
     /// multiple definitions.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T">The type contained in the wrapper.</typeparam>
     public class GenericWrapper<T> : IDisposable
     {
         /// <summary>
-        /// 
+        /// The inner object reference.
         /// </summary>
-        T _object = default(T);
+        private T objectRef = default(T);
 
         /// <summary>
-        /// 
+        /// Indicates whether this instance is disposed.
         /// </summary>
-        /// <param name="obj"></param>
-        GenericWrapper(T obj)
+        private bool disposed;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GenericWrapper{T}"/> class.
+        /// </summary>
+        /// <param name="obj">The object reference contained within the wrapper.</param>
+        public GenericWrapper(T obj)
         {
-            _object = obj;
+            this.objectRef = obj;
         }
 
         /// <summary>
-        /// 
+        /// Finalizes an instance of the <see cref="GenericWrapper{T}"/> class.
+        /// </summary>
+        ~GenericWrapper()
+        {
+            this.Dispose(false);
+        }
+
+        /// <summary>
+        /// Cast the object to a related type.
+        /// </summary>
+        /// <typeparam name="C">The type to cast to.</typeparam>
+        /// <returns>A reference to the object; otherwise null if the types are unrelated.</returns>
+        public C Cast<C>() where C : class
+        {
+            return this.objectRef as C;
+        }
+
+        /// <summary>
+        /// Disposes of the instance.
         /// </summary>
         public void Dispose()
         {
-            IDisposable idisp = _object as IDisposable;
-
-            if (idisp != null)
-            {
-                idisp.Dispose();
-            }
-
-            _object = default(T);
+            this.Dispose(true);
         }
 
         /// <summary>
-        /// 
+        /// Disposes of the instance.
         /// </summary>
-        /// <typeparam name="C"></typeparam>
-        /// <returns></returns>
-        public C Cast<C>() where C : class
+        /// <param name="disposing">true if the object is disposing; otherwise false if the object is finalizing.</param>
+        private void Dispose(bool disposing)
         {
-            return _object as C;
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                IDisposable dispose = this.objectRef as IDisposable;
+
+                if (dispose != null)
+                {
+                    dispose.Dispose();
+                }
+
+                this.objectRef = default(T);
+
+                GC.SuppressFinalize(this);
+            }
+
+            this.disposed = true;
         }
     }
 }

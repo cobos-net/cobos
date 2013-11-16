@@ -48,7 +48,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;NET_35</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
@@ -162,9 +162,6 @@
     <Compile Include="..\Cobos.Utilities\Text\GuidHelper.cs">
       <Link>Text\GuidHelper.cs</Link>
     </Compile>
-    <Compile Include="..\Cobos.Utilities\Win32\Desktop.cs">
-      <Link>Win32\Desktop.cs</Link>
-    </Compile>
     <Compile Include="..\Cobos.Utilities\Wrappers\GenericWrapper.cs">
       <Link>Wrappers\GenericWrapper.cs</Link>
     </Compile>
@@ -197,6 +194,7 @@
     <Compile Include="..\Cobos.Utilities\Xml\XsltHelper.cs">
       <Link>Xml\XsltHelper.cs</Link>
     </Compile>
+    <Compile Include="Wrappers\Lazy.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

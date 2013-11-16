@@ -27,34 +27,53 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 namespace Cobos.Script
 {
+    using System;
+
+    /// <summary>
+    /// Script Exception class.
+    /// </summary>
     public class ScriptException : Exception
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ScriptException"/> class.
+        /// </summary>
+        /// <param name="message">The exception message.</param>
         public ScriptException(string message)
             : base(message)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ScriptException"/> class.
+        /// </summary>
+        /// <param name="format">The format string.</param>
+        /// <param name="args">The format arguments.</param>
         public ScriptException(string format, params object[] args)
             : base(string.Format(format, args))
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ScriptException"/> class.
+        /// </summary>
+        /// <param name="message">The exception message.</param>
+        /// <param name="inner">The inner exception.</param>
         public ScriptException(string message, Exception inner)
             : base(message, inner)
         {
         }
 
-        public ScriptException(string format, Exception inner, params object[] args)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ScriptException"/> class.
+        /// </summary>
+        /// <param name="inner">The inner exception.</param>
+        /// <param name="format">The format string.</param>
+        /// <param name="args">The format arguments.</param>
+        public ScriptException(Exception inner, string format, params object[] args)
             : base(string.Format(format, args), inner)
         {
         }
-
     }
 }

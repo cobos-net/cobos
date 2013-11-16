@@ -27,15 +27,23 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-using System;
-using NUnit.Framework;
-using Cobos.Utilities.File;
-
 namespace Cobos.Utilities.Tests.File
 {
+    using System;
+    using Cobos.Utilities.File;
+    using NUnit.Framework;
+
+    /// <summary>
+    /// Unit Tests for the <see cref="PathResolver"/> class.
+    /// </summary>
     [TestFixture]
     public class PathResolverTests
     {
+        /// <summary>
+        /// Strategy:
+        /// ---------
+        /// 1. Test with valid folders.
+        /// </summary>
         [TestCase]
         public void Construction_with_valid_folders_works()
         {
@@ -43,32 +51,39 @@ namespace Cobos.Utilities.Tests.File
             Assert.DoesNotThrow(delegate { PathResolver resolver = new PathResolver(TestManager.TestFilesLocation + @"/testfile.txt", null); });
 
             // fully qualified look in folder
-            Assert.DoesNotThrow(
-                delegate
+            Assert.DoesNotThrow(() =>
                 {
                     PathResolver resolver = new PathResolver(TestManager.TestFilesLocation, new string[] { TestManager.TestFilesLocation + "/TestDirectory" });
                     Assert.AreEqual(resolver.LookInFolders.Count, 2);
                 });
 
             // Relative look in folder
-            Assert.DoesNotThrow(
-                delegate
+            Assert.DoesNotThrow(() =>
                 {
                     PathResolver resolver = new PathResolver(TestManager.TestFilesLocation, new string[] { "TestDirectory" });
                     Assert.AreEqual(resolver.LookInFolders.Count, 2);
                 });
         }
 
+        /// <summary>
+        /// Strategy:
+        /// ---------
+        /// 1. Test invalid root folder fails.
+        /// </summary>
         [TestCase]
         public void Construction_with_invalid_root_fails()
         {
-            Assert.Throws<Exception>(
-                delegate
-                {
-                    PathResolver resolver = new PathResolver(@"C:\totally\madeup\folder\location", null);
-                });
+            Assert.Throws<Exception>(() => 
+            { 
+                PathResolver resolver = new PathResolver(@"C:\totally\madeup\folder\location", null); 
+            });
         }
 
+        /// <summary>
+        /// Strategy:
+        /// ---------
+        /// 1. Test invalid look-in folders are ignored.
+        /// </summary>
         [TestCase]
         public void Invalid_look_in_folders_succeeds()
         {
@@ -86,6 +101,11 @@ namespace Cobos.Utilities.Tests.File
             Assert.AreEqual(resolver.LookInFolders[1], new NormalisedPath(TestManager.TestFilesLocation + "/TestDirectory/"));
         }
 
+        /// <summary>
+        /// Strategy:
+        /// ---------
+        /// 1. Test both absolute and relative paths for look-in folders.
+        /// </summary>
         [TestCase]
         public void Relative_and_absolute_lookin_folders_succeeds()
         {
@@ -99,6 +119,11 @@ namespace Cobos.Utilities.Tests.File
             Assert.AreEqual(resolver.LookInFolders.Count, 3);
         }
 
+        /// <summary>
+        /// Strategy:
+        /// ---------
+        /// 1. Test that valid files can be found.
+        /// </summary>
         [TestCase]
         public void Can_resolve_valid_files()
         {
@@ -140,6 +165,11 @@ namespace Cobos.Utilities.Tests.File
             Assert.AreEqual(found, new NormalisedPath(TestManager.TestFilesLocation + @"/TestDirectory2/TestDirectory3\TESTDEEPNESTEDFILE.txt"));
         }
 
+        /// <summary>
+        /// Strategy:
+        /// ---------
+        /// 1. Test that invalid files are not found.
+        /// </summary>
         [TestCase]
         public void Doesnt_resolve_invalid_files()
         {
@@ -153,6 +183,11 @@ namespace Cobos.Utilities.Tests.File
             Assert.Null(found);
         }
 
+        /// <summary>
+        /// Strategy:
+        /// ---------
+        /// 1. Test that valid folders can be found.
+        /// </summary>
         [TestCase]
         public void Can_resolve_valid_folders()
         {
@@ -187,6 +222,11 @@ namespace Cobos.Utilities.Tests.File
             Assert.AreEqual(found, new NormalisedPath(TestManager.TestFilesLocation + @"/TestDirectory2/TestDirectory3"));
         }
 
+        /// <summary>
+        /// Strategy:
+        /// ---------
+        /// 1. Test that invalid folders are not found.
+        /// </summary>
         [TestCase]
         public void Doesnt_resolve_invalid_folders()
         {
@@ -202,6 +242,5 @@ namespace Cobos.Utilities.Tests.File
             found = resolver.FindFilePath(@"C:\totally\madeup\folder\location\file.txt");
             Assert.Null(found);
         }
-
     }
 }

@@ -1,5 +1,5 @@
 ﻿// ----------------------------------------------------------------------------
-// <copyright file="StringSeperator.cs" company="Cobos SDK">
+// <copyright file="StringSeparator.cs" company="Cobos SDK">
 //
 //      Copyright (c) 2009-2012 Nicholas Davis - nick@cobos.co.uk
 //
@@ -27,13 +27,10 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 namespace Cobos.Utilities.Text
 {
+    using System;
+
     /// <summary>
     /// Extract a token from a delimited text string
     /// </summary>
@@ -43,7 +40,7 @@ namespace Cobos.Utilities.Text
         /// Extract a token from a delimited text string
         /// </summary>
         /// <param name="source">The source string</param>
-        /// <param name="separator">The seperator token, e.g. | , - etc.</param>
+        /// <param name="separator">The separator token, e.g. | , - etc.</param>
         /// <param name="index">The index of the token to extract</param>
         /// <returns>The token if a valid token exists at the specified index, otherwise null.</returns>
         public static string GetTokenAt(string source, char separator, int index)

@@ -159,34 +159,38 @@
       <!-- .NET 3.5 -->
       <DotNetBuildFiles Include="$(CobosSource)Cobos.Build.Targets (NET35)\Cobos.Build.Targets (NET35).csproj;
 										              $(CobosSource)Cobos.Build.Targets.Tests (NET35)\Cobos.Build.Targets.Tests (NET35).csproj;
+										              $(CobosSource)Cobos.Codegen.Tests (NET35)\Cobos.Codegen.Tests (NET35).csproj;
 										              $(CobosSource)Cobos.Data (NET35)\Cobos.Data (NET35).csproj;
-										              $(CobosSource)Cobos.Data.Tests (NET35)\Cobos.Data.Tests (NET35).csproj;
 										              $(CobosSource)Cobos.Data.MySql (NET35)\Cobos.Data.MySql (NET35).csproj;
-										              $(CobosSource)Cobos.Data.MySql.Tests (NET35)\Cobos.Data.MySql.Tests (NET35).csproj;
 										              $(CobosSource)Cobos.Data.Oracle (NET35)\Cobos.Data.Oracle (NET35).csproj;
-										              $(CobosSource)Cobos.Data.Oracle.Tests (NET35)\Cobos.Data.Oracle.Tests (NET35).csproj;
+										              $(CobosSource)Cobos.Data.PostgreSQL (NET35)\Cobos.Data.PostgreSQL (NET35).csproj;
+										              $(CobosSource)Cobos.Data.SqlServer (NET35)\Cobos.Data.SqlServer (NET35).csproj;
+										              $(CobosSource)Cobos.Data.Tests (NET35)\Cobos.Data.Tests (NET35).csproj;
+										              $(CobosSource)Cobos.Script (NET35)\Cobos.Script (NET35).csproj;
+										              $(CobosSource)Cobos.Script.Tests (NET35)\Cobos.Script.Tests (NET35).csproj;
+										              $(CobosSource)Cobos.ScriptEngine (NET35)\Cobos.ScriptEngine (NET35).csproj;
 										              $(CobosSource)Cobos.Utilities (NET35)\Cobos.Utilities (NET35).csproj;
 										              $(CobosSource)Cobos.Utilities.Tests (NET35)\Cobos.Utilities.Tests (NET35).csproj;
-										              $(CobosSource)Cobos.Web.Utilities (NET35)\Cobos.Web.Utilities (NET35).csproj;
-										              $(CobosSource)Cobos.WpfApplication (NET35)\Cobos.WpfApplication (NET35).csproj;
-										              $(CobosSource)Cobos.WpfApplication.Tests (NET35)\Cobos.WpfApplication.Tests (NET35).csproj;">
+										              $(CobosSource)Cobos.Web.Utilities (NET35)\Cobos.Web.Utilities (NET35).csproj;">
 				<Configuration>%(DotNetBuildConfigurations.Identity)</Configuration>
 				<Platform>%(DotNetBuildConfigurations.Platform)</Platform>
 			</DotNetBuildFiles>
       <!-- .NET 4.5 -->
       <DotNetBuildFiles Include="$(CobosSource)Cobos.Build.Targets\Cobos.Build.Targets.csproj;
 										              $(CobosSource)Cobos.Build.Targets.Tests\Cobos.Build.Targets.Tests.csproj;
+										              $(CobosSource)Cobos.Codegen.Tests\Cobos.Codegen.Tests.csproj;
 										              $(CobosSource)Cobos.Data\Cobos.Data.csproj;
-										              $(CobosSource)Cobos.Data.Tests\Cobos.Data.Tests.csproj;
 										              $(CobosSource)Cobos.Data.MySql\Cobos.Data.MySql.csproj;
-										              $(CobosSource)Cobos.Data.MySql.Tests\Cobos.Data.MySql.Tests.csproj;
 										              $(CobosSource)Cobos.Data.Oracle\Cobos.Data.Oracle.csproj;
-										              $(CobosSource)Cobos.Data.Oracle.Tests\Cobos.Data.Oracle.Tests.csproj;
+										              $(CobosSource)Cobos.Data.PostgreSQL\Cobos.Data.PostgreSQL.csproj;
+										              $(CobosSource)Cobos.Data.SqlServer\Cobos.Data.SqlServer.csproj;
+										              $(CobosSource)Cobos.Data.Tests\Cobos.Data.Tests.csproj;
+										              $(CobosSource)Cobos.Script\Cobos.Script.csproj;
+										              $(CobosSource)Cobos.Script.Tests\Cobos.Script.Tests.csproj;
+										              $(CobosSource)Cobos.ScriptEngine\Cobos.ScriptEngine.csproj;
 										              $(CobosSource)Cobos.Utilities\Cobos.Utilities.csproj;
 										              $(CobosSource)Cobos.Utilities.Tests\Cobos.Utilities.Tests.csproj;
-										              $(CobosSource)Cobos.Web.Utilities\Cobos.Web.Utilities.csproj;
-										              $(CobosSource)Cobos.WpfApplication\Cobos.WpfApplication.csproj;
-										              $(CobosSource)Cobos.WpfApplication.Tests\Cobos.WpfApplication.Tests.csproj;">
+										              $(CobosSource)Cobos.Web.Utilities\Cobos.Web.Utilities.csproj;">
         <Configuration>%(DotNetBuildConfigurations.Identity)</Configuration>
         <Platform>%(DotNetBuildConfigurations.Platform)</Platform>
       </DotNetBuildFiles>

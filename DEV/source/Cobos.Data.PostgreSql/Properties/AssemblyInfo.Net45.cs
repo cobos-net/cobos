@@ -1,5 +1,5 @@
 ﻿// ----------------------------------------------------------------------------
-// <copyright file="LogSingleton.cs" company="Cobos SDK">
+// <copyright file="AssemblyInfo.Net45.cs" company="Cobos SDK">
 //
 //      Copyright (c) 2009-2012 Nicholas Davis - nick@cobos.co.uk
 //
@@ -27,27 +27,8 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-namespace Cobos.Script
-{
-    using System.Diagnostics;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
-    public static class LogSingleton
-    {
-        /// <summary>
-        /// The static log instance
-        /// </summary>
-        private static TraceSource source = new TraceSource("Cobos.Script");
-
-        /// <summary>
-        /// Get the log instance.
-        /// </summary>
-        public static TraceSource Instance
-        {
-            get
-            {
-                return source;
-            }
-        }
-
-    }
-}
+[assembly: Guid("e829415c-e464-419e-9971-830738c95b78")]

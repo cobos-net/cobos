@@ -27,30 +27,28 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-using System;
-using System.IO;
-
 namespace Cobos.Utilities.File
 {
-    public class NormalisedPath : IComparable
+    using System;
+    using System.IO;
+
+    /// <summary>
+    /// A normalized representation of a file or folder path.
+    /// </summary>
+    public class NormalisedPath : IComparable, IComparable<NormalisedPath>
     {
         /// <summary>
-        /// Effectively a readonly value, but not enforced via the readonly keyword
-        /// to allow efficient copying of already normalised paths.
+        /// Initializes a new instance of the <see cref="NormalisedPath"/> class.
         /// </summary>
-        string _value;
-
-        /// <summary>
-        /// Create a normalised path
-        /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">The path to normalize.</param>
         public NormalisedPath(string path)
         {
-            _value = NormalisePath(path);
+            this.Value = NormalisePath(path);
         }
 
         /// <summary>
-        /// Create an absolute normalised path from a relative path.
+        /// Initializes a new instance of the <see cref="NormalisedPath"/> class 
+        /// by creating an absolute normalized path from a relative path.
         /// </summary>
         /// <param name="relativePath">The relative file path</param>
         /// <param name="relativeTo">This must be a folder.  The class cannot easily differentiate
@@ -58,183 +56,55 @@ namespace Cobos.Utilities.File
         /// it's a file or folder because there is no guarantee that the file or folder will exist</param>
         public NormalisedPath(string relativePath, string relativeTo)
         {
-            _value = NormalisePath(relativeTo + @"\" + relativePath);
+            this.Value = NormalisePath(relativeTo + @"\" + relativePath);
         }
 
         /// <summary>
-        /// Private constructor to provide a more efficient method of copying
-        /// some or all of a normalised path, bypassing the normal parsing
-        /// required of an arbitrary path.
+        /// Prevents a default instance of the <see cref="NormalisedPath"/> class from being created.
         /// </summary>
+        /// <remarks>
+        /// To provide a more efficient method of copying some or all of a normalized path, 
+        /// bypassing the normal parsing required of an arbitrary path.
+        /// </remarks>
         private NormalisedPath()
         {
         }
 
         /// <summary>
-        /// 
+        /// Gets the current value of the path.
         /// </summary>
         public string Value
         {
-            get
-            {
-                return _value;
-            }
+            get;
+            private set;
         }
 
         /// <summary>
-        /// Check whether the path contains anything....
+        /// Gets a value indicating whether the path contains anything.
         /// </summary>
         public bool IsNullPath
         {
             get
             {
-                return string.IsNullOrEmpty(_value);
+                return string.IsNullOrEmpty(this.Value);
             }
         }
 
         /// <summary>
-        /// Provide a more efficient method of getting a normalised directory 
-        /// from an already normalised path.
-        /// </summary>
-        /// <returns></returns>
-        public NormalisedPath GetDirectoryName()
-        {
-            NormalisedPath path = new NormalisedPath();
-            path._value = Path.GetDirectoryName(_value);
-            return path;
-        }
-
-        /// <summary>
-        /// Get the filename of the path
-        /// </summary>
-        /// <returns></returns>
-        public string GetFileName()
-        {
-            return Path.GetFileName(_value);
-        }
-
-        /// <summary>
-        /// Get the filename without the extension
-        /// </summary>
-        /// <returns></returns>
-        public string GetFileNameWithoutExtension()
-        {
-            return Path.GetFileNameWithoutExtension(_value);
-        }
-
-        /// <summary>
-        /// Get the extension of the file
-        /// </summary>
-        /// <returns></returns>
-        public string GetExtension()
-        {
-            return Path.GetExtension(_value);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="obj"></param>
-        /// <returns></returns>
-        public int CompareTo(object obj)
-        {
-            NormalisedPath other = obj as NormalisedPath;
-
-            if (other != null)
-            {
-                return Value.CompareTo(other.Value);
-            }
-            else
-            {
-                throw new ArgumentException("Object is not a NormalisedPath");
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="obj"></param>
-        /// <returns></returns>
-        public override bool Equals(System.Object obj)
-        {
-            // If parameter is null return false.
-            if (obj == null)
-            {
-                return false;
-            }
-
-            // If parameter cannot be cast to NormalisedPath return false.
-            NormalisedPath p = obj as NormalisedPath;
-
-            if ((System.Object)p == null)
-            {
-                return false;
-            }
-
-            // Return true if the fields match:
-            return Value == p.Value;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="a"></param>
-        /// <param name="b"></param>
-        /// <returns></returns>
-        public static bool operator ==(NormalisedPath a, NormalisedPath b)
-        {
-            // If both are null, or both are same instance, return true.
-            if (System.Object.ReferenceEquals(a, b))
-            {
-                return true;
-            }
-
-            // If one is null, but not both, return false.
-            if (((object)a == null) || ((object)b == null))
-            {
-                return false;
-            }
-
-            // Return true if the fields match:
-            return a.Value == b.Value;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="a"></param>
-        /// <param name="b"></param>
-        /// <returns></returns>
-        public static bool operator !=(NormalisedPath a, NormalisedPath b)
-        {
-            return !(a == b);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public override int GetHashCode()
-        {
-            return Value.GetHashCode();
-        }
-
-        /// <summary>
-        /// Normalise a path to lower case, single Windows style delimiters with no
+        /// Normalize a path to lower case, single Windows style delimiters with no
         /// dotted directory paths.
         /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
+        /// <param name="path">The input path.</param>
+        /// <returns>The normalized path representation.</returns>
         public static string NormalisePath(string path)
         {
             // Normally we identify a file using file information such as volume serial, and file index values.
             // This is OK as long as the file exists, which will not always be the case.
-
             string pathSeperator = Path.DirectorySeparatorChar.ToString();
 
             // enable quick matching by forcing everything to lower case
             // force Windows style path delimiters and remove quoted paths
-            path = path.ToLower().Replace('/', Path.DirectorySeparatorChar).Replace("\"", "").Replace("'", "");
+            path = path.ToLower().Replace('/', Path.DirectorySeparatorChar).Replace("\"", string.Empty).Replace("'", string.Empty);
 
             // now remove any \. current and \.. relative directory paths
             string[] directories = path.Split(new char[] { Path.DirectorySeparatorChar });
@@ -281,5 +151,135 @@ namespace Cobos.Utilities.File
             }
         }
 
+        /// <summary>
+        /// Determines whether the specified object instances are considered equal.
+        /// </summary>
+        /// <param name="a">The first object to compare.</param>
+        /// <param name="b">The second object to compare.</param>
+        /// <returns>true if the objects are considered equal; otherwise, false.</returns>
+        public static bool operator ==(NormalisedPath a, NormalisedPath b)
+        {
+            if (object.ReferenceEquals(a, b))
+            {
+                return true;
+            }
+
+            if (((object)a == null) || ((object)b == null))
+            {
+                return false;
+            }
+
+            return a.Value == b.Value;
+        }
+
+        /// <summary>
+        /// Determines whether the specified object instances are not considered equal.
+        /// </summary>
+        /// <param name="a">The first object to compare.</param>
+        /// <param name="b">The second object to compare.</param>
+        /// <returns>true if the objects are considered not equal; otherwise, false.</returns>
+        public static bool operator !=(NormalisedPath a, NormalisedPath b)
+        {
+            return !(a == b);
+        }
+
+        /// <summary>
+        /// Gets a normalized directory representation of the path.
+        /// </summary>
+        /// <returns>A normalized representation of the directory.</returns>
+        public NormalisedPath GetDirectoryName()
+        {
+            NormalisedPath path = new NormalisedPath();
+            path.Value = Path.GetDirectoryName(this.Value);
+            return path;
+        }
+
+        /// <summary>
+        /// Get the filename of the path.
+        /// </summary>
+        /// <returns>The filename part of the path.</returns>
+        public string GetFileName()
+        {
+            return Path.GetFileName(this.Value);
+        }
+
+        /// <summary>
+        /// Get the filename without the extension.
+        /// </summary>
+        /// <returns>The filename without the extension.</returns>
+        public string GetFileNameWithoutExtension()
+        {
+            return Path.GetFileNameWithoutExtension(this.Value);
+        }
+
+        /// <summary>
+        /// Get the extension of the file.
+        /// </summary>
+        /// <returns>The extension of the file.</returns>
+        public string GetExtension()
+        {
+            return Path.GetExtension(this.Value);
+        }
+
+        /// <summary>
+        /// Compares the current instance with another object of the same type.
+        /// </summary>
+        /// <param name="obj">An object to compare with this instance.</param>
+        /// <returns>A value that indicates the relative order of the objects being compared.</returns>
+        public int CompareTo(object obj)
+        {
+            if (obj != null && !(obj is NormalisedPath))
+            {
+                throw new ArgumentException("Object must be of type NormalisedPath.");
+            }
+
+            return this.CompareTo(obj as NormalisedPath);
+        }
+
+        /// <summary>
+        /// Compares the current instance with another object of the same type.
+        /// </summary>
+        /// <param name="obj">An object to compare with this instance.</param>
+        /// <returns>A value that indicates the relative order of the objects being compared.</returns>
+        public int CompareTo(NormalisedPath obj)
+        {
+            if (obj == null)
+            {
+                return 1;
+            }
+
+            return this.Value.CompareTo(obj.Value);
+        }
+
+        /// <summary>
+        /// Determines whether the specified System.Object is equal to the current System.Object.
+        /// </summary>
+        /// <param name="obj">The object to compare with the current object.</param>
+        /// <returns>true if the specified object is equal to the current object; otherwise, false.</returns>
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+            {
+                return false;
+            }
+
+            NormalisedPath p = obj as NormalisedPath;
+
+            if ((object)p == null)
+            {
+                return false;
+            }
+
+            return this.Value == p.Value;
+        }
+
+        /// <summary>
+        /// Serves as a hash function for a particular type.
+        /// </summary>
+        /// <returns>A hash code for the current <see cref="NormalisedPath"/></returns>
+        public override int GetHashCode()
+        {
+            return this.Value.GetHashCode();
+        }
     }
 }

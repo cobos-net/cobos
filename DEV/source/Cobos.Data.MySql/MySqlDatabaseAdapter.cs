@@ -31,12 +31,13 @@ namespace Cobos.Data.MySql
 {
     using System;
     using System.Data;
+    using Cobos.Data.Adapters;
     using global::MySql.Data.MySqlClient;
 
     /// <summary>
     /// Represents a connection to MySQL database.
     /// </summary>
-    public class MySqlDatabaseAdapter : DatabaseAdapter<MySqlConnection, MySqlCommand, MySqlDataAdapter>
+    public class MySqlDatabaseAdapter : AnsiDatabaseAdapter<MySqlConnection, MySqlCommand, MySqlDataAdapter>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MySqlDatabaseAdapter"/> class.
@@ -45,101 +46,6 @@ namespace Cobos.Data.MySql
         public MySqlDatabaseAdapter(string connectionString)
             : base(connectionString)
         {
-        }
-
-        /// <summary>
-        /// Test the connection to the database to ensure that the adapter 
-        /// is correctly configured.
-        /// </summary>
-        /// <returns>True if the test was successful; Otherwise false.</returns>
-        public override bool TestConnection()
-        {
-            bool result = false;
-
-            try
-            {
-                using (var connection = GetConnection())
-                {
-                    connection.Open();
-
-                    using (var command = GetCommand(connection))
-                    {
-                        command.CommandText = "select 1";
-
-                        object @object = command.ExecuteScalar();
-
-                        if (@object != null && @object.GetType() == typeof(long))
-                        {
-                            result = (long)@object == 1;
-                        }
-                    }
-
-                    connection.Close();
-
-                    return result;
-                }
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// SQL to query the DB metadata to get the columns for the specified tables.
-        /// </summary>
-        /// <param name="schema">The schema name.</param>
-        /// <param name="tableNames">The table names to query for.</param>
-        /// <returns>A platform specific SQL query.</returns>
-        protected override string GetMetadataColumnsSQL(string schema, string tableNames)
-        {
-            return @"SELECT 
-	                    table_name AS TABLE_NAME, 
-	                    column_name AS COLUMN_NAME,
-                        ordinal_position as ORDINAL_POSITION,
-	                    column_default AS COLUMN_DEFAULT,
-	                    is_nullable AS IS_NULLABLE, 
-	                    UPPER(data_type) AS DATA_TYPE, 
-	                    character_maximum_length AS CHARACTER_MAXIMUM_LENGTH, 
-	                    character_octet_length AS CHARACTER_OCTET_LENGTH, 
-	                    numeric_precision AS NUMERIC_PRECISION, 
-	                    numeric_scale AS NUMERIC_SCALE 
-                    FROM 
-	                    information_schema.columns
-                    WHERE
-                        UPPER(table_schema) = '" + schema + @"' 
-                        AND UPPER(table_name) IN ('" + tableNames + @"') 
-                    ORDER BY
-	                    table_name, ordinal_position";
-        }
-
-        /// <summary>
-        /// SQL to query the DB metadata to get the constraints for the specified tables.
-        /// </summary>
-        /// <param name="schema">The schema name.</param>
-        /// <param name="tableNames">The table names to query for.</param>
-        /// <returns>A platform specific SQL query.</returns>
-        protected override string GetMetadataConstraintsSQL(string schema, string tableNames)
-        {
-            return @"SELECT 
-	                    cols.table_name AS TABLE_NAME, 
-	                    cols.column_name AS COLUMN_NAME, 
-	                    cols.ordinal_position as ORDINAL_POSITION, 
-	                    cons.constraint_type AS CONSTRAINT_TYPE, 
-	                    CONCAT(UPPER(cons.table_name), '_', UPPER(cons.constraint_name)) AS CONSTRAINT_NAME, 
-	                    'ENABLED' as STATUS 
-                    FROM 
-	                    information_schema.table_constraints cons, 
-	                    information_schema.key_column_usage cols 
-                    WHERE 
-	                    UPPER(cons.table_schema) = '" + schema + @"'
-	                    AND UPPER(cons.table_name) IN ('" + tableNames + @"') 
-	                    AND cons.constraint_type IN ('UNIQUE', 'PRIMARY KEY', 'FOREIGN KEY') 
-	                    AND cons.constraint_name = cols.constraint_name 
-	                    AND cols.table_schema = cons.table_schema
-	                    AND cols.table_name = cons.table_name
-                    ORDER BY 
-	                    cols.table_name, cols.ordinal_position";
         }
     }
 }

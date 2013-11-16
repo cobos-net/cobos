@@ -27,52 +27,55 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 namespace Cobos.Utilities.Extensions
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
+    /// <summary>
+    /// Extension methods for the System.Array class.
+    /// </summary>
     public static class ArrayExtensions
     {
         /// <summary>
         /// Appends the contents of a2 into a1.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="a1"></param>
-        /// <param name="a2"></param>
+        /// <typeparam name="T">The type of the element contained in the array.</typeparam>
+        /// <param name="self">The 'this' object reference.</param>
+        /// <param name="append">The array to append.</param>
         /// <returns>The new a1 array with the appended result</returns>
-        public static T[] Append<T>(this T[] a1, T[] a2)
+        public static T[] Append<T>(this T[] self, T[] append)
         {
-            return a1.Concat(a2).Cast<T>().ToArray();
+            return self.Concat(append).Cast<T>().ToArray();
         }
 
         /// <summary>
-        /// Appends the object obj into a1.
+        /// Appends the object into an array.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="a1"></param>
-        /// <param name="a2"></param>
+        /// <typeparam name="T">The type of the element contained in the array.</typeparam>
+        /// <param name="self">The 'this' object reference.</param>
+        /// <param name="obj">The object to append.</param>
         /// <returns>The new a1 array with the appended result</returns>
-        public static T[] Append<T>(this T[] a1, T obj)
+        public static T[] Append<T>(this T[] self, T obj)
         {
-            return a1.Concat(new T[] { obj }).Cast<T>().ToArray();
+            return self.Concat(new T[] { obj }).Cast<T>().ToArray();
         }
 
         /// <summary>
-        /// 
+        /// Concatenates a multi-dimensional array into a single dimension array.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="multi"></param>
-        /// <returns></returns>
-        public static T[] ConcatenateAll<T>(T[][] multi)
+        /// <typeparam name="T">The type of the element contained in the array.</typeparam>
+        /// <param name="self">The 'this' object reference.</param>
+        /// <returns>The concatenated result.</returns>
+        public static T[] ConcatenateAll<T>(this T[][] self)
         {
             int totalLength = 0;
 
-            for (int m = 0; m < multi.Length; ++m)
+            for (int m = 0; m < self.Length; ++m)
             {
-                T[] current = multi[m];
+                T[] current = self[m];
 
                 if (current != null)
                 {
@@ -89,9 +92,9 @@ namespace Cobos.Utilities.Extensions
 
             int index = 0;
 
-            for (int m = 0; m < multi.Length; ++m)
+            for (int m = 0; m < self.Length; ++m)
             {
-                T[] current = multi[m];
+                T[] current = self[m];
 
                 if (current != null)
                 {
@@ -109,15 +112,15 @@ namespace Cobos.Utilities.Extensions
         /// <summary>
         /// Find the index of the specified object in the array
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="a"></param>
-        /// <param name="obj"></param>
-        /// <returns></returns>
-        public static int IndexOf<T>(this T[] a, T obj)
+        /// <typeparam name="T">The type of the element contained in the array.</typeparam>
+        /// <param name="self">The 'this' object reference.</param>
+        /// <param name="obj">The object to find.</param>
+        /// <returns>The index of the object in the array.</returns>
+        public static int IndexOf<T>(this T[] self, T obj)
         {
-            for (int i = 0; i < a.Length; ++i)
+            for (int i = 0; i < self.Length; ++i)
             {
-                if (Object.ReferenceEquals(a[i], obj))
+                if (object.ReferenceEquals(self[i], obj))
                 {
                     return i;
                 }
@@ -129,17 +132,17 @@ namespace Cobos.Utilities.Extensions
         /// <summary>
         /// Returns a one-level deep copy of a portion of an array.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="a">The array to extract the values from</param>
+        /// <typeparam name="T">The type of the element contained in the array.</typeparam>
+        /// <param name="self">The 'this' object reference.</param>
         /// <param name="begin">Zero-based index at which to begin extraction.
         /// As a negative index, start indicates an offset from the end of the sequence. slice(-2) extracts the second-to-last element and the last element in the sequence.</param>
         /// <param name="end">Zero-based index at which to end extraction. slice extracts up to but not including end.
         /// As a negative index, end indicates an offset from the end of the sequence. slice(2,-1) extracts the third element through the second-to-last element in the sequence.
         /// If end is null, slice extracts to the end of the sequence.</param>
-        /// <returns>Returns a one-level deep copy of a portion of an array.</returns>
-        public static T[] Slice<T>(this T[] a, int begin, int? end)
+        /// <returns>A portion of an array.</returns>
+        public static T[] Slice<T>(this T[] self, int begin, int? end)
         {
-            if (begin >= a.Length)
+            if (begin >= self.Length)
             {
                 throw new System.ArgumentOutOfRangeException();
             }
@@ -147,7 +150,7 @@ namespace Cobos.Utilities.Extensions
             // normalise begin
             if (begin < 0)
             {
-                begin = a.Length + begin;
+                begin = self.Length + begin;
 
                 if (begin < 0)
                 {
@@ -158,20 +161,20 @@ namespace Cobos.Utilities.Extensions
             // normalise end
             if (end == null)
             {
-                end = a.Length;
+                end = self.Length;
             }
             else if (end < 0)
             {
-                end = a.Length + end;
+                end = self.Length + end;
 
                 if (end < 0)
                 {
                     end = 0;
                 }
             }
-            else if (end > a.Length)
+            else if (end > self.Length)
             {
-                end = a.Length;
+                end = self.Length;
             }
 
             if (end <= begin)
@@ -182,7 +185,7 @@ namespace Cobos.Utilities.Extensions
             // create the copy
             T[] copy = new T[(int)end - begin];
 
-            System.Array.Copy(a, begin, copy, 0, (int)end - begin);
+            System.Array.Copy(self, begin, copy, 0, (int)end - begin);
 
             return copy;
         }
@@ -190,16 +193,16 @@ namespace Cobos.Utilities.Extensions
         /// <summary>
         /// Changes the content of an array, adding new elements while removing old elements.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="a">The array to modify</param>
+        /// <typeparam name="T">The type of the element contained in the array.</typeparam>
+        /// <param name="self">The 'this' object reference.</param>
         /// <param name="index">Index at which to start changing the array. If negative, will begin that many elements from the end.</param>
         /// <param name="howMany">An integer indicating the number of old array elements to remove. 
         /// If howMany is 0, no elements are removed. In this case, you should specify at least one new element.</param>
         /// <param name="elements">The elements to add to the array. If you don't specify any elements, splice simply removes elements from the array.</param>
         /// <returns>The modified array a</returns>
-        public static T[] Splice<T>(this T[] a, int index, int howMany, params T[] elements)
+        public static T[] Splice<T>(this T[] self, int index, int howMany, params T[] elements)
         {
-            if (index >= a.Length)
+            if (index >= self.Length)
             {
                 throw new System.ArgumentOutOfRangeException();
             }
@@ -212,13 +215,13 @@ namespace Cobos.Utilities.Extensions
 
             if (howMany == 0 && elements.Length == 0)
             {
-                return a;
+                return self;
             }
 
             // normalise index
             if (index < 0)
             {
-                index = a.Length + index;
+                index = self.Length + index;
 
                 if (index < 0)
                 {
@@ -229,13 +232,13 @@ namespace Cobos.Utilities.Extensions
             // calculate the start and end indices for removal
             int removeStart = index, removeEnd = index + howMany;
 
-            if (removeEnd > a.Length)
+            if (removeEnd > self.Length)
             {
-                removeEnd = a.Length - index;
+                removeEnd = self.Length - index;
             }
 
             // calculate the new size of the array
-            int newSize = a.Length - (removeEnd - removeStart) + elements.Length;
+            int newSize = self.Length - (removeEnd - removeStart) + elements.Length;
 
             if (newSize == 0)
             {
@@ -246,7 +249,7 @@ namespace Cobos.Utilities.Extensions
 
             if (removeStart > 0)
             {
-                System.Array.Copy(a, 0, newArray, 0, removeStart);
+                System.Array.Copy(self, 0, newArray, 0, removeStart);
             }
 
             if (elements.Length > 0)
@@ -254,13 +257,12 @@ namespace Cobos.Utilities.Extensions
                 System.Array.Copy(elements, 0, newArray, removeStart, elements.Length);
             }
 
-            if (a.Length - removeEnd > 0)
+            if (self.Length - removeEnd > 0)
             {
-                System.Array.Copy(a, removeEnd, newArray, removeStart + elements.Length, a.Length - removeEnd);
+                System.Array.Copy(self, removeEnd, newArray, removeStart + elements.Length, self.Length - removeEnd);
             }
 
             return newArray;
         }
-
     }
 }

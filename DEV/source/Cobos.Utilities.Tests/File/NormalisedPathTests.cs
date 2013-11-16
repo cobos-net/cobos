@@ -27,15 +27,23 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-using System;
-using NUnit.Framework;
-using Cobos.Utilities.File;
-
 namespace Cobos.Utilities.Tests.File
 {
+    using System;
+    using Cobos.Utilities.File;
+    using NUnit.Framework;
+
+    /// <summary>
+    /// Unit Tests for the <see cref="NormalisedPath"/> class.
+    /// </summary>
     [TestFixture]
     public class NormalisedPathTests
     {
+        /// <summary>
+        /// Strategy:
+        /// ---------
+        /// 1. Test that different expressions of the same actual path are recognized.
+        /// </summary>
         [TestCase]
         public void Same_normalised_file_paths_are_the_same()
         {
@@ -88,34 +96,46 @@ namespace Cobos.Utilities.Tests.File
             Assert.True(rpath1 == rpath2 && npath1 == rpath2);
         }
 
+        /// <summary>
+        /// Strategy:
+        /// ---------
+        /// 1. Test that all combinations of emptiness are properly recognized.
+        /// </summary>
         [TestCase]
         public void Can_handle_empty_paths()
         {
             NormalisedPath empty = null;
 
-            Assert.DoesNotThrow(delegate { empty = new NormalisedPath(""); });
+            Assert.DoesNotThrow(() => empty = new NormalisedPath(string.Empty));
             Assert.True(empty.IsNullPath);
 
-            Assert.DoesNotThrow(delegate { empty = new NormalisedPath("            "); });
+            Assert.DoesNotThrow(() => empty = new NormalisedPath("            "));
             Assert.True(empty.IsNullPath);
 
-            Assert.DoesNotThrow(delegate { empty = new NormalisedPath("\"\""); });
+            Assert.DoesNotThrow(() => empty = new NormalisedPath("\"\""));
             Assert.True(empty.IsNullPath);
 
-            Assert.DoesNotThrow(delegate { empty = new NormalisedPath("       \"      \"          "); });
+            Assert.DoesNotThrow(() => empty = new NormalisedPath("       \"      \"          "));
             Assert.True(empty.IsNullPath);
 
-            Assert.DoesNotThrow(delegate { empty = new NormalisedPath("       \"      \"          "); });
+            Assert.DoesNotThrow(() => empty = new NormalisedPath("       \"      \"          "));
             Assert.True(empty.IsNullPath);
 
-            Assert.DoesNotThrow(delegate { empty = new NormalisedPath("  \\  '   \"    \\  \"    \" \"  ' /   '  "); });
+            Assert.DoesNotThrow(() => empty = new NormalisedPath("  \\  '   \"    \\  \"    \" \"  ' /   '  "));
             Assert.True(empty.IsNullPath);
         }
 
+        /// <summary>
+        /// Strategy:
+        /// ---------
+        /// 1. Construct a convoluted path with multiple spaces, separators and .. directory paths.
+        /// 2. Test that we can get the normalized path.
+        /// 3. Test that we can get the filename, extension etc.
+        /// </summary>
         [TestCase]
         public void Can_get_path_components()
         {
-            string path = @"C:\file\location\..\location\without\\ \ \\any\..\..\  without   \\\\\\\\\any\relative  \  paths\    ..\..   \   ..    \any\relative\paths\file.txt";
+            string path = @"C:\file\LOCATION\..\location\without\\ \ \\ANY\..\..\  without   \\\\\\\\\any\RELATIVE  \  pAtHs\    ..\..   \   ..    \any\relative\paths\file.txt";
             NormalisedPath npath = new NormalisedPath(path);
 
             Assert.AreEqual(@"c:\file\location\without\any\relative\paths", npath.GetDirectoryName().Value);
@@ -123,6 +143,5 @@ namespace Cobos.Utilities.Tests.File
             Assert.AreEqual(@"file", npath.GetFileNameWithoutExtension());
             Assert.AreEqual(@".txt", npath.GetExtension());
         }
-
     }
 }

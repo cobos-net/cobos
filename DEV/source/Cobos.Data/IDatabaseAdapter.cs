@@ -55,22 +55,25 @@ namespace Cobos.Data
         /// Executes an SQL statement against the Connection object of a .NET Framework
         /// data provider, and returns the number of rows affected.
         /// </summary>
+        /// <param name="commandText">The command to execute.</param>
         /// <returns>The number of rows affected.</returns>
-        int ExecuteNonQuery();
+        int ExecuteNonQuery(string commandText);
         
         /// <summary>
         /// Executes the <c>System.Data.IDbCommand.CommandText</c> against the <c>System.Data.IDbCommand.Connection</c>
         /// and builds an <c>System.Data.IDataReader</c>.
         /// </summary>
+        /// <param name="commandText">The command to execute.</param>
         /// <returns>An <c>System.Data.IDataReader</c> object.</returns>
-        IDataReader ExecuteReader();
+        IDataReader ExecuteReader(string commandText);
         
         /// <summary>
         /// Executes the query, and returns the first column of the first row in the
         /// result set returned by the query. Extra columns or rows are ignored.
         /// </summary>
+        /// <param name="commandText">The command to execute.</param>
         /// <returns>The first column of the first row in the result set.</returns>
-        object ExecuteScalar();
+        object ExecuteScalar(string commandText);
 
         /// <summary>
         /// Executes the script.
@@ -81,9 +84,9 @@ namespace Cobos.Data
         /// <summary>
         /// Fill a DataTable with the query result.
         /// </summary>
-        /// <param name="sql">The query to execute.</param>
+        /// <param name="commandText">The query to execute.</param>
         /// <param name="result">The table to fill with the query result.</param>
-        void Fill(string sql, DataTable result);
+        void Fill(string commandText, DataTable result);
 
         /// <summary>
         /// Fill the DatabaseQuery objects synchronously.
@@ -108,7 +111,7 @@ namespace Cobos.Data
         /// </summary>
         /// <param name="connection">The database connection.</param>
         /// <returns>An object representing a valid database command.</returns>
-        IDbCommand GetCommand(IDbConnection connection);
+        IDbCommand GetCommand();
 
         /// <summary>
         /// Get a new database adapter object.

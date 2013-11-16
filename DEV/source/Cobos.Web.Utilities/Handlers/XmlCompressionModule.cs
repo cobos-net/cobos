@@ -27,58 +27,64 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-using System;
-using System.Data;
-using System.Configuration;
-using System.Web;
-using System.Web.Security;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-using System.Web.UI.HtmlControls;
-using System.IO.Compression;
-using System.Globalization;
-
 namespace Cobos.Web.Utilities.Handlers
 {
+    using System;
+    using System.Configuration;
+    using System.Globalization;
+    using System.IO.Compression;
+    using System.Web;
+    using System.Web.Security;
+    using System.Web.UI;
+    using System.Web.UI.HtmlControls;
+    using System.Web.UI.WebControls;
+    using System.Web.UI.WebControls.WebParts;
+
+    /// <summary>
+    /// HTTP module to compress the response stream.
+    /// </summary>
     public class XmlCompressionModule : IHttpModule
     {
-        #region IHttpModule Members
-
+        /// <summary>
+        /// Dispose the module
+        /// </summary>
         public void Dispose()
         {
         }
 
+        /// <summary>
+        /// Initialize the context.
+        /// </summary>
+        /// <param name="context">The HTTP application context.</param>
         public void Init(HttpApplication context)
         {
-            context.PostRequestHandlerExecute += new EventHandler(Compress);
+            context.PostRequestHandlerExecute += new EventHandler(this.Compress);
         }
 
-        #endregion
-
+        /// <summary>
+        /// Delegate called by the HTTP application context.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event arguments.</param>
         private void Compress(object sender, EventArgs e)
         {
             HttpApplication app = (HttpApplication)sender;
             HttpRequest request = app.Request;
             HttpResponse response = app.Response;
 
-            // Are we returning XML?
             if (response.ContentType.ToLower(CultureInfo.InvariantCulture).StartsWith("text/xml"))
             {
-                // Get the encoding accepted by the client
                 string acceptEncoding = request.Headers["Accept-Encoding"];
-                // Make sure an encoding is specified
+
                 if (!string.IsNullOrEmpty(acceptEncoding))
                 {
-                    // Make the encoding lower case
                     acceptEncoding = acceptEncoding.ToLower(CultureInfo.InvariantCulture);
-                    // Does it accept GZIP?
+
                     if (acceptEncoding.Contains("gzip"))
                     {
                         response.Filter = new GZipStream(response.Filter, CompressionMode.Compress);
                         response.AddHeader("Content-encoding", "gzip");
                     }
-                    // Does it accept deflate?
                     else if (acceptEncoding.Contains("deflate"))
                     {
                         response.Filter = new DeflateStream(response.Filter, CompressionMode.Compress);

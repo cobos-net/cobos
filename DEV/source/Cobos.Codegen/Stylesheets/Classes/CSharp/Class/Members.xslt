@@ -28,13 +28,12 @@
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-	<xsl:template match="cobos:Object[ not( ancestor::cobos:Interface ) ]" mode="classMemberDefinition">
+	<xsl:template match="cobos:Object[not(ancestor::cobos:Interface)]" mode="classMemberDefinition">
     <xsl:variable name="datasetRowType">
       <xsl:apply-templates select="." mode="datasetRowType"/>
     </xsl:variable>
     <xsl:value-of select="concat($indent2, 'public readonly ', $datasetRowType, ' ObjectDataRow;')" />
     <xsl:apply-templates select="cobos:Object" mode="classMemberDecl"/>
-    <xsl:apply-templates select="cobos:Reference" mode="classMemberDecl"/>
   </xsl:template>
 
 	<!--
@@ -47,33 +46,6 @@
 	<xsl:template match="cobos:Object" mode="classMemberDecl">
     <xsl:value-of select="$newlineIndent2"/>
     <xsl:value-of select="concat('private ', @typeName, ' ', @memberName, ';')" />
-	</xsl:template>
-
-	<!--
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	Class member declaration for a reference type
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	-->
-
-	<xsl:template match="cobos:Reference[not(@isCollection)]" mode="classMemberDecl">
-    <xsl:value-of select="$newlineIndent2"/>
-    <xsl:value-of select="concat('private ', @ref, ' ', @memberName, ';')" />
-	</xsl:template>
-
-	<!--
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	Class member declaration for reference type that is a collection
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	-->
-
-	<xsl:template match="cobos:Reference[ @isCollection ]" mode="classMemberDecl">
-    <xsl:value-of select="$newlineIndent2"/>
-    <xsl:variable name="listDecl">
-      <xsl:apply-templates select="." mode="listDecl"/>
-    </xsl:variable>
-    <xsl:value-of select="concat('private ', $listDecl, ' ', @memberName, ';')" />
 	</xsl:template>
 
 	

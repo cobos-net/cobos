@@ -27,7 +27,7 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-namespace Cobos.Data
+namespace Cobos.Data.Adapters
 {
     using System;
     using System.Data;
@@ -50,16 +50,10 @@ namespace Cobos.Data
         where CommandType : IDbCommand, new()
         where DataAdapterType : DbDataAdapter, IDbDataAdapter, new()
     {
-        #region Instance data
-
         /// <summary>
         /// The connection string
         /// </summary>
         public readonly string ConnectionString;
-
-        #endregion
-
-        #region Construction
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DatabaseAdapter{ConnectionType,CommandType,DataAdapterType}"/> class.
@@ -69,15 +63,6 @@ namespace Cobos.Data
         {
             this.ConnectionString = connectionString;
         }
-
-        #endregion
-
-        /// <summary>
-        /// Asynchronous database callback.
-        /// </summary>
-        /// <param name="sql">The query to execute.</param>
-        /// <param name="table">The DataTable to hold the query results.</param>
-        public delegate void QueryDatabaseAsync(string sql, DataTable table);
 
         /// <summary>
         /// Gets or sets a value indicating whether the connection is read only.
@@ -97,30 +82,75 @@ namespace Cobos.Data
         /// Executes an SQL statement against the Connection object of a .NET Framework
         /// data provider, and returns the number of rows affected.
         /// </summary>
+        /// <param name="commandText">The command to execute.</param>
         /// <returns>The number of rows affected.</returns>
-        public int ExecuteNonQuery()
+        public int ExecuteNonQuery(string commandText)
         {
-            throw new NotImplementedException();
+            using (var connection = this.GetConnection())
+            {
+                int result;
+                connection.Open();
+
+                using (var command = this.GetCommand())
+                {
+                    command.Connection = connection;
+                    command.CommandText = commandText;
+                    result = command.ExecuteNonQuery();
+                }
+
+                connection.Close();
+                return result;
+            }
         }
 
         /// <summary>
         /// Executes the <c>System.Data.IDbCommand.CommandText</c> against the <c>System.Data.IDbCommand.Connection</c>
         /// and builds an <c>System.Data.IDataReader</c>.
         /// </summary>
+        /// <param name="commandText">The command to execute.</param>
         /// <returns>An <c>System.Data.IDataReader</c> object.</returns>
-        public IDataReader ExecuteReader()
+        public IDataReader ExecuteReader(string commandText)
         {
-            throw new NotImplementedException();
+            using (var connection = this.GetConnection())
+            {
+                IDataReader result = null;
+                connection.Open();
+
+                using (var command = this.GetCommand())
+                {
+                    command.Connection = connection;
+                    command.CommandText = commandText;
+                    result = command.ExecuteReader();
+                }
+
+                connection.Close();
+                return result;
+            }
         }
 
         /// <summary>
         /// Executes the query, and returns the first column of the first row in the
         /// result set returned by the query. Extra columns or rows are ignored.
         /// </summary>
+        /// <param name="commandText">The command to execute.</param>
         /// <returns>The first column of the first row in the result set.</returns>
-        public object ExecuteScalar()
+        public object ExecuteScalar(string commandText)
         {
-            throw new NotImplementedException();
+            using (var connection = this.GetConnection())
+            {
+                object result = null;
+                connection.Open();
+
+                using (var command = this.GetCommand())
+                {
+                    command.Connection = connection;
+                    command.CommandText = commandText;
+                    result = command.ExecuteScalar();
+                }
+
+                connection.Close();
+                return result;
+            }
         }
 
         /// <summary>
@@ -135,17 +165,18 @@ namespace Cobos.Data
         /// <summary>
         /// Fill a DataTable with the query result.
         /// </summary>
-        /// <param name="sql">The query to execute.</param>
+        /// <param name="commandText">The query to execute.</param>
         /// <param name="result">The table to fill with the query result.</param>
-        public virtual void Fill(string sql, DataTable result)
+        public virtual void Fill(string commandText, DataTable result)
         {
             using (var connection = this.GetConnection())
             {
                 connection.Open();
 
-                using (var command = this.GetCommand(connection))
+                using (var command = this.GetCommand())
                 {
-                    command.CommandText = sql;
+                    command.Connection = connection;
+                    command.CommandText = commandText;
 
                     using (var adapter = (DbDataAdapter)this.GetDataAdapter())
                     {
@@ -166,7 +197,7 @@ namespace Cobos.Data
         {
             foreach (var query in queries)
             {
-                this.Fill(query.Sql, query.Table);
+                this.Fill(query.CommandText, query.Table);
             }
         }
 
@@ -176,25 +207,18 @@ namespace Cobos.Data
         /// <param name="queries">The queries to process.</param>
         public void FillAsynch(DatabaseQuery[] queries)
         {
-            // create a new helpers list
-            var tasks = new AsyncTask<DataTable, DatabaseAdapter<ConnectionType, CommandType, DataAdapterType>.QueryDatabaseAsync>[queries.Length];
+            Action<DatabaseQuery> action = q => this.Fill(q.CommandText, q.Table);
 
-            // initiate the queries
-            for (int i = 0; i < queries.Length; ++i)
+            var results = new IAsyncResult[queries.Length];
+
+            for (int i = 0; i < results.Length; ++i)
             {
-                DatabaseQuery q = queries[i];
-
-                // create a new query helper
-                tasks[i] = new AsyncTask<DataTable, DatabaseAdapter<ConnectionType, CommandType, DataAdapterType>.QueryDatabaseAsync>();
-                tasks[i].Object = q.Table;
-                tasks[i].Caller = this.Fill;
-                tasks[i].AsyncResult = tasks[i].Caller.BeginInvoke(q.Sql, q.Table, null, null);
+                results[i] = action.BeginInvoke(queries[i], null, null);
             }
 
-            // get the results from the queries
-            foreach (var task in tasks)
+            for (int i = 0; i < results.Length; ++i)
             {
-                task.Caller.EndInvoke(task.AsyncResult);
+                action.EndInvoke(results[i]);
             }
         }
 
@@ -212,13 +236,10 @@ namespace Cobos.Data
         /// <summary>
         /// Get a new database command object.
         /// </summary>
-        /// <param name="connection">The database connection.</param>
         /// <returns>An object representing a valid database command.</returns>
-        public virtual IDbCommand GetCommand(IDbConnection connection)
+        public virtual IDbCommand GetCommand()
         {
-            CommandType command = new CommandType();
-            command.Connection = connection;
-            return command;
+            return new CommandType();
         }
 
         /// <summary>

@@ -17,7 +17,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataModel", "DataModel", "{AA03B289-390E-4A38-93A7-B4E9856B769D}"
 	ProjectSection(SolutionItems) = preProject
 		Cobos.Codegen\Stylesheets\DataModel\Dataset.xslt = Cobos.Codegen\Stylesheets\DataModel\Dataset.xslt
-		Cobos.Codegen\Stylesheets\DataModel\Expand.xslt = Cobos.Codegen\Stylesheets\DataModel\Expand.xslt
+		Cobos.Codegen\Stylesheets\DataModel\Process.xslt = Cobos.Codegen\Stylesheets\DataModel\Process.xslt
 		Cobos.Codegen\Stylesheets\DataModel\Schema.xslt = Cobos.Codegen\Stylesheets\DataModel\Schema.xslt
 	EndProjectSection
 EndProject
@@ -59,10 +59,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TableAdapter", "TableAdapte
 		Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Changes.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Changes.xslt
 		Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Delegates.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Delegates.xslt
 		Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Delete.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Delete.xslt
-		Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Find.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Find.xslt
+		Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Fill.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Fill.xslt
+		Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\GetEntities.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\GetEntities.xslt
 		Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Insert.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Insert.xslt
 		Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\New.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\New.xslt
-		Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Select.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Select.xslt
 		Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\TableAdapter.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\TableAdapter.xslt
 		Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Update.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Update.xslt
 	EndProjectSection
@@ -112,6 +112,18 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.Build.Targets", "Cobos.Build.Targets\Cobos.Build.Targets.csproj", "{1FC4F6FF-51BD-4FC2-8464-6CCF971F6ADC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.Build.Targets.Tests", "Cobos.Build.Targets.Tests\Cobos.Build.Targets.Tests.csproj", "{98F41521-D93D-4E57-9007-924F79AAF242}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.Data.PostgreSql", "Cobos.Data.PostgreSql\Cobos.Data.PostgreSql.csproj", "{E669D37F-AECE-495D-9774-069DE66C1E70}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.Data.SqlServer", "Cobos.Data.SqlServer\Cobos.Data.SqlServer.csproj", "{919D7FFF-19B3-4323-A84C-7F0345F314F5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utilities", "Utilities", "{E299B50E-6E19-4EB6-A3E7-C4A8B6A9B1F5}"
+	ProjectSection(SolutionItems) = preProject
+		Cobos.Codegen\Stylesheets\Utilities\Boilerplate.xslt = Cobos.Codegen\Stylesheets\Utilities\Boilerplate.xslt
+		Cobos.Codegen\Stylesheets\Utilities\Formatting.xslt = Cobos.Codegen\Stylesheets\Utilities\Formatting.xslt
+		Cobos.Codegen\Stylesheets\Utilities\Nodes.xslt = Cobos.Codegen\Stylesheets\Utilities\Nodes.xslt
+		Cobos.Codegen\Stylesheets\Utilities\Strings.xslt = Cobos.Codegen\Stylesheets\Utilities\Strings.xslt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -172,6 +184,14 @@ Global
 		{98F41521-D93D-4E57-9007-924F79AAF242}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{98F41521-D93D-4E57-9007-924F79AAF242}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{98F41521-D93D-4E57-9007-924F79AAF242}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E669D37F-AECE-495D-9774-069DE66C1E70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E669D37F-AECE-495D-9774-069DE66C1E70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E669D37F-AECE-495D-9774-069DE66C1E70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E669D37F-AECE-495D-9774-069DE66C1E70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{919D7FFF-19B3-4323-A84C-7F0345F314F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{919D7FFF-19B3-4323-A84C-7F0345F314F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{919D7FFF-19B3-4323-A84C-7F0345F314F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{919D7FFF-19B3-4323-A84C-7F0345F314F5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -183,6 +203,7 @@ Global
 		{AA03B289-390E-4A38-93A7-B4E9856B769D} = {734596B3-3329-4336-B41D-A0804C78B745}
 		{431A7087-1C7A-4C5E-8619-3FE737D0C75C} = {734596B3-3329-4336-B41D-A0804C78B745}
 		{6B8454F6-62C2-4A7F-A6A7-C3B9246836D2} = {734596B3-3329-4336-B41D-A0804C78B745}
+		{E299B50E-6E19-4EB6-A3E7-C4A8B6A9B1F5} = {734596B3-3329-4336-B41D-A0804C78B745}
 		{B9BB1932-D08F-4904-A8FC-A5F0AC25644A} = {6B8454F6-62C2-4A7F-A6A7-C3B9246836D2}
 		{150D932B-1FB2-49B0-8FC0-C94A3711DBA9} = {B9BB1932-D08F-4904-A8FC-A5F0AC25644A}
 		{7472F69A-82C6-4544-8FDC-346852767FD4} = {B9BB1932-D08F-4904-A8FC-A5F0AC25644A}

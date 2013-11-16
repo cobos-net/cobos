@@ -27,18 +27,26 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-using System;
-using Cobos.Utilities.File;
-using NUnit.Framework;
-using System.IO;
-
-using SysFile = System.IO.File;
-
 namespace Cobos.Utilities.Tests.File
 {
+    using System;
+    using System.IO;
+    using Cobos.Utilities.File;
+    using NUnit.Framework;
+
+    using SysFile = System.IO.File;
+
+    /// <summary>
+    /// Unit Tests for the <see cref="DriveMapping"/> class.
+    /// </summary>
     [TestFixture]
     public class DriveMappingTests
     {
+        /// <summary>
+        /// Strategy:
+        /// ---------
+        /// 1. Test that we can map and un-map a local folder.
+        /// </summary>
         [TestCase]
         public void Can_map_and_unmap_a_local_folder()
         {
@@ -50,6 +58,7 @@ namespace Cobos.Utilities.Tests.File
             {
                 writer.WriteLine("this is a test file");
             }
+
             fs.Close();
 
             // find a free drive...
@@ -81,6 +90,11 @@ namespace Cobos.Utilities.Tests.File
             FileUtility.DeleteFile(testFilePath);
         }
 
+        /// <summary>
+        /// Strategy:
+        /// ---------
+        /// 1. Test that we can map and un-map a network folder.
+        /// </summary>
         [TestCase]
         public void Can_map_and_unmap_a_network_folder()
         {
@@ -100,8 +114,8 @@ namespace Cobos.Utilities.Tests.File
             Assert.True(DriveMapping.DriveExists(drive));
 
             // confirm that if we access the test file by either path, we are actually looking at the same file
-            FileHandle h1 = new FileHandle(TestManager.UncSharedFolder + @"\init_cad.h");
-            FileHandle h2 = new FileHandle(drive + @":\init_cad.h");
+            FileHandle h1 = new FileHandle(TestManager.UncSharedFolder + @"\test_file.h");
+            FileHandle h2 = new FileHandle(drive + @":\test_file.h");
 
             Assert.AreEqual(h1, h2);
 
@@ -109,6 +123,5 @@ namespace Cobos.Utilities.Tests.File
 
             Assert.False(DriveMapping.DriveExists(drive));
         }
-
     }
 }

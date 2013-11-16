@@ -27,73 +27,99 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-using System;
-using System.Diagnostics;
-
 namespace Cobos.Utilities.Diagnostics
 {
+    using System;
+    using System.Diagnostics;
+
     /// <summary>
     /// DateTimePrecise provides a way to get a DateTime that exhibits the
     /// relative precision of System.Diagnostics.Stopwatch, and the absolute 
     /// accuracy of DateTime.Now.
-    /// 
-    /// Courtesy of James Brock (http://www.codeproject.com/KB/cs/DateTimePrecise.aspx)
+    /// <para>
+    /// Courtesy of James Brock <c>(http://www.codeproject.com/KB/cs/DateTimePrecise.aspx)</c>.
+    /// </para>
     /// </summary>
     public class DateTimePrecise
     {
         /// <summary>
-        /// Creates a new instance of DateTimePrecise.
-        /// A large value of synchronizePeriodSeconds may cause arithmetic overthrow
+        /// The internal System.Diagnostics.Stopwatch used by this instance.
+        /// </summary>
+        public readonly Stopwatch Timer;
+
+        /// <summary>
+        /// The frequency of the DateTime tick (100 nanoseconds).
+        /// </summary>
+        private const long ClockTickFrequency = 10000000;
+
+        /// <summary>
+        /// The elapsed time period in stop-watch ticks to re-synchronize.
+        /// </summary>
+        private long synchronizePeriodStopwatchTicks;
+
+        /// <summary>
+        /// The elapsed time period in clock ticks to re-synchronize.
+        /// </summary>
+        private long synchronizePeriodClockTicks;
+        
+        /// <summary>
+        /// The internal counter for synchronizing.
+        /// </summary>
+        private Counter counter;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DateTimePrecise"/> class.
+        /// </summary>
+        /// <param name="synchronizePeriodSeconds">The number of seconds after which the DateTimePrecise will synchronize itself with the system clock.</param>
+        /// <remarks>
+        /// A large value of synchronizePeriodSeconds may cause arithmetic overflow
         /// exceptions to be thrown. A small value may cause the time to be unstable.
         /// A good value is 10.
-        /// synchronizePeriodSeconds = The number of seconds after which the
-        /// DateTimePrecise will synchronize itself with the system clock.
-        /// </summary>
-        /// <param name="synchronizePeriodSeconds"></param>
+        /// </remarks>
         public DateTimePrecise(long synchronizePeriodSeconds)
         {
-            Stopwatch = Stopwatch.StartNew();
-            this.Stopwatch.Start();
+            this.Timer = Stopwatch.StartNew();
+            this.Timer.Start();
 
-            DateTime t = DateTime.UtcNow;
-            _immutable = new DateTimePreciseSafeImmutable(t, t, Stopwatch.ElapsedTicks, Stopwatch.Frequency);
+            DateTime now = DateTime.UtcNow;
+            this.counter = new Counter(now, now, this.Timer.ElapsedTicks, Stopwatch.Frequency);
 
-            _synchronizePeriodSeconds = synchronizePeriodSeconds;
-            _synchronizePeriodStopwatchTicks = synchronizePeriodSeconds * Stopwatch.Frequency;
-            _synchronizePeriodClockTicks = synchronizePeriodSeconds * _clockTickFrequency;
+            this.synchronizePeriodStopwatchTicks = synchronizePeriodSeconds * Stopwatch.Frequency;
+            this.synchronizePeriodClockTicks = synchronizePeriodSeconds * ClockTickFrequency;
         }
 
         /// <summary>
-        /// Returns the current date and time, just like DateTime.UtcNow.
+        /// Gets the current date and time, just like <c>DateTime.UtcNow</c>.
         /// </summary>
         public DateTime UtcNow
         {
             get
             {
-                long s = this.Stopwatch.ElapsedTicks;
-                DateTimePreciseSafeImmutable immutable = _immutable;
+                long elapsedTicks = this.Timer.ElapsedTicks;
 
-                if (s < immutable._s_observed + _synchronizePeriodStopwatchTicks)
+                if (elapsedTicks < this.counter.TicksElapsed + this.synchronizePeriodStopwatchTicks)
                 {
-                    return immutable._t_base.AddTicks(((s - immutable._s_observed) * _clockTickFrequency) / (immutable._stopWatchFrequency));
+                    return this.counter.Baseline.AddTicks(((elapsedTicks - this.counter.TicksElapsed) * ClockTickFrequency) / this.counter.Frequency);
                 }
                 else
                 {
-                    DateTime t = DateTime.UtcNow;
+                    DateTime now = DateTime.UtcNow;
 
-                    DateTime t_base_new = immutable._t_base.AddTicks(((s - immutable._s_observed) * _clockTickFrequency) / (immutable._stopWatchFrequency));
+                    DateTime newBaseline = this.counter.Baseline.AddTicks(((elapsedTicks - this.counter.TicksElapsed) * ClockTickFrequency) / this.counter.Frequency);
 
-                    _immutable = new DateTimePreciseSafeImmutable(t, t_base_new, s,
-                                                                                    ((s - immutable._s_observed) * _clockTickFrequency * 2) /
-                                                                                    (t.Ticks - immutable._t_observed.Ticks + t.Ticks + t.Ticks - t_base_new.Ticks - immutable._t_observed.Ticks));
+                    this.counter = new Counter(
+                                            now, 
+                                            newBaseline, 
+                                            elapsedTicks,
+                                            ((elapsedTicks - this.counter.TicksElapsed) * ClockTickFrequency * 2) / (now.Ticks - this.counter.Last.Ticks + now.Ticks + now.Ticks - newBaseline.Ticks - this.counter.Last.Ticks));
 
-                    return t_base_new;
+                    return newBaseline;
                 }
             }
         }
 
         /// <summary>
-        /// Returns the current date and time, just like DateTime.Now.
+        /// Gets the current date and time, just like DateTime.Now.
         /// </summary>
         public DateTime Now
         {
@@ -104,7 +130,7 @@ namespace Cobos.Utilities.Diagnostics
         }
 
         /// <summary>
-        /// Get an ISO compliant date/time stamp
+        /// Gets an ISO compliant date/time stamp
         /// </summary>
         public string Iso8601
         {
@@ -114,28 +140,45 @@ namespace Cobos.Utilities.Diagnostics
             }
         }
 
-        /// The internal System.Diagnostics.Stopwatch used by this instance.
-        public Stopwatch Stopwatch;
-
-        private long _synchronizePeriodStopwatchTicks;
-        private long _synchronizePeriodSeconds;
-        private long _synchronizePeriodClockTicks;
-        private const long _clockTickFrequency = 10000000;
-        private DateTimePreciseSafeImmutable _immutable;
-    }
-
-    internal sealed class DateTimePreciseSafeImmutable
-    {
-        internal DateTimePreciseSafeImmutable(DateTime t_observed, DateTime t_base, long s_observed, long stopWatchFrequency)
+        /// <summary>
+        /// Internal helper class to maintain a count.
+        /// </summary>
+        internal sealed class Counter
         {
-            _t_observed = t_observed;
-            _t_base = t_base;
-            _s_observed = s_observed;
-            _stopWatchFrequency = stopWatchFrequency;
+            /// <summary>
+            /// The last time observed.
+            /// </summary>
+            internal readonly DateTime Last;
+            
+            /// <summary>
+            /// The baseline time.
+            /// </summary>
+            internal readonly DateTime Baseline;
+            
+            /// <summary>
+            /// The number of ticks elapsed.
+            /// </summary>
+            internal readonly long TicksElapsed;
+            
+            /// <summary>
+            /// The StopWatch frequency.
+            /// </summary>
+            internal readonly long Frequency;
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="Counter"/> class.
+            /// </summary>
+            /// <param name="lastTime">The last time observed.</param>
+            /// <param name="baseline">The baseline time.</param>
+            /// <param name="ticksObserved">The number of ticks observed.</param>
+            /// <param name="frequency">The StopWatch frequency.</param>
+            internal Counter(DateTime lastTime, DateTime baseline, long ticksObserved, long frequency)
+            {
+                this.Last = lastTime;
+                this.Baseline = baseline;
+                this.TicksElapsed = ticksObserved;
+                this.Frequency = frequency;
+            }
         }
-        internal readonly DateTime _t_observed;
-        internal readonly DateTime _t_base;
-        internal readonly long _s_observed;
-        internal readonly long _stopWatchFrequency;
     }
 }

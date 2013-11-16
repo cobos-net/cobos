@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="nunit.framework, Version=2.6.3.13283, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
@@ -40,9 +44,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Data\Event\Generated\DataModel.cs" />
-    <Compile Include="Data\Event\Generated\Dataset.cs">
-      <DependentUpon>Dataset.xsd</DependentUpon>
+    <Compile Include="..\Cobos.Codegen.Tests\Data\DataModelTests.cs">
+      <Link>Data\DataModelTests.cs</Link>
+    </Compile>
+    <Compile Include="..\Cobos.Codegen.Tests\TestManager.cs">
+      <Link>TestManager.cs</Link>
+    </Compile>
+    <Compile Include="Data\Generated\DataModel.cs" />
+    <Compile Include="Data\Generated\Dataset.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -52,35 +61,34 @@
     <None Include="BUILD\prebuild.targets">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Data\Event\Generated\DataModel.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Data\Event\Generated\Dataset.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>Dataset.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\Cobos.Codegen.Tests\Data\Event\DataModel.xml">
-      <Link>Data\Event\DataModel.xml</Link>
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="..\Cobos.Codegen.Tests\Stylesheets\Classes\CSharp\Custom.xslt">
       <Link>Stylesheets\Classes\CSharp\Custom.xslt</Link>
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Data\DataModel.xml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Cobos.Data %28NET35%29\Cobos.Data %28NET35%29.csproj">
       <Project>{F2609602-12E4-47FD-90FB-CC17526EC27B}</Project>
       <Name>Cobos.Data %28NET35%29</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Cobos.Data.MySql %28NET35%29\Cobos.Data.MySql %28NET35%29.csproj">
+      <Project>{a7879f26-9b47-478a-9675-4d926638418a}</Project>
+      <Name>Cobos.Data.MySql %28NET35%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Cobos.Data.Oracle %28NET35%29\Cobos.Data.Oracle %28NET35%29.csproj">
+      <Project>{be371019-2b99-4766-a47b-0a438b42e8b7}</Project>
+      <Name>Cobos.Data.Oracle %28NET35%29</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Cobos.Utilities %28NET35%29\Cobos.Utilities %28NET35%29.csproj">
       <Project>{97E05107-67B6-401E-B34F-9EFBEC81EB05}</Project>
       <Name>Cobos.Utilities %28NET35%29</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="BUILD\prebuild.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

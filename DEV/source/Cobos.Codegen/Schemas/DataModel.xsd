@@ -10,7 +10,7 @@
 	<!-- 
 	=============================================================================
 	Filename: DataModel.xsd
-	Description: Generic Data Model schema for modelling CAD data
+	Description: Generic Data Model schema for modelling data
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	Created by: N.Davis                        Date: 2010-04-09
 	Modified by:                               Date:
@@ -34,6 +34,7 @@
 			<xsd:element ref="DataModelComponent" maxOccurs="unbounded"/>
 		</xsd:sequence>
 		<xsd:attribute name="name" type="xsd:string" use="required"/>
+		<xsd:attribute name="dateTimeMode" type="cobos:DateTimeModeEnum" use="required"/>
 	</xsd:complexType>
 
 	<!--
@@ -384,7 +385,7 @@
 					<xsd:annotation>
 						<xsd:documentation>
 							Some database field values are other data types encoded as strings.
-							An example of this would be the CAD CDTS value.
+							An example of this would be a custom date value.
 						</xsd:documentation>
 					</xsd:annotation>
 				</xsd:attribute>
@@ -465,14 +466,26 @@
 
 	<!--
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	DateTime mode
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	-->
+
+	<xsd:simpleType name="DateTimeModeEnum">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Local"/>
+			<xsd:enumeration value="Unspecified"/>
+			<xsd:enumeration value="Utc"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<!--
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	Special string formats
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
 	<xsd:simpleType name="StringFormatEnum">
 		<xsd:restriction base="xsd:string">
-			<xsd:enumeration value="CadDts"/>
-			<xsd:enumeration value="CadBoolean"/>
 			<xsd:enumeration value="Seperator"/>
 		</xsd:restriction>
 	</xsd:simpleType>

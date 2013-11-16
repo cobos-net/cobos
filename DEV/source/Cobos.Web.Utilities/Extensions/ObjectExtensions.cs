@@ -27,18 +27,21 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Web.Script.Serialization;
-
 namespace Cobos.Web.Utilities.Extensions
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Web.Script.Serialization;
+
+    /// <summary>
+    /// Extensions for the object class.
+    /// </summary>
     public static class ObjectExtensions
     {
         /// <summary>
-        /// serialize the object to Json
+        /// serialize the object to JSON
         /// </summary>
         /// <param name="obj">The 'this' object reference</param>
         /// <returns>String representation of the object in JSON notation</returns>

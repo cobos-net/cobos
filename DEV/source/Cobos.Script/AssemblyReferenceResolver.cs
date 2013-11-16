@@ -27,41 +27,44 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Configuration;
-using Cobos.Utilities.Cache;
-
 namespace Cobos.Script
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Configuration;
+    using System.IO;
+    using Cobos.Utilities.Cache;
+
+    /// <summary>
+    /// Helper class for resolving assembly references.
+    /// </summary>
     internal static class AssemblyReferenceResolver
     {
         /// <summary>
         /// Resolve paths to assemblies not found in C:\WINDOWS\Microsoft.NET\Framework\vXXX.
         /// The compiler doesn't use the CLR to load assemblies, if they are not in the same
-        /// folder as the executable or the csc then you need to supply /lib: parameters to
+        /// folder as the executable or the CSC then you need to supply /lib: parameters to
         /// the compiler for it to be able to resolve the assembly references.
         /// Since the CLR is not used, assemblies are not loaded from the GAC.
         /// </summary>
-        /// <param name="references"></param>
-        /// <returns></returns>
+        /// <param name="references">The references to resolve.</param>
+        /// <returns>A list of resolve references.</returns>
         public static List<string> Resolve(string[] references)
         {
-            // Strategy:
-            // ---------
-            // 1. Use a cache to store paths and retrieve paths we've previously found.  Recursively searching using Directory.Find is quite slow.
-            // 2. Add any user configured assembly paths.
-            //
-            // For each reference:
-            //
-            // 3. Look in the cache for previoulsy identified framework assemblies.  This will be found by the compiler.
-            // 4. Look in the current working directory.  If found don't add it, it will be picked up.
-            // 5. Look in all previously found folders.  If found don't add it, the path is already referenced.
-            // 5. Look in the cache for previously found folders. If found, add it.  Add the folder to the cache.
-            // 6. Look in the framework folders.  If found don't add it, it will be picked up.
-            // 7. Search the GAC.  If found, add it, the compiler doesn't use the CLR, so it won't be loaded.  Add the folder to cache.
-            // 8. Search the %PATH%.  If found, add it.  Add the folder to the cache.
+            //// Strategy:
+            //// ---------
+            //// 1. Use a cache to store paths and retrieve paths we've previously found.  Recursively searching using Directory.Find is quite slow.
+            //// 2. Add any user configured assembly paths.
+            ////
+            //// For each reference:
+            ////
+            //// 3. Look in the cache for previoulsy identified framework assemblies.  This will be found by the compiler.
+            //// 4. Look in the current working directory.  If found don't add it, it will be picked up.
+            //// 5. Look in all previously found folders.  If found don't add it, the path is already referenced.
+            //// 5. Look in the cache for previously found folders. If found, add it.  Add the folder to the cache.
+            //// 6. Look in the framework folders.  If found don't add it, it will be picked up.
+            //// 7. Search the GAC.  If found, add it, the compiler doesn't use the CLR, so it won't be loaded.  Add the folder to cache.
+            //// 8. Search the %PATH%.  If found, add it.  Add the folder to the cache.
 
             CacheFile<string> cache = GetCache();
 
@@ -131,20 +134,25 @@ namespace Cobos.Script
             return paths;
         }
 
+        /// <summary>
+        /// Check whether the resource is in the current working folder.
+        /// </summary>
+        /// <param name="reference">The resource to find.</param>
+        /// <returns>true if the resource was found; otherwise false.</returns>
         public static bool IsInCurrentWorkingFolder(string reference)
         {
-            // check whether the assembly is in the current working folder
             string[] found = Directory.GetFiles(Environment.CurrentDirectory, reference, SearchOption.TopDirectoryOnly);
 
             return found != null && found.Length > 0;
         }
 
         /// <summary>
-        /// Check whether the file is in a list of paths we've already found.
+        /// Check whether the resource is in a list of paths we've already found.
         /// </summary>
-        /// <param name="reference"></param>
-        /// <param name="paths"></param>
-        /// <returns></returns>
+        /// <param name="reference">The resource to find.</param>
+        /// <param name="paths">The paths we've already found.</param>
+        /// <param name="foundPath">Receives the path of the resource if found.</param>
+        /// <returns>true if the resource was found; otherwise false.</returns>
         public static bool IsInFolderList(string reference, IEnumerable<string> paths, out string foundPath)
         {
             foundPath = null;
@@ -164,12 +172,12 @@ namespace Cobos.Script
         }
 
         /// <summary>
-        /// Check whether the file is in a cached folder.
+        /// Check whether the resource is in a cached folder.
         /// </summary>
-        /// <param name="reference"></param>
-        /// <param name="cache"></param>
-        /// <param name="paths"></param>
-        /// <returns></returns>
+        /// <param name="reference">The reference to find.</param>
+        /// <param name="cache">The file cache.</param>
+        /// <param name="path">Receives the path if found.</param>
+        /// <returns>true if the resource was found in the cache; otherwise false.</returns>
         public static bool IsInFolderCache(string reference, CacheFile<string> cache, out string path)
         {
             path = null;
@@ -190,6 +198,11 @@ namespace Cobos.Script
             return false;
         }
 
+        /// <summary>
+        /// Check whether a particular resource exists in the framework folders.
+        /// </summary>
+        /// <param name="reference">The reference to find.</param>
+        /// <returns>true if the resource is found in the framework folders; otherwise false.</returns>
         public static bool IsInFrameworkFolders(string reference)
         {
             // check whether the assembly is in the framework folders
@@ -209,25 +222,13 @@ namespace Cobos.Script
         }
 
         /// <summary>
-        /// Open or create the application cache file.
+        /// Checks whether a particular resource exists in a specific folder.
         /// </summary>
-        /// <returns></returns>
-        private static CacheFile<string> GetCache()
-        {
-            string path = System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName + ".cache";
-
-            CacheFile<string> cache = new CacheFile<string>(path);
-
-            cache.Open();
-
-            return cache;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="paths"></param>
-        /// <returns></returns>
+        /// <param name="searchPath">The path to search in.</param>
+        /// <param name="searchPattern">The pattern to search for.</param>
+        /// <param name="searchOption">The search options.</param>
+        /// <param name="found">Receives a list of the found items.</param>
+        /// <returns>true if the search was successful; otherwise false.</returns>
         public static bool IsInFolder(string searchPath, string searchPattern, SearchOption searchOption, out string[] found)
         {
             found = Directory.GetFiles(searchPath, searchPattern, searchOption);
@@ -243,10 +244,10 @@ namespace Cobos.Script
         }
 
         /// <summary>
-        /// 
+        /// Validates the collection of paths to confirm that they exist.
         /// </summary>
-        /// <param name="paths"></param>
-        /// <returns></returns>
+        /// <param name="paths">The collection of paths to validate.</param>
+        /// <returns>A collection of validated paths.</returns>
         public static string[] ValidateFoldersList(string[] paths)
         {
             if (paths == null || paths.Length == 0)
@@ -274,6 +275,21 @@ namespace Cobos.Script
             }
 
             return valid.ToArray();
+        }
+
+        /// <summary>
+        /// Open or create the application cache file.
+        /// </summary>
+        /// <returns>The cache file.</returns>
+        private static CacheFile<string> GetCache()
+        {
+            string path = System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName + ".cache";
+
+            CacheFile<string> cache = new CacheFile<string>(path);
+
+            cache.Open();
+
+            return cache;
         }
     }
 }

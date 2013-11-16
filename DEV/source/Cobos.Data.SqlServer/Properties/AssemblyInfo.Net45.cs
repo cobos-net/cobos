@@ -1,5 +1,5 @@
 ﻿// ----------------------------------------------------------------------------
-// <copyright file="DesktopTests.cs" company="Cobos SDK">
+// <copyright file="AssemblyInfo.Net45.cs" company="Cobos SDK">
 //
 //      Copyright (c) 2009-2012 Nicholas Davis - nick@cobos.co.uk
 //
@@ -27,19 +27,8 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-using System;
-using NUnit.Framework;
-using Cobos.Utilities.Win32;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
-namespace Cobos.Utilities.Tests.Win32
-{
-    [TestFixture]
-    public class DesktopTests
-    {
-        [TestCase]
-        public void Can_set_desktop_wallpaper()
-        {
-            Desktop.SetWallpaper(TestManager.TestFilesLocation + @"\Images\wallpaper.bmp", Desktop.WallpaperStyleEnum.Centered);
-        }
-    }
-}
+[assembly: Guid("e829415c-e464-419e-9971-830738c95b78")]

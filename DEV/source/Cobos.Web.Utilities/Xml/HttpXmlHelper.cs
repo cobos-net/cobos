@@ -27,23 +27,26 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-using System;
-using System.Text;
-using System.Web;
-using Cobos.Utilities.Xml;
-
 namespace Cobos.Web.Utilities.Xml
 {
+    using System;
+    using System.Text;
+    using System.Web;
+    using Cobos.Utilities.Xml;
+
+    /// <summary>
+    /// Helper class for serializing and de-serializing objects to HTTP contexts.
+    /// </summary>
+    /// <typeparam name="T">The type object.</typeparam>
     public static class HttpXmlHelper<T>
     {
         /// <summary>
-        /// 
+        /// Serialize an object to an HTTP response.
         /// </summary>
-        /// <param name="entity"></param>
-        /// <param name="context"></param>
+        /// <param name="entity">The object to serialize.</param>
+        /// <param name="context">An HTTP context.</param>
         public static void Serialize(T entity, HttpContext context)
         {
-            //Setup the response
             context.Response.ContentType = "text/xml";
             context.Response.Cache.SetNoStore();
             context.Response.Cache.SetNoServerCaching();
@@ -54,29 +57,27 @@ namespace Cobos.Web.Utilities.Xml
         }
 
         /// <summary>
-        /// 
+        /// Deserialize an HTTP request to an object representation.
         /// </summary>
-        /// <param name="context"></param>
-        /// <returns></returns>
+        /// <param name="context">An HTTP context.</param>
+        /// <returns>The deserialized object.</returns>
         public static T Deserialize(HttpContext context)
         {
             return XmlHelper<T>.Deserialize(context.Request.InputStream);
         }
 
         /// <summary>
-        /// 
+        /// Serialize an object to the HTTP response.
         /// </summary>
-        /// <param name="context"></param>
-        /// <param name="response"></param>
-        /// <param name="prefix"></param>
-        /// <param name="ns"></param>
-        public static void Serialize(HttpContext context, T response, string prefix, string ns)
+        /// <param name="context">An HTTP context.</param>
+        /// <param name="entity">The entity to serialize.</param>
+        /// <param name="prefix">The prefix associated with an XML namespace.</param>
+        /// <param name="ns">An XML namespace.</param>
+        public static void Serialize(HttpContext context, T entity, string prefix, string ns)
         {
-            // Setup the response
             context.Response.ContentType = "text/xml";
             context.Response.Cache.SetNoStore();
-
-            XmlHelper<T>.Serialize(context.Response.OutputStream, response, prefix, ns);
+            XmlHelper<T>.Serialize(entity, context.Response.OutputStream, prefix, ns);
         }
     }
 }

@@ -31,7 +31,7 @@ namespace Cobos.Data.Oracle
 {
     using System;
     using System.Data;
-    using Cobos.Data;
+    using Cobos.Data.Adapters;
     using global::Oracle.DataAccess.Client;
 
     /// <summary>
@@ -55,30 +55,16 @@ namespace Cobos.Data.Oracle
         /// <returns>True if the test was successful; Otherwise false.</returns>
         public override bool TestConnection()
         {
-            bool result = false;
-
             try
             {
-                using (var connection = GetConnection())
+                object @object = ExecuteScalar("select 1 from dual");
+
+                if (@object != null && @object is int)
                 {
-                    connection.Open();
-
-                    using (var command = GetCommand(connection))
-                    {
-                        command.CommandText = "select 1 from dual";
-
-                        object @object = command.ExecuteScalar();
-
-                        if (@object != null && @object.GetType() == typeof(int))
-                        {
-                            result = (int)@object == 1;
-                        }
-                    }
-
-                    connection.Close();
-
-                    return result;
+                    return (int)@object == 1;
                 }
+
+                return false;
             }
             catch (Exception)
             {

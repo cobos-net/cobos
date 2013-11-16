@@ -27,33 +27,31 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace Cobos.Utilities.Wrappers
 {
+    using System;
+
+    /// <summary>
+    /// Exception for creating singletons.
+    /// </summary>
     public class SingletonException : Exception
     {
-        public SingletonException()
-        {
-        }
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SingletonException"/> class.
+        /// </summary>
+        /// <param name="message">The reason why the exception was raised.</param>
         public SingletonException(string message)
             : base(message)
         {
         }
-
-        public SingletonException(Exception innerException)
-            : base(null, innerException)
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SingletonException"/> class.
+        /// </summary>
+        /// <param name="inner">The inner exception.</param>
+        public SingletonException(Exception inner)
+            : base(inner.Message, inner)
         {
         }
-
-        public SingletonException(string message, Exception innerException)
-            : base(message, innerException)
-        {
-        }
-
     }
 }
-

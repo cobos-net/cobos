@@ -27,60 +27,86 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-
 namespace Cobos.Utilities.Cache
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.IO;
+    using System.Linq;
+    using System.Text.RegularExpressions;
+
     /// <summary>
     /// Very simple cache file for storing values grouped in sections.
-    /// The structure is similar to an ini file using section values.
+    /// The structure is similar to an INI file using section values.
     /// </summary>
+    /// <typeparam name="T">The type of object stored in the cache.</typeparam>
     public class CacheFile<T>
     {
         /// <summary>
-        /// 
+        /// The path to the cache file.
         /// </summary>
         public readonly string Path;
 
         /// <summary>
-        /// 
+        /// Regular expression for matching section header names.
         /// </summary>
-        private readonly Dictionary<string, HashSet<T>> SectionValues = new Dictionary<string, HashSet<T>>(StringComparer.CurrentCultureIgnoreCase);
+        private static readonly Regex RegexSectionHeader = new Regex(@"\[(?<name>\w*)\]");
 
         /// <summary>
-        /// 
+        /// The section values for the cache file.
         /// </summary>
-        private readonly Regex RegexSectionHeader = new Regex(@"\[(?<name>\w*)\]");
+        private readonly Dictionary<string, HashSet<T>> sectionValues = new Dictionary<string, HashSet<T>>(StringComparer.CurrentCultureIgnoreCase);
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="CacheFile{T}"/> class.
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">The path to the cache file.</param>
         public CacheFile(string path)
         {
-            Path = path;
+            this.Path = path;
         }
 
         /// <summary>
-        /// 
+        /// Gets an array of values for the specified section.
+        /// </summary>
+        /// <param name="sectionName">The name of the section.</param>
+        /// <returns>An array of values in the section.</returns>
+        public T[] this[string sectionName]
+        {
+            get
+            {
+                HashSet<T> values;
+
+                if (!this.sectionValues.TryGetValue(sectionName, out values))
+                {
+                    values = this.CreateValueCollection(null);
+                    this.sectionValues[sectionName] = values;
+                }
+
+                return values.ToArray();
+            }
+
+            set
+            {
+                this.sectionValues[sectionName] = this.CreateValueCollection(value);
+            }
+        }
+
+        /// <summary>
+        /// Open the cache file.
         /// </summary>
         public void Open()
         {
-            SectionValues.Clear();
+            this.sectionValues.Clear();
 
-            if (!System.IO.File.Exists(Path))
+            if (!System.IO.File.Exists(this.Path))
             {
                 return;
             }
 
             // The cache will never be that large, so read all into memory rather than a line at a time
-            using (TextReader reader = new StreamReader(Path))
+            using (TextReader reader = new StreamReader(this.Path))
             {
                 HashSet<T> section = null;
                 string line;
@@ -93,13 +119,11 @@ namespace Cobos.Utilities.Cache
 
                     if (match.Success)
                     {
-                        // found a new section 
-                        section = CreateValueCollection(null);
-                        SectionValues[match.Groups["name"].Value] = section;
+                        section = this.CreateValueCollection(null);
+                        this.sectionValues[match.Groups["name"].Value] = section;
                     }
                     else
                     {
-
                         if (section != null)
                         {
                             T value = (T)TypeDescriptor.GetConverter(theType).ConvertFrom(line);
@@ -111,17 +135,17 @@ namespace Cobos.Utilities.Cache
         }
 
         /// <summary>
-        /// 
+        /// Save the cache file.
         /// </summary>
         public void Save()
         {
-            using (TextWriter writer = new StreamWriter(Path))
+            using (TextWriter writer = new StreamWriter(this.Path))
             {
-                foreach (string key in SectionValues.Keys)
+                foreach (string key in this.sectionValues.Keys)
                 {
                     writer.WriteLine("[" + key + "]");
 
-                    HashSet<T> values = SectionValues[key];
+                    HashSet<T> values = this.sectionValues[key];
 
                     foreach (T value in values)
                     {
@@ -132,61 +156,36 @@ namespace Cobos.Utilities.Cache
         }
 
         /// <summary>
-        /// 
+        /// Add a value into a section.
         /// </summary>
-        /// <param name="sectionName"></param>
-        /// <returns></returns>
-        public T[] this[string sectionName]
-        {
-            get
-            {
-                HashSet<T> values;
-
-                if (!SectionValues.TryGetValue(sectionName, out values))
-                {
-                    values = CreateValueCollection(null);
-                    SectionValues[sectionName] = values;
-                }
-
-                return values.ToArray();
-            }
-            set
-            {
-                SectionValues[sectionName] = CreateValueCollection(value);
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sectionName"></param>
-        /// <param name="value"></param>
+        /// <param name="sectionName">The name of the section.</param>
+        /// <param name="value">The value to add.</param>
         public void Add(string sectionName, T value)
         {
             HashSet<T> values;
 
-            if (!SectionValues.TryGetValue(sectionName, out values))
+            if (!this.sectionValues.TryGetValue(sectionName, out values))
             {
-                values = CreateValueCollection(null);
-                SectionValues[sectionName] = values;
+                values = this.CreateValueCollection(null);
+                this.sectionValues[sectionName] = values;
             }
 
             values.Add(value);
         }
 
         /// <summary>
-        /// 
+        /// Add a collection of values into a section.
         /// </summary>
-        /// <param name="sectionName"></param>
-        /// <param name="value"></param>
+        /// <param name="sectionName">The name of the section.</param>
+        /// <param name="value">The values to add.</param>
         public void Add(string sectionName, T[] value)
         {
             HashSet<T> values;
 
-            if (!SectionValues.TryGetValue(sectionName, out values))
+            if (!this.sectionValues.TryGetValue(sectionName, out values))
             {
-                values = CreateValueCollection(null);
-                SectionValues[sectionName] = values;
+                values = this.CreateValueCollection(null);
+                this.sectionValues[sectionName] = values;
             }
 
             foreach (T v in value)
@@ -196,44 +195,44 @@ namespace Cobos.Utilities.Cache
         }
 
         /// <summary>
-        /// 
+        /// Gets a value indicating whether the section contains a specific value.
         /// </summary>
-        /// <param name="sectionName"></param>
-        /// <param name="value"></param>
-        /// <returns></returns>
+        /// <param name="sectionName">The name of the section.</param>
+        /// <param name="value">The value to look for.</param>
+        /// <returns>true if the section contains the value; otherwise false.</returns>
         public bool Contains(string sectionName, T value)
         {
-            if (!SectionValues.ContainsKey(sectionName))
+            if (!this.sectionValues.ContainsKey(sectionName))
             {
                 return false;
             }
 
-            HashSet<T> values = SectionValues[sectionName];
+            HashSet<T> values = this.sectionValues[sectionName];
 
             return values.Contains(value);
         }
 
         /// <summary>
-        /// 
+        /// Helper class to create an empty value collection.
         /// </summary>
-        /// <param name="values"></param>
-        /// <returns></returns>
+        /// <param name="values">The values to create a collection for.</param>
+        /// <returns>An object representing a hash set containing the values.</returns>
         private HashSet<T> CreateValueCollection(IEnumerable<T> values)
         {
             if (values == null)
             {
-                return new HashSet<T>(GetComparer());
+                return new HashSet<T>(this.GetComparer());
             }
             else
             {
-                return new HashSet<T>(values, GetComparer());
+                return new HashSet<T>(values, this.GetComparer());
             }
         }
 
         /// <summary>
-        /// Pseudo-specialisation for string generic types.
+        /// Pseudo-specialization for string generic types.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A comparer for the type.</returns>
         private IEqualityComparer<T> GetComparer()
         {
             if (typeof(T) == typeof(string))
@@ -245,6 +244,5 @@ namespace Cobos.Utilities.Cache
                 return EqualityComparer<T>.Default;
             }
         }
-
     }
 }

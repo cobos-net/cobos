@@ -1,5 +1,5 @@
 ﻿// ----------------------------------------------------------------------------
-// <copyright file="StringSeperatorTests.cs" company="Cobos SDK">
+// <copyright file="StringSeparatorTests.cs" company="Cobos SDK">
 //
 //      Copyright (c) 2009-2012 Nicholas Davis - nick@cobos.co.uk
 //
@@ -27,19 +27,25 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-using NUnit.Framework;
-using Cobos.Utilities.Text;
-
 namespace Cobos.Utilities.Tests.Text
 {
+    using System;
+    using Cobos.Utilities.Text;
+    using NUnit.Framework;
+
+    /// <summary>
+    /// Unit Tests for the <see cref="StringSeperator"/> class.
+    /// </summary>
     [TestFixture]
     public class StringSeparatorTests
     {
+        /// <summary>
+        /// Strategy:
+        /// ---------
+        /// 1. Test basic separator.
+        /// </summary>
         [TestCase]
-        public void can_separate_strings()
+        public void Can_separate_strings()
         {
             string source = "0|1|2|3|4|5";
 
@@ -51,8 +57,14 @@ namespace Cobos.Utilities.Tests.Text
             }
         }
 
+        /// <summary>
+        /// Strategy:
+        /// ---------
+        /// 1. Create a string with a mix of separators.
+        /// 2. Test that we can extract the values correctly.
+        /// </summary>
         [TestCase]
-        public void can_handle_mixed_separators()
+        public void Can_handle_mixed_separators()
         {
             string source = "0|1|2,3|4|5";
 
@@ -78,8 +90,13 @@ namespace Cobos.Utilities.Tests.Text
             Assert.AreEqual("5", token);
         }
 
+        /// <summary>
+        /// Strategy:
+        /// ---------
+        /// 1. Test invalid separator characters.
+        /// </summary>
         [TestCase]
-        public void can_handle_invalid_separator_character()
+        public void Can_handle_invalid_separator_character()
         {
             string source = "0|1|2|3|4|5";
 
@@ -90,8 +107,13 @@ namespace Cobos.Utilities.Tests.Text
             Assert.Null(token);
         }
 
+        /// <summary>
+        /// Strategy:
+        /// ---------
+        /// 1. Test invalid index values.
+        /// </summary>
         [TestCase]
-        public void can_handle_invalid_index()
+        public void Can_handle_invalid_index()
         {
             string source = "0|1|2|3|4|5";
 
@@ -101,14 +123,18 @@ namespace Cobos.Utilities.Tests.Text
             Assert.Null(StringSeparator.GetTokenAt(source, '|', 6));
         }
 
+        /// <summary>
+        /// Strategy:
+        /// ---------
+        /// 1. Test all invalid input.
+        /// </summary>
         [TestCase]
-        public void can_handle_invalid_input()
+        public void Can_handle_invalid_input()
         {
             Assert.Null(StringSeparator.GetTokenAt(null, '|', 0));
-            Assert.Null(StringSeparator.GetTokenAt("", '|', 0));
+            Assert.Null(StringSeparator.GetTokenAt(string.Empty, '|', 0));
             Assert.NotNull(StringSeparator.GetTokenAt(" ", '|', 0));
             Assert.NotNull(StringSeparator.GetTokenAt(" ", ' ', 0));
         }
-
     }
 }

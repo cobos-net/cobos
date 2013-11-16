@@ -1,5 +1,5 @@
 ﻿// ----------------------------------------------------------------------------
-// <copyright file="AsyncTask.cs" company="Cobos SDK">
+// <copyright file="TestResourceAllocator.cs" company="Cobos SDK">
 //
 //      Copyright (c) 2009-2012 Nicholas Davis - nick@cobos.co.uk
 //
@@ -27,30 +27,43 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-namespace Cobos.Data
+namespace Cobos.Utilities.Tests.Threading.Resource
 {
     using System;
+    using System.Threading;
+    using Cobos.Utilities.Threading.Resource;
 
     /// <summary>
-    /// Represents an asynchronous task.
+    /// Allocates new instances for a thread pool.
     /// </summary>
-    /// <typeparam name="TObject">The type of the object for the task.</typeparam>
-    /// <typeparam name="TDelegate">The type of the delegate callback for the task.</typeparam>
-    public struct AsyncTask<TObject, TDelegate>
+    internal class TestResourceAllocator : IResourceAllocator<TestResource>
     {
         /// <summary>
-        /// The task object.
+        /// The id of the next resource.
         /// </summary>
-        public TObject Object;
-        
-        /// <summary>
-        /// The delegate callback method.
-        /// </summary>
-        public TDelegate Caller;
+        private static long resourceId;
 
         /// <summary>
-        /// The result of the asynchronous task.
+        /// The work period in milliseconds for the resource.
         /// </summary>
-        public IAsyncResult AsyncResult;
+        private readonly int workPeriodMs;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TestResourceAllocator"/> class.
+        /// </summary>
+        /// <param name="workPeriodMs">The work period in milliseconds for the resource.</param>
+        public TestResourceAllocator(int workPeriodMs)
+        {
+            this.workPeriodMs = workPeriodMs;
+        }
+
+        /// <summary>
+        /// Create a new resource.
+        /// </summary>
+        /// <returns>An object representing a new resource.</returns>
+        public TestResource Create()
+        {
+            return new TestResource(Interlocked.Increment(ref resourceId), this.workPeriodMs);
+        }
     }
 }

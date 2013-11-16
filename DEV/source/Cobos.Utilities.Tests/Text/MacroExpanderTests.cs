@@ -27,18 +27,24 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.RegularExpressions;
-using Cobos.Utilities.Text;
-using NUnit.Framework;
-
 namespace Cobos.Utilities.Tests.Text
 {
+    using System;
+    using System.Text.RegularExpressions;
+    using Cobos.Utilities.Text;
+    using NUnit.Framework;
+
+    /// <summary>
+    /// Unit Tests for the <see cref="MacroExpander"/> class.
+    /// </summary>
     [TestFixture]
     public class MacroExpanderTests
     {
+        /// <summary>
+        /// Strategy:
+        /// ---------
+        /// 1. Test simple macro expansion.
+        /// </summary>
         [TestCase]
         public void Simple_macro_expansion_succeeds()
         {
@@ -66,12 +72,15 @@ namespace Cobos.Utilities.Tests.Text
 
             replaced = expander.Expand("This contains Macro1 and then Macro4 which won't change");
             Assert.AreEqual("This contains an expanded macro 1 and then Macro4 which won't change", replaced);
-
-
         }
 
+        /// <summary>
+        /// Strategy:
+        /// ---------
+        /// 1. Test that unformatted macros are ignored.
+        /// </summary>
         [TestCase]
-        public void Formatted_macro_expansion_succeeds()
+        public void Only_formatted_macro_expansion_succeeds()
         {
             // test copying an expander works properly
             MacroExpander original = new MacroExpander("$(_TOKEN_)");

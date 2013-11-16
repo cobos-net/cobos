@@ -32,13 +32,22 @@ namespace Cobos.ScriptEngine
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Diagnostics.CodeAnalysis;
     using System.Text;
     using Cobos.Script;
     using NDesk.Options;
 
+    /// <summary>
+    /// Main program.
+    /// </summary>
+    [SuppressMessage("Microsoft.StyleCop.CSharp.MaintainabilityRules", "SA1400:AccessModifierMustBeDeclared", Justification = "Reviewed.")]
     class Program
     {
-        static void Main(string[] args)
+        /// <summary>
+        /// Program entry point.
+        /// </summary>
+        /// <param name="args">The program arguments.</param>
+        private static void Main(string[] args)
         {
             WriteHeader();
 
@@ -52,12 +61,12 @@ namespace Cobos.ScriptEngine
             bool help = false;
 
             var p = new OptionSet() 
-				{
-					{ "script:",	v => script = v },
-					{ "class:",		v => @class = v },
-					{ "method:",	v => @method = v },
-					{ "h|?|help",	v => help = v != null } 
-				};
+            {
+                { "script:",    v => script = v },
+                { "class:",     v => @class = v },
+                { "method:",    v => @method = v },
+                { "h|?|help",   v => help = v != null } 
+            };
 
             List<string> scriptArgs = p.Parse(args);
 
@@ -69,7 +78,7 @@ namespace Cobos.ScriptEngine
 
             if (string.IsNullOrEmpty(script))
             {
-                LogSingleton.Instance.TraceEvent(TraceEventType.Error, 0, "The script source path cannot be null or an empty string.");
+                ScriptTrace.Instance.TraceEvent(TraceEventType.Error, 0, "The script source path cannot be null or an empty string.");
                 return;
             }
 
@@ -79,36 +88,34 @@ namespace Cobos.ScriptEngine
 
                 using (ScriptingFramework.Instance)
                 {
-                    ScriptingFramework.Instance.Initialise();
-
                     assembly.Invoke(@class, method, scriptArgs.ToArray());
                 }
             }
             catch (Exception e)
             {
-                LogSingleton.Instance.TraceData(TraceEventType.Error, 0, e);
+                ScriptTrace.Instance.TraceData(TraceEventType.Error, 0, e);
             }
         }
 
         /// <summary>
-        /// 
+        /// Write the program banner.
         /// </summary>
-        static void WriteHeader()
+        private static void WriteHeader()
         {
-            const string header = "\n-----------------------------------------------------\n" +
+            const string Header = "\n-----------------------------------------------------\n" +
                                      "Cobos.ScriptEngine - CSharp scripting engine.\n" +
                                      "Copyright (c) 2012 Nicholas Davis.\n" +
                                      "-----------------------------------------------------\n\n";
 
-            Console.Write(header);
+            Console.Write(Header);
         }
 
         /// <summary>
-        /// 
+        /// Write the help text.
         /// </summary>
-        static void WriteHelp()
+        private static void WriteHelp()
         {
-            const string help = "Usage: Cobos.ScriptEngine /script:<path> [/class:<name> /method:<name> <name=value...>]\n" +
+            const string Help = "Usage: Cobos.ScriptEngine /script:<path> [/class:<name> /method:<name> <name=value...>]\n" +
                                         "\n" +
                                         "\t/script:<path>\t\tPath to the CSharp script to run.\n" +
                                         "\t/class:<name>\t\tOptional. Name of the class to invoke.\n" +
@@ -121,8 +128,7 @@ namespace Cobos.ScriptEngine
                                         "If you omit some script arguments, the the method will be called using default values for those missing arguments." +
                                         "\n\n";
 
-
-            Console.Write(help);
+            Console.Write(Help);
         }
     }
 }

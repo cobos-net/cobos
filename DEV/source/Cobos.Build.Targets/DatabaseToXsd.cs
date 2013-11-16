@@ -90,9 +90,6 @@ namespace Cobos.Build.Targets
 
         #endregion
 
-        #region Interfaces
-        #endregion
-
         #region Properties
 
         /// <summary>
@@ -154,9 +151,6 @@ namespace Cobos.Build.Targets
 
         #endregion
 
-        #region Indexers
-        #endregion
-
         #region Methods
 
         /// <summary>
@@ -179,10 +173,11 @@ namespace Cobos.Build.Targets
                     break;
 
                 case DatabasePlatformEnum.PostgreSQL:
-                    throw new NotImplementedException("The PostgreSQL adapter is not implemented in this version.");
+                    database = new Cobos.Data.PostgreSql.PostgreSqlDatabaseAdapter(this.ConnectionString);
+                    break;
 
                 case DatabasePlatformEnum.SqlServer:
-                    database = new Cobos.Data.SqlServer.SqlDatabaseAdapter(this.ConnectionString);
+                    database = new Cobos.Data.SqlServer.SqlServerDatabaseAdapter(this.ConnectionString);
                     break;
             }
 
@@ -219,12 +214,6 @@ namespace Cobos.Build.Targets
             return true;
         }
 
-        #endregion
-
-        #region Structs
-        #endregion
-
-        #region Classes
         #endregion
     }
 }

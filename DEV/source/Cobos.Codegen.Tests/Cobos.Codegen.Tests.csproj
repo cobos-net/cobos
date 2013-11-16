@@ -32,6 +32,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="nunit.framework, Version=2.6.3.13283, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
@@ -41,25 +45,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Data\Event\Generated\DataModel.cs" />
-    <Compile Include="Data\Event\Generated\Dataset.cs">
+    <Compile Include="Data\DataModelTests.cs" />
+    <Compile Include="Data\Generated\DataModel.cs" />
+    <Compile Include="Data\Generated\Dataset.cs">
       <DependentUpon>Dataset.xsd</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.Net45.cs" />
+    <Compile Include="TestManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="BUILD\prebuild.targets">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Data\Event\Generated\DataModel.xsd">
+    <None Include="Data\Generated\DataModel.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Data\Event\Generated\Dataset.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>Dataset.Designer.cs</LastGenOutput>
+    <None Include="Data\Generated\Dataset.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\..\..\CONFIG\Database\MySQL\northwind.sql">
@@ -68,7 +74,7 @@
     <EmbeddedResource Include="..\..\..\CONFIG\Database\SqlServer\northwind.sql">
       <Link>Database\SqlServer\northwind.sql</Link>
     </EmbeddedResource>
-    <Content Include="Data\Event\DataModel.xml">
+    <Content Include="Data\DataModel.xml">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Stylesheets\Classes\CSharp\Custom.xslt">
@@ -76,6 +82,14 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Cobos.Data.MySql\Cobos.Data.MySql.csproj">
+      <Project>{2f537275-3b9c-4914-b33e-e6ae6238f4b6}</Project>
+      <Name>Cobos.Data.MySql</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Cobos.Data.Oracle\Cobos.Data.Oracle.csproj">
+      <Project>{cfb3be49-d78c-48d3-9238-a0db2c2ba3a2}</Project>
+      <Name>Cobos.Data.Oracle</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Cobos.Data\Cobos.Data.csproj">
       <Project>{6906b107-c149-4682-af7b-fef9f697fe36}</Project>
       <Name>Cobos.Data</Name>

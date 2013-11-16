@@ -71,7 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyReferenceResolver.cs" />
-    <Compile Include="LogSingleton.cs" />
+    <Compile Include="ScriptTrace.cs" />
     <Compile Include="ScriptMethod.cs" />
     <Compile Include="ScriptClass.cs" />
     <Compile Include="ScriptAssembly.cs" />

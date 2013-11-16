@@ -27,30 +27,31 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Xml;
-
 namespace Cobos.Utilities.Extensions
 {
+    using System.Xml;
+
+    /// <summary>
+    /// Extension methods for XML objects.
+    /// </summary>
     public static class XmlExtensions
     {
         /// <summary>
-        /// Utility function to extract attribute values
+        /// Utility method to extract attribute values.
         /// </summary>
-        /// <param name="attributes"></param>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public static string GetAnyAttributeValue(this System.Xml.XmlAttribute[] attributes, string name)
+        /// <param name="self">The 'this' object reference.</param>
+        /// <param name="name">The name of the attribute.</param>
+        /// <returns>The attribute value if found; otherwise null.</returns>
+        public static string GetAnyAttributeValue(this System.Xml.XmlAttribute[] self, string name)
         {
-            foreach (XmlAttribute attribute in attributes)
+            foreach (XmlAttribute attribute in self)
             {
                 if (attribute.Name == name)
                 {
                     return attribute.Value;
                 }
             }
+
             return null;
         }
     }

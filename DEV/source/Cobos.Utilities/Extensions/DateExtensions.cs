@@ -27,34 +27,34 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 namespace Cobos.Utilities.Extensions
 {
+    using System;
+
+    /// <summary>
+    /// Extension methods for the <see cref="DateTime"/> class.
+    /// </summary>
     public static class DateExtensions
     {
         /// <summary>
         /// Extension method to get the Unix time from a DateTime object
         /// </summary>
-        /// <param name="datetime"></param>
-        /// <returns></returns>
-        public static long ToEpochSeconds(this DateTime datetime)
+        /// <param name="self">The 'this' object reference.</param>
+        /// <returns>The unix seconds.</returns>
+        public static long ToEpochSeconds(this DateTime self)
         {
-            DateTime objUTC = datetime.ToUniversalTime();
+            DateTime objUTC = self.ToUniversalTime();
             return (objUTC.Ticks - 621355968000000000) / 10000;
         }
 
         /// <summary>
-        /// Convert Unix time to a DateTime object
+        /// Convert Unix time to a DateTime object.
         /// </summary>
-        /// <param name="epoch"></param>
-        /// <returns></returns>
+        /// <param name="epoch">The epoch seconds.</param>
+        /// <returns>The DateTime representation.</returns>
         public static DateTime FromEpochSeconds(long epoch)
         {
-            return new DateTime(((epoch * 10000000) + 621355968000000000));
+            return new DateTime((epoch * 10000000) + 621355968000000000);
         }
     }
 }

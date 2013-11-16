@@ -164,8 +164,7 @@ namespace Cobos.Data.Tests
         {
             string output = TestManager.TestFiles + "dbmetadata.xml";
 
-            Assert.DoesNotThrow(
-                delegate
+            Assert.DoesNotThrow(() =>
                 {
                     using (FileStream fstream = new FileStream(output, FileMode.Create))
                     {
@@ -191,8 +190,7 @@ namespace Cobos.Data.Tests
         {
             string output = TestManager.TestFiles + "dbschema.xml";
 
-            Assert.DoesNotThrow(
-                delegate
+            Assert.DoesNotThrow(() =>
                 {
                     using (FileStream fstream = new FileStream(output, FileMode.Create))
                     {

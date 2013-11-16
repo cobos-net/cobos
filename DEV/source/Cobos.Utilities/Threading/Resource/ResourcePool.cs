@@ -27,20 +27,19 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-
 namespace Cobos.Utilities.Threading.Resource
 {
     /// <summary>
     /// Class factory for resource pools
     /// </summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T">The type of resource managed by the pool.</typeparam>
     public static class ResourcePool<T>
     {
+        /// <summary>
+        /// Create a new resource pool defined by the provided settings.
+        /// </summary>
+        /// <param name="settings">The resource pool settings.</param>
+        /// <returns>The newly created resource pool.</returns>
         public static IResourcePool<T> Create(ResourcePoolSettings<T> settings)
         {
             return new ResourcePoolImpl<T>(settings);

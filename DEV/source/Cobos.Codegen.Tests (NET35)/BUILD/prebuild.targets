@@ -26,19 +26,19 @@
   <PropertyGroup>
     <CodegenCodeLanguage>CSharp</CodegenCodeLanguage>
     <CodegenCustomStylesheetsDirectory>$(ProjectDir)Stylesheets\</CodegenCustomStylesheetsDirectory>
-    <CodegenNamespaceCode>Intergraph.AsiaPac.Cad.Interop.DataService.Data</CodegenNamespaceCode>
-    <CodegenNamespaceXml>http://schemas.intergraph.com/asiapac/cad/interop/dataservice/1.0.0</CodegenNamespaceXml>
+    <CodegenNamespaceCode>Cobos.Codegen.Tests</CodegenNamespaceCode>
+    <CodegenNamespaceXml>http://schemas.cobos.co.uk/codegen/tests/1.0.0</CodegenNamespaceXml>
   </PropertyGroup>
 
   <!-- Database properties -->
   <PropertyGroup>
-    <DatabaseToXsdConnectionString>Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=vea795db1.ingrnet.com)(PORT= 1521))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=ORC102.VEA795DB1)));User Id=eadev;Password=eadev</DatabaseToXsdConnectionString>
-    <DatabaseToXsdDatabasePlatform>Oracle</DatabaseToXsdDatabasePlatform>
-    <DatabaseToXsdDatabaseSchema>EADEV</DatabaseToXsdDatabaseSchema>
+    <DatabaseToXsdConnectionString>Server=localhost;Database=Northwind;Uid=root;Pwd=mysql;</DatabaseToXsdConnectionString>
+    <DatabaseToXsdDatabasePlatform>MySQL</DatabaseToXsdDatabasePlatform>
+    <DatabaseToXsdDatabaseSchema>Northwind</DatabaseToXsdDatabaseSchema>
   </PropertyGroup>
 
   <ItemGroup>
-    <DatabaseToXsdTable Include="AEVEN;EVENT;EVCOM;CD_UNITS;UN_HI;DISPASS_EVENT;EV_DISPO;DIVERT;INCIDENT_TRACKING;VEHIC;PERSO;TOW_VEHIC;CONT_NAME;PROPT"/>
+    <DatabaseToXsdTable Include="customers;employees;products"/>
   </ItemGroup>
 
   <!--
@@ -47,35 +47,12 @@
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
   <ItemGroup>
-    <DataModel Include="$(ProjectDir)Data\Event\DataModel.xml">
-      <Id>Event</Id>
+    <DataModel Include="$(ProjectDir)Data\DataModel.xml">
+      <Id>Northwind</Id>
       <SchemaOptions>
         <Parameter Name="multiplicityMode" Value="optional" />
       </SchemaOptions>
     </DataModel>
-    <!--
-    <DataModel>
-      <Id>SupplementalInformation</Id>
-      <ModelFilename>DataModel.xml</ModelFilename>
-      <Folder>$(ProjectDir)SupplementalInformation</Folder>
-      <SchemaOptions>
-        <RootNodeName>SupplementalInformation</RootNodeName>
-      </SchemaOptions>
-    </DataModel>
-    <DataModel>
-      <Id>Unit</Id>
-      <ModelFilename>DataModel.xml</ModelFilename>
-      <Folder>$(ProjectDir)Unit</Folder>
-      <SchemaOptions>
-        <MultiplicityMode>Optional</MultiplicityMode>
-      </SchemaOptions>
-    </DataModel>
-    <DataModel>
-      <Id>HospitalDiversion</Id>
-      <ModelFilename>DataModel.xml</ModelFilename>
-      <Folder>$(ProjectDir)HospitalDiversion</Folder>
-    </DataModel>
-    -->
   </ItemGroup>
 
 </Project>

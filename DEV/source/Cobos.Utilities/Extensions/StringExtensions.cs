@@ -27,29 +27,34 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Web;
-using System.Security;
-using Cobos.Utilities.Text;
-
 namespace Cobos.Utilities.Extensions
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Security;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using System.Web;
+    using Cobos.Utilities.Text;
+
+    /// <summary>
+    /// Extension methods for the <see cref="String"/> class.
+    /// </summary>
+    /// <remarks>
+    /// Many of these methods are helpers for SQL string handling.
+    /// </remarks>
     public static class StringExtensions
     {
         /// <summary>
-        /// 
+        /// Tokenize a string and return the result as a single <c>CamelCase</c> value. 
         /// </summary>
-        /// <param name="s"></param>
-        /// <returns></returns>
-        public static string CamelCase(this string s)
+        /// <param name="self">The 'this' object reference.</param>
+        /// <returns>The <c>CamelCase</c> result.</returns>
+        public static string CamelCase(this string self)
         {
-            StringBuilder result = new StringBuilder(s.Length);
+            StringBuilder result = new StringBuilder(self.Length);
 
-            string[] tokens = s.Split(' ', '\n', '/', '\\', '<', '>', '&', '?', '#', '!', '%', '\"', '\'');
+            string[] tokens = self.Split(' ', '\n', '/', '\\', '<', '>', '&', '?', '#', '!', '%', '\"', '\'');
 
             foreach (string t in tokens)
             {
@@ -57,6 +62,7 @@ namespace Cobos.Utilities.Extensions
                 {
                     continue;
                 }
+
                 result.AppendFormat("{0}{1}", char.ToUpper(t[0]), t.Substring(1));
             }
 
@@ -64,100 +70,105 @@ namespace Cobos.Utilities.Extensions
         }
 
         /// <summary>
-        /// 
+        /// Escape all XML entities.
         /// </summary>
-        /// <param name="s"></param>
-        /// <returns></returns>
-        public static string EscapeXml(this string s)
+        /// <param name="self">The 'this' object reference.</param>
+        /// <returns>An escaped XML string.</returns>
+        public static string EscapeXml(this string self)
         {
-            if (s == string.Empty)
+            if (self == string.Empty)
             {
-                return s;
+                return self;
             }
 
-            return SecurityElement.Escape(s);
+            return SecurityElement.Escape(self);
         }
 
         /// <summary>
-        /// 
+        /// Un-escape all XML entities.
         /// </summary>
-        /// <param name="s"></param>
-        /// <returns></returns>
-        public static string UnescapeXml(this string s)
+        /// <param name="self">The 'this' object reference.</param>
+        /// <returns>An unescaped XML string.</returns>
+        public static string UnescapeXml(this string self)
         {
-            return HttpUtility.HtmlDecode(s);
+            return HttpUtility.HtmlDecode(self);
         }
 
         /// <summary>
-        /// 
+        /// Covert the string to bytes.
         /// </summary>
-        /// <param name="s"></param>
-        /// <returns></returns>
-        public static byte[] ConvertToByteArray(this string s)
+        /// <param name="self">The 'this' object reference.</param>
+        /// <returns>The byte representation.</returns>
+        public static byte[] ConvertToByteArray(this string self)
         {
-            return new System.Text.UTF8Encoding().GetBytes(s);
+            return new System.Text.UTF8Encoding().GetBytes(self);
         }
 
         /// <summary>
-        /// 
+        /// Convert the bytes to a string.
         /// </summary>
-        /// <param name="bytes"></param>
-        /// <returns></returns>
-        public static string ConvertToString(this byte[] bytes)
+        /// <param name="self">The 'this' object reference.</param>
+        /// <returns>The string representation.</returns>
+        public static string ConvertToString(this byte[] self)
         {
-            return new System.Text.UTF8Encoding().GetString(bytes);
+            return new System.Text.UTF8Encoding().GetString(self);
         }
 
         /// <summary>
-        /// 
+        /// Tests whether the string is enclosed in quotes: ''
         /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public static bool IsQuoted(this string value)
+        /// <param name="self">The 'this' object reference.</param>
+        /// <returns>true if the string is enclosed in quotes; otherwise false.</returns>
+        public static bool IsQuoted(this string self)
         {
-            return (value.StartsWith("'") && value.EndsWith("'"));
+            return self.StartsWith("'") && self.EndsWith("'");
         }
 
         /// <summary>
-        /// NOTE: NOT SQL OR DATABASE SAFE. --> Use SQLQuote (and family)
+        /// Enclose a string in quotes.
         /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public static string Quote(this string value)
+        /// <param name="self">The 'this' object reference.</param>
+        /// <returns>A string enclosed in quotes.</returns>
+        /// <remarks>
+        /// NOT SQL OR DATABASE SAFE. Use SQLQuote (and family).
+        /// </remarks>
+        public static string Quote(this string self)
         {
             // is it already quoted ?
-            if (value.StartsWith("'") && value.EndsWith("'"))
+            if (self.StartsWith("'") && self.EndsWith("'"))
             {
-                return value;
+                return self;
             }
-            return "'" + value + "'";
+
+            return "'" + self + "'";
         }
 
         /// <summary>
-        /// 
+        /// Create SQL safe string value enclosed in quotes.
         /// </summary>
-        /// <param name="value"></param>
-        /// <param name="maxLength"></param>
-        /// <returns></returns>
-        public static string SQLQuote(this string value, int maxLength)
+        /// <param name="self">The 'this' object reference.</param>
+        /// <param name="maxLength">The maximum column length of the value.</param>
+        /// <returns>The SQL string value enclosed in quotes.</returns>
+        public static string SQLQuote(this string self, int maxLength)
         {
-            if (value.Length == 0)
+            if (self == string.Empty)
             {
                 return "''";
             }
+
             // return SQL friendly quoted text 
-            StringBuilder newValue = new StringBuilder(value);
+            StringBuilder newValue = new StringBuilder(self);
 
             // if the string is already quoted, remove quotes so we can check for special characters
-            if (value.StartsWith("'") && value.EndsWith("'") && value.Length > 1)  // disallow match on only single quote
+            if (self.StartsWith("'") && self.EndsWith("'") && self.Length > 1)  
             {
-                newValue.Remove(value.Length - 1, 1);
+                // disallow match on only single quote
+                newValue.Remove(self.Length - 1, 1);
                 newValue.Remove(0, 1);
-                value = newValue.ToString();
+                self = newValue.ToString();
             }
 
-            // search the string for these characters
-
+            // search the string for these characters:
             // single quote, backslash, double quote or question mark
             char[] lookFor = new char[] { '\'', '\\', '"', '?' };
 
@@ -167,11 +178,11 @@ namespace Cobos.Utilities.Extensions
 
             // TODO: perhaps could use regex here.  Not sure if that will be quicker tho ... 
             int k = 0;
-            for (int i = 0; i < value.Length; ++i, ++k)
+            for (int i = 0; i < self.Length; ++i, ++k)
             {
                 for (int j = 0; j < lookFor.Length; ++j)
                 {
-                    if (value[i] == lookFor[j])
+                    if (self[i] == lookFor[j])
                     {
                         newValue.Insert(k++, appendTo[j]);
                     }
@@ -181,7 +192,9 @@ namespace Cobos.Utilities.Extensions
             if (maxLength != 0)
             {
                 if (newValue.Length > maxLength)
+                {
                     newValue.Length = maxLength;
+                }
             }
 
             newValue.Insert(0, '\'');
@@ -190,143 +203,141 @@ namespace Cobos.Utilities.Extensions
         }
 
         /// <summary>
-        /// 
+        /// A simpler version of SQLQuote that doesn't test for embedded quotes.
         /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public static string SQLQuoteID(this string value)
+        /// <param name="self">The 'this' object reference.</param>
+        /// <returns>The SQL string value enclosed in quotes.</returns>
+        public static string SQLQuoteID(this string self)
         {
-            if (value.IsQuoted())
+            if (self.IsQuoted())
             {
-                return value;
+                return self;
             }
-            // if theres guaranteed no funny chars, like an ID field - do it the easy way
-            return "'" + value + "'";
+
+            // if there's guaranteed no funny chars, like an ID field - do it the easy way
+            return "'" + self + "'";
         }
 
         /// <summary>
-        /// 
+        /// Create SQL safe string value enclosed in quotes or NULL if no value.
         /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public static string SQLQuoteOrNULL(this string value)
+        /// <param name="self">The 'this' object reference.</param>
+        /// <returns>The quoted string if self is not null or empty; otherwise NULL.</returns>
+        public static string SQLQuoteOrNULL(this string self)
         {
-            if (string.IsNullOrEmpty(value))
+            if (string.IsNullOrEmpty(self))
             {
                 return "NULL";
             }
             else
             {
-                return SQLQuote(value, 0);
+                return SQLQuote(self, 0);
             }
         }
 
         /// <summary>
-        /// 
+        /// Create SQL safe string value enclosed in quotes or NULL if no value.
         /// </summary>
-        /// <param name="value"></param>
-        /// <param name="maxLength"></param>
-        /// <returns></returns>
-        public static string SQLQuoteOrNULL(this string value, int maxLength)
+        /// <param name="self">The 'this' object reference.</param>
+        /// <param name="maxLength">The maximum column length of the value.</param>
+        /// <returns>The quoted string if self is not null or empty; otherwise NULL.</returns>
+        public static string SQLQuoteOrNULL(this string self, int maxLength)
         {
-            if (string.IsNullOrEmpty(value))
+            if (string.IsNullOrEmpty(self))
             {
                 return "NULL";
             }
             else
             {
-                return SQLQuote(value, maxLength);
+                return SQLQuote(self, maxLength);
             }
         }
 
         /// <summary>
-        /// 
+        /// Create SQL safe string value enclosed in quotes.
         /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public static string SQLQuote(this string value)
+        /// <param name="self">The 'this' object reference.</param>
+        /// <returns>The SQL string value enclosed in quotes.</returns>
+        public static string SQLQuote(this string self)
         {
-            return SQLQuote(value, 0);
+            return SQLQuote(self, 0);
         }
 
         /// <summary>
-        /// 
+        /// Convert a list to quoted strings.
         /// </summary>
-        /// <param name="list"></param>
-        /// <returns></returns>
-        public static string[] GetQuotedValues(this List<string> list)
+        /// <param name="self">The 'this' object reference.</param>
+        /// <returns>An array of quoted strings.</returns>
+        public static string[] GetQuotedValues(this List<string> self)
         {
-            List<string> quotedids = list.ConvertAll(
-                 new Converter<string, string>(delegate(string id)
-                 {
-                     return id.SQLQuote();
-                 }));
+            List<string> quotedids = self.ConvertAll(s => s.SQLQuote());
 
             return quotedids.ToArray();
         }
 
         /// <summary>
-        /// 
+        /// Gets a value indicating whether this string is a phone number.
         /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public static bool IsPhoneNumber(this string value)
+        /// <param name="self">The 'this' object reference.</param>
+        /// <returns>true if the object is a phone number; otherwise false.</returns>
+        public static bool IsPhoneNumber(this string self)
         {
-            return RegExHelper.PhoneExpression.IsMatch(value);
+            return RegExHelper.PhoneExpression.IsMatch(self);
         }
 
         /// <summary>
-        /// 
+        /// Gets a value indicating whether this string is a time value.
         /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public static bool IsTime(this string value)
+        /// <param name="self">The 'this' object reference.</param>
+        /// <returns>true if the object is a time value; otherwise false.</returns>
+        public static bool IsTime(this string self)
         {
-            return RegExHelper.TimeExpression.IsMatch(value);
+            return RegExHelper.TimeExpression.IsMatch(self);
         }
 
         /// <summary>
-        /// 
+        /// Gets a value indicating whether this string is a numeric value.
         /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public static bool IsNumeric(this string value)
+        /// <param name="self">The 'this' object reference.</param>
+        /// <returns>true if the object is a numeric value; otherwise false.</returns>
+        public static bool IsNumeric(this string self)
         {
-            return RegExHelper.NumericExpression.IsMatch(value);
+            return RegExHelper.NumericExpression.IsMatch(self);
         }
 
         /// <summary>
-        /// 
+        /// Validate a string field for null or empty values.
         /// </summary>
-        /// <param name="value"></param>
-        /// <param name="name"></param>
-        public static void ValidateEmptyField(this string value, string name)
+        /// <param name="self">The 'this' object reference.</param>
+        /// <param name="name">The name of the field.</param>
+        /// <exception cref="ArgumentException">Throws an exception if the value is null or empty.</exception>
+        public static void ValidateEmptyField(this string self, string name)
         {
-            if (string.IsNullOrEmpty(value))
+            if (string.IsNullOrEmpty(self))
             {
-                throw new Exception("Error: " + name + " cannot be an empty field");
+                throw new ArgumentException(name + " cannot be an empty field");
             }
         }
 
         /// <summary>
-        /// 
+        /// Validate a collection of string field for null or empty values.
         /// </summary>
-        /// <param name="values"></param>
-        /// <param name="names"></param>
-        public static void ValidateEmptyFields(this string[] values, string[] names)
+        /// <param name="self">The 'this' object reference.</param>
+        /// <param name="names">The names of the fields in the corresponding collection.</param>
+        /// <exception cref="ArgumentException">Throws an exception if the value is null or empty.</exception>
+        public static void ValidateEmptyFields(this string[] self, string[] names)
         {
-            if (values.Length != names.Length)
+            if (self.Length != names.Length)
             {
                 string exceptionString = "Arrays must have identical length in function ValidateEmptyFields.";
-                throw new Exception(exceptionString);
+                throw new ArgumentException(exceptionString);
             }
 
-            for (int i = 0; i < values.Length; ++i)
+            for (int i = 0; i < self.Length; ++i)
             {
-                if (string.IsNullOrEmpty(values[i]))
+                if (string.IsNullOrEmpty(self[i]))
                 {
-                    string exceptionString = "Error: " + names[i] + " cannot be an empty field";
-                    throw new Exception(exceptionString);
+                    throw new ArgumentException(names[i] + " cannot be an empty field");
                 }
             }
         }
@@ -335,11 +346,11 @@ namespace Cobos.Utilities.Extensions
         /// Minify the string, removing \r\n\t and excess whitespace
         /// Particularly useful when reading CDATA from Xml.
         /// </summary>
-        /// <param name="s"></param>
-        /// <returns></returns>
-        public static string RemoveWhitespace(this string s)
+        /// <param name="self">The 'this' object reference.</param>
+        /// <returns>A copy of the string with all extraneous whitespace removed.</returns>
+        public static string RemoveWhitespace(this string self)
         {
-            char[] arr = s.ToCharArray();
+            char[] arr = self.ToCharArray();
 
             for (int i = 0; i < arr.Length; i++)
             {
@@ -353,12 +364,11 @@ namespace Cobos.Utilities.Extensions
                 }
             }
 
-            s = new string(arr);
+            self = new string(arr);
 
-            s = Regex.Replace(s, @"\s+", " ");
+            self = Regex.Replace(self, @"\s+", " ");
 
-            return s.Trim();
+            return self.Trim();
         }
-
     }
 }

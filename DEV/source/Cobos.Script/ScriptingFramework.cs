@@ -27,68 +27,79 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Reflection;
-
 namespace Cobos.Script
 {
-    public class ScriptingFramework : IDisposable
+    using System;
+    using System.Collections.Generic;
+    using System.Configuration;
+    using System.IO;
+    using System.Reflection;
+    using System.Text;
+
+    /// <summary>
+    /// Singleton framework class.
+    /// </summary>
+    public partial class ScriptingFramework
     {
+        /// <summary>
+        /// The singleton instance.
+        /// </summary>
+        private static ScriptingFramework instance;
+
+        /// <summary>
+        /// Prevents a default instance of the <see cref="ScriptingFramework"/> class from being created.
+        /// </summary>
         private ScriptingFramework()
         {
         }
 
-        #region Singleton
-
+        /// <summary>
+        /// Gets the singleton instance of the framework.
+        /// </summary>
         public static ScriptingFramework Instance
         {
             get
             {
-                if (TheInstance == null)
+                if (instance == null)
                 {
-                    TheInstance = new ScriptingFramework();
+                    instance = new ScriptingFramework();
                 }
 
-                return TheInstance;
+                return instance;
             }
         }
+    }
 
-        private static ScriptingFramework TheInstance;
+    /// <summary>
+    /// Implements IDisposable.
+    /// </summary>
+    public partial class ScriptingFramework : IDisposable
+    {
+        /// <summary>
+        /// Indicates whether the instance is disposed.
+        /// </summary>
+        private bool disposed = false;
 
-        #endregion
-
-        #region Initialisation and cleanup
-
-        public void Initialise()
-        {
-            LogSingleton.Instance.TraceInformation("Initialising Scripting");
-        }
-
-        public void Terminate()
-        {
-        }
-
-        #endregion
-
-        #region IDisposable
-
-        bool disposed = false;
-
+        /// <summary>
+        /// Finalizes an instance of the <see cref="ScriptingFramework"/> class.
+        /// </summary>
         ~ScriptingFramework()
         {
-            Dispose(false);
+            this.Dispose(false);
         }
 
+        /// <summary>
+        /// Dispose of the instance.
+        /// </summary>
         public void Dispose()
         {
-            Dispose(true);
+            this.Dispose(true);
         }
 
+        /// <summary>
+        /// Dispose of the current instance.
+        /// </summary>
+        /// <param name="disposing">Indicates whether the instance is disposing or finalizing.</param>
         private void Dispose(bool disposing)
         {
             if (this.disposed)
@@ -98,14 +109,10 @@ namespace Cobos.Script
 
             if (disposing)
             {
-                Terminate();
-
                 GC.SuppressFinalize(this);
             }
 
             this.disposed = true;
         }
-
-        #endregion
     }
 }

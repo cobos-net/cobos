@@ -61,6 +61,14 @@
       <Project>{F2609602-12E4-47FD-90FB-CC17526EC27B}</Project>
       <Name>Cobos.Data %28NET35%29</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Cobos.Data.PostgreSql %28NET35%29\Cobos.Data.PostgreSql %28NET35%29.csproj">
+      <Project>{21c0d9d2-35f6-4561-a9c8-51d62946cfc1}</Project>
+      <Name>Cobos.Data.PostgreSql %28NET35%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Cobos.Data.SqlServer %28NET35%29\Cobos.Data.SqlServer %28NET35%29.csproj">
+      <Project>{80f002a7-16d3-4a28-b0f8-022cd6148791}</Project>
+      <Name>Cobos.Data.SqlServer %28NET35%29</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

@@ -104,14 +104,14 @@
     <Compile Include="..\Cobos.Utilities.Tests\Text\StringSeparatorTests.cs">
       <Link>Text\StringSeperatorTests.cs</Link>
     </Compile>
+    <Compile Include="..\Cobos.Utilities.Tests\Threading\Resource\TestResourceAllocator.cs">
+      <Link>Threading\Resource\TestResourceAllocator.cs</Link>
+    </Compile>
     <Compile Include="..\Cobos.Utilities.Tests\Threading\Resource\ResourcePoolTests.cs">
       <Link>Threading\Resource\ResourcePoolTests.cs</Link>
     </Compile>
     <Compile Include="..\Cobos.Utilities.Tests\Threading\Resource\TestResource.cs">
       <Link>Threading\Resource\TestResource.cs</Link>
-    </Compile>
-    <Compile Include="..\Cobos.Utilities.Tests\Win32\DesktopTests.cs">
-      <Link>Win32\DesktopTests.cs</Link>
     </Compile>
   </ItemGroup>
   <ItemGroup>

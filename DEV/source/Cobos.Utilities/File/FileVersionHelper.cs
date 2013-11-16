@@ -27,115 +27,177 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Diagnostics;
-using System.Text.RegularExpressions;
-
 namespace Cobos.Utilities.File
 {
-    public class FileVersionHelper
+    using System;
+    using System.Diagnostics;
+    using System.Text.RegularExpressions;
+
+    /// <summary>
+    /// Helper class for extracting file version information.
+    /// </summary>
+    public class FileVersionHelper : IComparable, IComparable<FileVersionHelper>
     {
-        private const string _regExpVersion = @"\s*(\d+)\s*[.|,]\s*(\d+)\s*[.|,]\s*(\d+)(?:\s*[.|,]\s*(\d+))?";
-
-        public readonly UInt16 _major = 0, _minor = 0, _build = 0, _revision = 0;
-
-        public readonly UInt64 _int64Value = 0;
-
-        public readonly string _stringValue = null;
-
-        public readonly bool _isNull = false;
+        /// <summary>
+        /// The major version number.
+        /// </summary>
+        public readonly ushort Major = 0;
+        
+        /// <summary>
+        /// The minor version number.
+        /// </summary>
+        public readonly ushort Minor = 0;
+        
+        /// <summary>
+        /// The build number.
+        /// </summary>
+        public readonly ushort Build = 0; 
+        
+        /// <summary>
+        /// The revision number.
+        /// </summary>
+        public readonly ushort Revision = 0;
 
         /// <summary>
-        /// 
+        /// The full version number.
         /// </summary>
-        /// <param name="path"></param>
+        public readonly ulong VersionNumber = 0;
+
+        /// <summary>
+        /// The string representation of the version number.
+        /// </summary>
+        public readonly string StringValue = null;
+
+        /// <summary>
+        /// Indicates whether this version number is null.
+        /// </summary>
+        public readonly bool IsNull = false;
+
+        /// <summary>
+        /// Regular expression for parsing the version information.
+        /// </summary>
+        private const string RegexVersion = @"\s*(\d+)\s*[.|,]\s*(\d+)\s*[.|,]\s*(\d+)(?:\s*[.|,]\s*(\d+))?";
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FileVersionHelper"/> class.
+        /// </summary>
+        /// <param name="path">The path to the image containing the version information.</param>
         public FileVersionHelper(string path)
         {
             FileVersionInfo info = FileVersionInfo.GetVersionInfo(path);
 
             if (info == null || info.FileVersion == null)
             {
-                _isNull = true;
+                this.IsNull = true;
                 return;
             }
 
-            string[] tokens = Regex.Split(info.FileVersion, _regExpVersion);
+            string[] tokens = Regex.Split(info.FileVersion, RegexVersion);
 
             if (tokens == null || tokens.Length == 1)
             {
-                _isNull = true;
+                this.IsNull = true;
                 return;
             }
 
-            _major = Convert.ToUInt16(tokens[1]);
-            _minor = Convert.ToUInt16(tokens[2]);
-            _build = Convert.ToUInt16(tokens[3]);
+            this.Major = Convert.ToUInt16(tokens[1]);
+            this.Minor = Convert.ToUInt16(tokens[2]);
+            this.Build = Convert.ToUInt16(tokens[3]);
 
-            _int64Value = ((UInt64)_major << 48) | ((UInt64)_minor << 32) | (UInt32)(_build << 16) | _revision;
+            this.VersionNumber = ((ulong)this.Major << 48) | ((ulong)this.Minor << 32) | (uint)(this.Build << 16) | this.Revision;
 
             if (tokens.Length == 4)
             {
-                _stringValue = String.Format("{0}.{1}.{2}", tokens[1], tokens[2], tokens[3]);
+                this.StringValue = string.Format("{0}.{1}.{2}", tokens[1], tokens[2], tokens[3]);
             }
             else
             {
-                _stringValue = String.Format("{0}.{1}.{2}.{3}", tokens[1], tokens[2], tokens[3], tokens[5]);
-                _revision = Convert.ToByte(tokens[5]);
+                this.StringValue = string.Format("{0}.{1}.{2}.{3}", tokens[1], tokens[2], tokens[3], tokens[5]);
+                this.Revision = Convert.ToByte(tokens[5]);
             }
         }
 
+        /// <summary>
+        /// Determines whether the specified object instances are considered equal.
+        /// </summary>
+        /// <param name="lhs">The first object to compare.</param>
+        /// <param name="rhs">The second object to compare.</param>
+        /// <returns>true if the objects are considered equal; otherwise, false.</returns>
         public static bool operator ==(FileVersionHelper lhs, FileVersionHelper rhs)
         {
-            return lhs._int64Value == rhs._int64Value;
+            return lhs.VersionNumber == rhs.VersionNumber;
         }
 
+        /// <summary>
+        /// Determines whether the specified object instances are not considered equal.
+        /// </summary>
+        /// <param name="lhs">The first object to compare.</param>
+        /// <param name="rhs">The second object to compare.</param>
+        /// <returns>true if the objects are considered not equal; otherwise, false.</returns>
         public static bool operator !=(FileVersionHelper lhs, FileVersionHelper rhs)
         {
-            return lhs._int64Value != rhs._int64Value;
+            return lhs.VersionNumber != rhs.VersionNumber;
         }
 
-        public static bool operator >(FileVersionHelper lhs, FileVersionHelper rhs)
+        /// <summary>
+        /// Compares the current instance with another object of the same type.
+        /// </summary>
+        /// <param name="obj">An object to compare with this instance.</param>
+        /// <returns>A value that indicates the relative order of the objects being compared.</returns>
+        public int CompareTo(object obj)
         {
-            return lhs._int64Value > rhs._int64Value;
+            if (obj != null && !(obj is FileVersionHelper))
+            {
+                throw new ArgumentException("Object must be of type FileVersionHelper.");
+            }
+
+            return this.CompareTo(obj as FileVersionHelper);
         }
 
-        public static bool operator <(FileVersionHelper lhs, FileVersionHelper rhs)
+        /// <summary>
+        /// Compares the current instance with another object of the same type.
+        /// </summary>
+        /// <param name="obj">An object to compare with this instance.</param>
+        /// <returns>A value that indicates the relative order of the objects being compared.</returns>
+        public int CompareTo(FileVersionHelper obj)
         {
-            return lhs._int64Value < rhs._int64Value;
+            if (obj == null)
+            {
+                return 1;
+            }
+
+            return this.VersionNumber.CompareTo(obj.VersionNumber);
         }
 
-        public static bool operator >=(FileVersionHelper lhs, FileVersionHelper rhs)
+        /// <summary>
+        /// Determines whether the specified System.Object is equal to the current System.Object.
+        /// </summary>
+        /// <param name="obj">The object to compare with the current object.</param>
+        /// <returns>true if the specified object is equal to the current object; otherwise, false.</returns>
+        public override bool Equals(object obj)
         {
-            return lhs._int64Value >= rhs._int64Value;
+            if (obj == null)
+            {
+                return false;
+            }
+
+            FileVersionHelper version = obj as FileVersionHelper;
+
+            if ((object)version == null)
+            {
+                return false;
+            }
+
+            return this.VersionNumber == version.VersionNumber;
         }
 
-        public static bool operator <=(FileVersionHelper lhs, FileVersionHelper rhs)
-        {
-            return lhs._int64Value <= rhs._int64Value;
-        }
-
-        // Compiler Warning (level 3) CS0661
-        // 'class' defines operator == or operator != but does not override Object.GetHashCode()
-        // The compiler detected the user-defined equality or inequality operator, but no override 
-        // for the GetHashCode function. A user-defined equality or inequality operator implies that 
-        // you also want to override the GetHashCode function.
+        /// <summary>
+        /// Serves as a hash function for a particular type.
+        /// </summary>
+        /// <returns>A hash code for the current <see cref="FileVersionHelper"/></returns>
         public override int GetHashCode()
         {
-            return 0;
+            return this.VersionNumber.GetHashCode();
         }
-
-        // Compiler Warning (level 3) CS0660
-        // 'class' defines operator == or operator != but does not override Object.Equals(object o)
-        // The compiler detected the user-defined equality or inequality operator, but no override for 
-        // the Equals function. A user-defined equality or inequality operator implies that you also 
-        // want to override the Equals function.
-        public override bool Equals(object o)
-        {
-            return true;
-        }
-
     }
 }

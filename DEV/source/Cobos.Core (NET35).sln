@@ -120,6 +120,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utilities", "Utilities", "{
 		Cobos.Codegen\Stylesheets\Utilities\Strings.xslt = Cobos.Codegen\Stylesheets\Utilities\Strings.xslt
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.Data.PostgreSql (NET35)", "Cobos.Data.PostgreSql (NET35)\Cobos.Data.PostgreSql (NET35).csproj", "{21C0D9D2-35F6-4561-A9C8-51D62946CFC1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.Data.SqlServer (NET35)", "Cobos.Data.SqlServer (NET35)\Cobos.Data.SqlServer (NET35).csproj", "{80F002A7-16D3-4A28-B0F8-022CD6148791}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -179,6 +183,14 @@ Global
 		{90F7BC89-6D9F-4404-9E13-A14F52654D49}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{90F7BC89-6D9F-4404-9E13-A14F52654D49}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{90F7BC89-6D9F-4404-9E13-A14F52654D49}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21C0D9D2-35F6-4561-A9C8-51D62946CFC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21C0D9D2-35F6-4561-A9C8-51D62946CFC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21C0D9D2-35F6-4561-A9C8-51D62946CFC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21C0D9D2-35F6-4561-A9C8-51D62946CFC1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80F002A7-16D3-4A28-B0F8-022CD6148791}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80F002A7-16D3-4A28-B0F8-022CD6148791}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80F002A7-16D3-4A28-B0F8-022CD6148791}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80F002A7-16D3-4A28-B0F8-022CD6148791}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -27,23 +27,35 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
-using Cobos.Utilities.Threading.Resource;
-
 namespace Cobos.Utilities.Tests.Threading.Resource
 {
-    class TestResource
-    {
-        long _id;
+    using System;
+    using System.Threading;
+    using Cobos.Utilities.Threading.Resource;
 
+    /// <summary>
+    /// Dummy resource to simulate work for threading tests.
+    /// </summary>
+    internal class TestResource
+    {
+        /// <summary>
+        /// The time to work for.
+        /// </summary>
         public readonly int WorkPeriodMs;
 
+        /// <summary>
+        /// The id of the resource.
+        /// </summary>
+        private long id;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TestResource"/> class.
+        /// </summary>
+        /// <param name="i">The id of the resource.</param>
+        /// <param name="workPeriodMs">The time to work for.</param>
         public TestResource(long i, int workPeriodMs)
         {
-            _id = i;
+            this.id = i;
 
             // make the threads work within a tolerance of the work period 
             // to avoid the situation where all threads execute in an 
@@ -57,35 +69,33 @@ namespace Cobos.Utilities.Tests.Threading.Resource
 
             if (rand.Next(1) == 1)
             {
-                WorkPeriodMs = workPeriodMs + delta;
+                this.WorkPeriodMs = workPeriodMs + delta;
             }
             else
             {
-                WorkPeriodMs = workPeriodMs - delta;
+                this.WorkPeriodMs = workPeriodMs - delta;
             }
         }
 
+        /// <summary>
+        /// Do some work.
+        /// </summary>
         public void DoWork()
         {
-            Console.WriteLine("Working with resource {0}", _id);
-            Thread.Sleep(WorkPeriodMs);
-        }
-    }
+            Console.WriteLine("Working with resource {0}", this.id);
 
-    class TestResourceAllocator : IResourceAllocator<TestResource>
-    {
-        static long _resourceId;
+            DateTime end = DateTime.Now.Add(new TimeSpan(0, 0, 0, 0, this.WorkPeriodMs));
+            Random rand = new Random();
 
-        readonly int _workPeriodMs;
+            int result = 0;
 
-        public TestResourceAllocator(int workPeriodMs)
-        {
-            _workPeriodMs = workPeriodMs;
-        }
+            while (DateTime.Now < end)
+            {
+                int value = rand.Next(10);
+                result = value / (rand.Next(2) + 1);
+            }
 
-        public TestResource Create()
-        {
-            return new TestResource(Interlocked.Increment(ref _resourceId), _workPeriodMs);
+            result = result + 1;
         }
     }
 }

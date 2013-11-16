@@ -27,48 +27,51 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.RegularExpressions;
-
 namespace Cobos.Utilities.Text
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+    using System.Text.RegularExpressions;
+
     /// <summary>
     /// Expand inline macro definitions in string values
     /// </summary>
     public class MacroExpander
     {
         /// <summary>
-        /// Internal lookup of macros
-        /// </summary>
-        Dictionary<string, string> _tokens = new Dictionary<string, string>(StringComparer.CurrentCultureIgnoreCase);
-
-        /// <summary>
-        /// Optional format specifier for a macro token.  Useful for 
+        /// Optional format specified for a macro token.  Useful for 
         /// cases such as Visual Studio where a macro is normally in
         /// the form $(_TOKEN_).
         /// </summary>
-        readonly string _format;
+        private readonly string format;
 
         /// <summary>
-        /// Cached regular expression pattern based on the _tokens keys.
+        /// Internal lookup of macros
         /// </summary>
-        Regex _regex;
+        private Dictionary<string, string> tokens = new Dictionary<string, string>(StringComparer.CurrentCultureIgnoreCase);
 
         /// <summary>
-        /// Default constructor.  Nuff said.
+        /// Cached regular expression pattern based on the this.tokens keys.
+        /// </summary>
+        private Regex regex;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MacroExpander"/> class.
         /// </summary>
         public MacroExpander()
         {
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="MacroExpander"/> class.
+        /// </summary>
+        /// <param name="format">The format string.</param>
+        /// <remarks>
         /// The macro format must include the _TOKEN_ keyword
         /// to indicate where the actual token should be inserted.
         /// E.g. $(_TOKEN_)
-        /// </summary>
-        /// <param name="format"></param>
+        /// </remarks>
         public MacroExpander(string format)
         {
             if (format != null && !format.Contains("_TOKEN_"))
@@ -76,65 +79,66 @@ namespace Cobos.Utilities.Text
                 throw new Exception("Invalid token format supplied to MacroExpander.  Requires _TOKEN_ indicator.");
             }
 
-            _format = format;
+            this.format = format;
         }
 
         /// <summary>
-        /// Copy constructor for merging expanders.
+        /// Initializes a new instance of the <see cref="MacroExpander"/> class by copying from an existing object.
         /// </summary>
-        /// <param name="other"></param>
+        /// <param name="other">The object to copy.</param>
         public MacroExpander(MacroExpander other)
         {
-            foreach (string key in other._tokens.Keys)
+            foreach (string key in other.tokens.Keys)
             {
-                _tokens.Add(key, other._tokens[key]);
+                this.tokens.Add(key, other.tokens[key]);
             }
 
-            _format = other._format;
+            this.format = other.format;
         }
 
         /// <summary>
         /// Add the token/value pair.  If the token is already inserted,
         /// the previous value is replaced.
         /// </summary>
-        /// <param name="token"></param>
-        /// <param name="value"></param>
+        /// <param name="token">The token.</param>
+        /// <param name="value">The value.</param>
         public void Add(string token, string value)
         {
             if (value == null)
             {
-                if (_tokens.ContainsKey(token))
+                if (this.tokens.ContainsKey(token))
                 {
-                    _tokens.Remove(token);
+                    this.tokens.Remove(token);
                 }
+
                 return;
             }
 
-            if (_format != null)
+            if (this.format != null)
             {
-                token = _format.Replace("_TOKEN_", token);
+                token = this.format.Replace("_TOKEN_", token);
             }
 
             string found;
 
-            if (!_tokens.TryGetValue(token, out found))
+            if (!this.tokens.TryGetValue(token, out found))
             {
-                _tokens.Add(token, value);
+                this.tokens.Add(token, value);
             }
-            else // replace
+            else
             {
-                _tokens[token] = value;
+                this.tokens[token] = value;
             }
 
             // cleared the cached regex pattern
-            _regex = null;
+            this.regex = null;
         }
 
         /// <summary>
         /// Expand the raw string with the macro values.
         /// </summary>
-        /// <param name="raw"></param>
-        /// <returns></returns>
+        /// <param name="raw">The raw string.</param>
+        /// <returns>The expanded version of raw.</returns>
         public string Expand(string raw)
         {
             if (raw == null)
@@ -142,45 +146,53 @@ namespace Cobos.Utilities.Text
                 return null;
             }
 
-            return GetRegExPattern().Replace(raw, delegate(Match match)
-                                                                {
-                                                                    string found;
+            return this.GetRegExPattern().Replace(
+                                            raw, 
+                                            match => 
+                                            {
+                                                string found;
 
-                                                                    if (_tokens.TryGetValue(match.Value, out found))
-                                                                    {
-                                                                        return found;
-                                                                    }
+                                                if (this.tokens.TryGetValue(match.Value, out found))
+                                                {
+                                                    return found;
+                                                }
 
-                                                                    return match.Value;
-                                                                });
+                                                return match.Value;
+                                            });
         }
 
-        Regex GetRegExPattern()
+        /// <summary>
+        /// Gets the regex pattern for the macro.
+        /// </summary>
+        /// <returns>The regex pattern.</returns>
+        private Regex GetRegExPattern()
         {
-            if (_regex != null)
+            if (this.regex != null)
             {
-                return _regex;
+                return this.regex;
             }
 
             // copy the token keys to an array 
-            string[] regexTokens = new string[_tokens.Keys.Count];
-            _tokens.Keys.CopyTo(regexTokens, 0);
+            string[] regexTokens = new string[this.tokens.Keys.Count];
+            this.tokens.Keys.CopyTo(regexTokens, 0);
 
             // replace any characters in the token format that contain special regular expression characters
             Regex regexEscape = new Regex(@"\[|\\|\^|\$|\.|\||\?|\*|\+|\(|\)|\{|\}");
 
             for (int i = 0; i < regexTokens.Length; ++i)
             {
-                regexTokens[i] = regexEscape.Replace(regexTokens[i], delegate(Match match)
-                                                                                                {
-                                                                                                    return @"\" + match.Value;
-                                                                                                });
+                regexTokens[i] = regexEscape.Replace(
+                                                regexTokens[i], 
+                                                match =>
+                                                {
+                                                    return @"\" + match.Value;
+                                                });
             }
 
             // now do the actual matching
-            _regex = new Regex(string.Join("|", regexTokens), RegexOptions.IgnoreCase);
+            this.regex = new Regex(string.Join("|", regexTokens), RegexOptions.IgnoreCase);
 
-            return _regex;
+            return this.regex;
         }
     }
 }

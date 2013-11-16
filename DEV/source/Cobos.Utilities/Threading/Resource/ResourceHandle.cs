@@ -27,90 +27,104 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 namespace Cobos.Utilities.Threading.Resource
 {
+    using System;
+
     /// <summary>
     /// Private class to implement acquire/release of resources.
     /// </summary>
-    class ResourceHandle<T> : IResource<T>
+    /// <typeparam name="T">The type of resource.</typeparam>
+    internal partial class ResourceHandle<T> : IResource<T>
     {
         /// <summary>
         /// Reference to the owner pool for returning the acquired resource.
         /// </summary>
-        ResourcePoolImpl<T> _pool;
+        private ResourcePoolImpl<T> pool;
 
         /// <summary>
         /// Reference to the pool-managed resource.
         /// </summary>
-        T _resource;
+        private T resource;
 
         /// <summary>
-        /// Constructor.
+        /// Initializes a new instance of the <see cref="ResourceHandle{T}"/> class.
         /// </summary>
         /// <param name="pool">Owner pool</param>
         /// <param name="resource">Pool-managed resource</param>
         public ResourceHandle(ResourcePoolImpl<T> pool, T resource)
         {
-            _pool = pool;
-            _resource = resource;
-        }
-
-        ~ResourceHandle()
-        {
-            Dispose(false);
+            this.pool = pool;
+            this.resource = resource;
         }
 
         /// <summary>
-        /// Get the instance of the managed resource
+        /// Gets the instance of the managed resource
         /// </summary>
         public T Instance
         {
             get
             {
-                return _resource;
+                return this.resource;
             }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the handle is invalid.
+        /// </summary>
         public bool Invalid
         {
             get;
             set;
         }
+    }
 
-        #region IDisposable implementation
+    /// <summary>
+    /// Implements IDisposable via <see cref="IResource{T}"/>.
+    /// </summary>
+    /// <typeparam name="T">The type of resource.</typeparam>
+    internal partial class ResourceHandle<T>
+    {
+        /// <summary>
+        /// Indicates whether the resource has been disposed.
+        /// </summary>
+        private bool disposed = false;
+
+        /// <summary>
+        /// Finalizes an instance of the <see cref="ResourceHandle{T}"/> class.
+        /// </summary>
+        ~ResourceHandle()
+        {
+            this.Dispose(false);
+        }
 
         /// <summary>
         /// Return the resource to the pool.
         /// </summary>
         public void Dispose()
         {
-            Dispose(true);
+            this.Dispose(true);
         }
 
-        void Dispose(bool disposing)
+        /// <summary>
+        /// Disposes the instance.
+        /// </summary>
+        /// <param name="disposing">true if the object is disposing; otherwise false if the object is finalizing.</param>
+        private void Dispose(bool disposing)
         {
-            if (_disposed)
+            if (this.disposed)
             {
                 return;
             }
 
             if (disposing)
             {
-                _pool.ReleaseResource(this);
+                this.pool.ReleaseResource(this);
 
                 GC.SuppressFinalize(this);
             }
 
-            _disposed = true;
+            this.disposed = true;
         }
-
-        bool _disposed = false;
-
-        #endregion
     }
 }

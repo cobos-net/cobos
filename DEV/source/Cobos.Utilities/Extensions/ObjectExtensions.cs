@@ -27,26 +27,29 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-
 namespace Cobos.Utilities.Extensions
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Runtime.InteropServices;
+
+    /// <summary>
+    /// Extension methods for the <see cref="Object"/> class.
+    /// </summary>
     public static class ObjectExtensions
     {
         /// <summary>
         /// extend the object class to support casting to an anonymous type
         /// </summary>
         /// <typeparam name="T">The anonymous type to cast to</typeparam>
-        /// <param name="obj">The 'this' object reference</param>
+        /// <param name="self">The 'this' object reference</param>
         /// <param name="example">An instance of an anonymous type</param>
         /// <returns>A reference to the anonymous type.  If the cast fails, then null.</returns>
-        public static T CastByExample<T>(this object obj, T example)
+        public static T CastByExample<T>(this object self, T example)
         {
             try
             {
-                return (T)obj;
+                return (T)self;
             }
             catch (InvalidCastException)
             {
@@ -57,14 +60,14 @@ namespace Cobos.Utilities.Extensions
         /// <summary>
         /// Serialize the object (usually a struct with StructLayout attributes)
         /// </summary>
-        /// <param name="obj"></param>
-        /// <returns></returns>
-        public static byte[] ConvertToByteArray(this object obj)
+        /// <param name="self">The 'this' object reference.</param>
+        /// <returns>The bytes representing the object.</returns>
+        public static byte[] ConvertToByteArray(this object self)
         {
-            int size = Marshal.SizeOf(obj);
+            int size = Marshal.SizeOf(self);
 
             IntPtr buffer = Marshal.AllocHGlobal(size);
-            Marshal.StructureToPtr(obj, buffer, false);
+            Marshal.StructureToPtr(self, buffer, false);
 
             byte[] data = new byte[size];
             Marshal.Copy(buffer, data, 0, size);
@@ -73,19 +76,25 @@ namespace Cobos.Utilities.Extensions
             return data;
         }
 
-        public static T ConvertTo<T>(this byte[] data)
+        /// <summary>
+        /// Convert the bytes to an object type.
+        /// </summary>
+        /// <typeparam name="T">The type of object to convert to.</typeparam>
+        /// <param name="self">The 'this' object reference.</param>
+        /// <returns>The object result.</returns>
+        public static T ConvertTo<T>(this byte[] self)
         {
             Type type = typeof(T);
 
             int size = Marshal.SizeOf(type);
 
-            if (size > data.Length)
+            if (size > self.Length)
             {
                 return default(T);
             }
 
             IntPtr buffer = Marshal.AllocHGlobal(size);
-            Marshal.Copy(data, 0, buffer, size);
+            Marshal.Copy(self, 0, buffer, size);
 
             T obj = (T)Marshal.PtrToStructure(buffer, type);
             Marshal.FreeHGlobal(buffer);

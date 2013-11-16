@@ -27,81 +27,68 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
-using System.ComponentModel;
-using System.Runtime.InteropServices;
-
 namespace Cobos.Utilities.File
 {
-    public static class DriveMapping
+    using System;
+    using System.ComponentModel;
+    using System.Diagnostics.CodeAnalysis;
+    using System.IO;
+    using System.Runtime.InteropServices;
+    using System.Text;
+
+    /// <summary>
+    /// Utility methods for mapping network drives in Windows.
+    /// </summary>
+    [SuppressMessage("Microsoft.StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation", Justification = "Using Win32 naming for consistency.")]
+    [SuppressMessage("Microsoft.StyleCop.CSharp.NamingRules", "SA1310:FieldNamesMustNotContainUnderscore", Justification = "Using Win32 naming for consistency.")]
+    public static partial class DriveMapping
     {
-        #region Map network drive definitions
-
-        [DllImport("mpr.dll")]
-        static extern UInt32 WNetAddConnection2(ref NETRESOURCE lpNetResource, string lpPassword, string lpUsername, uint dwFlags);
-
-        [DllImport("mpr.dll")]
-        static extern UInt32 WNetAddConnection3(IntPtr hWndOwner, ref NETRESOURCE lpNetResource, string lpPassword, string lpUserName, uint dwFlags);
-
-        [DllImport("mpr.dll")]
-        static extern uint WNetCancelConnection2(string lpName, uint dwFlags, bool bForce);
-
-        [StructLayout(LayoutKind.Sequential)]
-        public struct NETRESOURCE
-        {
-            public uint dwScope;
-            public uint dwType;
-            public uint dwDisplayType;
-            public uint dwUsage;
-            public string lpLocalName;
-            public string lpRemoteName;
-            public string lpComment;
-            public string lpProvider;
-        }
-
-        const uint RESOURCETYPE_DISK = 1;
-
-        const uint CONNECT_UPDATE_PROFILE = 0x1;
-        const uint CONNECT_INTERACTIVE = 0x8;
-        const uint CONNECT_PROMPT = 0x10;
-        const uint CONNECT_REDIRECT = 0x80;
-        const uint CONNECT_COMMANDLINE = 0x800;
-        const uint CONNECT_CMD_SAVECRED = 0x1000;
-
-        // subset of error codes from winerr.h
-        const uint ERROR_SUCCESS = 0x0;
-        const uint NO_ERROR = 0x0;
-
-        #endregion
-
-        #region Map local drive definitions
-
-        [DllImport("kernel32.dll")]
-        public static extern bool DefineDosDevice(uint dwFlags, string lpDeviceName, string lpTargetPath);
-
-        [DllImport("Kernel32.dll")]
-        public static extern uint QueryDosDevice(string lpDeviceName,
-        StringBuilder lpTargetPath, uint ucchMax);
-
-        public const uint DDD_RAW_TARGET_PATH = 0x00000001;
-        public const uint DDD_REMOVE_DEFINITION = 0x00000002;
-        public const uint DDD_EXACT_MATCH_ON_REMOVE = 0x00000004;
-        public const uint DDD_NO_BROADCAST_SYSTEM = 0x00000008;
-
-        const string MAPPED_FOLDER_INDICATOR = @"\??\";
-
-        #endregion
+        /// <summary>
+        /// See the Win32 API documentation.
+        /// </summary>
+        private const uint RESOURCETYPE_DISK = 1;
 
         /// <summary>
-        /// 
+        /// See the Win32 API documentation.
         /// </summary>
-        /// <param name="driveLetter"></param>
-        /// <param name="path"></param>
-        /// <returns></returns>
+        private const uint CONNECT_UPDATE_PROFILE = 0x1;
+
+        /// <summary>
+        /// See the Win32 API documentation.
+        /// </summary>
+        private const uint CONNECT_INTERACTIVE = 0x8;
+
+        /// <summary>
+        /// See the Win32 API documentation.
+        /// </summary>
+        private const uint CONNECT_PROMPT = 0x10;
+
+        /// <summary>
+        /// See the Win32 API documentation.
+        /// </summary>
+        private const uint CONNECT_REDIRECT = 0x80;
+
+        /// <summary>
+        /// See the Win32 API documentation.
+        /// </summary>
+        private const uint CONNECT_COMMANDLINE = 0x800;
+
+        /// <summary>
+        /// See the Win32 API documentation.
+        /// </summary>
+        private const uint CONNECT_CMD_SAVECRED = 0x1000;
+
+        /// <summary>
+        /// No error code taken from WINERR.h.
+        /// </summary>
+        private const uint ERROR_SUCCESS = 0x0;
+
+        /// <summary>
+        /// Map a network resource to a drive letter.
+        /// </summary>
+        /// <param name="driveLetter">The drive letter to map the resource to.</param>
+        /// <param name="path">The path of the network resource.</param>
+        /// <returns>true if the operation succeeded; otherwise false.</returns>
         public static bool MapNetworkDrive(char driveLetter, string path)
         {
             RemoveNetworkDrive(driveLetter);
@@ -114,13 +101,14 @@ namespace Cobos.Utilities.File
 
             uint result = WNetAddConnection2(ref networkResource, null, null, 0);
 
-            return result == NO_ERROR;
+            return result == ERROR_SUCCESS;
         }
 
         /// <summary>
         /// Remove a drive mapping, if it exists.
         /// </summary>
-        /// <param name="driveLetter"></param>
+        /// <param name="driveLetter">The drive letter to remove.</param>
+        /// <returns>true if the operation succeeded; otherwise false.</returns>
         public static bool RemoveNetworkDrive(char driveLetter)
         {
             if (!DriveExists(driveLetter))
@@ -130,22 +118,79 @@ namespace Cobos.Utilities.File
 
             uint result = WNetCancelConnection2(driveLetter + ":", CONNECT_UPDATE_PROFILE, false);
 
-            return result == NO_ERROR;
+            return result == ERROR_SUCCESS;
         }
 
-        /////////////////////////////////////////////////////////////////////////////
-        // DOS folder mapping functions taken from:
-        // http://bytes.com/topic/c-sharp/answers/517053-virtual-drive
-        /////////////////////////////////////////////////////////////////////////////
+        [DllImport("mpr.dll")]
+        private static extern uint WNetAddConnection2(ref NETRESOURCE lpNetResource, string lpPassword, string lpUsername, uint dwFlags);
 
-        // ----------------------------------------------------------------------------------------
-        // Class Name: VolumeFunctions
-        // Procedure Name: MapFolderToDrive
-        // Purpose: Map the folder to a drive letter
-        // Parameters:
-        // - driveLetter (string) : Drive letter in the format "C:" without a back slash
-        // - folderName (string) : Folder to map without a back slash
-        // ----------------------------------------------------------------------------------------
+        [DllImport("mpr.dll")]
+        private static extern uint WNetAddConnection3(IntPtr hWndOwner, ref NETRESOURCE lpNetResource, string lpPassword, string lpUserName, uint dwFlags);
+
+        [DllImport("mpr.dll")]
+        private static extern uint WNetCancelConnection2(string lpName, uint dwFlags, bool bForce);
+ 
+        /// <summary>
+        /// The NETRESOURCE structure contains information about a network resource.
+        /// </summary>
+        [StructLayout(LayoutKind.Sequential)]
+        [SuppressMessage("Microsoft.StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Using Win32 naming for consistency.")]
+        [SuppressMessage("Microsoft.StyleCop.CSharp.NamingRules", "SA1307:AccessibleFieldsMustBeginWithUpperCaseLetter", Justification = "Using Win32 naming for consistency.")]
+        public struct NETRESOURCE
+        {
+            public uint dwScope;
+            public uint dwType;
+            public uint dwDisplayType;
+            public uint dwUsage;
+            public string lpLocalName;
+            public string lpRemoteName;
+            public string lpComment;
+            public string lpProvider;
+        }
+    }
+
+    /// <summary>
+    /// Utility methods for mapping local drives in Windows.
+    /// </summary>
+    /// <remarks>
+    /// DOS folder mapping functions taken from:
+    /// http://bytes.com/topic/c-sharp/answers/517053-virtual-drive
+    /// </remarks>
+    [SuppressMessage("Microsoft.StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation", Justification = "Using Win32 naming for consistency.")]
+    [SuppressMessage("Microsoft.StyleCop.CSharp.NamingRules", "SA1310:FieldNamesMustNotContainUnderscore", Justification = "Using Win32 naming for consistency.")]
+    public static partial class DriveMapping
+    {
+        /// <summary>
+        /// See the Win32 API documentation.
+        /// </summary>
+        private const uint DDD_RAW_TARGET_PATH = 0x00000001;
+
+        /// <summary>
+        /// See the Win32 API documentation.
+        /// </summary>
+        private const uint DDD_REMOVE_DEFINITION = 0x00000002;
+
+        /// <summary>
+        /// See the Win32 API documentation.
+        /// </summary>
+        private const uint DDD_EXACT_MATCH_ON_REMOVE = 0x00000004;
+
+        /// <summary>
+        /// See the Win32 API documentation.
+        /// </summary>
+        private const uint DDD_NO_BROADCAST_SYSTEM = 0x00000008;
+
+        /// <summary>
+        /// See the Win32 API documentation.
+        /// </summary>
+        private const string MAPPED_FOLDER_INDICATOR = @"\??\";
+
+        /// <summary>
+        /// Map the folder to a drive letter.
+        /// </summary>
+        /// <param name="driveLetter">Drive letter in the format "C:" without a back slash.</param>
+        /// <param name="folderName">Folder to map without a back slash.</param>
+        /// <returns>true if the method succeeded; otherwise false.</returns>
         public static bool MapLocalFolder(char driveLetter, string folderName)
         {
             // Is this drive already mapped? If so, we don't remap it!
@@ -173,18 +218,14 @@ namespace Cobos.Utilities.File
 
                 return false;
             }
-
         }
-
-        // ----------------------------------------------------------------------------------------
-        // Class Name: VolumeFunctions
-        // Procedure Name: UnmapFolderFromDrive
-        // Purpose: Unmap a drive letter. We always unmp the drive, without checking the
-        // folder name.
-        // Parameters:
-        // - driveLetter (string) : Drive letter to be released, the the format "C:"
-        // - folderName (string) : Folder name that the drive is mapped to.
-        // ----------------------------------------------------------------------------------------
+        
+        /// <summary>
+        /// Un-map a drive letter. Always un-map the drive, without checking the folder name.
+        /// </summary>
+        /// <param name="driveLetter">Drive letter to be released, the the format "C:"</param>
+        /// <param name="folderName">Folder name that the drive is mapped to.</param>
+        /// <returns>true if the method succeeded; otherwise false.</returns>
         public static bool RemoveLocalFolder(char driveLetter, string folderName)
         {
             if (DefineDosDevice(DDD_REMOVE_DEFINITION, driveLetter + ":", folderName))
@@ -200,18 +241,16 @@ namespace Cobos.Utilities.File
                 return false;
             }
         }
-
-        // ----------------------------------------------------------------------------------------
-        // Class Name: VolumeFunctions
-        // Procedure Name: DriveIsMappedTo
-        // Purpose: Returns the folder that a drive is mapped to. If not mapped, we return a blank.
-        // Parameters:
-        // - driveLetter (string) : Drive letter in the format "C:"
-        // ----------------------------------------------------------------------------------------
+        
+        /// <summary>
+        /// Returns the folder that a drive is mapped to. If not mapped, return an empty string.
+        /// </summary>
+        /// <param name="driveLetter">The drive letter.</param>
+        /// <returns>The folder if the drive is mapped; otherwise empty.</returns>
         public static string DriveIsMappedToFolder(char driveLetter)
         {
             StringBuilder volumeMap = new StringBuilder(512);
-            string mappedVolumeName = "";
+            string mappedVolumeName = string.Empty;
 
             // If it's not a mapped drive, just remove it from the list
             uint mapped = QueryDosDevice(driveLetter + ":", volumeMap, (uint)512);
@@ -231,8 +270,8 @@ namespace Cobos.Utilities.File
         /// <summary>
         /// Check if a drive exists.
         /// </summary>
-        /// <param name="driveLetter"></param>
-        /// <returns></returns>
+        /// <param name="driveLetter">The drive letter to test.</param>
+        /// <returns>true if the drive exists; otherwise false.</returns>
         public static bool DriveExists(char driveLetter)
         {
             driveLetter = char.ToUpper(driveLetter);
@@ -250,5 +289,10 @@ namespace Cobos.Utilities.File
             return false;
         }
 
+        [DllImport("kernel32.dll")]
+        private static extern bool DefineDosDevice(uint dwFlags, string lpDeviceName, string lpTargetPath);
+
+        [DllImport("Kernel32.dll")]
+        private static extern uint QueryDosDevice(string lpDeviceName, StringBuilder lpTargetPath, uint ucchMax);
     }
 }

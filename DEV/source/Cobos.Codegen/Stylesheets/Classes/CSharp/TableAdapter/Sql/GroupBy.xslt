@@ -7,7 +7,7 @@
 					 xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 					 exclude-result-prefixes="msxsl">
 
-	<!-- 
+  <!-- 
 	=============================================================================
 	Filename: .xslt
 	Description: 
@@ -20,22 +20,22 @@
 	
 	============================================================================
 	-->
-					 
-	<!--
+
+  <!--
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	GROUP BY clause
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
-	
-	<xsl:template match="cobos:Object[./cobos:Metadata/cobos:Group/cobos:By]" mode="sqlGroupBy">
-		<xsl:text>"</xsl:text>
-		<xsl:apply-templates select="./cobos:Metadata/cobos:Group/cobos:By"/>
-		<xsl:text>"</xsl:text>
-	</xsl:template>
 
-	<xsl:template match="cobos:Object[not(./cobos:Metadata/cobos:Group/cobos:By)]" mode="sqlGroupBy">
-		<xsl:text>null</xsl:text>
-	</xsl:template>
-					 
+  <xsl:template match="cobos:Object[./cobos:Metadata/cobos:Group/cobos:By]" mode="sqlGroupBy">
+    <xsl:text>"</xsl:text>
+    <xsl:apply-templates select="./cobos:Metadata/cobos:Group/cobos:By"/>
+    <xsl:text>"</xsl:text>
+  </xsl:template>
+
+  <xsl:template match="cobos:Object[not(./cobos:Metadata/cobos:Group/cobos:By)]" mode="sqlGroupBy">
+    <xsl:text>null</xsl:text>
+  </xsl:template>
+
 </xsl:stylesheet>

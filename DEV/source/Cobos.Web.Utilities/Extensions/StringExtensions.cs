@@ -27,19 +27,20 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Web.Script.Serialization;
-using Cobos.Utilities.Extensions;
-
 namespace Cobos.Web.Utilities.Extensions
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Web.Script.Serialization;
+    using Cobos.Utilities.Extensions;
+
+    /// <summary>
+    /// Extensions for the string class.
+    /// </summary>
     public static class StringExtensions
     {
         /// <summary>
-        /// deserialize from Json
+        /// deserialize from JSON
         /// </summary>
         /// <param name="str">The 'this' string reference</param>
         /// <returns>Deserialized object</returns>
@@ -50,7 +51,7 @@ namespace Cobos.Web.Utilities.Extensions
         }
 
         /// <summary>
-        /// Deserialize from Json as a specified type
+        /// Deserialize from JSON as a specified type
         /// </summary>
         /// <typeparam name="T">The type to cast to</typeparam>
         /// <param name="str">The 'this' string reference</param>
@@ -71,6 +72,5 @@ namespace Cobos.Web.Utilities.Extensions
                 return json.CastByExample(example);
             }
         }
-
     }
 }

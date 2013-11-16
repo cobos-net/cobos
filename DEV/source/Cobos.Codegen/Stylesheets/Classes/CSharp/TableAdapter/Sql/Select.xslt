@@ -7,7 +7,7 @@
 					 xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 					 exclude-result-prefixes="msxsl">
 
-	<!-- 
+  <!-- 
 	=============================================================================
 	Filename: .xslt
 	Description: 
@@ -20,32 +20,32 @@
 	
 	============================================================================
 	-->
-					 
-	<!--
+
+  <!--
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	SQL SELECT columns
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-	<xsl:template match="cobos:Property" mode="sqlSelect">
-		<xsl:apply-templates select="." mode="sqlSelectColumn"/>
-		<xsl:if test="not(position() = last())">, </xsl:if>
-	</xsl:template>
+  <xsl:template match="cobos:Property" mode="sqlSelect">
+    <xsl:apply-templates select="." mode="sqlSelectColumn"/>
+    <xsl:if test="not(position() = last())">, </xsl:if>
+  </xsl:template>
 
-	<xsl:template match="cobos:Property" mode="sqlSelectColumn">
-		<xsl:value-of select="@dbTable"/>.<xsl:value-of select="@dbColumn"/>
-	</xsl:template>
+  <xsl:template match="cobos:Property" mode="sqlSelectColumn">
+    <xsl:value-of select="@dbTable"/>.<xsl:value-of select="@dbColumn"/>
+  </xsl:template>
 
-	<xsl:template match="cobos:Property[@dbAlias]" mode="sqlSelectColumn">
-		<xsl:value-of select="@dbTable"/>.<xsl:value-of select="@dbColumn"/>
-		<xsl:text > AS </xsl:text>
-		<xsl:value-of select="@dbAlias"/>
-	</xsl:template>
+  <xsl:template match="cobos:Property[@dbAlias]" mode="sqlSelectColumn">
+    <xsl:value-of select="@dbTable"/>.<xsl:value-of select="@dbColumn"/>
+    <xsl:text > AS </xsl:text>
+    <xsl:value-of select="@dbAlias"/>
+  </xsl:template>
 
-	<xsl:template match="cobos:Property[@dbSelect]" mode="sqlSelectColumn">
-		<xsl:value-of select="@dbSelect"/>
-		<xsl:text > AS </xsl:text>
-		<xsl:value-of select="@dbColumn"/>
-	</xsl:template>
-	
+  <xsl:template match="cobos:Property[@dbSelect]" mode="sqlSelectColumn">
+    <xsl:value-of select="@dbSelect"/>
+    <xsl:text > AS </xsl:text>
+    <xsl:value-of select="@dbColumn"/>
+  </xsl:template>
+
 </xsl:stylesheet>

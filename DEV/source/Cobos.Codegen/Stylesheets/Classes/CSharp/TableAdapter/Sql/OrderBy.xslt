@@ -7,8 +7,8 @@
 					 xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 					 exclude-result-prefixes="msxsl">
 
-					 
-	<!-- 
+
+  <!-- 
 	=============================================================================
 	Filename: .xslt
 	Description: 
@@ -21,23 +21,23 @@
 	
 	============================================================================
 	-->
-					 
-	<!--
+
+  <!--
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	ORDER BY clause
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-	<xsl:template match="cobos:Object[./cobos:Metadata/cobos:Order/cobos:By]" mode="sqlOrderBy">
-		<xsl:text>"</xsl:text>
-		<xsl:apply-templates select="./cobos:Metadata/cobos:Order/cobos:By"/>
-		<xsl:text>"</xsl:text>
-	</xsl:template>
+  <xsl:template match="cobos:Object[./cobos:Metadata/cobos:Order/cobos:By]" mode="sqlOrderBy">
+    <xsl:text>"</xsl:text>
+    <xsl:apply-templates select="./cobos:Metadata/cobos:Order/cobos:By"/>
+    <xsl:text>"</xsl:text>
+  </xsl:template>
 
 
-	<xsl:template match="cobos:Object[not(./cobos:Metadata/cobos:Order/cobos:By)]" mode="sqlOrderBy">
-		<xsl:text>null</xsl:text>
-	</xsl:template>
-					 
+  <xsl:template match="cobos:Object[not(./cobos:Metadata/cobos:Order/cobos:By)]" mode="sqlOrderBy">
+    <xsl:text>null</xsl:text>
+  </xsl:template>
+
 </xsl:stylesheet>

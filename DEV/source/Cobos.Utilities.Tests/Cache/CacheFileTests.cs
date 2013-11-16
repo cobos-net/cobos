@@ -27,30 +27,32 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using Cobos.Utilities.Cache;
-using NUnit.Framework;
-
 namespace Cobos.Utilities.Tests
 {
+    using System;
+    using System.IO;
+    using Cobos.Utilities.Cache;
+    using NUnit.Framework;
+
+    /// <summary>
+    /// Unit Tests for the CacheFile class.
+    /// </summary>
     [TestFixture]
     public class CacheFileTests
     {
+        /// <summary>
+        /// Strategy:
+        /// ---------
+        /// 1. Delete any old cache file.
+        /// 2. Create a new cache file.
+        /// 3. Add 3 sections with 10 values each.
+        /// 4. Save the cache file.
+        /// 5. Re-open the cache file.
+        /// 6. Confirm that the values are read back in.
+        /// </summary>
         [TestCase]
         public void Can_cache_items_and_read_back()
         {
-            // Strategy:
-            // ---------
-            // 1. Delete any old cache file.
-            // 2. Create a new cache file.
-            // 3. Add 3 sections with 10 values each.
-            // 4. Save the cache file.
-            // 5. Re-open the cache file.
-            // 6. Confirm that the values are read back in.
-
             string path = TestManager.ResolvePath("test.cache");
 
             if (System.IO.File.Exists(path))
@@ -60,13 +62,10 @@ namespace Cobos.Utilities.Tests
 
             CacheFile<string> cache = new CacheFile<string>(path);
 
-            Assert.DoesNotThrow(delegate { cache.Open(); });
+            Assert.DoesNotThrow(() => cache.Open());
 
-            ///////////////////////////////////////////////////////////////////
             // Populate the cache
-
-            Assert.DoesNotThrow(
-                delegate
+            Assert.DoesNotThrow(() =>
                 {
                     for (int i = 0; i < 10; ++i)
                     {
@@ -74,8 +73,7 @@ namespace Cobos.Utilities.Tests
                     }
                 });
 
-            Assert.DoesNotThrow(
-                delegate
+            Assert.DoesNotThrow(() =>
                 {
                     for (double i = 0.0; i < 10.0; ++i)
                     {
@@ -83,9 +81,7 @@ namespace Cobos.Utilities.Tests
                     }
                 });
 
-
-            Assert.DoesNotThrow(
-                delegate
+            Assert.DoesNotThrow(() =>
                 {
                     string[] stringValues = new string[5];
 
@@ -105,12 +101,10 @@ namespace Cobos.Utilities.Tests
 
                     cache.Add("Section3", stringValues);
                     cache.Add("Section4", stringValues);
-
                 });
 
             // Empty sections
-            Assert.DoesNotThrow(
-                delegate
+            Assert.DoesNotThrow(() =>
                 {
                     cache["Section5"] = null;
                     cache["Section6"] = null;
@@ -128,19 +122,15 @@ namespace Cobos.Utilities.Tests
                 cache.Add("Section3", ("String" + i).ToLower());
             }
 
-            ///////////////////////////////////////////////////////////////////
             // Save the cache and re-open
-
-            Assert.DoesNotThrow(delegate { cache.Save(); });
+            Assert.DoesNotThrow(() => cache.Save());
             Assert.True(System.IO.File.Exists(path));
 
             cache = new CacheFile<string>(path);
 
-            Assert.DoesNotThrow(delegate { cache.Open(); });
+            Assert.DoesNotThrow(() => cache.Open());
 
-            ///////////////////////////////////////////////////////////////////
             // Confirm the values were read
-
             string[] values;
 
             values = cache["Section1"];

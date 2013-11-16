@@ -6,8 +6,9 @@
 					 xmlns:cobos="http://schemas.cobos.co.uk/datamodel/1.0.0"
 >
 	<xsl:output method="xml" indent="yes" encoding="utf-8"/>
-
-	<!-- 
+  <xsl:include href="../Utilities/Boilerplate.xslt"/>
+  <xsl:include href="../Utilities/Nodes.xslt"/>
+  <!-- 
 	============================================================================
 	Filename: merge.xslt
 	Description: Merge a database schema document into an XSLT.
@@ -21,10 +22,6 @@
 	
 	============================================================================
 	-->
-
-	<xsl:include href="../../Utilities/Boilerplate.xslt"/>
-	<xsl:include href="../../Utilities/Nodes.xslt"/>
-
 	<xsl:template name="nsdecl">
 		<xsl:variable name="nsdecl">
 			<nsdecl xmlns:msxsl="urn:schemas-microsoft-com:xslt"
@@ -33,56 +30,56 @@
 						xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
 		</xsl:variable>
 		<xsl:apply-templates mode="copyAttributesAndNamespace" select="msxsl:node-set($nsdecl)"/>
-	</xsl:template>
-	
+	</xsl:template>	
 	<!-- 
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	Match the root element and create the stylesheet
+	Create the stylesheet containing the processing variables
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
-	
 	<xsl:template match="/xsd:schema">
-		
-		<xsl:call-template name="generatedXmlWarning"/>
-
-		<xsl:element name="xsl:stylesheet">
+		<!-- Boilerplate warning -->
+    <xsl:call-template name="generatedXmlWarning"/>
+		<!-- Stylesheet element -->
+    <xsl:element name="xsl:stylesheet">
 			<xsl:call-template name="nsdecl"/>
 			<xsl:attribute name="version">1.0</xsl:attribute>
 			<xsl:attribute name="exclude-result-prefixes">msxsl</xsl:attribute>
-			<xsl:element name="xsl:output">
+			<!-- Output processing statement -->
+      <xsl:element name="xsl:output">
 				<xsl:attribute name="method">xml</xsl:attribute>
 				<xsl:attribute name="indent">yes</xsl:attribute>
 				<xsl:attribute name="encoding">utf-8</xsl:attribute>
 			</xsl:element>
-
+      <!-- Database types variable -->
 			<xsl:element name="xsl:variable">
 				<xsl:attribute name="name">databaseTypes</xsl:attribute>
 				<xsl:copy-of select="xsd:simpleType"/>
 			</xsl:element>
+      <!-- Database types node-set -->
 			<xsl:element name="xsl:variable">
 				<xsl:attribute name="name">databaseTypesNodeSet</xsl:attribute>
 				<xsl:attribute name="select">msxsl:node-set($databaseTypes)</xsl:attribute>
 			</xsl:element>
-
+      <!-- Database tables variable -->
 			<xsl:element name="xsl:variable">
 				<xsl:attribute name="name">databaseTables</xsl:attribute>
 				<xsl:copy-of select="xsd:element/xsd:complexType/xsd:sequence/xsd:element" />
 			</xsl:element>
+      <!-- Database tables node-set -->
 			<xsl:element name="xsl:variable">
 				<xsl:attribute name="name">databaseTablesNodeSet</xsl:attribute>
 				<xsl:attribute name="select">msxsl:node-set($databaseTables)</xsl:attribute>
 			</xsl:element>
-
+      <!-- Database contraints variable -->
 			<xsl:element name="xsl:variable">
 				<xsl:attribute name="name">databaseConstraints</xsl:attribute>
 				<xsl:copy-of select="xsd:element//*[self::xsd:key | self::xsd:unique | self::xsd:keyref]" />
 			</xsl:element>
+      <!-- Database constraints node-set -->
 			<xsl:element name="xsl:variable">
 				<xsl:attribute name="name">databaseConstraintsNodeSet</xsl:attribute>
 				<xsl:attribute name="select">msxsl:node-set($databaseConstraints)</xsl:attribute>
 			</xsl:element>
 		</xsl:element>
-
 	</xsl:template>
-
 </xsl:stylesheet>

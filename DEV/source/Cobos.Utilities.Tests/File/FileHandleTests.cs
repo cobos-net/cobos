@@ -27,40 +27,68 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-using System;
-using System.IO;
-using Cobos.Utilities.File;
-using NUnit.Framework;
-
 namespace Cobos.Utilities.Tests.File
 {
+    using System;
+    using System.IO;
+    using Cobos.Utilities.File;
+    using NUnit.Framework;
+
+    /// <summary>
+    /// Unit Tests for the <see cref="FileHandle"/> class.
+    /// </summary>
     [TestFixture]
     public class FileHandleTests
     {
+        /// <summary>
+        /// Strategy:
+        /// ---------
+        /// 1. Test that we can create a handle for an existing file.
+        /// </summary>
         [TestCase]
         public void File_handle_for_existing_file_succeeds()
         {
-            Assert.DoesNotThrow(delegate { new FileHandle(TestManager.TestFilesLocation + @"\TestFile.txt"); });
+            Assert.DoesNotThrow(() => new FileHandle(TestManager.TestFilesLocation + @"\TestFile.txt"));
         }
 
+        /// <summary>
+        /// Strategy:
+        /// ---------
+        /// 1. Test that we cannot create a handle for a file that doesn't exist.
+        /// </summary>
         [TestCase]
         public void File_handle_for_non_existing_file_fails()
         {
             Assert.Throws<DirectoryNotFoundException>(delegate { new FileHandle(@"C:\totally\madeup\file\location.txt"); });
         }
 
+        /// <summary>
+        /// Strategy:
+        /// ---------
+        /// 1. Test that we can create a handle for an existing folder.
+        /// </summary>
         [TestCase]
         public void File_handle_for_existing_folder_succeeds()
         {
-            Assert.DoesNotThrow(delegate { new FileHandle(TestManager.TestFilesLocation + @"\TestDirectory"); });
+            Assert.DoesNotThrow(() => new FileHandle(TestManager.TestFilesLocation + @"\TestDirectory"));
         }
 
+        /// <summary>
+        /// Strategy:
+        /// ---------
+        /// 1. Test that we cannot create a handle for a folder that doesn't exist.
+        /// </summary>
         [TestCase]
         public void File_handle_for_non_existing_folder_fails()
         {
-            Assert.Throws<DirectoryNotFoundException>(delegate { new FileHandle(@"C:\totally\madeup\folder\location"); });
+            Assert.Throws<DirectoryNotFoundException>(() => new FileHandle(@"C:\totally\madeup\folder\location"));
         }
 
+        /// <summary>
+        /// Strategy:
+        /// ---------
+        /// 1. Test that file handles correctly identify the same file even when the path is expressed differently.
+        /// </summary>
         [TestCase]
         public void File_handle_comparison_for_same_file_but_different_path_succeeds()
         {
@@ -79,6 +107,11 @@ namespace Cobos.Utilities.Tests.File
             Assert.True(handle2.CompareTo(handle1) == 0);
         }
 
+        /// <summary>
+        /// Strategy:
+        /// ---------
+        /// 1. Test that file handles for different files are not considered the same.
+        /// </summary>
         [TestCase]
         public void File_handle_comparison_for_different_files_fails()
         {
@@ -92,6 +125,11 @@ namespace Cobos.Utilities.Tests.File
             Assert.False(handle2.CompareTo(handle1) == 0);
         }
 
+        /// <summary>
+        /// Strategy:
+        /// ---------
+        /// 1. Test that file handles correctly identify the same folder even when the path is expressed differently.
+        /// </summary>
         [TestCase]
         public void File_handle_comparison_for_same_folder_but_different_path_succeeds()
         {
@@ -110,6 +148,11 @@ namespace Cobos.Utilities.Tests.File
             Assert.True(handle2.CompareTo(handle1) == 0);
         }
 
+        /// <summary>
+        /// Strategy:
+        /// ---------
+        /// 1. Test that file handles for different folders are not considered the same.
+        /// </summary>
         [TestCase]
         public void File_handle_comparison_for_different_folder_fails()
         {

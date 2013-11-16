@@ -35,9 +35,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="nunit.framework, Version=2.6.2.12296, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+    <Reference Include="nunit.framework, Version=2.6.3.13283, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
+      <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -58,9 +58,6 @@
     <Compile Include="Utilities\DataRowColumnAggregatorTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Cobos.Data.MySql\Cobos.Data.MySql.csproj">
       <Project>{2f537275-3b9c-4914-b33e-e6ae6238f4b6}</Project>
       <Name>Cobos.Data.MySql</Name>
@@ -68,6 +65,14 @@
     <ProjectReference Include="..\Cobos.Data.Oracle\Cobos.Data.Oracle.csproj">
       <Project>{cfb3be49-d78c-48d3-9238-a0db2c2ba3a2}</Project>
       <Name>Cobos.Data.Oracle</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Cobos.Data.PostgreSql\Cobos.Data.PostgreSql.csproj">
+      <Project>{e669d37f-aece-495d-9774-069de66c1e70}</Project>
+      <Name>Cobos.Data.PostgreSql</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Cobos.Data.SqlServer\Cobos.Data.SqlServer.csproj">
+      <Project>{919d7fff-19b3-4323-a84c-7f0345f314f5}</Project>
+      <Name>Cobos.Data.SqlServer</Name>
     </ProjectReference>
     <ProjectReference Include="..\Cobos.Data\Cobos.Data.csproj">
       <Project>{6906B107-C149-4682-AF7B-FEF9F697FE36}</Project>
@@ -80,6 +85,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="TestData\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

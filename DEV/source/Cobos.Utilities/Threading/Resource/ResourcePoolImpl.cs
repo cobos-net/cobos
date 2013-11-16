@@ -27,108 +27,88 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
-using Cobos.Utilities.Extensions;
-
 namespace Cobos.Utilities.Threading.Resource
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+    using System.Threading;
+    using Cobos.Utilities.Extensions;
+
     /// <summary>
     /// Implementation of a resource pool.  The class is marked as internal
     /// to hide the ReleaseResource method to force clients to use the 
     /// correct IResource.Dispose method.
     /// </summary>
     /// <typeparam name="T">The type of the resource to be managed.</typeparam>
-    internal class ResourcePoolImpl<T> : IResourcePool<T>
+    internal partial class ResourcePoolImpl<T> : IResourcePool<T>
     {
-        /// <summary>
-        /// Helper class to manage a resource
-        /// </summary>
-        class ResourceItem
-        {
-            /// <summary>
-            /// Access the underlying instance
-            /// </summary>
-            public readonly T Instance;
-
-            /// <summary>
-            /// Epoch seconds when this item was created
-            /// </summary>
-            public readonly long Created;
-
-            public ResourceItem(T instance)
-            {
-                Instance = instance;
-                Created = DateTime.Now.ToEpochSeconds();
-            }
-        }
-
         /// <summary>
         /// The settings for this pool.
         /// </summary>
-        ResourcePoolSettings<T> _settings;
+        private ResourcePoolSettings<T> settings;
 
         /// <summary>
         /// The current state of the pool.
         /// </summary>
-        ResourcePoolStatistics _statistics = new ResourcePoolStatistics();
+        private ResourcePoolStatistics statistics;
 
         /// <summary>
         /// List of all resources managed by the pool.
         /// </summary>
-        List<T> _resources;
+        private List<T> resources;
 
         /// <summary>
         /// List of all available resources in the pool.
         /// </summary>
-        LinkedList<T> _freeList;
+        private LinkedList<T> freeList;
 
         /// <summary>
-        /// Synchronised access to the limited resources.
+        /// Synchronized access to the limited resources.
         /// </summary>
-        Semaphore _semaphore;
+        private Semaphore semaphore;
 
         /// <summary>
         /// Control access to the resource and free list.
         /// </summary>
-        object _lockResource = new object();
+        private object lockResource = new object();
 
         /// <summary>
-        /// Finish all pending jobs when trying to dispose.
-        /// Don't accept any new jobs while we're disposing.
+        /// Initializes a new instance of the <see cref="ResourcePoolImpl{T}"/> class.
         /// </summary>
-        object _lockDisposed = new object();
-
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        /// <param name="minPoolSize"></param>
-        /// <param name="maxPoolSize">The maximum size of the pool.</param>
-        /// <param name="allocator"></param>
+        /// <param name="settings">The settings for the resource pool.</param>
         public ResourcePoolImpl(ResourcePoolSettings<T> settings)
         {
-            _settings = settings;
+            this.settings = settings;
+            this.resources = new List<T>((int)this.settings.MaxPoolSize);
+            this.freeList = new LinkedList<T>();
+            this.statistics = new ResourcePoolStatistics();
 
-            _resources = new List<T>((int)_settings.MaxPoolSize);
-            _freeList = new LinkedList<T>();
-
-            if (_settings.MinPoolSize > 0)
+            if (this.settings.MinPoolSize > 0)
             {
-                lock (_lockResource)
+                lock (this.lockResource)
                 {
-                    for (int i = 0; i < _settings.MinPoolSize; ++i)
+                    for (int i = 0; i < this.settings.MinPoolSize; ++i)
                     {
-                        AddNewResource();
+                        this.AddNewResource();
                     }
                 }
             }
 
-            _semaphore = new Semaphore((int)_settings.MaxPoolSize, (int)_settings.MaxPoolSize);
+            this.semaphore = new Semaphore((int)this.settings.MaxPoolSize, (int)this.settings.MaxPoolSize);
         }
 
-        #region IResourcePool implementation
+        /// <summary>
+        /// Gets information about the state of the pool.
+        /// </summary>
+        /// <returns>The current state of the pool.</returns>
+        public ResourcePoolStatistics Statistics
+        {
+            get
+            {
+                return this.statistics;
+            }
+        }
 
         /// <summary>
         /// Get the next available resource.
@@ -136,25 +116,26 @@ namespace Cobos.Utilities.Threading.Resource
         /// <returns>A handle to a managed resource.</returns>
         public IResource<T> AcquireResource()
         {
-            lock (_lockDisposed)
+            lock (this.lockDisposed)
             {
-                if (_disposed)
+                if (this.disposed)
                 {
                     throw new ObjectDisposedException("ResourcePool", "The pool is already disposed.");
                 }
-                if (_disposeInProgress)
+
+                if (this.disposeInProgress)
                 {
                     return null;
                 }
             }
 
-            Interlocked.Increment(ref _statistics.NumPendingRequests);
+            Interlocked.Increment(ref this.statistics.NumPendingRequests);
 
-            _semaphore.WaitOne();
+            this.semaphore.WaitOne();
 
-            Interlocked.Decrement(ref _statistics.NumPendingRequests);
+            Interlocked.Decrement(ref this.statistics.NumPendingRequests);
 
-            return GetFirstAvailableResource();
+            return this.GetFirstAvailableResource();
         }
 
         /// <summary>
@@ -170,146 +151,189 @@ namespace Cobos.Utilities.Threading.Resource
             T instance = resource.Instance;
 
             // check this belongs to us
-            if (!_resources.Contains(instance))
+            if (!this.resources.Contains(instance))
             {
                 throw new Exception("Attempted to realease a resource that doesn't belong to this resource pool");
             }
 
-            lock (_lockResource)
+            lock (this.lockResource)
             {
                 if (resource.Invalid)
                 {
                     // the client has marked this resource as invalid, remove from the pool
-                    RemoveResource(instance);
+                    this.RemoveResource(instance);
 
                     // maintain the minimum number of resources
-                    for (int i = _resources.Count; i < _settings.MinPoolSize; ++i)
+                    for (int i = this.resources.Count; i < this.settings.MinPoolSize; ++i)
                     {
-                        AddNewResource();
+                        this.AddNewResource();
                     }
                 }
                 else
                 {
-                    _freeList.AddLast(instance);
+                    this.freeList.AddLast(instance);
                 }
 
-                _statistics.NumAvailableResources = _freeList.Count;
-                _statistics.SizePool = _resources.Count;
+                this.statistics.NumAvailableResources = this.freeList.Count;
+                this.statistics.SizePool = this.resources.Count;
             }
 
             bool readyToDispose = false;
 
-            lock (_lockDisposed)
+            lock (this.lockDisposed)
             {
-                if (_disposeInProgress)
+                if (this.disposeInProgress)
                 {
                     // if this was the last job then signal that
                     // we can finally dispose the object
-                    if (_freeList.Count == _resources.Count)
+                    if (this.freeList.Count == this.resources.Count)
                     {
                         readyToDispose = true;
                     }
                 }
             }
 
-            _semaphore.Release();
+            this.semaphore.Release();
 
             if (readyToDispose)
             {
-                _waitingToDispose.Set();
+                this.waitingToDispose.Set();
             }
         }
 
-
         /// <summary>
-        /// Query information about the state of the pool.
+        /// Manages acquisition of a resource.  If no resource is free a new resource is created up to MaxPoolSize.
         /// </summary>
-        /// <returns></returns>
-        public ResourcePoolStatistics Statistics
-        {
-            get
-            {
-                return _statistics;
-            }
-        }
-
-        #endregion
-
-        #region Resource acquisition control methods
-
-        /// <summary>
-        /// Manages acquisition of a resource.  If no 
-        /// </summary>
-        /// <returns></returns>
-        ResourceHandle<T> GetFirstAvailableResource()
+        /// <returns>A handle to the resource.</returns>
+        private ResourceHandle<T> GetFirstAvailableResource()
         {
             ResourceHandle<T> resource = null;
 
-            lock (_lockResource)
+            lock (this.lockResource)
             {
                 // Check that we have a resource ready in the free list...
-                if (_freeList.Count == 0)
+                if (this.freeList.Count == 0)
                 {
-                    // ...if not then we can add a new resource up to _settings.MaxPoolSize.
-                    AddNewResource();
+                    // ...if not then we can add a new resource up to this.settings.MaxPoolSize.
+                    this.AddNewResource();
                 }
 
-                resource = new ResourceHandle<T>(this, _freeList.First.Value);
+                resource = new ResourceHandle<T>(this, this.freeList.First.Value);
 
-                _freeList.RemoveFirst();
+                this.freeList.RemoveFirst();
 
-                _statistics.NumAvailableResources = _freeList.Count;
+                this.statistics.NumAvailableResources = this.freeList.Count;
             }
 
             return resource;
         }
 
         /// <summary>
-        /// WARNING: _lockResource must be aquired before calling this method.
+        /// Add a new resource to the pool.
+        /// </summary>
+        /// <remarks>
+        /// WARNING: this.lockResource must be acquired before calling this method.
         /// This method should not be called directly, resources should be 
         /// accessed via GetFirstAvailableResource.
-        /// </summary>
-        void AddNewResource()
+        /// </remarks>
+        private void AddNewResource()
         {
             // If the number of resources in use has reached the maximum AND the semaphore is signalled
             // then this indicates a problem with returning resources to the pool.
-            // The idea is that the Semaphore is synchronised with the _settings.MaxPoolSize member.
+            // The idea is that the Semaphore is synchronised with the this.settings.MaxPoolSize member.
             // In principle, if resources are returned via the ReleaseResource method then this shouldn't happen.
-            if (_resources.Count >= _settings.MaxPoolSize)
+            if (this.resources.Count >= this.settings.MaxPoolSize)
             {
                 throw new Exception("An error occured in the resource pool, some resources have not been returned to the pool.");
             }
 
-            T resource = _settings.Allocator.Create();
+            T resource = this.settings.Allocator.Create();
 
-            _resources.Add(resource);
-            _freeList.AddLast(resource);
+            this.resources.Add(resource);
+            this.freeList.AddLast(resource);
 
-            _statistics.SizePool = _resources.Count;
-            _statistics.NumAvailableResources = _freeList.Count;
+            this.statistics.SizePool = this.resources.Count;
+            this.statistics.NumAvailableResources = this.freeList.Count;
         }
 
         /// <summary>
-        /// WARNING: _lockResource must be aquired before calling this method.
+        /// Remove a resource from the pool.
         /// </summary>
-        /// <param name="resource"></param>
-        void RemoveResource(T resource)
+        /// <param name="resource">The resource to remove.</param>
+        /// <remarks>
+        /// WARNING: this.lockResource must be acquired before calling this method.
+        /// </remarks>
+        private void RemoveResource(T resource)
         {
-            _resources.Remove(resource);
+            this.resources.Remove(resource);
 
-            if (_freeList.Contains(resource))
+            if (this.freeList.Contains(resource))
             {
-                _freeList.Remove(resource);
+                this.freeList.Remove(resource);
             }
         }
 
-        #endregion
+        /// <summary>
+        /// Helper class to manage a resource
+        /// </summary>
+        private class ResourceItem
+        {
+            /// <summary>
+            /// Access the underlying instance
+            /// </summary>
+            public readonly T Instance;
 
+            /// <summary>
+            /// Epoch seconds when this item was created
+            /// </summary>
+            public readonly long Created;
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="ResourceItem"/> class.
+            /// </summary>
+            /// <param name="instance">The underlying instance this item refers to.</param>
+            public ResourceItem(T instance)
+            {
+                this.Instance = instance;
+                this.Created = DateTime.Now.Ticks;
+            }
+        }
+    }
 
+    /// <summary>
+    /// Implements IDisposable via <see cref="IResourcePool{T}"/>
+    /// </summary>
+    /// <typeparam name="T">The type of the resource to be managed.</typeparam>
+    internal partial class ResourcePoolImpl<T>
+    {
+        /// <summary>
+        /// Indicates whether the object is disposed.
+        /// </summary>
+        private volatile bool disposed = false;
+
+        /// <summary>
+        /// Indicates whether the object is currently disposing.
+        /// </summary>
+        private volatile bool disposeInProgress = false;
+
+        /// <summary>
+        /// Finish all pending jobs when trying to dispose.
+        /// Don't accept any new jobs while we're disposing.
+        /// </summary>
+        private object lockDisposed = new object();
+
+        /// <summary>
+        /// Wait for a signal from worker threads to indicate that all
+        /// pending jobs using the resources have completed.
+        /// </summary>
+        private AutoResetEvent waitingToDispose = null;
+
+        /// <summary>
+        /// Finalizes an instance of the <see cref="ResourcePoolImpl{T}"/> class.
+        /// </summary>
         ~ResourcePoolImpl()
         {
-            Dispose(false);
+            this.Dispose(false);
         }
 
         /// <summary>
@@ -317,27 +341,33 @@ namespace Cobos.Utilities.Threading.Resource
         /// </summary>
         public void Dispose()
         {
-            Dispose(true);
+            this.Dispose(true);
         }
 
-        public void Dispose(bool disposing)
+        /// <summary>
+        /// Dispose the current instance.
+        /// </summary>
+        /// <param name="disposing">true if the object is disposing; otherwise false if the object is finalizing.</param>
+        private void Dispose(bool disposing)
         {
-            lock (_lockDisposed)
+            lock (this.lockDisposed)
             {
-                if (_disposed)
+                if (this.disposed)
                 {
                     return;
                 }
-                if (_disposeInProgress)
+
+                if (this.disposeInProgress)
                 {
                     return;
                 }
-                _disposeInProgress = true;
+                
+                this.disposeInProgress = true;
             }
 
             if (disposing)
             {
-                DiposeImmediatelyOrWait();
+                this.DiposeImmediatelyOrWait();
 
                 GC.SuppressFinalize(this);
             }
@@ -347,65 +377,52 @@ namespace Cobos.Utilities.Threading.Resource
         /// If no jobs are pending then clean up all resources.
         /// Otherwise, wait until all jobs are complete and then clean up.
         /// </summary>
-        void DiposeImmediatelyOrWait()
+        private void DiposeImmediatelyOrWait()
         {
-            lock (_lockResource)
+            lock (this.lockResource)
             {
-                if (_freeList.Count == _resources.Count)
+                if (this.freeList.Count == this.resources.Count)
                 {
                     // nothing outstanding, clear all resources
-                    DisposeAllResources();
+                    this.DisposeAllResources();
                     return;
                 }
 
-                _waitingToDispose = new AutoResetEvent(false);
+                this.waitingToDispose = new AutoResetEvent(false);
             }
 
             // set a timeout, if some resources haven't been properly
             // released then we don't want to lock up.
-            _waitingToDispose.WaitOne(10000);
+            this.waitingToDispose.WaitOne(10000);
 
-            DisposeAllResources();
+            this.DisposeAllResources();
         }
 
         /// <summary>
         /// Clean up all resources managed by the pool.
         /// </summary>
-        void DisposeAllResources()
+        private void DisposeAllResources()
         {
-            lock (_lockDisposed)
+            lock (this.lockDisposed)
             {
-                foreach (T r in _resources)
+                foreach (T resource in this.resources)
                 {
-                    IDisposable disp = r as IDisposable;
+                    IDisposable dispose = resource as IDisposable;
 
-                    if (disp != null)
+                    if (dispose != null)
                     {
-                        disp.Dispose();
+                        dispose.Dispose();
                     }
                 }
 
-                _resources.Clear();
-                _freeList.Clear();
+                this.resources.Clear();
+                this.freeList.Clear();
+                this.statistics.SizePool = 0;
+                this.statistics.NumAvailableResources = 0;
 
-                _disposed = true;
-                _disposeInProgress = false;
-
-                _statistics.SizePool = 0;
-                _statistics.NumAvailableResources = 0;
+                this.disposed = true;
+                this.disposeInProgress = false;
             }
         }
-
-        /// <summary>
-        /// Private members for managing the disposal of the pool.
-        /// </summary>
-        bool _disposed = false;
-        bool _disposeInProgress = false;
-
-        /// <summary>
-        /// Wait for a signal from worker threads to indicate that all
-        /// pending jobs using the resources have completed.
-        /// </summary>
-        AutoResetEvent _waitingToDispose = null;
     }
 }

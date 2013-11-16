@@ -27,53 +27,47 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
-using Cobos.Data.Statements;
-
 namespace Cobos.Data.Tests.Statements
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using Cobos.Data.Statements;
+    using NUnit.Framework;
+
+    /// <summary>
+    /// Unit tests for the <see cref="SqlSelectTemplate"/> class.
+    /// </summary>
     [TestFixture]
     public class SqlSelectTemplateTests
     {
+        /// <summary>
+        /// Strategy:
+        /// ---------
+        /// 1. Test the invalid cases. 
+        /// </summary>
         [TestCase]
         public void Invalid_parameters_throws_exception()
         {
-            Assert.DoesNotThrow(
-                delegate
-                {
-                    new SqlSelectTemplate();
-                });
+            Assert.DoesNotThrow(() => new SqlSelectTemplate());
 
-            Assert.Throws<InvalidOperationException>(
-                delegate
-                {
-                    new SqlSelectTemplate().ToString();
-                });
+            Assert.Throws<InvalidOperationException>(() => new SqlSelectTemplate().ToString());
 
+            Assert.Throws<InvalidOperationException>(() => new SqlSelectTemplate().ToString(null, null, null, null, null, null));
 
-            Assert.Throws<InvalidOperationException>(
-                delegate
-                {
-                    new SqlSelectTemplate().ToString(null, null, null, null, null, null);
-                });
-
-            Assert.Throws<InvalidOperationException>(
-                delegate
-                {
-                    new SqlSelectTemplate(null, null, null, null, null, null, true);
-                });
+            Assert.Throws<InvalidOperationException>(() => new SqlSelectTemplate(null, null, null, null, null, null, true));
         }
 
+        /// <summary>
+        /// Strategy:
+        /// ---------
+        /// 1. Test the simple case. 
+        /// </summary>
         [TestCase]
         public void Simple_select_succeeds()
         {
-
-            Assert.DoesNotThrow(
-                delegate
+            Assert.DoesNotThrow(() =>
                 {
                     SqlSelectTemplate select = new SqlSelectTemplate("COL", null, null, null, null, null);
                     select.ToString();
@@ -86,6 +80,11 @@ namespace Cobos.Data.Tests.Statements
                 });
         }
 
+        /// <summary>
+        /// Strategy:
+        /// ---------
+        /// 1. Test the select parameters in isolation. 
+        /// </summary>
         [TestCase]
         public void Select_parameters_return_correct_query()
         {
@@ -99,6 +98,11 @@ namespace Cobos.Data.Tests.Statements
             Assert.AreEqual("SELECT COL", select.ToString("COL", null, null, null, null, null));
         }
 
+        /// <summary>
+        /// Strategy:
+        /// ---------
+        /// 1. Test the from parameters.
+        /// </summary>
         [TestCase]
         public void From_parameters_return_correct_query()
         {
@@ -112,6 +116,11 @@ namespace Cobos.Data.Tests.Statements
             Assert.AreEqual("SELECT COL FROM TABLE", select.ToString("COL", "TABLE", null, null, null, null));
         }
 
+        /// <summary>
+        /// Strategy:
+        /// ---------
+        /// 1. Test the inner join parameters. 
+        /// </summary>
         [TestCase]
         public void Inner_join_parameters_return_correct_query()
         {
@@ -141,6 +150,11 @@ namespace Cobos.Data.Tests.Statements
             Assert.AreEqual("SELECT COL INNER JOIN TABLE4 INNER JOIN TABLE5 INNER JOIN TABLE6 INNER JOIN TABLE4 INNER JOIN TABLE5 INNER JOIN TABLE6", select.ToString(null, null, innerJoin3, null, null, null));
         }
 
+        /// <summary>
+        /// Strategy:
+        /// ---------
+        /// 1. Test the where parameters. 
+        /// </summary>
         [TestCase]
         public void Where_parameters_return_correct_query()
         {
@@ -175,6 +189,11 @@ namespace Cobos.Data.Tests.Statements
             Assert.AreEqual("SELECT COL WHERE (CLAUSE4) AND (CLAUSE5) AND (CLAUSE6) AND (CLAUSE4) AND (CLAUSE5) AND (CLAUSE6)", select.ToString(null, null, null, whereClause3, null, null));
         }
 
+        /// <summary>
+        /// Strategy:
+        /// ---------
+        /// 1. Test the group by parameters. 
+        /// </summary>
         [TestCase]
         public void GroupBy_parameters_return_correct_query()
         {
@@ -190,6 +209,11 @@ namespace Cobos.Data.Tests.Statements
             Assert.AreEqual("SELECT COL GROUP BY GROUPCOL", select.ToString(null, "GROUPCOL", null));
         }
 
+        /// <summary>
+        /// Strategy:
+        /// ---------
+        /// 1. Test the order by parameters. 
+        /// </summary>
         [TestCase]
         public void OrderBy_parameters_return_correct_query()
         {
@@ -206,6 +230,11 @@ namespace Cobos.Data.Tests.Statements
             Assert.AreEqual("SELECT COL ORDER BY ORDERCOL", select.ToString(null, "ORDERCOL"));
         }
 
+        /// <summary>
+        /// Strategy:
+        /// ---------
+        /// 1. Test all parameters. 
+        /// </summary>
         [TestCase]
         public void Full_query_returns_correct_query()
         {
@@ -244,6 +273,11 @@ namespace Cobos.Data.Tests.Statements
             Assert.AreEqual("SELECT COL2 FROM TABLE2 INNER JOIN JOIN1 INNER JOIN JOIN2 WHERE (CLAUSE1) AND (CLAUSE2) GROUP BY GROUPCOL2 ORDER BY ORDERCOL, ORDERCOL2", select.ToString("COL2", "TABLE2", innerJoin, whereClause, "GROUPCOL2", "ORDERCOL2"));
         }
 
+        /// <summary>
+        /// Strategy:
+        /// ---------
+        /// 1. Test empty arrays don't cause the template to fail. 
+        /// </summary>
         [TestCase]
         public void Empty_arrays_dont_fail()
         {
@@ -253,8 +287,7 @@ namespace Cobos.Data.Tests.Statements
 
             SqlSelectTemplate select = new SqlSelectTemplate("COL", null, empty, empty, null, null);
 
-            Assert.DoesNotThrow(
-                delegate
+            Assert.DoesNotThrow(() =>
                 {
                     select.ToString();
                     select.ToString(null, null, empty, empty, null, null);
@@ -272,6 +305,11 @@ namespace Cobos.Data.Tests.Statements
             Assert.AreEqual("SELECT COL INNER JOIN JOIN1 INNER JOIN JOIN2 WHERE (CLAUSE1) AND (CLAUSE2)", select.ToString(null, null, empty, empty, null, null));
         }
 
+        /// <summary>
+        /// Strategy:
+        /// ---------
+        /// 1. Test the buffered query is constructed correctly.
+        /// </summary>
         [TestCase]
         public void Buffered_query_returns_same_result()
         {
@@ -283,6 +321,5 @@ namespace Cobos.Data.Tests.Statements
 
             Assert.AreEqual(buffered.ToString(), select.ToString());
         }
-
     }
 }

@@ -228,12 +228,7 @@
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	-->
 
-	<xsl:template match="cobos:Reference[not(@isCollection)]" mode="propertyType">
-		<xsl:value-of select="@ref"/>
-		<xsl:text> </xsl:text>
-	</xsl:template>
-
-	<xsl:template match="cobos:Reference[@isCollection]" mode="propertyType">
+	<xsl:template match="cobos:Reference" mode="propertyType">
 		<xsl:apply-templates select="." mode="listDecl"/>
 		<xsl:text> </xsl:text>
 	</xsl:template>

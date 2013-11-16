@@ -27,69 +27,69 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Reflection;
-
 namespace Cobos.Utilities.Wrappers
 {
+    using System;
+    using System.Reflection;
+#if NET_35
+    using Cobos.Utilities.Wrappers;
+#endif
+
     /// <summary>
-    /// Provides Singleton&lt;T&gt.Instance
-    /// This class is thread-safe
+    /// Provides a singleton implementation, lazy loaded and thread-safe.
     /// </summary>
     /// <remarks>
     /// A private or protected constructor must be implemented in the T class
     /// </remarks>
-    public static class Singleton<T>
-             where T : class
+    /// <typeparam name="T">The type of singleton instance to create.</typeparam>
+    public sealed class Singleton<T> where T : class
     {
-        static volatile T _instance;
-        static object _lock = new object();
+        /// <summary>
+        /// The singleton instance. Lazy loaded and thread-safe.
+        /// </summary>
+        private static readonly Lazy<T> TheInstance = new Lazy<T>(CreateInstance);
 
-        static Singleton()
+        /// <summary>
+        /// Prevents a default instance of the <see cref="Singleton{T}" /> class from being created.
+        /// </summary>
+        private Singleton()
         {
         }
 
         /// <summary>
-        /// Use as Singleton&lt;MyClass&gt;.Instance
+        /// Gets the singleton instance of the repository.
         /// </summary>
-        /// <exception cref="SingletonException">If the T classes constructor is not private or protected</exception>
         public static T Instance
         {
-            get
+            [System.Diagnostics.DebuggerStepThrough]
+            get { return TheInstance.Value; }
+        }
+
+        /// <summary>
+        /// Delegate method to create the instance for the Lazy instantiation.
+        /// </summary>
+        /// <returns>An instance of T.</returns>
+        private static T CreateInstance()
+        {
+            ConstructorInfo constructor = null;
+
+            try
             {
-                if (_instance == null)
-                {
-                    lock (_lock)
-                    {
-                        if (_instance == null)
-                        {
-                            ConstructorInfo constructor = null;
-
-                            try
-                            {
-                                // Binding flags exclude public constructors.
-                                constructor = typeof(T).GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null, new Type[0], null);
-                            }
-                            catch (Exception exception)
-                            {
-                                throw new SingletonException(exception);
-                            }
-
-                            if (constructor == null || constructor.IsAssembly)
-                            {
-                                // Also exclude internal constructors.
-                                throw new SingletonException(string.Format("A private or protected constructor is missing for '{0}'.", typeof(T).Name));
-                            }
-
-                            _instance = (T)constructor.Invoke(null);
-                        }
-                    }
-                }
-
-                return _instance;
+                // Binding flags exclude public constructors.
+                constructor = typeof(T).GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null, new Type[0], null);
             }
+            catch (Exception exception)
+            {
+                throw new SingletonException(exception);
+            }
+
+            if (constructor == null || constructor.IsAssembly)
+            {
+                // Also exclude internal constructors.
+                throw new SingletonException(string.Format("A private or protected constructor is missing for '{0}'.", typeof(T).Name));
+            }
+
+            return (T)constructor.Invoke(null);
         }
     }
 }

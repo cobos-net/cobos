@@ -27,20 +27,18 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 namespace Cobos.Utilities.Threading.Resource
 {
+    using System;
+
     /// <summary>
-    /// Manage the settings for the resource pool
+    /// Manage the settings for the resource pool.
     /// </summary>
+    /// <typeparam name="T">The type of resource in the pool.</typeparam>
     public struct ResourcePoolSettings<T>
     {
         /// <summary>
-        /// The minimum size of the pool.  May be 0.
+        /// The minimum size of the pool. May be 0.
         /// </summary>
         public uint MinPoolSize;
 
@@ -68,26 +66,26 @@ namespace Cobos.Utilities.Threading.Resource
         public IResourceAllocator<T> Allocator;
 
         /// <summary>
-        /// Get a unique key to identify these settings
+        /// Initializes a new instance of the <see cref="ResourcePoolSettings{T}"/> struct.
         /// </summary>
-        /// <returns></returns>
-        public override string ToString()
+        /// <param name="minPoolSize">The minimum size of the pool.</param>
+        /// <param name="maxPoolSize">The maximum size of the pool.</param>
+        /// <param name="allocator">The allocator for creating new resources.</param>
+        public ResourcePoolSettings(uint minPoolSize, uint maxPoolSize, IResourceAllocator<T> allocator)
         {
-            return base.ToString();
+            this.MinPoolSize = minPoolSize;
+            this.MaxPoolSize = maxPoolSize;
+            this.ResourceLifetime = 0;
+            this.Allocator = allocator;
         }
 
         /// <summary>
-        /// Constructor.
+        /// Get a unique key to identify these settings
         /// </summary>
-        /// <param name="minPoolSize"></param>
-        /// <param name="maxPoolSize">The maximum size of the pool.</param>
-        /// <param name="allocator"></param>
-        public ResourcePoolSettings(uint minPoolSize, uint maxPoolSize, IResourceAllocator<T> allocator)
+        /// <returns>The string representation of the object.</returns>
+        public override string ToString()
         {
-            MinPoolSize = minPoolSize;
-            MaxPoolSize = maxPoolSize;
-            ResourceLifetime = 0;
-            Allocator = allocator;
+            return base.ToString();
         }
     }
 }

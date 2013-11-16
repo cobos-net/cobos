@@ -118,6 +118,11 @@
 			<xsl:attribute name="type">
 				<xsl:value-of select="@dbType"/>
 			</xsl:attribute>
+			<xsl:if test="@dbType = 'xsd:dateTime'">
+				<xsl:attribute name="msdata:DateTimeMode">
+					<xsl:value-of select="/cobos:DataModel/@dateTimeMode"/>
+				</xsl:attribute>
+			</xsl:if>
 			<xsl:copy-of select="@minOccurs"/>
 		</xsl:element>
 	
@@ -135,10 +140,10 @@
 			<xsl:value-of select="@ref"/>
 		</xsl:variable>
 		<xsl:variable name="keyfield">
-			<xsl:value-of select="../cobos:Property[ current()/@key ]/@dbColumn"/>
+			<xsl:value-of select="../cobos:Property[@name = current()/@key]/@dbColumn"/>
 		</xsl:variable>
 		<xsl:variable name="keyreffield">
-			<xsl:value-of select="/cobos:DataModel/cobos:Object[ current()/@ref ]/cobos:Property[ current()/@refer ]/@dbColumn"/>
+			<xsl:value-of select="/cobos:DataModel/cobos:Object[@name = current()/@ref]/cobos:Property[@name = current()/@refer]/@dbColumn"/>
 		</xsl:variable>
 		<xsd:unique name="{$keyName}Constraint">
 			<xsd:selector xpath=".//{../@name}"/>
@@ -160,11 +165,11 @@
 	<xsl:template match="cobos:Object" mode="constraints">
 		<xsl:variable name="object" select="."/>
 		
-		<xsl:for-each select="$databaseConstraintsNodeSet/*[ self::xsd:key | self::xsd:unique | self::xsd:keyref ][ xsd:selector/@xpath = concat( './/', $object/@dbTable ) ]">
+		<xsl:for-each select="$databaseConstraintsNodeSet/*[self::xsd:key|self::xsd:unique|self::xsd:keyref][translate(xsd:selector/@xpath, $lowercase, $uppercase) = concat('.//', translate($object/@dbTable, $lowercase, $uppercase))]">
 			
 			<xsl:element name="{name()}">
 				<xsl:attribute name="name">
-					<xsl:value-of select="concat( $object/@name, '_', @name )"/>
+					<xsl:value-of select="concat($object/@name, '_', @name)"/>
 				</xsl:attribute>
 				<xsl:apply-templates select="." mode="constraintAttributes"/>
 				<xsd:selector xpath=".//{$object/@name}"/>

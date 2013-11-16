@@ -27,13 +27,15 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-using System;
-
 namespace Cobos.Script
 {
+    using System;
+
+    /// <summary>
+    /// Attribute to mark a script method.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Method)]
     public sealed class ScriptMethod : Attribute
     {
-
     }
 }
