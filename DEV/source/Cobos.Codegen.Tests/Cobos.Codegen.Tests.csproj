@@ -46,7 +46,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\DataModelTests.cs" />
-    <Compile Include="Data\Generated\DataModel.cs" />
+    <Compile Include="Data\Generated\DataAdapter.cs" />
+    <Compile Include="Data\Generated\DataObject.cs" />
     <Compile Include="Data\Generated\Dataset.cs">
       <DependentUpon>Dataset.xsd</DependentUpon>
       <SubType>Component</SubType>
@@ -68,6 +69,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Stylesheets\DataAdapter.xslt" />
+    <Content Include="Stylesheets\DataObject.xslt" />
+    <Content Include="Stylesheets\DataSet.xslt" />
+    <Content Include="Stylesheets\Process.xslt" />
+    <Content Include="Stylesheets\Schema.xslt" />
     <EmbeddedResource Include="..\..\..\CONFIG\Database\MySQL\northwind.sql">
       <Link>Database\MySQL\northwind.sql</Link>
     </EmbeddedResource>
@@ -75,9 +81,6 @@
       <Link>Database\SqlServer\northwind.sql</Link>
     </EmbeddedResource>
     <Content Include="Data\DataModel.xml">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Stylesheets\Classes\CSharp\Custom.xslt">
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>

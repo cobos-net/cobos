@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<DataModel name="NorthwindDataModel" xmlns="http://schemas.cobos.co.uk/datamodel/1.0.0" xmlns:cobos="http://schemas.cobos.co.uk/datamodel/1.0.0">
+<DataModel name="NorthwindDataModel" dateTimeMode="Local" xmlns="http://schemas.cobos.co.uk/datamodel/1.0.0" xmlns:cobos="http://schemas.cobos.co.uk/datamodel/1.0.0">
 
 	<!--
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

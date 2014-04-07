@@ -24,7 +24,7 @@
 	============================================================================
 	-->
 
-	<xsl:include href="../Common.xslt"/>
+	<xsl:include href="../Utilities/Utilities.inc"/>
 
 	<xsl:key name="dbTableKey" match="cobos:Object|cobos:Property" use="@dbTable"/>
 

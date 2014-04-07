@@ -51,12 +51,17 @@ namespace Cobos.Data.Statements
         /// The 'from' clause of the statement.
         /// </summary>
         private readonly string from;
-        
+
         /// <summary>
         /// The 'inner join' clause of the statement.
         /// </summary>
         private readonly string[] innerJoin;
-        
+
+        /// <summary>
+        /// The 'outer join' clause of the statement.
+        /// </summary>
+        private readonly string[] outerJoin;
+
         /// <summary>
         /// The 'where' clause of the statement.
         /// </summary>
@@ -90,11 +95,12 @@ namespace Cobos.Data.Statements
         /// <param name="select">The 'select' clause of the statement.</param>
         /// <param name="from">The 'from' clause of the statement</param>
         /// <param name="innerJoin">The 'inner join' clause of the statement</param>
+        /// <param name="outerJoin">The 'outer join' clause of the statement</param>
         /// <param name="where">The 'where' clause of the statement</param>
         /// <param name="groupBy">The 'group by' clause of the statement</param>
         /// <param name="orderBy">The 'order by' clause of the statement</param>
-        public SqlSelectTemplate(string select, string from, string[] innerJoin, string[] where, string groupBy, string orderBy)
-            : this(select, from, innerJoin, where, groupBy, orderBy, false)
+        public SqlSelectTemplate(string select, string from, string[] innerJoin, string[] outerJoin, string[] where, string groupBy, string orderBy)
+            : this(select, from, innerJoin, outerJoin, where, groupBy, orderBy, false)
         {
         }
 
@@ -104,15 +110,17 @@ namespace Cobos.Data.Statements
         /// <param name="select">The 'select' clause of the statement.</param>
         /// <param name="from">The 'from' clause of the statement</param>
         /// <param name="innerJoin">The 'inner join' clause of the statement</param>
+        /// <param name="outerJoin">The 'outer join' clause of the statement</param>
         /// <param name="where">The 'where' clause of the statement</param>
         /// <param name="groupBy">The 'group by' clause of the statement</param>
         /// <param name="orderBy">The 'order by' clause of the statement</param>
         /// <param name="buffered">Indicates whether the statement should be buffered.</param>
-        public SqlSelectTemplate(string select, string from, string[] innerJoin, string[] where, string groupBy, string orderBy, bool buffered)
+        public SqlSelectTemplate(string select, string from, string[] innerJoin, string[] outerJoin, string[] where, string groupBy, string orderBy, bool buffered)
         {
             this.select = select;
             this.from = from;
             this.innerJoin = innerJoin;
+            this.outerJoin = outerJoin;
             this.where = where;
             this.groupBy = groupBy;
             this.orderBy = orderBy;
@@ -145,11 +153,12 @@ namespace Cobos.Data.Statements
         /// <param name="select">The 'select' clause of the statement.</param>
         /// <param name="from">The 'from' clause of the statement</param>
         /// <param name="innerJoin">The 'inner join' clause of the statement</param>
+        /// <param name="outerJoin">The 'outer join' clause of the statement</param>
         /// <param name="where">The 'where' clause of the statement</param>
         /// <param name="groupBy">The 'group by' clause of the statement</param>
         /// <param name="orderBy">The 'order by' clause of the statement</param>
         /// <returns>The augmented select statement.</returns>
-        public string ToString(string select, string from, string[] innerJoin, string[] where, string groupBy, string orderBy)
+        public string ToString(string select, string from, string[] innerJoin, string[] outerJoin, string[] where, string groupBy, string orderBy)
         {
             StringBuilder buffer = new StringBuilder(512);
 
@@ -210,6 +219,22 @@ namespace Cobos.Data.Statements
                 for (int i = 0; i < innerJoin.Length; ++i)
                 {
                     buffer.Append(" INNER JOIN " + innerJoin[i]);
+                }
+            }
+
+            if (this.outerJoin != null && this.outerJoin.Length > 0)
+            {
+                for (int i = 0; i < this.outerJoin.Length; ++i)
+                {
+                    buffer.Append(" OUTER JOIN " + this.outerJoin[i]);
+                }
+            }
+
+            if (outerJoin != null && outerJoin.Length > 0)
+            {
+                for (int i = 0; i < outerJoin.Length; ++i)
+                {
+                    buffer.Append(" OUTER JOIN " + outerJoin[i]);
                 }
             }
 
@@ -295,7 +320,7 @@ namespace Cobos.Data.Statements
             }
             else
             {
-                return this.ToString(null, null, null, where, null, orderBy);
+                return this.ToString(null, null, null, null, where, null, orderBy);
             }
         }
 
@@ -314,7 +339,7 @@ namespace Cobos.Data.Statements
             }
             else
             {
-                return this.ToString(null, null, null, where, groupBy, orderBy);
+                return this.ToString(null, null, null, null, where, groupBy, orderBy);
             }
         }
 
@@ -327,7 +352,7 @@ namespace Cobos.Data.Statements
         {
             if (where != null && where.Length != 0)
             {
-                return this.ToString(null, null, null, where, null, null);
+                return this.ToString(null, null, null, null, where, null, null);
             }
             else
             {
@@ -361,6 +386,14 @@ namespace Cobos.Data.Statements
                 for (int i = 0; i < this.innerJoin.Length; ++i)
                 {
                     buffer.Append(" INNER JOIN " + this.innerJoin[i]);
+                }
+            }
+
+            if (this.outerJoin != null && this.outerJoin.Length > 0)
+            {
+                for (int i = 0; i < this.outerJoin.Length; ++i)
+                {
+                    buffer.Append(" OUTER JOIN " + this.outerJoin[i]);
                 }
             }
 

@@ -51,8 +51,8 @@ namespace Cobos.Codegen.Tests.Data
         [TestCaseSource(typeof(TestManager), "DataSource")]
         public void Can_populate_the_data_model(IDatabaseAdapter database)
         {
-            var table = new CustomerTableAdapter(database);
-            table.Fill();
+            var table = new CustomerTableAdapter(database.GetConnection);
+            table.Fill(database.GetDataAdapter());
 
             var customers = table.GetEntities();
             Assert.IsNotNull(customers);

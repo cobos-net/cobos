@@ -4,47 +4,47 @@
 	=============================================================================
 	Filename: cobos.build.targets
 	Description: Cobos Build Targets definitions.
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	=============================================================================
 	Created by: N.Davis                        Date: 2010-02-09
 	Modified by:                               Date:
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	=============================================================================
 	Notes: 
 
 
-	============================================================================
+	=============================================================================
 	-->
-
   <Import Project="$(ProjectDir)..\Cobos.Codegen\MSBuild\cobos.codegen.net45.targets"/>
-
   <!--
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	Build definitions
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	=============================================================================
+	Build Targets
+	=============================================================================
 	-->
-
+  <!--
+	=============================================================================
+	Build definitions
+	=============================================================================
+	-->
   <!-- Codegen properties -->
   <PropertyGroup>
     <CodegenCodeLanguage>CSharp</CodegenCodeLanguage>
-    <CodegenCustomStylesheetsDirectory>$(ProjectDir)Stylesheets\</CodegenCustomStylesheetsDirectory>
+    <CodegenStylesheetsDirectory>$(ProjectDir)Stylesheets\</CodegenStylesheetsDirectory>
     <CodegenNamespaceCode>Cobos.Codegen.Tests</CodegenNamespaceCode>
     <CodegenNamespaceXml>http://schemas.cobos.co.uk/codegen/tests/1.0.0</CodegenNamespaceXml>
   </PropertyGroup>
-
   <!-- Database properties -->
   <PropertyGroup>
     <DatabaseToXsdConnectionString>Server=localhost;Database=Northwind;Uid=root;Pwd=mysql;</DatabaseToXsdConnectionString>
     <DatabaseToXsdDatabasePlatform>MySQL</DatabaseToXsdDatabasePlatform>
     <DatabaseToXsdDatabaseSchema>Northwind</DatabaseToXsdDatabaseSchema>
   </PropertyGroup>
-
+  <!-- Database tables to process -->
   <ItemGroup>
     <DatabaseToXsdTable Include="customers;employees;products"/>
   </ItemGroup>
-
   <!--
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	=============================================================================
 	Model definitions
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	=============================================================================
 	-->
   <ItemGroup>
     <DataModel Include="$(ProjectDir)Data\DataModel.xml">
@@ -54,6 +54,5 @@
       </SchemaOptions>
     </DataModel>
   </ItemGroup>
-
 </Project>
 

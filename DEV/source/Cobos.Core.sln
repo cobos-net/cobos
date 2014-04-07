@@ -9,10 +9,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Schemas", "Schemas", "{6EDA
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Stylesheets", "Stylesheets", "{734596B3-3329-4336-B41D-A0804C78B745}"
-	ProjectSection(SolutionItems) = preProject
-		Cobos.Codegen\Stylesheets\Common.xslt = Cobos.Codegen\Stylesheets\Common.xslt
-		Cobos.Codegen\Stylesheets\Utilities.xslt = Cobos.Codegen\Stylesheets\Utilities.xslt
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataModel", "DataModel", "{AA03B289-390E-4A38-93A7-B4E9856B769D}"
 	ProjectSection(SolutionItems) = preProject
@@ -24,67 +20,14 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{431A7087-1C7A-4C5E-8619-3FE737D0C75C}"
 	ProjectSection(SolutionItems) = preProject
 		Cobos.Codegen\Stylesheets\Database\DatabaseSchema.xslt = Cobos.Codegen\Stylesheets\Database\DatabaseSchema.xslt
-		Cobos.Codegen\Stylesheets\Database\Merge.xslt = Cobos.Codegen\Stylesheets\Database\Merge.xslt
-		Cobos.Codegen\Stylesheets\Database\Schema.xsd = Cobos.Codegen\Stylesheets\Database\Schema.xsd
-		Cobos.Codegen\Stylesheets\Database\Schema.xslt = Cobos.Codegen\Stylesheets\Database\Schema.xslt
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Classes", "Classes", "{6B8454F6-62C2-4A7F-A6A7-C3B9246836D2}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CSharp", "CSharp", "{B9BB1932-D08F-4904-A8FC-A5F0AC25644A}"
-	ProjectSection(SolutionItems) = preProject
-		Cobos.Codegen\Stylesheets\Classes\CSharp\Classes.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\Classes.xslt
-		Cobos.Codegen\Stylesheets\Classes\CSharp\Custom.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\Custom.xslt
-		Cobos.Codegen\Stylesheets\Classes\CSharp\Enum.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\Enum.xslt
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Class", "Class", "{150D932B-1FB2-49B0-8FC0-C94A3711DBA9}"
-	ProjectSection(SolutionItems) = preProject
-		Cobos.Codegen\Stylesheets\Classes\CSharp\Class\Body.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\Class\Body.xslt
-		Cobos.Codegen\Stylesheets\Classes\CSharp\Class\Class.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\Class\Class.xslt
-		Cobos.Codegen\Stylesheets\Classes\CSharp\Class\Constructor.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\Class\Constructor.xslt
-		Cobos.Codegen\Stylesheets\Classes\CSharp\Class\IDisposable.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\Class\IDisposable.xslt
-		Cobos.Codegen\Stylesheets\Classes\CSharp\Class\Members.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\Class\Members.xslt
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Properties", "Properties", "{7472F69A-82C6-4544-8FDC-346852767FD4}"
-	ProjectSection(SolutionItems) = preProject
-		Cobos.Codegen\Stylesheets\Classes\CSharp\Properties\Body.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\Properties\Body.xslt
-		Cobos.Codegen\Stylesheets\Classes\CSharp\Properties\Properties.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\Properties\Properties.xslt
-		Cobos.Codegen\Stylesheets\Classes\CSharp\Properties\Types.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\Properties\Types.xslt
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TableAdapter", "TableAdapter", "{817CAAB0-318E-420E-9F0F-1992469613F1}"
-	ProjectSection(SolutionItems) = preProject
-		Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Changes.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Changes.xslt
-		Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Delegates.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Delegates.xslt
-		Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Delete.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Delete.xslt
-		Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Fill.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Fill.xslt
-		Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\GetEntities.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\GetEntities.xslt
-		Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Insert.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Insert.xslt
-		Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\New.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\New.xslt
-		Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\TableAdapter.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\TableAdapter.xslt
-		Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Update.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Update.xslt
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sql", "Sql", "{3C69F362-12AD-45E1-B98B-9F52CDAC6254}"
-	ProjectSection(SolutionItems) = preProject
-		Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Sql\Delete.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Sql\Delete.xslt
-		Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Sql\GroupBy.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Sql\GroupBy.xslt
-		Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Sql\Having.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Sql\Having.xslt
-		Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Sql\Insert.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Sql\Insert.xslt
-		Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Sql\Join.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Sql\Join.xslt
-		Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Sql\OrderBy.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Sql\OrderBy.xslt
-		Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Sql\Select.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Sql\Select.xslt
-		Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Sql\Sql.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Sql\Sql.xslt
-		Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Sql\Update.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Sql\Update.xslt
-		Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Sql\Where.xslt = Cobos.Codegen\Stylesheets\Classes\CSharp\TableAdapter\Sql\Where.xslt
+		Cobos.Codegen\Stylesheets\Database\DatabaseVariables.xslt = Cobos.Codegen\Stylesheets\Database\DatabaseVariables.xslt
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MSBuild", "MSBuild", "{B7F60FFC-70E9-419C-A7E9-055458CA5BBB}"
 	ProjectSection(SolutionItems) = preProject
 		Cobos.Codegen\MSBuild\cobos.codegen.net35.targets = Cobos.Codegen\MSBuild\cobos.codegen.net35.targets
 		Cobos.Codegen\MSBuild\cobos.codegen.net45.targets = Cobos.Codegen\MSBuild\cobos.codegen.net45.targets
+		Cobos.Codegen\MSBuild\cobos.codegen.targets = Cobos.Codegen\MSBuild\cobos.codegen.targets
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.Utilities", "Cobos.Utilities\Cobos.Utilities.csproj", "{5EC3C9B9-DAE8-481C-8495-2A0A737D87A3}"
@@ -121,8 +64,64 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utilities", "Utilities", "{
 	ProjectSection(SolutionItems) = preProject
 		Cobos.Codegen\Stylesheets\Utilities\Boilerplate.xslt = Cobos.Codegen\Stylesheets\Utilities\Boilerplate.xslt
 		Cobos.Codegen\Stylesheets\Utilities\Formatting.xslt = Cobos.Codegen\Stylesheets\Utilities\Formatting.xslt
+		Cobos.Codegen\Stylesheets\Utilities\Indent.xslt = Cobos.Codegen\Stylesheets\Utilities\Indent.xslt
+		Cobos.Codegen\Stylesheets\Utilities\Names.xslt = Cobos.Codegen\Stylesheets\Utilities\Names.xslt
 		Cobos.Codegen\Stylesheets\Utilities\Nodes.xslt = Cobos.Codegen\Stylesheets\Utilities\Nodes.xslt
 		Cobos.Codegen\Stylesheets\Utilities\Strings.xslt = Cobos.Codegen\Stylesheets\Utilities\Strings.xslt
+		Cobos.Codegen\Stylesheets\Utilities\Types.xslt = Cobos.Codegen\Stylesheets\Utilities\Types.xslt
+		Cobos.Codegen\Stylesheets\Utilities\Utilities.inc = Cobos.Codegen\Stylesheets\Utilities\Utilities.inc
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataObject", "DataObject", "{6683CB7C-850A-45A9-A661-F1619C343C04}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataAdapter", "DataAdapter", "{743A12FC-49B3-484E-B93F-1183BB773076}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Methods", "Methods", "{24D36217-A97A-444F-AA3E-D81A45F8D670}"
+	ProjectSection(SolutionItems) = preProject
+		Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Methods\Changes.xslt = Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Methods\Changes.xslt
+		Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Methods\Delegates.xslt = Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Methods\Delegates.xslt
+		Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Methods\Delete.xslt = Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Methods\Delete.xslt
+		Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Methods\Fill.xslt = Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Methods\Fill.xslt
+		Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Methods\GetEntities.xslt = Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Methods\GetEntities.xslt
+		Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Methods\Insert.xslt = Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Methods\Insert.xslt
+		Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Methods\Methods.inc = Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Methods\Methods.inc
+		Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Methods\New.xslt = Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Methods\New.xslt
+		Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Methods\Update.xslt = Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Methods\Update.xslt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sql", "Sql", "{BF394EA6-FF03-4E82-8D52-F604D07C2808}"
+	ProjectSection(SolutionItems) = preProject
+		Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Sql\Delete.xslt = Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Sql\Delete.xslt
+		Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Sql\GroupBy.xslt = Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Sql\GroupBy.xslt
+		Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Sql\Having.xslt = Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Sql\Having.xslt
+		Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Sql\Insert.xslt = Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Sql\Insert.xslt
+		Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Sql\Join.xslt = Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Sql\Join.xslt
+		Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Sql\OrderBy.xslt = Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Sql\OrderBy.xslt
+		Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Sql\Select.xslt = Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Sql\Select.xslt
+		Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Sql\Sql.inc = Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Sql\Sql.inc
+		Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Sql\Update.xslt = Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Sql\Update.xslt
+		Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Sql\Values.xslt = Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Sql\Values.xslt
+		Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Sql\Where.xslt = Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Sql\Where.xslt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CSharp", "CSharp", "{5081793B-11C2-4AD0-9333-326C01221B34}"
+	ProjectSection(SolutionItems) = preProject
+		Cobos.Codegen\Stylesheets\DataAdapter\CSharp\DataAdapter.xslt = Cobos.Codegen\Stylesheets\DataAdapter\CSharp\DataAdapter.xslt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CSharp", "CSharp", "{F781FDAA-768D-4213-8E5F-93FCD38CC001}"
+	ProjectSection(SolutionItems) = preProject
+		Cobos.Codegen\Stylesheets\DataObject\CSharp\DataObject.xslt = Cobos.Codegen\Stylesheets\DataObject\CSharp\DataObject.xslt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{36815A7B-EBB0-4F5C-8364-F607BA79DCC4}"
+	ProjectSection(SolutionItems) = preProject
+		Cobos.Codegen\Examples\DataAdapter.xslt = Cobos.Codegen\Examples\DataAdapter.xslt
+		Cobos.Codegen\Examples\DatabaseSchema.def = Cobos.Codegen\Examples\DatabaseSchema.def
+		Cobos.Codegen\Examples\DataObject.xslt = Cobos.Codegen\Examples\DataObject.xslt
+		Cobos.Codegen\Examples\DataSet.xslt = Cobos.Codegen\Examples\DataSet.xslt
+		Cobos.Codegen\Examples\Process.xslt = Cobos.Codegen\Examples\Process.xslt
+		Cobos.Codegen\Examples\Schema.xslt = Cobos.Codegen\Examples\Schema.xslt
 	EndProjectSection
 EndProject
 Global
@@ -200,14 +199,15 @@ Global
 		{6EDA8BED-1F3E-4A58-ADDB-A4096FC394DD} = {F563C737-98D0-42B5-B2FF-CC9143347784}
 		{734596B3-3329-4336-B41D-A0804C78B745} = {F563C737-98D0-42B5-B2FF-CC9143347784}
 		{B7F60FFC-70E9-419C-A7E9-055458CA5BBB} = {F563C737-98D0-42B5-B2FF-CC9143347784}
+		{36815A7B-EBB0-4F5C-8364-F607BA79DCC4} = {F563C737-98D0-42B5-B2FF-CC9143347784}
 		{AA03B289-390E-4A38-93A7-B4E9856B769D} = {734596B3-3329-4336-B41D-A0804C78B745}
 		{431A7087-1C7A-4C5E-8619-3FE737D0C75C} = {734596B3-3329-4336-B41D-A0804C78B745}
-		{6B8454F6-62C2-4A7F-A6A7-C3B9246836D2} = {734596B3-3329-4336-B41D-A0804C78B745}
 		{E299B50E-6E19-4EB6-A3E7-C4A8B6A9B1F5} = {734596B3-3329-4336-B41D-A0804C78B745}
-		{B9BB1932-D08F-4904-A8FC-A5F0AC25644A} = {6B8454F6-62C2-4A7F-A6A7-C3B9246836D2}
-		{150D932B-1FB2-49B0-8FC0-C94A3711DBA9} = {B9BB1932-D08F-4904-A8FC-A5F0AC25644A}
-		{7472F69A-82C6-4544-8FDC-346852767FD4} = {B9BB1932-D08F-4904-A8FC-A5F0AC25644A}
-		{817CAAB0-318E-420E-9F0F-1992469613F1} = {B9BB1932-D08F-4904-A8FC-A5F0AC25644A}
-		{3C69F362-12AD-45E1-B98B-9F52CDAC6254} = {817CAAB0-318E-420E-9F0F-1992469613F1}
+		{6683CB7C-850A-45A9-A661-F1619C343C04} = {734596B3-3329-4336-B41D-A0804C78B745}
+		{743A12FC-49B3-484E-B93F-1183BB773076} = {734596B3-3329-4336-B41D-A0804C78B745}
+		{F781FDAA-768D-4213-8E5F-93FCD38CC001} = {6683CB7C-850A-45A9-A661-F1619C343C04}
+		{5081793B-11C2-4AD0-9333-326C01221B34} = {743A12FC-49B3-484E-B93F-1183BB773076}
+		{24D36217-A97A-444F-AA3E-D81A45F8D670} = {5081793B-11C2-4AD0-9333-326C01221B34}
+		{BF394EA6-FF03-4E82-8D52-F604D07C2808} = {5081793B-11C2-4AD0-9333-326C01221B34}
 	EndGlobalSection
 EndGlobal
