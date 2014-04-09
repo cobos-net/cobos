@@ -22,6 +22,40 @@
   -->
   <!--
   ============================================================================
+  Delete method body: Remove an object from the database.
+  ============================================================================
+	
+  ============================================================================
+  -->
+  <xsl:template match="cobos:Object" mode="deleteMethodBody">
+        /// &lt;summary&gt;
+        /// Delete an object from the database.
+        /// &lt;/summary&gt;
+        /// &lt;param name="value"&gt;The object to delete.&lt;/param&gt;
+        public void Delete<xsl:value-of select="@className"/>(<xsl:value-of select="@className"/> value)
+        {
+            value.DataRowSource.Delete();
+        }
+  </xsl:template>
+  <!--
+  ============================================================================
+  Remove method body: Remove an object from the table.
+  ============================================================================
+	
+  ============================================================================
+  -->
+  <xsl:template match="cobos:Object" mode="removeMethodBody">
+        /// &lt;summary&gt;
+        /// Remove an object from the table.
+        /// &lt;/summary&gt;
+        /// &lt;param name="value"&gt;The object to remove.&lt;/param&gt;
+        public void Remove<xsl:value-of select="@className"/>(<xsl:value-of select="@className"/> value)
+        {
+            this.Table.Remove<xsl:value-of select="@className"/>Row(value.DataRowSource);
+        }
+  </xsl:template>
+  <!--
+  ============================================================================
   DeleteRows method body: Delete all in-memory deleted rows from the database.
   ============================================================================
 	

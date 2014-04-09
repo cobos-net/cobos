@@ -22,7 +22,7 @@
 
   <!--
 	============================================================================
-	DataTable events: pass on any row changing events to our delegates.
+	DataTable Delegates: pass on any row changing events to our delegates.
 	============================================================================
 	
 	

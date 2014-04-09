@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-
 	<!-- 
 	=============================================================================
 	Filename: cobos.clean.generated.targets
@@ -14,14 +13,26 @@
 
 	============================================================================
 	-->
-
-	<Target Name="BeforeClean">
-		<ItemGroup>
-			<DeleteBeforeClean Include="$(ProjectDir)\**\Generated\*"/>
-		</ItemGroup>
-		<Message Text="Running BeforeClean Target from cobos.clean.generated.targets..."/>
-		<Delete Files="@(DeleteBeforeClean)" />
+  <!--
+	=============================================================================
+	Common Build Targets
+	=============================================================================
+	-->
+  <!-- If this Target is redefined in your project, make sure that you call CobosCleanGenerated -->
+  <Target Name="BeforeClean">
+    <CallTarget Targets="CobosCleanGenerated"/>
 	</Target>
-
+  <!--
+	=============================================================================
+	Clean Generated files
+	=============================================================================
+	-->
+  <Target Name="CobosCleanGenerated">
+    <ItemGroup>
+      <DeleteBeforeClean Include="$(ProjectDir)\**\Generated\*"/>
+    </ItemGroup>
+    <Message Text="Running BeforeClean Target from cobos.clean.generated.targets..."/>
+    <Delete Files="@(DeleteBeforeClean)" />
+  </Target>
 </Project>
 

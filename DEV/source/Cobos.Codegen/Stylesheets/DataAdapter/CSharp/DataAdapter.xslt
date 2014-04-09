@@ -45,7 +45,7 @@
     /// &lt;summary&gt;
     /// Class definition for the <xsl:value-of select="@name"/> row data adapter.
     /// &lt;/summary&gt;
-    public partial class <xsl:value-of select="@className"/>TableAdapter
+    public partial class <xsl:value-of select="@className"/>DataAdapter
     {
         /// &lt;summary&gt;
         /// Gets the select template.
@@ -88,35 +88,33 @@
         private static readonly string[] Where = <xsl:apply-templates mode="sqlWhere" select="."/>;
 
         /// &lt;summary&gt;
-        /// Delegate method providing a Database connection object.
+        /// Initializes a new instance of the &lt;see cref="<xsl:value-of select="@className"/>DataAdapter"/&gt; class.
         /// &lt;/summary&gt;
-        private global::System.Func&lt;global::System.Data.IDbConnection&gt; databaseConnection;
-
-        /// &lt;summary&gt;
-        /// Initializes a new instance of the &lt;see cref="<xsl:value-of select="@className"/>TableAdapter"/&gt; class.
-        /// &lt;/summary&gt;
+        /// &lt;param name="connectionString"&gt;The database connection string.&lt;/param&gt;
+        /// &lt;param name="factory"&gt;The factory instance.&lt;/param&gt;
         /// &lt;param name="table"&gt;The source table.&lt;/param&gt;
-        /// &lt;param name="database"&gt;The database connection.&lt;/param&gt;
-        public <xsl:value-of select="@className"/>TableAdapter(<xsl:value-of select="@datasetTableType"/> table, global::System.Func&lt;global::System.Data.IDbConnection&gt; databaseConnection)
+        public <xsl:value-of select="@className"/>DataAdapter(string connectionString, global::System.Data.Common.DbProviderFactory factory, <xsl:value-of select="@datasetTableType"/> table)
         {
-            this.databaseConnection = databaseConnection;
+            this.ConnectionString = connectionString;
+            this.ProviderFactory = factory;
             this.Table = table;
-            this.Table.RowChanging += this.Table_RowChanging;
-            this.Table.RowChanged += this.Table_RowChanged;
-            this.Table.RowDeleting += this.Table_RowDeleting;
-            this.Table.RowDeleted += this.Table_RowDeleted;
-            this.Table.TableNewRow += this.Table_TableNewRow;
         }
 
         /// &lt;summary&gt;
-        /// Initializes a new instance of the &lt;see cref="<xsl:value-of select="@className"/>TableAdapter"/&gt; class.
+        /// Initializes a new instance of the &lt;see cref="<xsl:value-of select="@className"/>DataAdapter"/&gt; class.
         /// &lt;/summary&gt;
-        /// &lt;param name="database"&gt;The database connection.&lt;/param&gt;
-        public <xsl:value-of select="@className"/>TableAdapter(global::System.Func&lt;global::System.Data.IDbConnection&gt; databaseConnection)
-            : this(new <xsl:value-of select="@datasetTableType"/>(), databaseConnection)
+        /// &lt;param name="connectionString"&gt;The database connection string.&lt;/param&gt;
+        /// &lt;param name="factory"&gt;The factory instance.&lt;/param&gt;
+        public <xsl:value-of select="@className"/>DataAdapter(string connectionString, global::System.Data.Common.DbProviderFactory factory)
+            : this(connectionString, factory, new <xsl:value-of select="@datasetTableType"/>())
         {
         }
 
+        /// &lt;summary&gt;
+        /// Event fired after an entity is added.
+        /// &lt;/summary&gt;
+        public event global::System.Action&lt;<xsl:value-of select="@className"/>&gt; OnAdded<xsl:value-of select="@className"/>;
+        
         /// &lt;summary&gt;
         /// Event fired before an entity is changed.
         /// &lt;/summary&gt;
@@ -136,12 +134,25 @@
         /// Event fired after an entity is deleted.
         /// &lt;/summary&gt;
         public event global::System.Action&lt;<xsl:value-of select="@className"/>&gt; OnDeleted<xsl:value-of select="@className"/>;
+        
+        /// &lt;summary&gt;
+        /// Gets the object representing the connection string.
+        /// &lt;/summary&gt;
+        public string ConnectionString
+        {
+            get;
+            private set;
+        }
 
         /// &lt;summary&gt;
-        /// Event fired after an entity is added.
+        /// Gets the object representing the provider factory.
         /// &lt;/summary&gt;
-        public event global::System.Action&lt;<xsl:value-of select="@className"/>&gt; OnAdded<xsl:value-of select="@className"/>;
-        
+        public global::System.Data.Common.DbProviderFactory ProviderFactory
+        {
+            get;
+            private set;
+        }
+
         /// &lt;summary&gt;
         /// Gets the object representing the data table.
         /// &lt;/summary&gt;
@@ -150,17 +161,31 @@
             get;
             private set;
         }
+        
+        /// &lt;summary&gt;
+        /// Initializes delegates to monitor row changes in the table.
+        /// &lt;/summary&gt;
+        public void MonitorChanges()
+        {
+            this.Table.RowChanging += this.Table_RowChanging;
+            this.Table.RowChanged += this.Table_RowChanged;
+            this.Table.RowDeleting += this.Table_RowDeleting;
+            this.Table.RowDeleted += this.Table_RowDeleted;
+            this.Table.TableNewRow += this.Table_TableNewRow;
+        }
         <xsl:apply-templates select="." mode="acceptChangesMethodBody"/>
-        <xsl:apply-templates select="." mode="addNewMethodBody"/>
-        <xsl:apply-templates select="." mode="createNewMethodBody"/>
+        <xsl:apply-templates select="." mode="addMethodBody"/>
+        <xsl:apply-templates select="." mode="deleteMethodBody"/>
         <xsl:apply-templates select="." mode="getEntityByMethodBody"/>
         <xsl:apply-templates select="." mode="getEntitiesMethodBody"/>
         <xsl:apply-templates select="." mode="hasChangesMethodBody"/>
+        <xsl:apply-templates select="." mode="loadMethodBody"/>
+        <xsl:apply-templates select="." mode="newMethodBody"/>
         <xsl:apply-templates select="." mode="rejectChangesMethodBody"/>
-        <xsl:apply-templates select="." mode="fillMethodBody"/>
+        <xsl:apply-templates select="." mode="removeMethodBody"/>
+        <xsl:apply-templates select="." mode="deleteRowsMethodBody"/>
         <xsl:apply-templates select="." mode="insertRowsMethodBody"/>
         <xsl:apply-templates select="." mode="updateRowsMethodBody"/>
-        <xsl:apply-templates select="." mode="deleteRowsMethodBody"/>
         <xsl:apply-templates select="." mode="delegatesDeclarations"/>
     }
   </xsl:template> 

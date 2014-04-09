@@ -1,0 +1,33 @@
+﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- 
+  =============================================================================
+  Build Definitions
+  =============================================================================
+  -->
+  <PropertyGroup>
+    <BinFolderNet35>$(ProjectDir)..\..\~bin\net35\</BinFolderNet35>
+    <CobosMSBuildFolder>$(ProjectDir)..\..\Cobos.Codegen\MSBuild\</CobosMSBuildFolder>
+  </PropertyGroup>
+  <!-- 
+  =============================================================================
+  Before Build  
+  =============================================================================
+  -->
+  <Target Name="BeforeBuild">
+  </Target>
+  <!-- 
+  =============================================================================
+  After Build
+  =============================================================================
+  -->
+  <Target Name="AfterBuild">
+    <ItemGroup>
+      <CobosBinaries Include="$(TargetDir)*.dll"/>
+    </ItemGroup>
+    <MakeDir Directories="$(BinFolderNet35)" Condition="!Exists($(BinFolderNet35))"/>
+    <Copy DestinationFolder="$(BinFolderNet35)" SourceFiles="@(CobosBinaries)"/>
+    <Copy DestinationFolder="$(CobosMSBuildFolder)" SourceFiles="\QualitySystem\BUILD\MSBUILD\cobos.clean.generated.targets;
+                                                                  \QualitySystem\BUILD\MSBUILD\cobos.definitions.targets;
+                                                                  \QualitySystem\BUILD\MSBUILD\cobos.runxsd.targets"/>
+  </Target>
+</Project>

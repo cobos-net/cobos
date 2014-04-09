@@ -35,52 +35,32 @@
         /// &lt;/summary&gt;
         public void AcceptChanges()
         {
-            var inserted = new <xsl:apply-templates select="." mode="listDeclDataRow"/>();
-            var updated = new <xsl:apply-templates select="." mode="listDeclDataRow"/>();
-            var deleted = new <xsl:apply-templates select="." mode="listDeclDataRow"/>();
-
-            foreach (<xsl:value-of select="@datasetRowType"/> row in this.Table.Rows)
-            {
-                if (row.RowState == global::System.Data.DataRowState.Added)
-                {
-                    inserted.Add(row);
-                }
-                else if (row.RowState == global::System.Data.DataRowState.Modified)
-                {
-                    updated.Add(row);
-                }
-                else if (row.RowState == global::System.Data.DataRowState.Deleted)
-                {
-                    deleted.Add(row);
-                }
-            }
-
-            if (inserted.Count == 0 &amp;&amp; updated.Count == 0 &amp;&amp; deleted.Count == 0)
+            if (this.HasChanges() == false)
             {
                 return;
             }
             
-            using (var connection = this.databaseConnection())
+            var factory = this.ProviderFactory;
+        
+            using (var connection = factory.CreateConnection())
             {
-                connection.Open();
-                
-                using (var transaction = connection.BeginTransaction())
-                {
-                    try
-                    {
-                        this.InsertRows(connection, inserted);
-                        this.UpdateRows(connection, updated);
-                        this.DeleteRows(connection, deleted);
-                
-                        transaction.Commit();
-                        this.Table.AcceptChanges();
-                    }
-                    catch (global::System.Exception)
-                    {
-                        transaction.Rollback();
-                        throw;
-                    }
-                }
+                connection.ConnectionString = this.ConnectionString;
+
+                var command = factory.CreateCommand();
+                command.CommandText = SelectTemplate.ToString();
+                command.Connection = connection;
+
+                var adapter = factory.CreateDataAdapter();
+                adapter.SelectCommand = command;
+
+                var builder = factory.CreateCommandBuilder();
+                builder.DataAdapter = adapter;
+
+                adapter.InsertCommand = builder.GetInsertCommand();
+                adapter.UpdateCommand = builder.GetUpdateCommand();
+                adapter.DeleteCommand = builder.GetDeleteCommand();
+
+                adapter.Update(this.Table);
             }
         }
   </xsl:template>

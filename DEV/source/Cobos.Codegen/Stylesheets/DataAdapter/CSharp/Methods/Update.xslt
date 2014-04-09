@@ -8,7 +8,7 @@
 					 exclude-result-prefixes="msxsl">
   <!-- 
   =============================================================================
-  Filename: .xslt
+  Filename: Update.xslt
   Description: 
   ============================================================================
   Created by: N.Davis                        Date: 2010-04-09
@@ -19,17 +19,55 @@
 	
   ============================================================================
   -->
-					 
   <!--
   ============================================================================
-  UpdateRows method body: Update all in-memory modified rows into the database.
+  UpdateRows: Update all in-memory modified rows into the database.
   ============================================================================
 	
+  /// <summary>
+  /// Update all in-memory modified rows into the database.
+  /// </summary>
+  private void UpdateRows(global::System.Data.IDbConnection connection, global::System.Collections.Generic.List<NorthwindDataModel.CustomerRow> changed)
+  {
+      if (changed.Count == 0)
+      {
+          return;
+      }
 
+      using (var command = connection.CreateCommand())
+      {
+          command.Connection = connection;
+
+          foreach (NorthwindDataModel.CustomerRow row in changed)
+          {
+              var buffer = new global::System.Text.StringBuilder(1024);
+                    
+              buffer.Append("UPDATE Customers SET ");
+              this.AppendUpdateValues(buffer, row);
+              buffer.Append(" WHERE " + "(CustomerID = '" + row.CustomerID + "')");
+
+              command.CommandText = buffer.ToString();
+              command.ExecuteNonQuery();
+          }
+      }
+  }
+
+  /// <summary>
+  /// Append the SQL update fragment for this row.
+  /// </summary>
+  private void AppendUpdateValues(global::System.Text.StringBuilder buffer, NorthwindDataModel.CustomerRow row)
+  {
+      buffer.Append("CustomerID=");
+      buffer.Append("'" + row.CustomerID.Replace("'", "''") + "'");
+      buffer.Append(", ");
+      buffer.Append("CompanyName=");
+      buffer.Append("'" + row.CompanyName.Replace("'", "''") + "'");
+      buffer.Append(", ");
+      // ...
+  }
 	
   ============================================================================
   -->
-
   <xsl:template match="cobos:Object" mode="updateRowsMethodBody">
         /// &lt;summary&gt;
         /// Update all in-memory modified rows into the database.
