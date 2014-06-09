@@ -84,7 +84,14 @@ namespace Cobos.Data
                 assemblyPath = "x86\\Cobos.Data.Adapters.x86.dll";
             }
 
-            this.LoadFromAssembly(AssemblyExtensions.LoadAssemblyRelativeToThis(assemblyPath));
+            try
+            {
+                this.LoadFromAssembly(AssemblyExtensions.LoadAssemblyRelativeToThis(assemblyPath));
+            }
+            catch (System.IO.FileNotFoundException)
+            {
+                return;
+            }
         }
 
         /// <summary>
@@ -108,7 +115,7 @@ namespace Cobos.Data
         /// </remarks>
         public void LoadFromAssembly(Assembly assembly)
         {
-            var types = assembly.GetAllTypesWithAttribute<DatabaseAdapterProviderAttribute>();
+            var types = assembly.GetAllTypesWithCustomAttribute<DatabaseAdapterProviderAttribute>();
 
             foreach (var type in types)
             {

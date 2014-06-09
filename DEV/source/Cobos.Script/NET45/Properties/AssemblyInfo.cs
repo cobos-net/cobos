@@ -42,7 +42,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("Release")]
 #endif
 [assembly: AssemblyCompany("Cobos Software Development Kit")]
-[assembly: AssemblyCopyright("Copyright (c) 2009-2013 Nicholas Davis")]
+[assembly: AssemblyCopyright("Copyright (c) 2009-2014 Nicholas Davis")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -62,7 +62,7 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("0.5")]
-[assembly: AssemblyFileVersion("0.5.1.0")]
+[assembly: AssemblyFileVersion("0.5.18.0")]
 
 // Unit testing
 [assembly: InternalsVisibleTo("Cobos.Script.Tests")]

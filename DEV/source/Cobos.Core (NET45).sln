@@ -84,9 +84,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Methods", "Methods", "{24D3
 		Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Methods\Changes.xslt = Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Methods\Changes.xslt
 		Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Methods\Delegates.xslt = Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Methods\Delegates.xslt
 		Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Methods\Delete.xslt = Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Methods\Delete.xslt
+		Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Methods\Fill.xslt = Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Methods\Fill.xslt
 		Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Methods\GetEntities.xslt = Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Methods\GetEntities.xslt
 		Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Methods\Insert.xslt = Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Methods\Insert.xslt
-		Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Methods\Load.xslt = Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Methods\Load.xslt
 		Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Methods\Methods.inc = Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Methods\Methods.inc
 		Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Methods\New.xslt = Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Methods\New.xslt
 		Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Methods\Update.xslt = Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Methods\Update.xslt
@@ -109,7 +109,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sql", "Sql", "{BF394EA6-FF0
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CSharp", "CSharp", "{5081793B-11C2-4AD0-9333-326C01221B34}"
 	ProjectSection(SolutionItems) = preProject
-		Cobos.Codegen\Stylesheets\DataAdapter\CSharp\DataAdapter.xslt = Cobos.Codegen\Stylesheets\DataAdapter\CSharp\DataAdapter.xslt
+		Cobos.Codegen\Stylesheets\DataAdapter\CSharp\DataModelAdapter.xslt = Cobos.Codegen\Stylesheets\DataAdapter\CSharp\DataModelAdapter.xslt
+		Cobos.Codegen\Stylesheets\DataAdapter\CSharp\DataObjectAdapter.xslt = Cobos.Codegen\Stylesheets\DataAdapter\CSharp\DataObjectAdapter.xslt
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CSharp", "CSharp", "{F781FDAA-768D-4213-8E5F-93FCD38CC001}"

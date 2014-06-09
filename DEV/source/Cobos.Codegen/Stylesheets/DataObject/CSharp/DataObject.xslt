@@ -46,6 +46,7 @@
     <xsl:value-of select="$indent"/>
     <xsl:apply-templates select="." mode="commentClass"/>
     <xsl:value-of select="concat($indent, '[global::System.Runtime.Serialization.DataContract(Namespace = &quot;', $xmlNamespace, '&quot;)]')"/>
+    <xsl:value-of select="concat($indent, '[global::Cobos.Data.Mapping.Table(Name = &quot;', @dbTable, '&quot;)]')"/>
     <xsl:value-of select="concat($indent, 'public partial class ', @className, ' : global::System.ComponentModel.INotifyPropertyChanged')"/>
     <xsl:value-of select="concat($indent, '{')"/>
     <xsl:apply-templates select="." mode="dataRowSource"/>
@@ -53,6 +54,7 @@
     <xsl:apply-templates select="." mode="constructor"/>
     <xsl:apply-templates select="." mode="events"/>
     <xsl:apply-templates select="cobos:Object|cobos:Reference|cobos:Property[not(@hidden)]" mode="propertyDefinition"/>
+    <xsl:apply-templates select="/cobos:DataModel//cobos:Reference[@ref = current()/@name]" mode="parentReferencePropertyDefinition"/>
     <xsl:apply-templates select="." mode="notifyChanged"/>
     <xsl:apply-templates select="cobos:Object" mode="classDefinition"/>
     <xsl:value-of select="concat($indent, '}')"/>
@@ -85,7 +87,7 @@
     <xsl:variable name="indent">
       <xsl:apply-templates select="." mode="newlineIndentLevel1"/>
     </xsl:variable>
-    <xsl:value-of select="concat($indent, 'this.', @memberName, ' = new ', @typeName, '(this.DataRowSource);')"/>
+    <xsl:value-of select="concat($indent, 'this.', @fieldName, ' = new ', @typeName, '(this.DataRowSource);')"/>
   </xsl:template>
   <!-- 
   =============================================================================
@@ -111,7 +113,7 @@
       <xsl:apply-templates select="." mode="newlineIndent"/>
     </xsl:variable>
     <xsl:apply-templates select="." mode="commentMember"/>
-    <xsl:value-of select="concat($indent, 'private ', @typeName, ' ', @memberName, ';', $indent)" />
+    <xsl:value-of select="concat($indent, 'private ', @typeName, ' ', @fieldName, ';', $indent)" />
   </xsl:template>
   <!--
   =============================================================================
@@ -141,6 +143,9 @@
     <xsl:value-of select="$indent"/>
     <xsl:apply-templates select="." mode="commentProperty"/>
     <xsl:value-of select="concat($indent, '[global::System.Runtime.Serialization.DataMember(Order = ', position() - 1, ')]')"/>
+    <xsl:apply-templates select="." mode="mappingProperty">
+      <xsl:with-param name="indent" select="$indent"/>
+    </xsl:apply-templates>
     <xsl:value-of select="concat($indent, 'public ', $type, ' ', @name)"/>
     <xsl:value-of select="concat($indent, '{')"/>
     <xsl:apply-templates select="." mode="propertyGet"/>
@@ -148,6 +153,20 @@
     <xsl:apply-templates select="." mode="propertySet"/>
     <xsl:value-of select="concat($indent, '}')"/>
   </xsl:template>
+  <!-- 
+  =============================================================================
+  Property mapping attributes.
+  =============================================================================
+  -->
+  <xsl:template match="cobos:Property" mode="mappingProperty">
+    <xsl:param name="indent"/>
+    <xsl:value-of select="concat($indent, '[global::Cobos.Data.Mapping.Table(Name = &quot;', @dbTable, '&quot;)]')"/>
+    <xsl:value-of select="concat($indent, '[global::Cobos.Data.Mapping.Column(Name = &quot;', @dbColumn, '&quot;)]')"/>
+  </xsl:template>
+  <!-- 
+  =============================================================================
+  -->
+  <xsl:template match="*" mode="mappingProperty"/>
   <!-- 
   =============================================================================
   Property definition for a parent record (foreign key parent)
@@ -225,7 +244,7 @@
       <xsl:apply-templates select="." mode="newlineIndentLevel2"/>
     </xsl:variable>
     <xsl:variable name="columnName">
-      <xsl:apply-templates select="." mode="qualifiedName"/>
+      <xsl:apply-templates select="." mode="fullName"/>
     </xsl:variable>
     <xsl:value-of select="concat($indent, 'if (this.DataRowSource.Is', $columnName, 'Null())')"/>
     <xsl:value-of select="concat($indent, '{')"/>
@@ -242,7 +261,7 @@
     <xsl:variable name="indent">
       <xsl:apply-templates select="." mode="newlineIndentLevel2"/>
     </xsl:variable>
-    <xsl:value-of select="concat($indent, 'return this.', @memberName, ';')"/>
+    <xsl:value-of select="concat($indent, 'return this.', @fieldName, ';')"/>
   </xsl:template>
   <!-- 
   =============================================================================
@@ -262,7 +281,7 @@
     <xsl:variable name="indent">
       <xsl:apply-templates select="." mode="newlineIndentLevel2"/>
     </xsl:variable>
-    <xsl:value-of select="concat($indent, 'return new', ../@name, '(this.DataRowSource.', ../@name, ');')"/>
+    <xsl:value-of select="concat($indent, 'return new ', ../@name, '(this.DataRowSource.', ../@name, ');')"/>
   </xsl:template>
   <!-- 
   =============================================================================
@@ -291,7 +310,7 @@
       <xsl:apply-templates select="." mode="newlineIndentLevel2"/>
     </xsl:variable>
     <xsl:variable name="columnName">
-      <xsl:apply-templates select="." mode="qualifiedName"/>
+      <xsl:apply-templates select="." mode="fullName"/>
     </xsl:variable>
     <xsl:value-of select="concat($indent, 'if (value == null)')"/>
     <xsl:value-of select="concat($indent, '{')"/>
@@ -315,7 +334,7 @@
       <xsl:apply-templates select="." mode="newlineIndentLevel2"/>
     </xsl:variable>
     <xsl:variable name="columnName">
-      <xsl:apply-templates select="." mode="qualifiedName"/>
+      <xsl:apply-templates select="." mode="fullName"/>
     </xsl:variable>
     <xsl:value-of select="concat($indent, 'return this.DataRowSource.', $columnName, ';')"/>
   </xsl:template>
@@ -326,7 +345,7 @@
   -->
   <xsl:template match="cobos:Property[not(@stringFormat)]" mode="propertySetValue">
     <xsl:variable name="columnName">
-      <xsl:apply-templates mode="qualifiedName" select="."/>
+      <xsl:apply-templates mode="fullName" select="."/>
     </xsl:variable>
     <xsl:variable name="value">
       <xsl:apply-templates mode="propertySetValueValue" select="."/>

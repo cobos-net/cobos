@@ -31,9 +31,12 @@ namespace Cobos.Codegen.Tests.Data
 {
     using System;
     using System.Collections.Generic;
+    using System.Data;
     using System.Data.Common;
     using System.Diagnostics;
     using System.Linq;
+    using System.Reflection;
+    using System.Reflection.Emit;
     using Cobos.Codegen.Tests.Northwind;
     using Cobos.Data;
     using NUnit.Framework;
@@ -45,16 +48,22 @@ namespace Cobos.Codegen.Tests.Data
     public class DataModelTests
     {
         /// <summary>
+        /// Epoch for date related tests.
+        /// </summary>
+        private static readonly DateTime Epoch = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Local);
+
+        /// <summary>
         /// Strategy:
         /// ---------
         /// 1. Perform simple queries to populate the data model.
         /// </summary>
+        /// <param name="database">The database adapter.</param>
         [TestCase]
         [TestCaseSource(typeof(TestManager), "DataSource")]
         public void Can_populate_the_data_model(IDatabaseAdapter database)
         {
             var customerData = new CustomerDataAdapter(database.ConnectionString, database.ProviderFactory);
-            customerData.Load(null, null);
+            customerData.Fill(null, null);
 
             var customers = customerData.GetEntities();
             Assert.IsNotNull(customers);
@@ -66,6 +75,7 @@ namespace Cobos.Codegen.Tests.Data
         /// ---------
         /// 1. Perform simple CRUD operations.
         /// </summary>
+        /// <param name="database">The database adapter.</param>
         [TestCase]
         [TestCaseSource(typeof(TestManager), "DataSource")]
         public void Can_perform_CRUD_operations(IDatabaseAdapter database)
@@ -75,7 +85,7 @@ namespace Cobos.Codegen.Tests.Data
             var customerData = new CustomerDataAdapter(database.ConnectionString, database.ProviderFactory);
             var observer = new DataAdapterObserver(customerData, "COBOS");
 
-            customerData.Load(null, null);
+            customerData.Fill(null, null);
             observer.Reset();
 
             var customer = customerData.NewCustomer();
@@ -90,7 +100,7 @@ namespace Cobos.Codegen.Tests.Data
 
             Assert.DoesNotThrow(() => customerData.AcceptChanges());
 
-            customerData.Load(null, null);
+            customerData.Fill(null, null);
             observer.Reset();
 
             customer = customerData.GetEntityByCustomerID("COBOS");
@@ -119,7 +129,7 @@ namespace Cobos.Codegen.Tests.Data
 
             Assert.DoesNotThrow(() => customerData.AcceptChanges());
 
-            customerData.Load(null, null);
+            customerData.Fill(null, null);
             observer.Reset();
 
             customer = customerData.GetEntityByCustomerID("COBOS");
@@ -146,7 +156,7 @@ namespace Cobos.Codegen.Tests.Data
 
             Assert.DoesNotThrow(() => customerData.AcceptChanges());
 
-            customerData.Load(null, null);
+            customerData.Fill(null, null);
             customer = customerData.GetEntityByCustomerID("COBOS");
 
             Assert.IsNull(customer);
@@ -157,6 +167,7 @@ namespace Cobos.Codegen.Tests.Data
         /// ---------
         /// 1. Perform multiple CRUD operations at the same time.
         /// </summary>
+        /// <param name="database">The database adapter.</param>
         [TestCase]
         [TestCaseSource(typeof(TestManager), "DataSource")]
         public void Can_perform_multiple_CRUD_operations(IDatabaseAdapter database)
@@ -167,7 +178,7 @@ namespace Cobos.Codegen.Tests.Data
             database.ExecuteNonQuery("delete from customers where customerid in (" + idsIn + ")");
 
             var customerData = new CustomerDataAdapter(database.ConnectionString, database.ProviderFactory);
-            customerData.Load(null, null);
+            customerData.Fill(null, null);
 
             for (int i = 0; i < 2; ++i)
             {
@@ -177,7 +188,7 @@ namespace Cobos.Codegen.Tests.Data
             }
 
             customerData.AcceptChanges();
-            customerData.Load(null, null);
+            customerData.Fill(null, null);
 
             for (int i = 0; i < 2; ++i)
             {
@@ -197,7 +208,7 @@ namespace Cobos.Codegen.Tests.Data
             customerData.DeleteCustomer(customer1);
 
             Assert.DoesNotThrow(() => customerData.AcceptChanges());
-            customerData.Load(null, null);
+            customerData.Fill(null, null);
 
             Assert.NotNull(customerData.GetEntityByCustomerID(ids[0]));
             Assert.IsNull(customerData.GetEntityByCustomerID(ids[1]));
@@ -212,9 +223,130 @@ namespace Cobos.Codegen.Tests.Data
         }
 
         /// <summary>
+        /// Strategy:
+        /// ---------
+        /// 1. Perform multiple updates for date time fields.
+        /// </summary>
+        /// <param name="database">The database adapter.</param>
+        [TestCase]
+        [TestCaseSource(typeof(TestManager), "DataSource")]
+        public void Can_perform_multiple_updates(IDatabaseAdapter database)
+        {
+            database.ExecuteNonQuery("delete from employees where employeeid > 9");
+
+            using (var connection = database.ProviderFactory.CreateConnection())
+            {
+                connection.ConnectionString = database.ConnectionString;
+
+                var adapter = database.ProviderFactory.CreateDataAdapter();
+
+                adapter.SelectCommand = database.ProviderFactory.CreateCommand();
+                adapter.SelectCommand.CommandText = "select `employees.employeeid`, `employees.lastname`, `employees.firstname` from employees";
+                adapter.SelectCommand.Connection = connection;
+
+                adapter.InsertCommand = database.ProviderFactory.CreateCommand();
+                adapter.InsertCommand.CommandText =
+                    @"insert into employees (LastName, FirstName) values (?LastName, ?FirstName);
+                select employeeid, lastname, firstname from employees where employeeid = LAST_INSERT_ID();";
+                adapter.InsertCommand.Connection = connection;
+
+                var parameter = database.ProviderFactory.CreateParameter();
+                parameter.ParameterName = "?LastName";
+                parameter.DbType = System.Data.DbType.StringFixedLength;
+                parameter.Size = 20;
+                parameter.SourceColumn = "LastName";
+
+                adapter.InsertCommand.Parameters.Add(parameter);
+
+                parameter = database.ProviderFactory.CreateParameter();
+                parameter.ParameterName = "?FirstName";
+                parameter.DbType = System.Data.DbType.StringFixedLength;
+                parameter.Size = 10;
+                parameter.SourceColumn = "FirstName";
+
+                adapter.InsertCommand.Parameters.Add(parameter);
+
+                adapter.InsertCommand.UpdatedRowSource = UpdateRowSource.Both;
+                adapter.MissingSchemaAction = MissingSchemaAction.AddWithKey;
+
+                var employeeData = new EmployeeDataAdapter(database.ConnectionString, database.ProviderFactory);
+                employeeData.Fill(null, null);
+
+                var employee = employeeData.NewEmployee();
+                PopulateEmployee(employee);
+                employeeData.AddEmployee(employee);
+
+                ////employee = employeeData.NewEmployee();
+                ////PopulateEmployee(employee);
+
+                ////Action<object, RowUpdatedEventArgs> onUpdated = (s, e) =>
+                ////{
+                ////    if (e.StatementType == StatementType.Insert)
+                ////    {
+                ////        e.Status = UpdateStatus.SkipCurrentRow;
+                ////    }
+                ////};
+
+                var eventInfo = adapter.GetType().GetEvent("RowUpdated");
+                var typeofDelegate = eventInfo.EventHandlerType;
+
+                DynamicMethod handler = new DynamicMethod(
+                                                        string.Empty,
+                                                        null,
+                                                        this.GetDelegateParameterTypes(typeofDelegate, this.GetType()),
+                                                        this.GetType());
+
+                // Generate a method body. This method loads a string, calls  
+                // the Show method overload that takes a string, pops the  
+                // return value off the stack (because the handler has no 
+                // return type), and returns. 
+                ILGenerator ilgen = handler.GetILGenerator();
+
+                var methodInfoHandler = this.GetType().GetMethod("OnRowUpdated", BindingFlags.NonPublic | BindingFlags.Instance);
+
+                ilgen.Emit(OpCodes.Ldarg_0);
+                ilgen.Emit(OpCodes.Ldarg_1);
+                ilgen.Emit(OpCodes.Ldarg_2);
+                ilgen.Emit(OpCodes.Call, methodInfoHandler);
+                ilgen.Emit(OpCodes.Ret);
+
+                Delegate emittedDelegate = handler.CreateDelegate(typeofDelegate, this);
+
+                Delegate @delegate = Delegate.CreateDelegate(eventInfo.EventHandlerType, this, methodInfoHandler);
+                MethodInfo addHandler = eventInfo.GetAddMethod();
+                addHandler.Invoke(adapter, new object[] { emittedDelegate });
+
+                System.Data.DataTable changes = employeeData.Table.GetChanges();
+                Assert.AreNotEqual(0, changes.Rows.Count);
+                adapter.Update(changes);
+
+                employeeData.Table.Merge(changes);
+                employeeData.Table.AcceptChanges();
+
+                Console.WriteLine("Rows after merge.");
+                foreach (DataRow row in employeeData.Table.Rows)
+                {
+                    Console.WriteLine("{0}: {1}", row[0], row[1]);
+                }
+            }
+
+            ////Assert.DoesNotThrow(() => employeeData.AcceptChanges());
+
+            ////employee.Employment.HireDate = Epoch.AddYears(-4);
+            ////Assert.DoesNotThrow(() => employeeData.AcceptChanges());
+
+            ////employee.Employment.HireDate = Epoch.AddYears(-3);
+            ////Assert.DoesNotThrow(() => employeeData.AcceptChanges());
+
+            ////employee.Employment.HireDate = Epoch.AddYears(-2);
+            ////Assert.DoesNotThrow(() => employeeData.AcceptChanges());
+        }
+
+        /// <summary>
         /// Populate a customer object with test data.
         /// </summary>
         /// <param name="customer">The customer object.</param>
+        /// <param name="id">The id to use.</param>
         private static void PopulateCustomer(Customer customer, string id)
         {
             customer.CustomerID = id;
@@ -233,42 +365,110 @@ namespace Cobos.Codegen.Tests.Data
         }
 
         /// <summary>
+        /// Populate an employee object with test data.
+        /// </summary>
+        /// <param name="employee">The employee object.</param>
+        private static void PopulateEmployee(Employee employee)
+        {
+            employee.Contact.Address = "Address";
+            employee.Contact.City = "City";
+            employee.Contact.Country = "Country";
+            employee.Contact.HomePhone = "Phone";
+            employee.Contact.PostalCode = "Postal";
+            employee.Contact.Region = "Region";
+
+            employee.Employment.Extension = "Ext";
+            employee.Employment.HireDate = Epoch.AddYears(-5);
+            employee.Employment.Notes = "Notes";
+            employee.Employment.PhotoPath = "PhotoPath";
+            employee.Employment.ReportsTo = 1;
+
+            employee.Personal.BirthDate = Epoch.AddYears(-30);
+            employee.Personal.FirstName = "First Name";
+            employee.Personal.LastName = "Last Name";
+            employee.Personal.Title = "Mr";
+            employee.Personal.TitleOfCourtesy = "Esq";
+        }
+
+        /// <summary>
+        /// Called when a row is updated.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnRowUpdated(object sender, RowUpdatedEventArgs e)
+        {
+            if (e.StatementType == StatementType.Insert)
+            {
+                e.Status = UpdateStatus.SkipCurrentRow;
+            }
+        }
+
+        /// <summary>
+        /// Get the parameter types of a delegate.
+        /// </summary>
+        /// <param name="d">The type of the delegate.</param>
+        /// <param name="target">The target for the delegate.</param>
+        /// <returns>The parameter types.</returns>
+        private Type[] GetDelegateParameterTypes(Type d, Type target)
+        {
+            if (d.BaseType != typeof(MulticastDelegate))
+            {
+                throw new ApplicationException("Not a delegate.");
+            }
+
+            MethodInfo invoke = d.GetMethod("Invoke");
+
+            if (invoke == null)
+            {
+                throw new ApplicationException("Not a delegate.");
+            }
+
+            ParameterInfo[] parameters = invoke.GetParameters();
+            Type[] typeParameters = new Type[parameters.Length + 1];
+            typeParameters[0] = target;
+
+            for (int i = 0; i < parameters.Length; i++)
+            {
+                typeParameters[i + 1] = parameters[i].ParameterType;
+            }
+
+            return typeParameters;
+        }
+
+        /// <summary>
+        /// Get the return type of a delegate.
+        /// </summary>
+        /// <param name="d">The delegate type.</param>
+        /// <returns>The type of the return.</returns>
+        private Type GetDelegateReturnType(Type d)
+        {
+            if (d.BaseType != typeof(MulticastDelegate))
+            {
+                throw new ApplicationException("Not a delegate.");
+            }
+
+            MethodInfo invoke = d.GetMethod("Invoke");
+
+            if (invoke == null)
+            {
+                throw new ApplicationException("Not a delegate.");
+            }
+
+            return invoke.ReturnType;
+        }
+
+        /// <summary>
         /// Observes changes to Data Adapter class.
         /// </summary>
         private class DataAdapterObserver
         {
-            /// <summary>
-            /// Number of objects added.
-            /// </summary>
-            public int Added;
-
-            /// <summary>
-            /// Number of objects changing.
-            /// </summary>
-            public int Changing;
-
-            /// <summary>
-            /// Number of objects changed.
-            /// </summary>
-            public int Changed;
-
-            /// <summary>
-            /// Number of objects deleting.
-            /// </summary>
-            public int Deleting;
-
-            /// <summary>
-            /// Number of objects deleted.
-            /// </summary>
-            public int Deleted;
-
             /// <summary>
             /// Represents the customer ID that we are observing.
             /// </summary>
             private string customerId;
 
             /// <summary>
-            /// Initalizes a new instance of the <see cref="DataAdapterObserver"/> class.
+            /// Initializes a new instance of the <see cref="DataAdapterObserver"/> class.
             /// </summary>
             /// <param name="adapter">The adapter.</param>
             /// <param name="customerId">The customer ID that we are observing.</param>
@@ -277,11 +477,56 @@ namespace Cobos.Codegen.Tests.Data
                 this.customerId = customerId;
 
                 adapter.MonitorChanges();
-                adapter.OnAddedCustomer += OnAddedCustomer;
-                adapter.OnChangedCustomer += OnChangedCustomer;
-                adapter.OnChangingCustomer += OnChangingCustomer;
-                adapter.OnDeletedCustomer += OnDeletedCustomer;
-                adapter.OnDeletingCustomer += OnDeletingCustomer;
+                adapter.OnAddedCustomer += this.OnAddedCustomer;
+                adapter.OnChangedCustomer += this.OnChangedCustomer;
+                adapter.OnChangingCustomer += this.OnChangingCustomer;
+                adapter.OnDeletedCustomer += this.OnDeletedCustomer;
+                adapter.OnDeletingCustomer += this.OnDeletingCustomer;
+            }
+
+            /// <summary>
+            /// Gets the number of objects added.
+            /// </summary>
+            public int Added
+            {
+                get;
+                private set;
+            }
+
+            /// <summary>
+            /// Gets the number of objects changing.
+            /// </summary>
+            public int Changing
+            {
+                get;
+                private set;
+            }
+
+            /// <summary>
+            /// Gets the number of objects changed.
+            /// </summary>
+            public int Changed
+            {
+                get;
+                private set;
+            }
+
+            /// <summary>
+            /// Gets the number of objects deleting.
+            /// </summary>
+            public int Deleting
+            {
+                get;
+                private set;
+            }
+
+            /// <summary>
+            /// Gets the number of objects deleted.
+            /// </summary>
+            public int Deleted
+            {
+                get;
+                private set;
             }
 
             /// <summary>

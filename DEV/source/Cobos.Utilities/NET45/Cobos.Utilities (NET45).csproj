@@ -34,7 +34,7 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' or '$(Configuration)|$(Platform)' == 'Debug|x86' or '$(Configuration)|$(Platform)' == 'Debug|x64' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -44,7 +44,7 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' or '$(Configuration)|$(Platform)' == 'Release|x86' or '$(Configuration)|$(Platform)' == 'Release|x64' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -57,14 +57,14 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+      <RequiredTargetFramework>4.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+      <RequiredTargetFramework>4.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data.DataSetExtensions">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+      <RequiredTargetFramework>4.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -73,28 +73,36 @@
     <Compile Include="Authentication\PasswordHash.cs" />
     <Compile Include="Authentication\PrivilegeEnum.cs" />
     <Compile Include="Cache\CacheFile.cs" />
+    <Compile Include="ComponentModel\ObservableObject.cs" />
     <Compile Include="Extensions\AssemblyExtensions.cs" />
-    <Compile Include="Extensions\DateExtensions.cs">
+    <Compile Include="Extensions\DateTimeExtensions.cs">
       <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
     </Compile>
-    <Compile Include="File\DriveMapping.cs" />
+    <Compile Include="Extensions\DateTimeTruncateTo.cs" />
+    <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Diagnostics\DateTimePrecise.cs" />
     <Compile Include="Extensions\ArrayExtensions.cs" />
     <Compile Include="Extensions\IDictionaryExtensions.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\XmlExtensions.cs" />
-    <Compile Include="File\FileHandle.cs" />
-    <Compile Include="File\FileUtility.cs" />
-    <Compile Include="File\FileVersionHelper.cs" />
-    <Compile Include="File\NormalisedPath.cs" />
-    <Compile Include="File\PathResolver.cs" />
+    <Compile Include="IO\DriveMapping.cs" />
+    <Compile Include="IO\FileHandle.cs" />
+    <Compile Include="IO\FileUtility.cs" />
+    <Compile Include="IO\FileVersionHelper.cs" />
+    <Compile Include="IO\LookaheadTextReader.cs" />
+    <Compile Include="IO\NormalisedPath.cs" />
+    <Compile Include="IO\PathResolver.cs" />
     <Compile Include="Plugin\PluginAttribute.cs" />
     <Compile Include="Plugin\IPluginClient.cs" />
     <Compile Include="Plugin\IPluginHost.cs" />
     <Compile Include="Plugin\PluginLoader.cs" />
     <Compile Include="Plugin\PluginNotSupportedException.cs" />
     <Compile Include="Text\StringSeparator.cs" />
+    <Compile Include="Threading\Progress\IProgressController.cs" />
+    <Compile Include="Threading\Progress\IProgressControllerCancellable.cs" />
+    <Compile Include="Threading\Progress\ProgressLinq.cs" />
+    <Compile Include="Threading\Progress\ProgressReport.cs" />
     <Compile Include="Threading\Resource\IResource.cs" />
     <Compile Include="Threading\Resource\IResourceAllocator.cs" />
     <Compile Include="Threading\Resource\IResourcePool.cs" />

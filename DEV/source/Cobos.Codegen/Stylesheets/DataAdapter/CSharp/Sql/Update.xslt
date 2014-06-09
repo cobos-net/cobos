@@ -72,7 +72,7 @@
 
   <xsl:template match="cobos:Property[@dbType = 'xsd:string' or contains(@dbType, 'string_')]" mode="sqlUpdateWhere">
     <xsl:variable name="columnName">
-      <xsl:apply-templates mode="qualifiedName" select="."/>
+      <xsl:apply-templates mode="fullName" select="."/>
     </xsl:variable>
     <xsl:value-of select="concat(@dbColumn, ' = ', $apos, $quot, ' + row.', $columnName, ' + ', $quot, $apos)"/>
   </xsl:template>
@@ -80,7 +80,7 @@
   <!-- -->
   <xsl:template match="cobos:Property[not(@dbType = 'xsd:string' or contains(@dbType, 'string_'))]" mode="sqlUpdateWhere">
     <xsl:variable name="columnName">
-      <xsl:apply-templates mode="qualifiedName" select="."/>
+      <xsl:apply-templates mode="fullName" select="."/>
     </xsl:variable>
     <xsl:value-of select="concat(@dbColumn, ' = ', $quot, ' + row.', $columnName, ' + ', $quot)"/>
   </xsl:template>

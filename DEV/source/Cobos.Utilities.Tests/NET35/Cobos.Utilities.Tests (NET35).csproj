@@ -54,9 +54,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework, Version=2.6.2.12296, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+    <Reference Include="nunit.framework, Version=2.6.3.13283, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
+      <HintPath>..\..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -78,20 +78,23 @@
     <Compile Include="..\NET45\Extensions\ArrayExtensionsTests.cs">
       <Link>Extensions\ArrayExtensionsTests.cs</Link>
     </Compile>
-    <Compile Include="..\NET45\File\DriveMappingTests.cs">
-      <Link>File\DriveMappingTests.cs</Link>
+    <Compile Include="..\NET45\IO\DriveMappingTests.cs">
+      <Link>IO\DriveMappingTests.cs</Link>
     </Compile>
-    <Compile Include="..\NET45\File\FileHandleTests.cs">
-      <Link>File\FileHandleTests.cs</Link>
+    <Compile Include="..\NET45\IO\FileHandleTests.cs">
+      <Link>IO\FileHandleTests.cs</Link>
     </Compile>
-    <Compile Include="..\NET45\File\FileUtilityTests.cs">
-      <Link>File\FileUtilityTests.cs</Link>
+    <Compile Include="..\NET45\IO\FileUtilityTests.cs">
+      <Link>IO\FileUtilityTests.cs</Link>
     </Compile>
-    <Compile Include="..\NET45\File\NormalisedPathTests.cs">
-      <Link>File\NormalisedPathTests.cs</Link>
+    <Compile Include="..\NET45\IO\LookaheadTextReaderTests.cs">
+      <Link>IO\LookaheadTextReaderTests.cs</Link>
     </Compile>
-    <Compile Include="..\NET45\File\PathResolverTests.cs">
-      <Link>File\PathResolverTests.cs</Link>
+    <Compile Include="..\NET45\IO\NormalisedPathTests.cs">
+      <Link>IO\NormalisedPathTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NET45\IO\PathResolverTests.cs">
+      <Link>IO\PathResolverTests.cs</Link>
     </Compile>
     <Compile Include="..\NET45\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>

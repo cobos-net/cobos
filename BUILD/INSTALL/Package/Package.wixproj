@@ -43,9 +43,14 @@
   <ItemGroup>
     <Content Include="Build\Harvest.targets" />
     <Content Include="Config.wxi" />
-    <Content Include="Stylesheets\heat-ignore-source.xslt" />
+    <Content Include="Stylesheets\CodegenFiles.xslt" />
+    <Content Include="Stylesheets\SourceFiles.xslt" />
   </ItemGroup>
   <ItemGroup>
+    <WixExtension Include="WixUtilExtension">
+      <HintPath>$(WixExtDir)\WixUtilExtension.dll</HintPath>
+      <Name>WixUtilExtension</Name>
+    </WixExtension>
     <WixExtension Include="WixUIExtension">
       <HintPath>$(WixExtDir)\WixUIExtension.dll</HintPath>
       <Name>WixUIExtension</Name>

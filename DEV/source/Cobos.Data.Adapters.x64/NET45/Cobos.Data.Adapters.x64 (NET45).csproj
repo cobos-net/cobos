@@ -58,6 +58,7 @@
     <ProjectReference Include="..\..\Cobos.Data\NET45\Cobos.Data %28NET45%29.csproj">
       <Project>{6906B107-C149-4682-AF7B-FEF9F697FE36}</Project>
       <Name>Cobos.Data %28NET45%29</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

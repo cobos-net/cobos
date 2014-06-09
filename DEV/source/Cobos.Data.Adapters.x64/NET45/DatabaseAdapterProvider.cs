@@ -1,5 +1,5 @@
 ﻿// ----------------------------------------------------------------------------
-// <copyright file="DatabaseAdapterProviderAttribute.cs" company="Cobos SDK">
+// <copyright file="DatabaseAdapterProvider.cs" company="Cobos SDK">
 //
 //      Copyright (c) 2009-2012 Nicholas Davis - nick@cobos.co.uk
 //

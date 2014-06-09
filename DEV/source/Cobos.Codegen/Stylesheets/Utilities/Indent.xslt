@@ -11,7 +11,7 @@
   Gets the indent for the Object or Property element.
   =============================================================================
   -->
-  <xsl:template match="cobos:Object|cobos:Property|cobos:Reference" mode="newlineIndent">
+  <xsl:template match="cobos:Object|cobos:Property|cobos:Reference|cobos:DataModel" mode="newlineIndent">
     <xsl:variable name="indent">
       <xsl:apply-templates select="parent::cobos:Object|parent::cobos:DataModel" mode="indent"/>
     </xsl:variable>
@@ -22,7 +22,7 @@
   Gets the indent plus 1 level for the Object or Property element.
   =============================================================================
   -->
-  <xsl:template match="cobos:Object|cobos:Property|cobos:Reference" mode="newlineIndentLevel1">
+  <xsl:template match="cobos:Object|cobos:Property|cobos:Reference|cobos:DataModel" mode="newlineIndentLevel1">
     <xsl:variable name="indent">
       <xsl:apply-templates select="parent::cobos:Object|parent::cobos:DataModel" mode="indent"/>
     </xsl:variable>
@@ -33,7 +33,7 @@
   Gets the indent plus 2 levels for the Object or Property element.
   =============================================================================
   -->
-  <xsl:template match="cobos:Object|cobos:Property|cobos:Reference" mode="newlineIndentLevel2">
+  <xsl:template match="cobos:Object|cobos:Property|cobos:Reference|cobos:DataModel" mode="newlineIndentLevel2">
     <xsl:variable name="indent">
       <xsl:apply-templates select="parent::cobos:Object|parent::cobos:DataModel" mode="indent"/>
     </xsl:variable>
@@ -44,7 +44,7 @@
   Gets the indent plus 3 levels for the Object or Property element.
   =============================================================================
   -->
-  <xsl:template match="cobos:Object|cobos:Property|cobos:Reference" mode="newlineIndentLevel3">
+  <xsl:template match="cobos:Object|cobos:Property|cobos:Reference|cobos:DataModel" mode="newlineIndentLevel3">
     <xsl:variable name="indent">
       <xsl:apply-templates select="parent::cobos:Object|parent::cobos:DataModel" mode="indent"/>
     </xsl:variable>

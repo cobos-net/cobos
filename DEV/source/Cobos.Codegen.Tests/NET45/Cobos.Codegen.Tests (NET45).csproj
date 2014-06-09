@@ -46,8 +46,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\DataModelTests.cs" />
-    <Compile Include="Data\Generated\DataAdapter.cs" />
+    <Compile Include="Data\Generated\DataModelAdapter.cs" />
     <Compile Include="Data\Generated\DataObject.cs" />
+    <Compile Include="Data\Generated\DataObjectAdapter.cs" />
     <Compile Include="Data\Generated\Dataset.cs">
       <DependentUpon>Dataset.xsd</DependentUpon>
       <SubType>Component</SubType>
@@ -69,7 +70,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Stylesheets\DataAdapter.xslt" />
+    <Content Include="Stylesheets\DataModelAdapter.xslt" />
+    <Content Include="Stylesheets\DataObjectAdapter.xslt" />
     <Content Include="Stylesheets\DataObject.xslt" />
     <Content Include="Stylesheets\DataSet.xslt" />
     <Content Include="Stylesheets\Process.xslt" />

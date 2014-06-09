@@ -13,7 +13,7 @@
     <Object name="Contact" type="CustomerContact" />
     <Object name="Address" type="CustomerAddress" />
     <!--
-		<Reference ref="AgencyEventComment" name="Comments" isCollection="true" key="AgencyEventId" refer="AgencyEventId"/>
+		<Reference ref="AgencyEventComment" name="Comments" key="AgencyEventId" refer="AgencyEventId"/>
 		<Property name="RevisionNumber" dbColumn="rev_num" hidden="true"/>
     -->
 		<Metadata>
@@ -60,7 +60,7 @@
 	-->
 
   <Object name="Employee" dbTable="Employees">
-    <Property name="EmployeeID" dbColumn="EmployeeID" />
+    <Property name="EmployeeID" dbColumn="EmployeeID" autoIncrement="true" />
     <Object name="Personal">
       <Property name="LastName" dbColumn="LastName" />
       <Property name="FirstName" dbColumn="FirstName" />

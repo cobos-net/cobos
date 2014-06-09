@@ -34,7 +34,7 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' or '$(Configuration)|$(Platform)' == 'Debug|x86' or '$(Configuration)|$(Platform)' == 'Debug|x64' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -44,7 +44,7 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' or '$(Configuration)|$(Platform)' == 'Release|x86' or '$(Configuration)|$(Platform)' == 'Release|x64' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -78,14 +78,20 @@
     <Compile Include="..\NET45\Cache\CacheFile.cs">
       <Link>Cache\CacheFile.cs</Link>
     </Compile>
+    <Compile Include="..\NET45\ComponentModel\ObservableObject.cs">
+      <Link>ComponentModel\ObservableObject.cs</Link>
+    </Compile>
     <Compile Include="..\NET45\Extensions\AssemblyExtensions.cs">
       <Link>Extensions\AssemblyExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\NET45\Extensions\DateExtensions.cs">
-      <Link>Extensions\DateExtensions.cs</Link>
+    <Compile Include="..\NET45\Extensions\DateTimeExtensions.cs">
+      <Link>Extensions\DateTimeExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\NET45\File\DriveMapping.cs">
-      <Link>File\DriveMapping.cs</Link>
+    <Compile Include="..\NET45\Extensions\DateTimeTruncateTo.cs">
+      <Link>Extensions\DateTimeTruncateTo.cs</Link>
+    </Compile>
+    <Compile Include="..\NET45\Extensions\EnumExtensions.cs">
+      <Link>Extensions\EnumExtensions.cs</Link>
     </Compile>
     <Compile Include="..\NET45\Diagnostics\DateTimePrecise.cs">
       <Link>Diagnostics\DateTimePrecise.cs</Link>
@@ -105,20 +111,26 @@
     <Compile Include="..\NET45\Extensions\XmlExtensions.cs">
       <Link>Extensions\XmlExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\NET45\File\FileHandle.cs">
-      <Link>File\FileHandle.cs</Link>
+    <Compile Include="..\NET45\IO\DriveMapping.cs">
+      <Link>IO\DriveMapping.cs</Link>
     </Compile>
-    <Compile Include="..\NET45\File\FileUtility.cs">
-      <Link>File\FileUtility.cs</Link>
+    <Compile Include="..\NET45\IO\FileHandle.cs">
+      <Link>IO\FileHandle.cs</Link>
     </Compile>
-    <Compile Include="..\NET45\File\FileVersionHelper.cs">
-      <Link>File\FileVersionHelper.cs</Link>
+    <Compile Include="..\NET45\IO\FileUtility.cs">
+      <Link>IO\FileUtility.cs</Link>
     </Compile>
-    <Compile Include="..\NET45\File\NormalisedPath.cs">
-      <Link>File\NormalisedPath.cs</Link>
+    <Compile Include="..\NET45\IO\FileVersionHelper.cs">
+      <Link>IO\FileVersionHelper.cs</Link>
     </Compile>
-    <Compile Include="..\NET45\File\PathResolver.cs">
-      <Link>File\PathResolver.cs</Link>
+    <Compile Include="..\NET45\IO\LookaheadTextReader.cs">
+      <Link>IO\LookaheadTextReader.cs</Link>
+    </Compile>
+    <Compile Include="..\NET45\IO\NormalisedPath.cs">
+      <Link>IO\NormalisedPath.cs</Link>
+    </Compile>
+    <Compile Include="..\NET45\IO\PathResolver.cs">
+      <Link>IO\PathResolver.cs</Link>
     </Compile>
     <Compile Include="..\NET45\Plugin\PluginAttribute.cs">
       <Link>Plugin\PluginAttribute.cs</Link>

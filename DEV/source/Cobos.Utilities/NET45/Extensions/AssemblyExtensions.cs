@@ -35,7 +35,7 @@ namespace Cobos.Utilities.Extensions
     using System.Linq;
     using System.Reflection;
     using System.Security.Permissions;
-    using Cobos.Utilities.File;
+    using Cobos.Utilities.IO;
 
     /// <summary>
     /// Extension methods for the <see cref="Assembly"/> class.
@@ -48,7 +48,7 @@ namespace Cobos.Utilities.Extensions
         /// <typeparam name="T">The Attribute type to look for.</typeparam>
         /// <param name="self">The 'this' object reference.</param>
         /// <returns>A list of all types marked with the attribute.</returns>
-        public static List<Type> GetAllTypesWithAttribute<T>(this Assembly self)
+        public static List<Type> GetAllTypesWithCustomAttribute<T>(this Assembly self)
             where T : Attribute
         {
             var result = new List<Type>();
@@ -81,7 +81,7 @@ namespace Cobos.Utilities.Extensions
         {
             if (!File.Exists(path))
             {
-                throw new ArgumentException("The assembly path does not exist: " + path);
+                throw new FileNotFoundException("The assembly path does not exist: " + path);
             }
 
             var perm = new FileIOPermission(FileIOPermissionAccess.AllAccess, path);
@@ -113,7 +113,7 @@ namespace Cobos.Utilities.Extensions
 
             if (path == null)
             {
-                throw new ArgumentException("Cannot find the relative assembly: " + relativePath);
+                throw new FileNotFoundException("Cannot find the relative assembly: " + relativePath);
             }
 
             return LoadAssembly(path.ToString());

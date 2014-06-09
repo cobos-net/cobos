@@ -159,7 +159,7 @@ namespace Cobos.Build.Targets
         /// <returns>true if the task successfully executed; otherwise, false.</returns>
         public override bool Execute()
         {
-            var database =  DatabaseAdapterFactory.Instance.TryCreate(
+            var database = DatabaseAdapterFactory.Instance.TryCreate(
                                                                 Enum.GetName(typeof(DatabasePlatformEnum), this.databasePlatform),
                                                                 this.ConnectionString);
 

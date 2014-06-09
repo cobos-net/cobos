@@ -41,7 +41,7 @@
 
   <xsl:template match="cobos:Property[@dbType = 'xsd:string' or contains(@dbType, 'string_')]" mode="sqlDeleteWhere">
     <xsl:variable name="columnName">
-      <xsl:apply-templates mode="qualifiedName" select="."/>
+      <xsl:apply-templates mode="fullName" select="."/>
     </xsl:variable>
     <xsl:value-of select="concat(@dbColumn, ' = ', $apos, $quot, ' + row[', $quot, @dbColumn, $quot, ', global::System.Data.DataRowVersion.Original].ToString() + ', $quot, $apos)"/>
   </xsl:template>
@@ -49,7 +49,7 @@
   <!-- -->
   <xsl:template match="cobos:Property[not(@dbType = 'xsd:string' or contains(@dbType, 'string_'))]" mode="sqlDeleteWhere">
     <xsl:variable name="columnName">
-      <xsl:apply-templates mode="qualifiedName" select="."/>
+      <xsl:apply-templates mode="fullName" select="."/>
     </xsl:variable>
     <xsl:value-of select="concat(@dbColumn, ' = ', $quot, ' + row[', $quot, @dbColumn, $quot, ', global::System.Data.DataRowVersion.Original].ToString() + ', $quot)"/>
   </xsl:template>

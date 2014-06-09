@@ -39,17 +39,17 @@
   invalid characters for class naming conventions.
   =============================================================================
   -->
-  <xsl:variable name="invalidClassNameChar">
+  <xsl:variable name="invalidTypeNameChar">
     <xsl:text>!@#$%^&amp;*()-+={[}}|\:;"'&lt;&gt;,./?~`</xsl:text>
   </xsl:variable>
   <!-- 
   =============================================================================
   =============================================================================
   -->
-  <xsl:template name="tokensToClassName">
+  <xsl:template name="tokensToTypeName">
     <xsl:param name="tokens"/>
     <xsl:call-template name="titleCaseTokens">
-      <xsl:with-param name="tokens" select="translate($tokens, $invalidClassNameChar, '')"/>
+      <xsl:with-param name="tokens" select="translate($tokens, $invalidTypeNameChar, '')"/>
     </xsl:call-template>
   </xsl:template>
   <!-- 
@@ -83,15 +83,15 @@
   Convert a CAPS_UNDERSCORE_TITLE (e.g. database column name) to TitleCase
   =============================================================================
   -->
-  <xsl:template name="capsUnderscoreToClassName">
+  <xsl:template name="capsUnderscoreToTypeName">
     <xsl:param name="tokens"/>
     <xsl:call-template name="capsUnderscoreToTitleCase">
-      <xsl:with-param name="tokens" select="translate($tokens, $invalidClassNameChar, '')"/>
+      <xsl:with-param name="tokens" select="translate($tokens, $invalidTypeNameChar, '')"/>
     </xsl:call-template>
   </xsl:template>
   <!-- 
   =============================================================================
-  Recursively called from capsUnderscoreToClassName.
+  Recursively called from capsUnderscoreToTypeName.
   =============================================================================
   -->
   <xsl:template name="capsUnderscoreToTitleCase">

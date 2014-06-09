@@ -192,14 +192,7 @@
 	Process a reference object
 	=============================================================================
 	-->
-	<xsl:template match="cobos:Reference[not(@isCollection)]">
-		<xsd:element ref="{@ref}" minOccurs="0" maxOccurs="1"/>
-	</xsl:template>
-  <!--
-	=============================================================================
-	=============================================================================
-	-->
-  <xsl:template match="cobos:Reference[@isCollection]">
+  <xsl:template match="cobos:Reference">
 		<xsd:element name="{@name}">
 			<xsd:complexType>
 				<xsd:sequence>
@@ -294,7 +287,7 @@
 	<xsl:template match="xsd:element" mode="tableObjectElements">
 		<xsl:element name="xsd:element">
 			<xsl:attribute name="name">
-				<xsl:call-template name="capsUnderscoreToClassName">
+				<xsl:call-template name="capsUnderscoreToTypeName">
 					<xsl:with-param name="tokens" select="@name"/>
 				</xsl:call-template>
 			</xsl:attribute>

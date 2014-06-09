@@ -103,7 +103,7 @@ namespace Cobos.Utilities.Plugin
         {
             var assembly = AssemblyExtensions.LoadAssembly(path);
 
-            var types = assembly.GetAllTypesWithAttribute<PluginAttribute>();
+            var types = assembly.GetAllTypesWithCustomAttribute<PluginAttribute>();
 
             var type = types.FirstOrDefault(t => string.Compare(t.Name, typeName) == 0);
 

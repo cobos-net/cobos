@@ -24,7 +24,7 @@
   -->
   <!--  -->
   <xsl:template match="cobos:DataModel|cobos:TableObject|cobos:Interface" mode="className">
-    <xsl:call-template name="tokensToClassName">
+    <xsl:call-template name="tokensToTypeName">
       <xsl:with-param name="tokens" select="@name"/>
     </xsl:call-template>
   </xsl:template>
@@ -34,7 +34,7 @@
   =============================================================================
   -->
   <xsl:template match="cobos:Object[parent::cobos:DataModel]" mode="className">
-    <xsl:call-template name="tokensToClassName">
+    <xsl:call-template name="tokensToTypeName">
       <xsl:with-param name="tokens" select="@name"/>
     </xsl:call-template>
   </xsl:template>
@@ -44,7 +44,7 @@
   =============================================================================
   -->
   <xsl:template match="cobos:Object[@type][not(parent::cobos:DataModel)]" mode="className">
-    <xsl:call-template name="tokensToClassName">
+    <xsl:call-template name="tokensToTypeName">
       <xsl:with-param name="tokens" select="@type"/>
     </xsl:call-template>
   </xsl:template>
@@ -54,7 +54,7 @@
   =============================================================================
   -->
   <xsl:template match="cobos:Object[not(@type)][not(parent::cobos:DataModel)]" mode="className">
-    <xsl:call-template name="tokensToClassName">
+    <xsl:call-template name="tokensToTypeName">
       <xsl:with-param name="tokens" select="concat(../@name, ' ', @name)"/>
     </xsl:call-template>
   </xsl:template>
@@ -86,8 +86,8 @@
   Qualified class name - valid identifier name.
   =============================================================================
   -->
-  <xsl:template match="cobos:Object" mode="qualifiedName">
-    <xsl:apply-templates select="ancestor::*[self::cobos:Object | self::cobos:Interface]" mode="qualifiedNameForClass"/>
+  <xsl:template match="cobos:Object" mode="fullName">
+    <xsl:apply-templates select="ancestor::*[self::cobos:Object|self::cobos:Interface]" mode="fullNameForNestedType"/>
     <xsl:call-template name="titleCaseName">
       <xsl:with-param name="name">
         <xsl:value-of select="@name"/>
@@ -99,7 +99,7 @@
   Fully qualified class name.
   =============================================================================
   -->
-  <xsl:template match="cobos:Object|cobos:Interface" mode="qualifiedNameForClass">
+  <xsl:template match="cobos:Object|cobos:Interface" mode="fullNameForNestedType">
     <xsl:call-template name="titleCaseName">
       <xsl:with-param name="name">
         <xsl:value-of select="@name"/>
@@ -150,7 +150,7 @@
   Gets the memeber name for any element.
   =============================================================================
   -->
-  <xsl:template match="cobos:DataModel|cobos:TableObject|cobos:Interface|cobos:Object|cobos:Reference|cobos:Property" mode="memberName">
+  <xsl:template match="cobos:DataModel|cobos:TableObject|cobos:Interface|cobos:Object|cobos:Reference|cobos:Property" mode="fieldName">
     <xsl:value-of select="concat(translate(substring(@name, 1, 1), $uppercase, $lowercase), substring(@name, 2), 'Field')" />
   </xsl:template>
   <!--
@@ -162,11 +162,11 @@
   -->
   <!--
   =============================================================================
-  Gets the qualified type name for an Object element.
+  Gets the navigation property path for an Object element.
   =============================================================================
   -->
-  <xsl:template match="cobos:Object" mode="qualifiedTypeName">
-    <xsl:apply-templates select="ancestor::*[self::cobos:Object | self::cobos:Interface]" mode="qualifiedTypeNameForClass"/>
+  <xsl:template match="cobos:Object" mode="navigationProperty">
+    <xsl:apply-templates select="ancestor::*[self::cobos:Object | self::cobos:Interface]" mode="navigationPropertyPath"/>
     <xsl:call-template name="titleCaseName">
       <xsl:with-param name="name">
         <xsl:apply-templates select="." mode="typeName"/>
@@ -175,10 +175,10 @@
   </xsl:template>
   <!--
   =============================================================================
-  Gets the fully qualified type name for an Object or Interface element.
+  Gets the navigation property path for an Object or Interface element.
   =============================================================================
   -->
-  <xsl:template match="cobos:Object|cobos:Interface" mode="qualifiedTypeNameForClass">
+  <xsl:template match="cobos:Object|cobos:Interface" mode="navigationPropertyPath">
     <xsl:call-template name="titleCaseName">
       <xsl:with-param name="name">
         <xsl:apply-templates select="." mode="typeName"/>
@@ -198,8 +198,8 @@
   Qualified name for a scalar property type.
   =============================================================================
   -->
-  <xsl:template match="cobos:Property" mode="qualifiedName">
-    <xsl:apply-templates select="ancestor::cobos:Object[not(position() = last())]" mode="qualifiedNameForProperty"/>
+  <xsl:template match="cobos:Property" mode="fullName">
+    <xsl:apply-templates select="ancestor::cobos:Object[not(position() = last())]" mode="fullNameForProperty"/>
     <xsl:call-template name="titleCaseName">
       <xsl:with-param name="name">
         <xsl:value-of select="@name"/>
@@ -211,7 +211,7 @@
   Qualified name for an object reference property type.
   =============================================================================
   -->
-  <xsl:template match="cobos:Object" mode="qualifiedNameForProperty">
+  <xsl:template match="cobos:Object" mode="fullNameForProperty">
     <xsl:call-template name="titleCaseName">
       <xsl:with-param name="name">
         <xsl:value-of select="@name"/>

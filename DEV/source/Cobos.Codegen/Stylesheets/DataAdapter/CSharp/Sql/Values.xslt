@@ -46,7 +46,7 @@
       <xsl:apply-templates select="." mode="newlineIndentLevel3"/>
     </xsl:variable>
     <xsl:variable name="columnName">
-      <xsl:apply-templates mode="qualifiedName" select="."/>
+      <xsl:apply-templates mode="fullName" select="."/>
     </xsl:variable>
     <xsl:variable name="columnValue">
       <xsl:apply-templates mode="sqlPropertyValue" select="."/>
@@ -63,7 +63,7 @@
   -->
   <xsl:template match="cobos:Property[not(@dbType = 'xsd:string' or @dbType = 'xsd:dateTime' or contains(@dbType, 'string_'))]" mode="sqlPropertyValue">
     <xsl:variable name="columnName">
-      <xsl:apply-templates mode="qualifiedName" select="."/>
+      <xsl:apply-templates mode="fullName" select="."/>
     </xsl:variable>
     <xsl:value-of select="concat('row.', $columnName, '.ToString()')"/>
   </xsl:template>
@@ -74,7 +74,7 @@
   -->
   <xsl:template match="cobos:Property[@dbType = 'xsd:string' or contains(@dbType, 'string_')]" mode="sqlPropertyValue">
     <xsl:variable name="columnName">
-      <xsl:apply-templates mode="qualifiedName" select="."/>
+      <xsl:apply-templates mode="fullName" select="."/>
     </xsl:variable>
     <xsl:value-of select="concat($quot, $apos, $quot, ' + row.', $columnName, '.Replace(', $quot, $apos, $quot, ', ', $quot, $apos, $apos, $quot, ') + ', $quot, $apos, $quot)"/>
   </xsl:template>
@@ -85,7 +85,7 @@
   -->
   <xsl:template match="cobos:Property[@dbType = 'xsd:dateTime']" mode="sqlPropertyValue">
     <xsl:variable name="columnName">
-      <xsl:apply-templates mode="qualifiedName" select="."/>
+      <xsl:apply-templates mode="fullName" select="."/>
     </xsl:variable>
     <xsl:value-of select="concat($quot, $apos, $quot, ' + row.', $columnName, '.ToLocalTime().ToString(', $quot, 'yyyy-MM-dd HH:mm:ss.fff', $quot, ') + ', $quot, $apos, $quot)"/>
   </xsl:template>

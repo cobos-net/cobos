@@ -103,14 +103,14 @@
 	<xsl:template match="cobos:Property">
 		
 		<xsl:element name="xsd:element">
-			<xsl:variable name="qualifiedName">
-				<xsl:apply-templates mode="qualifiedName" select="."/>
+			<xsl:variable name="fullName">
+				<xsl:apply-templates mode="fullName" select="."/>
 			</xsl:variable>
 			<xsl:attribute name="name">
-				<xsl:value-of select="$qualifiedName"/>
+				<xsl:value-of select="$fullName"/>
 			</xsl:attribute>
 			<xsl:attribute name="codegen:typedName">
-				<xsl:value-of select="$qualifiedName"/>
+				<xsl:value-of select="$fullName"/>
 			</xsl:attribute>
 			<xsl:attribute name="msdata:ColumnName">
 				<xsl:apply-templates select="." mode="dbColumn"/>
@@ -123,6 +123,12 @@
 					<xsl:value-of select="/cobos:DataModel/@dateTimeMode"/>
 				</xsl:attribute>
 			</xsl:if>
+      <xsl:if test="@autoIncrement">
+        <xsl:attribute name="msdata:ReadOnly">true</xsl:attribute>
+        <xsl:attribute name="msdata:AutoIncrement">true</xsl:attribute>
+        <xsl:attribute name="msdata:AutoIncrementSeed">-1</xsl:attribute>
+        <xsl:attribute name="msdata:AutoIncrementStep">-1</xsl:attribute>
+      </xsl:if>
 			<xsl:copy-of select="@minOccurs"/>
 		</xsl:element>
 	

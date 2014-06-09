@@ -50,8 +50,9 @@
     <Compile Include="..\NET45\TestManager.cs">
       <Link>TestManager.cs</Link>
     </Compile>
-    <Compile Include="Data\Generated\DataAdapter.cs" />
+    <Compile Include="Data\Generated\DataModelAdapter.cs" />
     <Compile Include="Data\Generated\DataObject.cs" />
+    <Compile Include="Data\Generated\DataObjectAdapter.cs" />
     <Compile Include="Data\Generated\Dataset.cs">
       <SubType>Component</SubType>
     </Compile>

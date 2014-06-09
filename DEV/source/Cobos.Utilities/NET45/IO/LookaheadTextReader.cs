@@ -140,7 +140,7 @@ namespace Cobos.Utilities.IO
         /// Peek the current line to test whether it has data.
         /// </summary>
         /// <returns>True if there is data, false if the string is null empty or full of whitespace characters.</returns>
-        public bool PeekLineHasData()
+        public bool PeekLineIsNotWhitespace()
         {
             if (string.IsNullOrEmpty(this.line))
             {

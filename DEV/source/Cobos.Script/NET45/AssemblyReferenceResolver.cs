@@ -58,7 +58,7 @@ namespace Cobos.Script
             ////
             //// For each reference:
             ////
-            //// 3. Look in the cache for previoulsy identified framework assemblies.  This will be found by the compiler.
+            //// 3. Look in the cache for previously identified framework assemblies.  This will be found by the compiler.
             //// 4. Look in the current working directory.  If found don't add it, it will be picked up.
             //// 5. Look in all previously found folders.  If found don't add it, the path is already referenced.
             //// 5. Look in the cache for previously found folders. If found, add it.  Add the folder to the cache.

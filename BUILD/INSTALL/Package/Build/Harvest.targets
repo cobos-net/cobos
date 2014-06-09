@@ -29,7 +29,7 @@
 		<HarvestDirectoryRef Include="$(DevSourceDirectory)\SOURCE\Cobos.Codegen">
 			<DirectoryRef>Codegen</DirectoryRef>
 			<ComponentGroup>CodegenFiles</ComponentGroup>
-			<Transforms>$(HeatStylesheetDirectory)\heat-ignore-default.xslt</Transforms>
+			<Transforms>$(HeatStylesheetLocalDirectory)\CodegenFiles.xslt</Transforms>
 			<Variable>var.CodegenFiles</Variable>
 		</HarvestDirectoryRef>
 
@@ -53,7 +53,7 @@
 		<HarvestDirectoryRef Include="$(DevSourceDirectory)\SOURCE\">
 			<DirectoryRef>Source</DirectoryRef>
 			<ComponentGroup>SourceFiles</ComponentGroup>
-			<Transforms>$(HeatStylesheetLocalDirectory)\heat-ignore-source.xslt</Transforms>
+			<Transforms>$(HeatStylesheetLocalDirectory)\SourceFiles.xslt</Transforms>
 			<Variable>var.SourceFiles</Variable>
 		</HarvestDirectoryRef>
 

@@ -84,7 +84,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CSharp", "CSharp", "{AE258B
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CSharp", "CSharp", "{BD704BFB-F020-4AB5-9995-60F66CCBCEC3}"
 	ProjectSection(SolutionItems) = preProject
-		Cobos.Codegen\Stylesheets\DataAdapter\CSharp\DataAdapter.xslt = Cobos.Codegen\Stylesheets\DataAdapter\CSharp\DataAdapter.xslt
+		Cobos.Codegen\Stylesheets\DataAdapter\CSharp\DataModelAdapter.xslt = Cobos.Codegen\Stylesheets\DataAdapter\CSharp\DataModelAdapter.xslt
+		Cobos.Codegen\Stylesheets\DataAdapter\CSharp\DataObjectAdapter.xslt = Cobos.Codegen\Stylesheets\DataAdapter\CSharp\DataObjectAdapter.xslt
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sql", "Sql", "{F8E0053F-B9C2-457D-8BB7-5305AB9A3079}"

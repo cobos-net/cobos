@@ -74,44 +74,44 @@ namespace Cobos.Utilities.Tests.IO
                 Assert.False(reader.EOF);
                 Assert.AreEqual(0, reader.LineNumber);
                 Assert.AreEqual("Line 1", reader.PeekLine());
-                Assert.True(reader.PeekLineHasData());
+                Assert.True(reader.PeekLineIsNotWhitespace());
                 Assert.AreEqual("Line 1", reader.NextLine());
 
                 Assert.False(reader.EOF);
                 Assert.AreEqual(1, reader.LineNumber);
                 Assert.AreEqual("Line 2", reader.PeekLine());
-                Assert.True(reader.PeekLineHasData());
+                Assert.True(reader.PeekLineIsNotWhitespace());
                 Assert.AreEqual("Line 2", reader.NextLine());
 
                 Assert.False(reader.EOF);
                 Assert.AreEqual(2, reader.LineNumber);
-                Assert.False(reader.PeekLineHasData());
+                Assert.False(reader.PeekLineIsNotWhitespace());
                 Assert.NotNull(reader.NextLine());
 
                 Assert.False(reader.EOF);
                 Assert.AreEqual(3, reader.LineNumber);
-                Assert.False(reader.PeekLineHasData());
+                Assert.False(reader.PeekLineIsNotWhitespace());
                 Assert.NotNull(reader.NextLine());
 
                 Assert.False(reader.EOF);
                 Assert.AreEqual(4, reader.LineNumber);
-                Assert.False(reader.PeekLineHasData());
+                Assert.False(reader.PeekLineIsNotWhitespace());
                 Assert.NotNull(reader.NextLine());
 
                 Assert.False(reader.EOF);
                 Assert.AreEqual(5, reader.LineNumber);
-                Assert.False(reader.PeekLineHasData());
+                Assert.False(reader.PeekLineIsNotWhitespace());
                 Assert.NotNull(reader.NextLine());
                 
                 Assert.False(reader.EOF);
                 Assert.AreEqual(6, reader.LineNumber);
-                Assert.False(reader.PeekLineHasData());
+                Assert.False(reader.PeekLineIsNotWhitespace());
                 Assert.NotNull(reader.NextLine());
 
                 Assert.False(reader.EOF);
                 Assert.AreEqual(7, reader.LineNumber);
                 Assert.AreEqual("Line 3", reader.PeekLine());
-                Assert.True(reader.PeekLineHasData());
+                Assert.True(reader.PeekLineIsNotWhitespace());
                 Assert.AreEqual("Line 3", reader.NextLine());
 
                 Assert.True(reader.EOF);
@@ -124,7 +124,7 @@ namespace Cobos.Utilities.Tests.IO
                 {
                     Assert.Null(reader.PeekLine());
                     Assert.Null(reader.NextLine());
-                    Assert.False(reader.PeekLineHasData());
+                    Assert.False(reader.PeekLineIsNotWhitespace());
                 }
             }
 
