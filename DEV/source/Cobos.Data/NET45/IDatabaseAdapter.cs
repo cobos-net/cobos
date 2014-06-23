@@ -49,19 +49,6 @@ namespace Cobos.Data
         }
 
         /// <summary>
-        /// Gets a value indicating whether the connection is read only.
-        /// </summary>
-        /// <remarks>
-        /// In some implementations this may result in performance 
-        /// improvements if read-write access is not required.
-        /// Set via the connection string. Not supported on all platforms.
-        /// </remarks>
-        bool ReadOnly
-        {
-            get;
-        }
-
-        /// <summary>
         /// Gets the Database Provider factory instance.
         /// </summary>
         DbProviderFactory ProviderFactory

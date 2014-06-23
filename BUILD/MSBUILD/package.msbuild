@@ -43,11 +43,10 @@
                 Cobos.Web.Utilities;
                 Cobos.Data;
                 Cobos.Data.Tests;
+                Cobos.AssemblyGen;
+                Cobos.AssemblyGen.Tests;
                 Cobos.Build.Targets;
-                Cobos.Build.Targets.Tests;
-                Cobos.Script;
-                Cobos.Script.Tests;
-                Cobos.ScriptEngine"/>
+                Cobos.Build.Targets.Tests"/>
     <ProjectDefinitionsPlatformSpecific
       Include="Cobos.Data.Adapters"/>
   </ItemGroup>

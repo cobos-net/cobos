@@ -31,7 +31,7 @@ namespace Cobos.Data
 {
     using System;
     using System.Data;
-    using Cobos.Data.Utilities;
+    using Cobos.Data.Transforms;
 
     /// <summary>
     /// Allow multiple table queries to be processed asynchronously
@@ -49,9 +49,9 @@ namespace Cobos.Data
         public readonly DataTable Table;
 
         /// <summary>
-        /// Attach a custom aggregator to the query.
+        /// Attach a custom transform to the query.
         /// </summary>
-        public readonly IDataRowAggregator Aggregator;
+        public readonly IDataTableTransform Transform;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DatabaseQuery"/> class.
@@ -69,23 +69,23 @@ namespace Cobos.Data
         /// </summary>
         /// <param name="commandText">The query to execute.</param>
         /// <param name="table">The table to fill with the result.</param>
-        /// <param name="aggregator">The row aggregator to use for collating row data.</param>
-        public DatabaseQuery(string commandText, DataTable table, IDataRowAggregator aggregator)
+        /// <param name="transform">The transform to use on the result.</param>
+        public DatabaseQuery(string commandText, DataTable table, IDataTableTransform transform)
             : this(commandText, table)
         {
-            this.Aggregator = aggregator;
+            this.Transform = transform;
         }
 
         /// <summary>
         /// Get the table result.  
-        /// If an aggregator is provided, it will return the processed table.
+        /// If an transform is provided, it will return the transformed table.
         /// </summary>
         /// <returns>An object representing </returns>
         public DataTable GetResult()
         {
-            if (this.Aggregator != null)
+            if (this.Transform != null)
             {
-                return this.Aggregator.Process(this.Table);
+                return this.Transform.Transform(this.Table);
             }
             else
             {

@@ -83,8 +83,10 @@
     <Compile Include="Diagnostics\DateTimePrecise.cs" />
     <Compile Include="Extensions\ArrayExtensions.cs" />
     <Compile Include="Extensions\IDictionaryExtensions.cs" />
+    <Compile Include="Extensions\MethodInfoExtensions.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="Extensions\XmlExtensions.cs" />
     <Compile Include="IO\DriveMapping.cs" />
     <Compile Include="IO\FileHandle.cs" />

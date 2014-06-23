@@ -102,11 +102,17 @@
     <Compile Include="..\NET45\Extensions\IDictionaryExtensions.cs">
       <Link>Extensions\IDictionaryExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\NET45\Extensions\MethodInfoExtensions.cs">
+      <Link>Extensions\MethodInfoExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\NET45\Extensions\ObjectExtensions.cs">
       <Link>Extensions\ObjectExtensions.cs</Link>
     </Compile>
     <Compile Include="..\NET45\Extensions\StringExtensions.cs">
       <Link>Extensions\StringExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NET45\Extensions\TypeExtensions.cs">
+      <Link>Extensions\TypeExtensions.cs</Link>
     </Compile>
     <Compile Include="..\NET45\Extensions\XmlExtensions.cs">
       <Link>Extensions\XmlExtensions.cs</Link>

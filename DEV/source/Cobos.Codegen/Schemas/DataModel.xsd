@@ -145,23 +145,30 @@
 				</xsd:annotation>
 			</xsd:element>
 		</xsd:sequence>
-		<xsd:attribute name="ref" type="xsd:string" use="required">
+    <xsd:attribute name="ref" type="xsd:string" use="required">
+      <xsd:annotation>
+        <xsd:documentation>
+          The ref attribute references a top level object that
+          will be a relation to the top level object containing
+          this Reference object.
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="name" type="xsd:string" use="required">
 			<xsd:annotation>
 				<xsd:documentation>
-					The ref attribute references a top level object that
-					will be a relation to the top level object containing
-					this Reference object.
-				</xsd:documentation>
+          The name of the property.
+        </xsd:documentation>
 			</xsd:annotation>
 		</xsd:attribute>
-		<xsd:attribute name="key" type="xsd:string">
+		<xsd:attribute name="key" type="xsd:string" use="required">
 			<xsd:annotation>
 				<xsd:documentation>
 					The element in this type that acts as the unique key constraint.
 				</xsd:documentation>
 			</xsd:annotation>
 		</xsd:attribute>
-		<xsd:attribute name="refer" type="xsd:string">
+		<xsd:attribute name="refer" type="xsd:string" use="required">
 			<xsd:annotation>
 				<xsd:documentation>
 					The element in the ref type that acts as the foreign key constraint.

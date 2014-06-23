@@ -153,7 +153,7 @@
   =============================================================================
   -->
   <xsl:template match="cobos:Object" mode="propertyType">
-    <xsl:value-of select="@typeName"/>
+    <xsl:value-of select="@className"/>
   </xsl:template>
   <!--
   =============================================================================

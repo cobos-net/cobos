@@ -136,6 +136,10 @@ namespace Cobos.Data.Utilities
                     {
                         key.Append(((DateTime)row[column.Ordinal]).ToString("s"));
                     }
+                    else if (column.DataType == typeof(DateTimeOffset))
+                    {
+                        key.Append(((DateTimeOffset)row[column.Ordinal]).ToString("u"));
+                    }
                     else
                     {
                         key.Append(row[column.Ordinal]);

@@ -1,5 +1,5 @@
 ﻿// ----------------------------------------------------------------------------
-// <copyright file="IDataRowAggregator.cs" company="Cobos SDK">
+// <copyright file="TransformationPipeline.cs" company="Cobos SDK">
 //
 //      Copyright (c) 2009-2012 Nicholas Davis - nick@cobos.co.uk
 //
@@ -27,31 +27,56 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-namespace Cobos.Data.Utilities
+namespace Cobos.Data.Transforms
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Data;
 
     /// <summary>
-    /// Client provided custom row aggregator
+    /// A transformation pipeline for a DataTable
     /// </summary>
-    public interface IDataRowAggregator : Cobos.Data.Transforms.IDataTableTransform
+    public class TransformationPipeline
     {
         /// <summary>
-        /// Perform custom aggregation on the row group.
-        /// The row collection must contain at least two rows.
+        /// The transforms for the pipeline.
         /// </summary>
-        /// <param name="rows">The rows to aggregate.</param>
-        /// <param name="result">The resultant aggregated row.</param>
-        void Aggregate(List<DataRow> rows, DataRow result);
+        private List<IDataTableTransform> transforms;
 
         /// <summary>
-        /// Rows are aggregated based on key values.  Clients must  
-        /// provide their own custom key generation behavior.
+        /// Initializes a new instance of the <see cref="TransformationPipeline"/> class.
         /// </summary>
-        /// <param name="row">The row to generate the key for.</param>
-        /// <returns>The key associated with this row.</returns>
-        string GetKey(DataRow row);
+        /// <param name="transforms">The transforms for the pipeline.</param>
+        public TransformationPipeline(IEnumerable<IDataTableTransform> transforms)
+        {
+            this.transforms = new List<IDataTableTransform>(transforms);
+        }
+
+        /// <summary>
+        /// Gets the transforms in the pipeline.
+        /// </summary>
+        public ReadOnlyCollection<IDataTableTransform> Transforms
+        {
+            get
+            {
+                return this.transforms.AsReadOnly();
+            }
+        }
+
+        /// <summary>
+        /// Execute the pipeline for the input table.
+        /// </summary>
+        /// <param name="dataTable">The input table.</param>
+        /// <returns>The pipeline result.</returns>
+        public DataTable Execute(DataTable dataTable)
+        {
+            foreach (var transform in this.transforms)
+            {
+                dataTable = transform.Transform(dataTable);
+            }
+
+            return dataTable;
+        }
     }
 }

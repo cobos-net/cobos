@@ -87,7 +87,7 @@
     <xsl:variable name="indent">
       <xsl:apply-templates select="." mode="newlineIndentLevel1"/>
     </xsl:variable>
-    <xsl:value-of select="concat($indent, 'this.', @fieldName, ' = new ', @typeName, '(this.DataRowSource);')"/>
+    <xsl:value-of select="concat($indent, 'this.', @fieldName, ' = new ', @className, '(this.DataRowSource);')"/>
   </xsl:template>
   <!-- 
   =============================================================================

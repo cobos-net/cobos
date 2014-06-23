@@ -1,5 +1,5 @@
 ﻿// ----------------------------------------------------------------------------
-// <copyright file="IDataRowAggregator.cs" company="Cobos SDK">
+// <copyright file="TypeExtensions.cs" company="Cobos SDK">
 //
 //      Copyright (c) 2009-2012 Nicholas Davis - nick@cobos.co.uk
 //
@@ -27,31 +27,36 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-namespace Cobos.Data.Utilities
+namespace Cobos.Utilities.Extensions
 {
     using System;
-    using System.Collections.Generic;
-    using System.Data;
+    using System.Linq;
+    using System.Reflection;
 
     /// <summary>
-    /// Client provided custom row aggregator
+    /// Extension methods for the <see cref="Type"/> class.
     /// </summary>
-    public interface IDataRowAggregator : Cobos.Data.Transforms.IDataTableTransform
+    public static class TypeExtensions
     {
         /// <summary>
-        /// Perform custom aggregation on the row group.
-        /// The row collection must contain at least two rows.
+        /// Gets the default value for a type.
         /// </summary>
-        /// <param name="rows">The rows to aggregate.</param>
-        /// <param name="result">The resultant aggregated row.</param>
-        void Aggregate(List<DataRow> rows, DataRow result);
+        /// <param name="self">The 'this' object reference.</param>
+        /// <returns>The default value for the type.</returns>
+        public static object GetDefaultValue(this Type self)
+        {
+            return self.IsValueType ? Activator.CreateInstance(self) : null;
+        }
 
         /// <summary>
-        /// Rows are aggregated based on key values.  Clients must  
-        /// provide their own custom key generation behavior.
+        /// Get the named method from the type.
         /// </summary>
-        /// <param name="row">The row to generate the key for.</param>
-        /// <returns>The key associated with this row.</returns>
-        string GetKey(DataRow row);
+        /// <param name="self">The 'this' object reference.</param>
+        /// <param name="methodName">The method to find.</param>
+        /// <returns>The named method if found; otherwise null.</returns>
+        public static MethodInfo GetMethodCaseInsensitive(this Type self, string methodName)
+        {
+            return self.GetMethods().FirstOrDefault(m => string.Compare(m.Name, methodName, true) == 0);
+        }
     }
 }

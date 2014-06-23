@@ -85,11 +85,11 @@ namespace Cobos.Data.Utilities
         }
 
         /// <summary>
-        /// Process the DataTable to produce an aggregated result.
+        /// Transform the DataTable to produce an aggregated result.
         /// </summary>
-        /// <param name="table">The DataTable to process.</param>
-        /// <returns>An aggregated DataTable.</returns>
-        public DataTable Process(DataTable table)
+        /// <param name="table">The input DataTable.</param>
+        /// <returns>The transformed result.</returns>
+        public DataTable Transform(DataTable table)
         {
             return DataRowHelper.Aggregate(table, this.aggregateOn, this, true);
         }

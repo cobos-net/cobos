@@ -72,20 +72,6 @@ namespace Cobos.Data.Adapters
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the connection is read only.
-        /// </summary>
-        /// <remarks>
-        /// In some implementations this may result in performance 
-        /// improvements if read-write access is not required.
-        /// Set via the connection string. Not supported on all platforms.
-        /// </remarks>
-        public bool ReadOnly
-        {
-            get;
-            protected set;
-        }
-
-        /// <summary>
         /// Executes an SQL statement against the Connection object of a .NET Framework
         /// data provider, and returns the number of rows affected.
         /// </summary>

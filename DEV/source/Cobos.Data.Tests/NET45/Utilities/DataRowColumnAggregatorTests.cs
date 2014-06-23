@@ -78,7 +78,7 @@ namespace Cobos.Data.Tests.Utilities
 
             DataRowColumnAggregator aggregator = new DataRowColumnAggregator(aggregateOn, groupBy, null);
 
-            DataTable aggregated = aggregator.Process(table);
+            DataTable aggregated = aggregator.Transform(table);
 
             // should have aggregated into two groups: "First 4 Items" and "Last 4 Items"
             Assert.AreEqual(2, aggregated.Rows.Count);
@@ -104,7 +104,7 @@ namespace Cobos.Data.Tests.Utilities
 
             DataRowColumnAggregator aggregator = new DataRowColumnAggregator(aggregateOn, groupBy, null);
 
-            DataTable aggregated = aggregator.Process(table);
+            DataTable aggregated = aggregator.Transform(table);
 
             // should have aggregated into four groups: 1, 2, 3, 4
             Assert.AreEqual(4, aggregated.Rows.Count);
@@ -143,7 +143,7 @@ namespace Cobos.Data.Tests.Utilities
             DataRowColumnComparer comparer = new DataRowColumnComparer(sortBy);
 
             DataRowColumnAggregator aggregator = new DataRowColumnAggregator(aggregateOn, groupBy, comparer);
-            DataTable aggregated = aggregator.Process(table);
+            DataTable aggregated = aggregator.Transform(table);
 
             // should have aggregated into two groups: true and false
             Assert.AreEqual(2, aggregated.Rows.Count);
@@ -156,7 +156,7 @@ namespace Cobos.Data.Tests.Utilities
 
             comparer = new DataRowColumnComparer(sortBy, DataRowColumnComparer.SortOrderEnum.Descending, false);
             aggregator = new DataRowColumnAggregator(aggregateOn, groupBy, comparer);
-            aggregated = aggregator.Process(table);
+            aggregated = aggregator.Transform(table);
 
             // should have aggregated into two groups: true and false
             Assert.AreEqual(2, aggregated.Rows.Count);
@@ -172,7 +172,7 @@ namespace Cobos.Data.Tests.Utilities
 
             comparer = new DataRowColumnComparer(sortBy, DataRowColumnComparer.SortOrderEnum.Ascending, true);
             aggregator = new DataRowColumnAggregator(aggregateOn, groupBy, comparer);
-            aggregated = aggregator.Process(table);
+            aggregated = aggregator.Transform(table);
 
             // again, should have aggregated into two groups: true and false
             Assert.AreEqual(2, aggregated.Rows.Count);
@@ -185,7 +185,7 @@ namespace Cobos.Data.Tests.Utilities
 
             comparer = new DataRowColumnComparer(sortBy, DataRowColumnComparer.SortOrderEnum.Descending, false);
             aggregator = new DataRowColumnAggregator(aggregateOn, groupBy, comparer);
-            aggregated = aggregator.Process(table);
+            aggregated = aggregator.Transform(table);
 
             // again, should have aggregated into two groups: true and false
             Assert.AreEqual(2, aggregated.Rows.Count);
@@ -235,7 +235,7 @@ namespace Cobos.Data.Tests.Utilities
 
             DataRowColumnAggregator aggregator = new DataRowColumnAggregator(aggregateOn, groupBy, null);
 
-            DataTable aggregated = aggregator.Process(table);
+            DataTable aggregated = aggregator.Transform(table);
 
             // should have aggregated into two groups: "First 4 Items" and "Last 4 Items"
             Assert.AreEqual(2, aggregated.Rows.Count);
@@ -263,7 +263,7 @@ namespace Cobos.Data.Tests.Utilities
 
             DataRowColumnAggregator aggregator = new DataRowColumnAggregator(aggregateOn, groupBy, null);
 
-            DataTable aggregated = aggregator.Process(table);
+            DataTable aggregated = aggregator.Transform(table);
 
             // should have aggregated into three groups: null, "First 4 Items" and "Last 4 Items"
             Assert.AreEqual(3, aggregated.Rows.Count);
@@ -297,7 +297,7 @@ namespace Cobos.Data.Tests.Utilities
 
             DataRowColumnAggregator aggregator = new DataRowColumnAggregator(aggregateOn, groupBy, comparer);
 
-            DataTable aggregated = aggregator.Process(table);
+            DataTable aggregated = aggregator.Transform(table);
 
             // should have aggregated into two groups: "First 4 Items" and "Last 4 Items"
             Assert.AreEqual(2, aggregated.Rows.Count);

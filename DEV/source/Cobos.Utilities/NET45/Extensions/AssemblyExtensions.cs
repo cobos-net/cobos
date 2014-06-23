@@ -72,6 +72,31 @@ namespace Cobos.Utilities.Extensions
         }
 
         /// <summary>
+        /// Get the named type.
+        /// </summary>
+        /// <param name="self">The 'this' object reference.</param>
+        /// <param name="typeName">The name of the type to find.</param>
+        /// <returns>The type if found; otherwise null.</returns>
+        public static Type GetType(this Assembly self, string typeName)
+        {
+            foreach (Type type in self.GetTypes())
+            {
+                if (type.IsAbstract)
+                {
+                    continue;
+                }
+
+                if (string.Compare(type.Name, typeName, true) == 0
+                    || string.Compare(type.FullName, typeName, true) == 0)
+                {
+                    return type;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
         /// Loads the assembly at the given path.
         /// </summary>
         /// <param name="path">The path of the assembly.</param>
@@ -79,6 +104,11 @@ namespace Cobos.Utilities.Extensions
         /// <exception cref="ArgumentException">Throws if the path is invalid.</exception>
         public static Assembly LoadAssembly(string path)
         {
+            if (!Path.IsPathRooted(path))
+            {
+                path = Path.Combine(Environment.CurrentDirectory, path);
+            }
+
             if (!File.Exists(path))
             {
                 throw new FileNotFoundException("The assembly path does not exist: " + path);
@@ -87,7 +117,14 @@ namespace Cobos.Utilities.Extensions
             var perm = new FileIOPermission(FileIOPermissionAccess.AllAccess, path);
             perm.Assert();
 
-            var assembly = Assembly.Load(AssemblyName.GetAssemblyName(path));
+            var assemblyName = AssemblyName.GetAssemblyName(path);
+
+            var assembly = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.GetName() == assemblyName);
+
+            if (assembly == null)
+            {
+                assembly = Assembly.Load(assemblyName);
+            }
 
             if (assembly == null)
             {

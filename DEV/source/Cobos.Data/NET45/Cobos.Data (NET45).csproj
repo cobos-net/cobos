@@ -74,6 +74,8 @@
     <Compile Include="Statements\SqlInsertTemplate.cs" />
     <Compile Include="Statements\SqlSelectTemplate.cs" />
     <Compile Include="Statements\SqlUpdateTemplate.cs" />
+    <Compile Include="Transforms\IDataTableTransform.cs" />
+    <Compile Include="Transforms\TransformationPipeline.cs" />
     <Compile Include="Utilities\DataColumnDescriptor.cs" />
     <Compile Include="Utilities\DataRowColumnAggregator.cs" />
     <Compile Include="Utilities\DataRowHelper.cs" />

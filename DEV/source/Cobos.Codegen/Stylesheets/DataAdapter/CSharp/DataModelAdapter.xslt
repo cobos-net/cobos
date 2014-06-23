@@ -300,29 +300,28 @@
       <xsl:apply-templates select="." mode="newlineIndentLevel1"/>
     </xsl:variable>
     <xsl:variable name="objectDependencies">
-      <xsl:apply-templates select="." mode="objectDependencies"/>
+      <xsl:copy-of select="."/>
+      <xsl:copy-of select="cobos:Reference"/>
     </xsl:variable>
     <xsl:variable name="objects" select="msxsl:node-set($objectDependencies)"/>
-    <xsl:variable name="count" select="count($objects/cobos:Object)"/>
+    <xsl:variable name="count" select="count($objects/*)"/>
     <xsl:value-of select="concat($indent, '    var action = new global::System.Action&lt;string[], string&gt;[', $count,']')"/>
     <xsl:value-of select="concat($indent, '    {')"/>
-    <xsl:apply-templates select="$objects" mode="objectDelegates"/>
+    <xsl:apply-templates select="$objects/*" mode="objectDelegates"/>
     <xsl:value-of select="concat($indent, '    };')"/>
     <xsl:value-of select="$indent"/>
     <xsl:value-of select="concat($indent, '    var result = new global::System.IAsyncResult[', $count,'];')"/>
     <xsl:value-of select="$indent"/>
-    <xsl:for-each select="$objects/cobos:Object">
-      <xsl:apply-templates select="." mode="beginInvoke">
-        <xsl:with-param name="where">
-          <xsl:text>where</xsl:text>
-        </xsl:with-param>
-        <xsl:with-param name="orderBy">
-          <xsl:apply-templates select="." mode="orderBy"/>
-        </xsl:with-param>
-      </xsl:apply-templates>
-    </xsl:for-each>
+    <xsl:apply-templates select="$objects/*" mode="beginInvoke">
+      <xsl:with-param name="where">
+        <xsl:text>where</xsl:text>
+      </xsl:with-param>
+      <xsl:with-param name="orderBy">
+        <xsl:apply-templates select="." mode="orderBy"/>
+      </xsl:with-param>
+    </xsl:apply-templates>
     <xsl:value-of select="$indent"/>
-    <xsl:apply-templates select="$objects/cobos:Object" mode="endInvoke"/>
+    <xsl:apply-templates select="$objects/*" mode="endInvoke"/>
   </xsl:template>
   <!-- 
   =============================================================================
@@ -339,7 +338,17 @@
     </xsl:if>
   </xsl:template>
   <!-- ==================================================================== -->
-  <xsl:template match="cobos:Object" mode="beginInvoke">
+  <xsl:template match="cobos:Reference" mode="objectDelegates">
+    <xsl:variable name="indent">
+      <xsl:apply-templates select="." mode="newlineIndentLevel3"/>
+    </xsl:variable>
+    <xsl:value-of select="concat($indent, '    this.', @ref,'.Fill')"/>
+    <xsl:if test="not(position() = last())">
+      <xsl:text>,</xsl:text>
+    </xsl:if>
+  </xsl:template>
+  <!-- ==================================================================== -->
+  <xsl:template match="cobos:Object|cobos:Reference" mode="beginInvoke">
     <xsl:param name="where"/>
     <xsl:param name="orderBy"/>
     <xsl:variable name="indent">
@@ -348,7 +357,7 @@
     <xsl:value-of select="concat($indent, 'result[', position() - 1, '] = action[', position() - 1, '].BeginInvoke(', $where, ', ', $orderBy,', null, null);')"/>
   </xsl:template>
   <!-- ==================================================================== -->
-  <xsl:template match="cobos:Object" mode="endInvoke">
+  <xsl:template match="cobos:Object|cobos:Reference" mode="endInvoke">
     <xsl:variable name="indent">
       <xsl:apply-templates select="." mode="newlineIndentLevel3"/>
     </xsl:variable>
@@ -359,7 +368,11 @@
     <xsl:text>null</xsl:text>
   </xsl:template>
   <!-- ==================================================================== -->
-  <xsl:template match="cobos:Object[position() = last()]" mode="orderBy">
+  <xsl:template match="cobos:Reference" mode="orderBy">
+    <xsl:text>null</xsl:text>
+  </xsl:template>
+  <!-- ==================================================================== -->
+  <xsl:template match="cobos:Object[position() = 1]" mode="orderBy">
     <xsl:text>orderBy</xsl:text>
   </xsl:template>
   <!-- 
