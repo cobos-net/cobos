@@ -48,11 +48,6 @@
     public partial class <xsl:value-of select="@className"/>DataAdapter
     {
         /// &lt;summary&gt;
-        /// Gets the select template.
-        /// &lt;/summary&gt;
-        public static readonly Cobos.Data.Statements.SqlSelectTemplate SelectTemplate = new Cobos.Data.Statements.SqlSelectTemplate(Select, From, InnerJoin, OuterJoin, Where, GroupBy, OrderBy, true);
-
-        /// &lt;summary&gt;
         /// Represents the columns to select.
         /// &lt;/summary&gt;
         private const string Select = "<xsl:apply-templates select=".//cobos:Property" mode="sqlSelect"/>";
@@ -86,6 +81,11 @@
         /// Represents the sub-clauses in the where clause.
         /// &lt;/summary&gt;
         private static readonly string[] Where = <xsl:apply-templates mode="sqlWhere" select="."/>;
+
+        /// &lt;summary&gt;
+        /// Gets the select template.
+        /// &lt;/summary&gt;
+        private static readonly Cobos.Data.Statements.SqlSelectTemplate selectTemplate = new Cobos.Data.Statements.SqlSelectTemplate(Select, From, InnerJoin, OuterJoin, Where, GroupBy, OrderBy, true);
 
         /// &lt;summary&gt;
         /// Initializes a new instance of the &lt;see cref="<xsl:value-of select="@className"/>DataAdapter"/&gt; class.
@@ -134,6 +134,17 @@
         /// Event fired after an entity is deleted.
         /// &lt;/summary&gt;
         public event global::System.Action&lt;<xsl:value-of select="@className"/>&gt; OnDeleted<xsl:value-of select="@className"/>;
+        
+        /// &lt;summary&gt;
+        /// Gets the object representing the select template.
+        /// &lt;/summary&gt;
+        public static Cobos.Data.Statements.SqlSelectTemplate SelectTemplate
+        {
+            get
+            {
+                return <xsl:value-of select="@className"/>DataAdapter.selectTemplate;
+            }
+        }
         
         /// &lt;summary&gt;
         /// Gets the object representing the connection string.
