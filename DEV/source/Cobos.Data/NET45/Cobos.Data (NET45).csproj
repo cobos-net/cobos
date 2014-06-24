@@ -80,6 +80,7 @@
     <Compile Include="Utilities\DataRowColumnAggregator.cs" />
     <Compile Include="Utilities\DataRowHelper.cs" />
     <Compile Include="Utilities\DataRowColumnComparer.cs" />
+    <Compile Include="Utilities\DebugUtility.cs" />
     <Compile Include="Utilities\IDataRowAggregator.cs" />
   </ItemGroup>
   <ItemGroup>

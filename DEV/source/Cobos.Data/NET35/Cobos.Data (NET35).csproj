@@ -101,6 +101,9 @@
     <Compile Include="..\NET45\Transforms\TransformationPipeline.cs">
       <Link>Transforms\TransformationPipeline.cs</Link>
     </Compile>
+    <Compile Include="..\NET45\Utilities\DebugUtility.cs">
+      <Link>Utilities\DebugUtility.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.Net35.cs" />
     <Compile Include="..\NET45\Statements\SqlDeleteTemplate.cs">
       <Link>Statements\SqlDeleteTemplate.cs</Link>
