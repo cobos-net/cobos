@@ -317,7 +317,7 @@
         <xsl:text>where</xsl:text>
       </xsl:with-param>
       <xsl:with-param name="orderBy">
-        <xsl:apply-templates select="." mode="orderBy"/>
+        <xsl:text>orderBy</xsl:text>
       </xsl:with-param>
     </xsl:apply-templates>
     <xsl:value-of select="$indent"/>
@@ -348,13 +348,20 @@
     </xsl:if>
   </xsl:template>
   <!-- ==================================================================== -->
-  <xsl:template match="cobos:Object|cobos:Reference" mode="beginInvoke">
+  <xsl:template match="cobos:Object" mode="beginInvoke">
     <xsl:param name="where"/>
     <xsl:param name="orderBy"/>
     <xsl:variable name="indent">
       <xsl:apply-templates select="." mode="newlineIndentLevel3"/>
     </xsl:variable>
     <xsl:value-of select="concat($indent, 'result[', position() - 1, '] = action[', position() - 1, '].BeginInvoke(', $where, ', ', $orderBy,', null, null);')"/>
+  </xsl:template>
+  <!-- ==================================================================== -->
+  <xsl:template match="cobos:Reference" mode="beginInvoke">
+    <xsl:variable name="indent">
+      <xsl:apply-templates select="." mode="newlineIndentLevel3"/>
+    </xsl:variable>
+    <xsl:value-of select="concat($indent, 'result[', position() - 1, '] = action[', position() - 1, '].BeginInvoke(where, null, null, null);')"/>
   </xsl:template>
   <!-- ==================================================================== -->
   <xsl:template match="cobos:Object|cobos:Reference" mode="endInvoke">

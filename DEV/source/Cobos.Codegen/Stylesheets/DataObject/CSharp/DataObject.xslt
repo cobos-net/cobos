@@ -113,7 +113,7 @@
       <xsl:apply-templates select="." mode="newlineIndent"/>
     </xsl:variable>
     <xsl:apply-templates select="." mode="commentMember"/>
-    <xsl:value-of select="concat($indent, 'private ', @typeName, ' ', @fieldName, ';', $indent)" />
+    <xsl:value-of select="concat($indent, 'private ', @className, ' ', @fieldName, ';', $indent)" />
   </xsl:template>
   <!--
   =============================================================================
