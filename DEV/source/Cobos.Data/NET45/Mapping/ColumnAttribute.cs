@@ -1,7 +1,7 @@
 ﻿// ----------------------------------------------------------------------------
 // <copyright file="ColumnAttribute.cs" company="Cobos SDK">
 //
-//      Copyright (c) 2009-2012 Nicholas Davis - nick@cobos.co.uk
+//      Copyright (c) 2009-2014 Nicholas Davis - nick@cobos.co.uk
 //
 //      Cobos Software Development Kit
 //
@@ -50,6 +50,24 @@ namespace Cobos.Data.Mapping
         /// Gets or sets a value indicating whether this column is a primary key.
         /// </summary>
         public bool IsPrimaryKey
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this column is unique.
+        /// </summary>
+        public bool IsUnique
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this column is a foreign key.
+        /// </summary>
+        public bool IsForeignKey
         {
             get;
             set;

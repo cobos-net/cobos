@@ -1,7 +1,7 @@
 ﻿// ----------------------------------------------------------------------------
 // <copyright file="TestManager.cs" company="Cobos SDK">
 //
-//      Copyright (c) 2009-2012 Nicholas Davis - nick@cobos.co.uk
+//      Copyright (c) 2009-2014 Nicholas Davis - nick@cobos.co.uk
 //
 //      Cobos Software Development Kit
 //
@@ -52,15 +52,26 @@ namespace Cobos.Data.Tests
         }
 
         /// <summary>
+        /// Gets the location of the project files.
+        /// </summary>
+        public static string ProjectDirectory
+        {
+            get
+            {
+                StackTrace st = new StackTrace(new StackFrame(true));
+                StackFrame sf = st.GetFrame(0);
+                return Path.GetDirectoryName(sf.GetFileName()) + @"\";
+            }
+        }
+
+        /// <summary>
         /// Gets the location of the test files.
         /// </summary>
         public static string TestFiles
         {
             get
             {
-                StackTrace st = new StackTrace(new StackFrame(true));
-                StackFrame sf = st.GetFrame(0);
-                return Path.GetDirectoryName(sf.GetFileName()) + @"\TestData\";
+                return ProjectDirectory + @"TestData\";
             }
         }
     }

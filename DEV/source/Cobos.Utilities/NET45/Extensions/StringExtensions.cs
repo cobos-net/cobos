@@ -1,7 +1,7 @@
 ﻿// ----------------------------------------------------------------------------
 // <copyright file="StringExtensions.cs" company="Cobos SDK">
 //
-//      Copyright (c) 2009-2012 Nicholas Davis - nick@cobos.co.uk
+//      Copyright (c) 2009-2014 Nicholas Davis - nick@cobos.co.uk
 //
 //      Cobos Software Development Kit
 //
@@ -35,6 +35,7 @@ namespace Cobos.Utilities.Extensions
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Web;
+    using System.Web.Script.Serialization;
     using Cobos.Utilities.Text;
 
     /// <summary>
@@ -115,12 +116,48 @@ namespace Cobos.Utilities.Extensions
         }
 
         /// <summary>
+        /// deserialize from JSON
+        /// </summary>
+        /// <param name="self">The 'this' object reference</param>
+        /// <returns>Deserialized object</returns>
+        public static object FromJson(this string self)
+        {
+            JavaScriptSerializer serializer = new JavaScriptSerializer();
+            return serializer.DeserializeObject(self);
+        }
+
+        /// <summary>
+        /// Deserialize from JSON as a specified type
+        /// </summary>
+        /// <typeparam name="T">The type to cast to</typeparam>
+        /// <param name="self">The 'this' object reference</param>
+        /// <param name="example">An instance of an anonymous type</param>
+        /// <returns>A reference to the anonymous type.  If the cast fails, then null.</returns>
+        public static T FromJsonAs<T>(this string self, T example)
+        {
+            JavaScriptSerializer serializer = new JavaScriptSerializer();
+            object json = serializer.DeserializeObject(self);
+
+            if (json is Dictionary<string, object>)
+            {
+                return ((Dictionary<string, object>)json).CastByExample(example);
+            }
+            else
+            {
+                // this may or may not work depending on the object type
+                return json.CastByExample(example);
+            }
+        }
+
+        /// <summary>
         /// Tests whether the string is enclosed in quotes: ''
         /// </summary>
         /// <param name="self">The 'this' object reference.</param>
         /// <returns>true if the string is enclosed in quotes; otherwise false.</returns>
         public static bool IsQuoted(this string self)
         {
+            self = self.Trim();
+
             return self.StartsWith("'") && self.EndsWith("'");
         }
 
@@ -134,6 +171,8 @@ namespace Cobos.Utilities.Extensions
         /// </remarks>
         public static string Quote(this string self)
         {
+            self = self.Trim();
+
             // is it already quoted ?
             if (self.StartsWith("'") && self.EndsWith("'"))
             {
@@ -151,10 +190,12 @@ namespace Cobos.Utilities.Extensions
         /// <returns>The SQL string value enclosed in quotes.</returns>
         public static string SQLQuote(this string self, int maxLength)
         {
-            if (self == string.Empty)
+            if (string.IsNullOrEmpty(self))
             {
                 return "''";
             }
+
+            self = self.Trim();
 
             // return SQL friendly quoted text 
             StringBuilder newValue = new StringBuilder(self);
@@ -176,7 +217,7 @@ namespace Cobos.Utilities.Extensions
             // another single quote, backslash before real backslash, backslash before double quoute, backslash before questionmark
             char[] appendTo = new char[] { '\'', '\\', '\\', '\\' };
 
-            // TODO: perhaps could use regex here.  Not sure if that will be quicker tho ... 
+            // TODO: perhaps could use regex here.  Not sure if that will be quicker though... 
             int k = 0;
             for (int i = 0; i < self.Length; ++i, ++k)
             {

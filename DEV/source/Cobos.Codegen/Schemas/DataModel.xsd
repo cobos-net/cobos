@@ -18,15 +18,17 @@
 
 	============================================================================
 	-->
-	<!--
+  <xsd:include schemaLocation="Filter.xsd"/>
+  <xsd:include schemaLocation="Sort.xsd"/>
+  <!--
 	=============================================================================
 	Root data model element
 	=============================================================================
 	-->
-	<xsd:element name="DataModel" type="DataModelType"/>
-	<xsd:complexType name="DataModelType">
+	<xsd:element name="DataModel" type="cobos:DataModel"/>
+	<xsd:complexType name="DataModel">
 		<xsd:sequence>
-			<xsd:element ref="DataModelComponent" maxOccurs="unbounded"/>
+			<xsd:element ref="cobos:DataModelComponent" maxOccurs="unbounded"/>
 		</xsd:sequence>
 		<xsd:attribute name="name" type="xsd:string" use="required"/>
 		<xsd:attribute name="dateTimeMode" type="cobos:DateTimeModeEnum" use="required"/>
@@ -36,8 +38,8 @@
 	Data model component
 	=============================================================================
 	-->
-  <xsd:element name="DataModelComponent" type="DataModelComponentType"/>
-  <xsd:complexType name="DataModelComponentType" abstract="true">
+  <xsd:element name="DataModelComponent" type="cobos:DataModelComponent" abstract="true"/>
+  <xsd:complexType name="DataModelComponent" abstract="true">
 		<xsd:attribute name="name" type="xsd:string" use="required"/>
 	</xsd:complexType>
 	<!--
@@ -45,18 +47,18 @@
 	Data object
 	=============================================================================
 	-->
-	<xsd:element name="Object" type="ObjectType" substitutionGroup="DataModelComponent"/>
-  <xsd:complexType name="ObjectType">
+	<xsd:element name="Object" type="cobos:Object" substitutionGroup="cobos:DataModelComponent"/>
+  <xsd:complexType name="Object">
 		<xsd:complexContent>
-			<xsd:extension base="DataModelComponentType">
+			<xsd:extension base="DataModelComponent">
 				<xsd:sequence>
 					<xsd:choice minOccurs="0" maxOccurs="unbounded">
-						<xsd:element ref="Object"/>
-						<xsd:element ref="Property"/>
-						<xsd:element ref="XsdProperty"/>
-						<xsd:element ref="Reference"/>
+						<xsd:element ref="cobos:Object"/>
+						<xsd:element ref="cobos:Property"/>
+						<xsd:element ref="cobos:XsdProperty"/>
+						<xsd:element ref="cobos:Reference"/>
 					</xsd:choice>
-					<xsd:element name="Metadata" type="TableMetadataType" minOccurs="0"/>
+					<xsd:element name="Metadata" type="cobos:TableMetadata" minOccurs="0"/>
 				</xsd:sequence>
 				<xsd:attribute name="name" type="xsd:string" use="required">
 					<xsd:annotation>
@@ -120,10 +122,10 @@
 	Data type
 	=============================================================================
 	-->
-	<xsd:element name="Type" type="TypeType" substitutionGroup="DataModelComponent"/> 
-	<xsd:complexType name="TypeType">
+	<xsd:element name="Type" type="cobos:DataType" substitutionGroup="cobos:DataModelComponent"/> 
+	<xsd:complexType name="DataType">
 		<xsd:complexContent>
-			<xsd:extension base="ObjectType">
+			<xsd:extension base="Object">
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
@@ -132,10 +134,10 @@
 	Reference type - forms relationships between top level objects
 	=============================================================================
 	-->
-	<xsd:element name="Reference" type="ReferenceType"/>
-	<xsd:complexType name="ReferenceType">
+	<xsd:element name="Reference" type="cobos:Reference"/>
+	<xsd:complexType name="Reference">
 		<xsd:sequence>
-			<xsd:element name="Metadata" type="TableMetadataType" minOccurs="0">
+			<xsd:element name="Metadata" type="cobos:TableMetadata" minOccurs="0">
 				<xsd:annotation>
 					<xsd:documentation>
 						This optional element can be used to define additional 
@@ -181,12 +183,12 @@
 	Table object - Use this to publish an entire database table row as an object
 	=============================================================================
 	-->
-	<xsd:element name="TableObject" type="TableObjectType" substitutionGroup="DataModelComponent"/>
-	<xsd:complexType name="TableObjectType">
+	<xsd:element name="TableObject" type="cobos:TableObject" substitutionGroup="cobos:DataModelComponent"/>
+	<xsd:complexType name="TableObject">
 		<xsd:complexContent>
-			<xsd:extension base="DataModelComponentType">
+			<xsd:extension base="DataModelComponent">
 				<xsd:sequence>
-					<xsd:element name="Metadata" type="TableMetadataType"/>
+					<xsd:element name="Metadata" type="cobos:TableMetadata"/>
 				</xsd:sequence>
 				<xsd:attribute name="dbTable" type="xsd:string">
 					<xsd:annotation>
@@ -204,8 +206,8 @@
 	Database property
 	=============================================================================
 	-->
-	<xsd:element name="Property" type="PropertyType"/>
-	<xsd:complexType name="PropertyType">
+	<xsd:element name="Property" type="cobos:Property"/>
+	<xsd:complexType name="Property">
 		<xsd:simpleContent>
 			<xsd:extension base="xsd:string">
 				<xsd:attribute name="name" type="xsd:string" use="required">
@@ -251,12 +253,12 @@
             </xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
-				<xsd:attribute name="hidden" type="xsd:boolean" use="optional" default="false">
+				<xsd:attribute name="hidden" type="xsd:boolean" use="optional" fixed="true">
 					<xsd:annotation>
 						<xsd:documentation>
-							If no name is provided, the property will be hidden,
-							i.e. the property will only be used as part
-							of the database query.
+							If specified, the property will be hidden in the serialized object,
+							i.e. the property will only be used as part of the database query
+              or for referencing two objects.
 						</xsd:documentation>
 					</xsd:annotation>
 				</xsd:attribute>
@@ -285,8 +287,8 @@
 	Schema only property
 	=============================================================================
 	-->
-	<xsd:element name="XsdProperty" type="XsdPropertyType"/>
-	<xsd:complexType name="XsdPropertyType">
+	<xsd:element name="XsdProperty" type="cobos:XsdProperty"/>
+	<xsd:complexType name="XsdProperty">
 		<xsd:simpleContent>
 			<xsd:extension base="xsd:string">
 				<xsd:attribute name="name" type="xsd:string" use="required">
@@ -320,9 +322,9 @@
 	<xsd:element name="Enumeration">
 		<xsd:complexType>
 			<xsd:complexContent>
-				<xsd:extension base="DataModelComponentType">
+				<xsd:extension base="DataModelComponent">
 					<xsd:sequence>
-						<xsd:element name="Item" type="EnumerationItem" maxOccurs="unbounded"/>
+						<xsd:element name="Item" type="cobos:EnumerationItem" maxOccurs="unbounded"/>
 					</xsd:sequence>
 					<xsd:attribute name="base" type="xsd:string" use="required"/>
 				</xsd:extension>
@@ -363,21 +365,21 @@
 	Table metadata.
 	=============================================================================
 	-->
-	<xsd:complexType name="TableMetadataType">
+	<xsd:complexType name="TableMetadata">
 		<xsd:sequence>
-			<xsd:element name="Filters" type="TableFiltersType" minOccurs="0"/>
-			<xsd:element name="Joins" type="TableJoinsType" minOccurs="0"/>
-			<xsd:element name="Order" type="OrderType" minOccurs="0"/>
-			<xsd:element name="Group" type="GroupType" minOccurs="0"/>
-			<xsd:element name="StringAggregate" type="StringAggregateType" minOccurs="0"/>
+      <xsd:element name="Filter" type="cobos:Filter" minOccurs="0"/>
+      <xsd:element name="Joins" type="cobos:TableJoins" minOccurs="0"/>
+      <xsd:element name="SortBy" type="cobos:SortBy" minOccurs="0"/>
+			<xsd:element name="GroupBy" type="cobos:GroupBy" minOccurs="0"/>
+			<xsd:element name="StringAggregate" type="cobos:StringAggregate" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<!--
 	=============================================================================
-	Table filters - i.e. canned where clauses.
+	Table filters - Default where clauses.
 	=============================================================================
 	-->
-	<xsd:complexType name="TableFiltersType">
+	<xsd:complexType name="TableFilters">
 		<xsd:sequence>
 			<xsd:element name="Filter" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
 		</xsd:sequence>
@@ -387,27 +389,45 @@
 	Table joins.
 	=============================================================================
 	-->
-	<xsd:complexType name="TableJoinsType">
+	<xsd:complexType name="TableJoins">
 		<xsd:sequence>
-			<xsd:element ref="TableJoin" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element ref="cobos:TableJoin" minOccurs="0" maxOccurs="unbounded"/>
 		</xsd:sequence>
 	</xsd:complexType>
-	<xsd:element name="TableJoin" type="TableJoinType"/>
-	<xsd:complexType name="TableJoinType" abstract="true">
+	<xsd:element name="TableJoin" type="cobos:TableJoin" abstract="true"/>
+	<xsd:complexType name="TableJoin" abstract="true">
 		<xsd:sequence/>
-		<xsd:attribute name="foreignKey" type="xsd:string"/>
-		<xsd:attribute name="references" type="xsd:string"/>
-		<xsd:attribute name="referenceKey" type="xsd:string"/>
+    <xsd:attribute name="ref" type="xsd:string">
+      <xsd:annotation>
+        <xsd:documentation>
+          The name of the right hand table.
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="key" type="xsd:string">
+      <xsd:annotation>
+        <xsd:documentation>
+          The foreign key in the left hand table.
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="refer" type="xsd:string">
+      <xsd:annotation>
+        <xsd:documentation>
+          The primary key in the right hand table.
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
 	</xsd:complexType>
   <!--
 	=============================================================================
 	Inner join.
 	=============================================================================
 	-->
-  <xsd:element name="InnerJoin" type="InnerJoinType"/>
-	<xsd:complexType name="InnerJoinType">
+  <xsd:element name="InnerJoin" type="cobos:InnerJoin" substitutionGroup="cobos:TableJoin"/>
+	<xsd:complexType name="InnerJoin">
 		<xsd:complexContent>
-			<xsd:extension base="TableJoinType"/>
+			<xsd:extension base="TableJoin"/>
 		</xsd:complexContent>
 	</xsd:complexType>
   <!--
@@ -415,37 +435,20 @@
 	Outer joins.
 	=============================================================================
 	-->
-  <xsd:element name="OuterJoin" type="OuterJoinType"/>
-	<xsd:complexType name="OuterJoinType">
+  <xsd:element name="OuterJoin" type="cobos:OuterJoin" substitutionGroup="cobos:TableJoin"/>
+	<xsd:complexType name="OuterJoin">
 		<xsd:complexContent>
-			<xsd:extension base="TableJoinType"/>
+			<xsd:extension base="TableJoin"/>
 		</xsd:complexContent>
 	</xsd:complexType>
-	<!--
-	=============================================================================
-	Column sorting.
-	=============================================================================
-	-->
-	<xsd:complexType name="OrderType">
-		<xsd:sequence>
-			<xsd:element name="By" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
-		</xsd:sequence>
-		<xsd:attribute name="type" type="SortOrderEnum" use="optional" default="Ascending"/>
-	</xsd:complexType>
-	<xsd:simpleType name="SortOrderEnum">
-		<xsd:restriction base="xsd:string">
-			<xsd:enumeration value="Ascending"/>
-			<xsd:enumeration value="Descending"/>
-		</xsd:restriction>
-	</xsd:simpleType>
 	<!--
 	=============================================================================
 	Column grouping.
 	=============================================================================
 	-->
-	<xsd:complexType name="GroupType">
+	<xsd:complexType name="GroupBy">
 		<xsd:sequence>
-			<xsd:element name="By" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="ValueReference" type="xsd:string"  minOccurs="0" maxOccurs="unbounded"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<!--
@@ -453,7 +456,7 @@
 	Custom string aggregator.
 	=============================================================================
 	-->
-	<xsd:complexType name="StringAggregateType">
+	<xsd:complexType name="StringAggregate">
 		<xsd:sequence>
 			<xsd:element name="On" type="xsd:string"/>
 			<xsd:element name="Group">

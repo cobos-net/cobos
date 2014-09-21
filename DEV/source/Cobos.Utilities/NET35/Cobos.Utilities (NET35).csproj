@@ -58,7 +58,9 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -189,6 +191,12 @@
     <Compile Include="..\NET45\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="..\NET45\Xml\DataContractHelper.cs">
+      <Link>Xml\DataContractHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\NET45\Xml\HttpXmlHelper.cs">
+      <Link>Xml\HttpXmlHelper.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.Net35.cs" />
     <Compile Include="..\NET45\Text\MacroExpander.cs">
       <Link>Text\MacroExpander.cs</Link>
@@ -235,6 +243,9 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

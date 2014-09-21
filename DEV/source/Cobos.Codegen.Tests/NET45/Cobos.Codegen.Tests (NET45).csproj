@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\DataModelTests.cs" />
+    <Compile Include="Data\DataObjectTests.cs" />
     <Compile Include="Data\Generated\DataModelAdapter.cs" />
     <Compile Include="Data\Generated\DataObject.cs" />
     <Compile Include="Data\Generated\DataObjectAdapter.cs" />
@@ -74,7 +75,9 @@
     <Content Include="Stylesheets\DataObjectAdapter.xslt" />
     <Content Include="Stylesheets\DataObject.xslt" />
     <Content Include="Stylesheets\DataSet.xslt" />
-    <Content Include="Stylesheets\Process.xslt" />
+    <Content Include="Stylesheets\Process.xslt">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Stylesheets\Schema.xslt" />
     <EmbeddedResource Include="..\..\..\..\CONFIG\Database\MySQL\northwind.sql">
       <Link>Database\MySQL\northwind.sql</Link>

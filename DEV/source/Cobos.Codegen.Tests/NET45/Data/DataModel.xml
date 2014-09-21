@@ -1,95 +1,200 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<DataModel name="NorthwindDataModel" dateTimeMode="Local" xmlns="http://schemas.cobos.co.uk/datamodel/1.0.0" xmlns:cobos="http://schemas.cobos.co.uk/datamodel/1.0.0">
-
+<DataModel name="NorthwindDataModel" dateTimeMode="Local" xmlns="http://schemas.cobos.co.uk/datamodel/1.0.0" xmlns:cobos="http://schemas.cobos.co.uk/datamodel/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<!--
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	Customer object
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	==============================================================================
+	Customer - Nested Types
+	==============================================================================
 	-->
-
 	<Object name="Customer" dbTable="Customers">
-    <Property name="CustomerID" dbColumn="CustomerID" />
-    <Property name="CompanyName" dbColumn="CompanyName" />
-    <Object name="Contact" type="CustomerContact" />
-    <Object name="Address" type="CustomerAddress" />
-    <!--
-		<Reference ref="AgencyEventComment" name="Comments" key="AgencyEventId" refer="AgencyEventId"/>
-		<Property name="RevisionNumber" dbColumn="rev_num" hidden="true"/>
-    -->
-		<Metadata>
-			<Filters>
-				<!--<Filter></Filter>-->
-			</Filters>
-			<Joins>
-				<!--<InnerJoin foreignKey="eid" references="EVENT" referenceKey="eid"/>-->
-			</Joins>
-		</Metadata>
+    <Property name="CustomerID" dbColumn="CustomerID"/>
+    <Property name="CompanyName" dbColumn="CompanyName"/>
+    <Object name="Contact" type="CustomerContact"/>
+    <Object name="Address" type="CustomerAddress"/>
+    <Reference name="Orders" ref="CustomerOrder" key="CustomerID" refer="CustomerID"/>
+    <Metadata/>
 	</Object>
-
   <!--
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	Customer contact type
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	==============================================================================
+	Customer Contact type
+	==============================================================================
 	-->
-
   <Type name="CustomerContact" dbTable="Customers">
-    <Property name="Name" dbColumn="ContactName" />
-    <Property name="Title" dbColumn="ContactTitle" />
+    <Property name="Title" dbColumn="ContactTitle"/>
+    <Property name="Name" dbColumn="ContactName"/>
   </Type>
-
   <!--
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	Customer address type
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	==============================================================================
+	Customer Address type
+	==============================================================================
 	-->
-
   <Type name="CustomerAddress" dbTable="Customers">
-    <Property name="Address" dbColumn="Address" />
-    <Property name="City" dbColumn="City" />
-    <Property name="Region" dbColumn="Region" />
-    <Property name="PostalCode" dbColumn="PostalCode" />
-    <Property name="Country" dbColumn="Country" />
-    <Property name="Phone" dbColumn="Phone" />
-    <Property name="Fax" dbColumn="Fax" />
+    <Property name="Address" dbColumn="Address"/>
+    <Property name="City" dbColumn="City"/>
+    <Property name="Region" dbColumn="Region"/>
+    <Property name="PostalCode" dbColumn="PostalCode"/>
+    <Property name="Country" dbColumn="Country"/>
+    <Property name="Phone" dbColumn="Phone"/>
+    <Property name="Fax" dbColumn="Fax"/>
   </Type>
-
   <!--
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	Employee object
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	==============================================================================
+	Supplier - Inline object types
+	==============================================================================
 	-->
-
+  <Object name="Supplier" dbTable="Suppliers">
+    <Property name="SupplierID" dbColumn="SupplierID"/>
+    <Property name="CompanyName" dbColumn="CompanyName"/>
+    <Object name="Contact">
+      <Property name="Title" dbColumn="ContactTitle"/>
+      <Property name="Name" dbColumn="ContactName"/>
+    </Object>
+    <Object name="Address">
+      <Property name="Address" dbColumn="Address"/>
+      <Property name="City" dbColumn="City"/>
+      <Property name="Region" dbColumn="Region"/>
+      <Property name="PostalCode" dbColumn="PostalCode"/>
+      <Property name="Country" dbColumn="Country"/>
+      <Property name="Phone" dbColumn="Phone"/>
+      <Property name="Fax" dbColumn="Fax"/>
+    </Object>
+    <Property name="HomePage" dbColumn="HomePage"/>
+    <Metadata/>
+  </Object>
+  <!--
+	==============================================================================
+	Employee - Inline objects and references.
+	==============================================================================
+	-->
   <Object name="Employee" dbTable="Employees">
-    <Property name="EmployeeID" dbColumn="EmployeeID" autoIncrement="true" />
+    <Property name="EmployeeID" dbColumn="EmployeeID" autoIncrement="true"/>
     <Object name="Personal">
-      <Property name="LastName" dbColumn="LastName" />
-      <Property name="FirstName" dbColumn="FirstName" />
-      <Property name="Title" dbColumn="Title" />
-      <Property name="TitleOfCourtesy" dbColumn="TitleOfCourtesy" />
-      <Property name="BirthDate" dbColumn="BirthDate" />
+      <Property name="LastName" dbColumn="LastName"/>
+      <Property name="FirstName" dbColumn="FirstName"/>
+      <Property name="Title" dbColumn="Title"/>
+      <Property name="TitleOfCourtesy" dbColumn="TitleOfCourtesy"/>
+      <Property name="BirthDate" dbColumn="BirthDate"/>
     </Object>
     <Object name="Employment">
-      <Property name="Extension" dbColumn="Extension" />
-      <Property name="ReportsTo" dbColumn="ReportsTo" />
-      <Property name="HireDate" dbColumn="HireDate" />
-      <Property name="Notes" dbColumn="Notes" />
-      <Property name="PhotoPath" dbColumn="PhotoPath" />
-      <Property name="Photo" dbColumn="Photo" />
+      <Property name="Extension" dbColumn="Extension"/>
+      <Property name="ReportsTo" dbColumn="ReportsTo"/>
+      <Property name="HireDate" dbColumn="HireDate"/>
+      <Property name="Notes" dbColumn="Notes"/>
+      <Property name="PhotoPath" dbColumn="PhotoPath"/>
+      <Property name="Photo" dbColumn="Photo"/>
     </Object>
     <Object name="Contact">
-      <Property name="Address" dbColumn="Address" />
-      <Property name="City" dbColumn="City" />
-      <Property name="Region" dbColumn="Region" />
-      <Property name="PostalCode" dbColumn="PostalCode" />
-      <Property name="Country" dbColumn="Country" />
-      <Property name="HomePhone" dbColumn="HomePhone" />
+      <Property name="Address" dbColumn="Address"/>
+      <Property name="City" dbColumn="City"/>
+      <Property name="Region" dbColumn="Region"/>
+      <Property name="PostalCode" dbColumn="PostalCode"/>
+      <Property name="Country" dbColumn="Country"/>
+      <Property name="HomePhone" dbColumn="HomePhone"/>
     </Object>
+    <Reference name="Territories" ref="EmployeeTerritory" key="EmployeeID" refer="EmployeeID"/>
   </Object>
-
   <!--
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	Employee object
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	==============================================================================
+	EmployeeTerritory - Multiple table joins.
+	==============================================================================
 	-->
-
+  <Object name="EmployeeTerritory" dbTable="EmployeeTerritories">
+    <Property name="EmployeeID" dbColumn="EmployeeID"/>
+    <Property name="Territory" dbColumn="TerritoryDescription" dbTable="Territories"/>
+    <Property name="Region" dbColumn="RegionDescription" dbTable="Region"/>
+    <Property name="TerritoryID" dbColumn="TerritoryID" dbTable="Territories" hidden="true"/>
+    <Property name="RegionID" dbColumn="RegionID" dbTable="Region" hidden="true"/>
+    <Metadata>
+      <Joins>
+        <InnerJoin ref="Territories" key="EmployeeTerritories.TerritoryID" refer="Territories.TerritoryID"/>
+        <InnerJoin ref="Region" key="Territories.RegionID" refer="Region.RegionID"/>
+      </Joins>
+    </Metadata>
+  </Object>
+  <!--
+	==============================================================================
+	Orders - Join and nested reference
+	==============================================================================
+	-->
+  <Object name="CustomerOrder" dbTable="Orders">
+    <Property name="OrderID" dbColumn="OrderID"/>
+    <Property name="CustomerID" dbColumn="CustomerID" hidden="true"/>
+    <Reference name="Details" ref="OrderDetails" key="OrderID" refer="OrderID"/>
+    <Object name="Chronology">
+      <Property name="Ordered" dbColumn="OrderDate"/>
+      <Property name="Required" dbColumn="RequiredDate"/>
+      <Property name="Shipped" dbColumn="ShippedDate"/>
+    </Object>
+    <Object name="ShippingDetails" dbTable="Shippers">
+      <Property name="Company" dbColumn="CompanyName"/>
+      <Property name="ContactPhone" dbColumn="Phone"/>
+      <Property name="FreightCost" dbColumn="Freight" dbTable="Orders"/>
+    </Object>
+    <Object name="ShippingAddress">
+      <Property name="Name" dbColumn="ShipName"/>
+      <Property name="Address" dbColumn="ShipAddress"/>
+      <Property name="City" dbColumn="ShipCity"/>
+      <Property name="Region" dbColumn="ShipRegion"/>
+      <Property name="PostalCode" dbColumn="ShipPostalCode"/>
+      <Property name="Country" dbColumn="ShipCountry"/>
+    </Object>
+    <Metadata>
+      <Joins>
+        <InnerJoin ref="Shippers" key="Orders.ShipVia" refer="Shippers.ShipperID"/>
+      </Joins>
+    </Metadata>
+  </Object>
+  <!--
+	==============================================================================
+	Order Details
+	==============================================================================
+	-->
+  <Object name="OrderDetails" dbTable="OrderDetails">
+    <Property name="OrderID" dbColumn="OrderID" hidden="true"/>
+    <Object name="Product">
+      <Property name="ID" dbColumn="ProductID"/>
+      <Property name="Name" dbColumn="ProductName" dbTable="Products"/>
+      <Property name="Category" dbColumn="CategoryName" dbTable="Categories"/>
+    </Object>
+    <Object name="Cost">
+      <Property name="UnitPrice" dbColumn="UnitPrice"/>
+      <Property name="Quantity" dbColumn="Quantity"/>
+      <Property name="Discount" dbColumn="Discount"/>
+    </Object>
+    <Metadata>
+      <Joins>
+        <InnerJoin ref="Products" key="OrderDetails.ProductID" refer="Products.ProductID"/>
+        <InnerJoin ref="Categories" key="Products.CategoryID" refer="Categories.CategoryID"/>
+      </Joins>
+    </Metadata>
+  </Object>
+  <!--
+	==============================================================================
+	Active Products - Table object with default filter.
+	==============================================================================
+	-->
+  <TableObject name="ActiveProduct" dbTable="Products">
+    <Metadata>
+      <Filter>
+        <Predicate xsi:type="PropertyIsEqualTo">
+          <ValueReference>Discontinued</ValueReference>
+          <Literal>false</Literal>
+        </Predicate>
+      </Filter>
+    </Metadata>
+  </TableObject>
+  <!--
+	==============================================================================
+	Order Details - Table object with default sort.
+	==============================================================================
+	-->
+  <TableObject name="OrderDetailsSorted" dbTable="OrderDetails">
+    <Metadata>
+      <SortBy>
+        <SortProperty>
+          <ValueReference>UnitPrice</ValueReference>
+          <SortOrder>ASC</SortOrder>
+        </SortProperty>
+      </SortBy>
+    </Metadata>
+  </TableObject>
 </DataModel>

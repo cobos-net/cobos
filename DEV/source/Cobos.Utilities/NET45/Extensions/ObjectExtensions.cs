@@ -1,7 +1,7 @@
 ﻿// ----------------------------------------------------------------------------
 // <copyright file="ObjectExtensions.cs" company="Cobos SDK">
 //
-//      Copyright (c) 2009-2012 Nicholas Davis - nick@cobos.co.uk
+//      Copyright (c) 2009-2014 Nicholas Davis - nick@cobos.co.uk
 //
 //      Cobos Software Development Kit
 //
@@ -32,6 +32,7 @@ namespace Cobos.Utilities.Extensions
     using System;
     using System.Collections.Generic;
     using System.Runtime.InteropServices;
+    using System.Web.Script.Serialization;
 
     /// <summary>
     /// Extension methods for the <see cref="Object"/> class.
@@ -100,6 +101,17 @@ namespace Cobos.Utilities.Extensions
             Marshal.FreeHGlobal(buffer);
 
             return obj;
+        }
+
+        /// <summary>
+        /// serialize the object to JSON
+        /// </summary>
+        /// <param name="self">The 'this' object reference</param>
+        /// <returns>String representation of the object in JSON notation</returns>
+        public static string ToJson(this object self)
+        {
+            JavaScriptSerializer serializer = new JavaScriptSerializer();
+            return serializer.Serialize(self);
         }
     }
 }

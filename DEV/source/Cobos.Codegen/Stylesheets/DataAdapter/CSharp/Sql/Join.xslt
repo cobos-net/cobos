@@ -54,15 +54,11 @@
   <!-- INNER JOIN and OUTER JOIN clauses -->
   <xsl:template match="cobos:InnerJoin|cobos:OuterJoin" mode="sqlJoin">
     <xsl:text>"</xsl:text>
-    <xsl:value-of select="@references"/>
+    <xsl:value-of select="@ref"/>
     <xsl:text> ON </xsl:text>
-    <xsl:value-of select="ancestor::cobos:Object[1]/@dbTable"/>
-    <xsl:text>.</xsl:text>
-    <xsl:value-of select="@foreignKey"/>
+    <xsl:value-of select="@key"/>
     <xsl:text> = </xsl:text>
-    <xsl:value-of select="@references"/>
-    <xsl:text>.</xsl:text>
-    <xsl:value-of select="@referenceKey"/>
+    <xsl:value-of select="@refer"/>
     <xsl:text>"</xsl:text>
     <xsl:if test="not(position() = last())">, </xsl:if>
   </xsl:template>

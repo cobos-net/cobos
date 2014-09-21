@@ -47,6 +47,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
@@ -60,7 +61,19 @@
     <Compile Include="DatabaseAdapterFactory.cs" />
     <Compile Include="Adapters\DatabaseAdapterProviderAttribute.cs" />
     <Compile Include="Adapters\IDatabaseAdapterProvider.cs" />
+    <Compile Include="Filter\Filter.cs" />
+    <Compile Include="Filter\Generated\Filter.cs" />
+    <Compile Include="Filter\FilterPredicate.cs" />
+    <Compile Include="Filter\Generated\Sort.cs" />
+    <Compile Include="Filter\IFilterExpression.cs" />
+    <Compile Include="Filter\IFilterPredicate.cs" />
+    <Compile Include="Filter\IFilterPredicateVisitor.cs" />
+    <Compile Include="Filter\ISortVisitor.cs" />
+    <Compile Include="Filter\SortBy.cs" />
     <Compile Include="Mapping\ColumnAttribute.cs" />
+    <Compile Include="Mapping\PropertyDescriptor.cs" />
+    <Compile Include="Mapping\PropertyMap.cs" />
+    <Compile Include="Mapping\PropertyMapRegistry.cs" />
     <Compile Include="Mapping\TableAttribute.cs" />
     <Compile Include="SimpleDataSet.cs">
       <SubType>Component</SubType>
@@ -72,7 +85,9 @@
     <Compile Include="Properties\AssemblyInfo.Net45.cs" />
     <Compile Include="Statements\SqlDeleteTemplate.cs" />
     <Compile Include="Statements\SqlInsertTemplate.cs" />
+    <Compile Include="Statements\SqlPredicateVisitor.cs" />
     <Compile Include="Statements\SqlSelectTemplate.cs" />
+    <Compile Include="Statements\SqlSortVisitor.cs" />
     <Compile Include="Statements\SqlUpdateTemplate.cs" />
     <Compile Include="Transforms\IDataTableTransform.cs" />
     <Compile Include="Transforms\TransformationPipeline.cs" />
@@ -80,6 +95,8 @@
     <Compile Include="Utilities\DataRowColumnAggregator.cs" />
     <Compile Include="Utilities\DataRowHelper.cs" />
     <Compile Include="Utilities\DataRowColumnComparer.cs" />
+    <Compile Include="Utilities\DataQueryNode.cs" />
+    <Compile Include="Utilities\DataTableHelper.cs" />
     <Compile Include="Utilities\DebugUtility.cs" />
     <Compile Include="Utilities\IDataRowAggregator.cs" />
   </ItemGroup>
@@ -90,6 +107,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="BUILD\prebuild.targets" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -97,11 +115,9 @@
       <Link>Stylesheets\Database\DatabaseSchema.xslt</Link>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PreBuildEvent>
-    </PreBuildEvent>
-  </PropertyGroup>
+  <Import Project="BUILD\prebuild.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -17,7 +17,7 @@
 	Modified by:                               Date:
 	=============================================================================
 	Notes: Expands the data model with inline definitions such as type names,
-	 database type declarations, multiplicity etc.
+	       database type declarations, multiplicity etc.
 
 	=============================================================================
 	-->

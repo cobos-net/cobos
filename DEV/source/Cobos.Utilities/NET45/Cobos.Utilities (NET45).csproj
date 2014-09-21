@@ -59,7 +59,9 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>4.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>4.5</RequiredTargetFramework>
     </Reference>
@@ -123,6 +125,8 @@
     <Compile Include="Threading\Resource\ResourcePool.cs" />
     <Compile Include="Wrappers\Singleton.cs" />
     <Compile Include="Wrappers\SingletonException.cs" />
+    <Compile Include="Xml\DataContractHelper.cs" />
+    <Compile Include="Xml\HttpXmlHelper.cs" />
     <Compile Include="Xml\XmlHelper.cs">
       <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
     </Compile>

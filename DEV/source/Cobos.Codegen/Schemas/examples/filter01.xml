@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<cobos:Filter
+   xmlns:cobos="http://schemas.cobos.co.uk/datamodel/1.0.0"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <cobos:Predicate xsi:type="cobos:PropertyIsEqualTo">
+    <cobos:ValueReference>SomeProperty</cobos:ValueReference>
+    <cobos:Literal>100</cobos:Literal>
+  </cobos:Predicate>
+</cobos:Filter>

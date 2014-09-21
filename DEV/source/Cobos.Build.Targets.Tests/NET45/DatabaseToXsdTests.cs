@@ -1,7 +1,7 @@
 ﻿// ----------------------------------------------------------------------------
 // <copyright file="DatabaseToXsdTests.cs" company="Cobos SDK">
 //
-//      Copyright (c) 2009-2012 Nicholas Davis - nick@cobos.co.uk
+//      Copyright (c) 2009-2014 Nicholas Davis - nick@cobos.co.uk
 //
 //      Cobos Software Development Kit
 //
@@ -38,7 +38,7 @@ namespace Cobos.Build.Targets.Tests
     using NUnit.Framework;
 
     /// <summary>
-    /// Unit tests for the <see cref="DatabaseToXsd"/> class.
+    /// Unit tests for the <see cref="CobosDatabaseToXsd"/> class.
     /// </summary>
     [TestFixture]
     public class DatabaseToXsdTests
@@ -70,7 +70,7 @@ namespace Cobos.Build.Targets.Tests
                 File.Delete(output);
             }
 
-            DatabaseToXsd target = new DatabaseToXsd();
+            CobosDatabaseToXsd target = new CobosDatabaseToXsd();
 
             target.BuildEngine = Substitute.For<IBuildEngine>();
             target.ConnectionString = connectionString;

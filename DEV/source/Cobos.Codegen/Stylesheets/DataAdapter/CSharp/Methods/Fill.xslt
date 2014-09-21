@@ -33,10 +33,23 @@
         /// &lt;summary&gt;
         /// Fills the table with data from the database.
         /// &lt;/summary&gt;
-        /// &lt;param name="where"&gt;The where clauses.  May be null.&lt;/param&gt;
-        /// &lt;param name="orderBy"&gt;The order by clause.  May be null.&lt;/param&gt;
-        public void Fill(string[] where, string orderBy)
+        /// &lt;param name="filter"&gt;The filter specification. May be null.&lt;/param&gt;
+        /// &lt;param name="sort"&gt;The sort specification. May be null.&lt;/param&gt;
+        public void Fill(Cobos.Data.Filter.Filter filter, Cobos.Data.Filter.SortBy sort)
         {
+            string[] where = null;
+            string orderBy = null;
+
+            if (filter != null)
+            {
+                where = new string[] { Cobos.Data.Statements.SqlPredicateVisitor&lt;<xsl:value-of select="@className"/>&gt;.FilterToSql(filter) };
+            }
+
+            if (sort != null)
+            {
+                orderBy = Cobos.Data.Statements.SqlSortVisitor&lt;<xsl:value-of select="@className"/>&gt;.SortToSql(sort);
+            }
+        
             var factory = this.ProviderFactory;
         
             using (var connection = factory.CreateConnection())

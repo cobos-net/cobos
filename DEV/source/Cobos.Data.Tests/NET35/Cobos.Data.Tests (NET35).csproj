@@ -52,6 +52,12 @@
     <Compile Include="..\NET45\DatabaseAdapterTests.cs">
       <Link>DatabaseAdapterTests.cs</Link>
     </Compile>
+    <Compile Include="..\NET45\Filter\FilterTests.cs">
+      <Link>Filter\FilterTests.cs</Link>
+    </Compile>
+    <Compile Include="..\NET45\Mapping\PropertyMapTests.cs">
+      <Link>Mapping\PropertyMapTests.cs</Link>
+    </Compile>
     <Compile Include="..\NET45\TestManager.cs">
       <Link>TestManager.cs</Link>
     </Compile>

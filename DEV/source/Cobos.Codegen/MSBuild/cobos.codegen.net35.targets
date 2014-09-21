@@ -22,5 +22,5 @@
   <PropertyGroup>
     <CodegenAssembly>..\..\~bin\net35\Cobos.Build.Targets.dll</CodegenAssembly>
   </PropertyGroup>
-  <UsingTask AssemblyFile="$(MSBuildThisFileDirectory)$(CodegenAssembly)" TaskName="Cobos.Build.Targets.DatabaseToXsd" />
+  <UsingTask AssemblyFile="$(MSBuildThisFileDirectory)$(CodegenAssembly)" TaskName="Cobos.Build.Targets.CobosDatabaseToXsd" />
 </Project>

@@ -46,6 +46,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
@@ -73,8 +74,38 @@
     <Compile Include="..\NET45\DatabaseAdapterFactory.cs">
       <Link>DatabaseAdapterFactory.cs</Link>
     </Compile>
+    <Compile Include="..\NET45\Filter\Filter.cs">
+      <Link>Filter\Filter.cs</Link>
+    </Compile>
+    <Compile Include="..\NET45\Filter\FilterPredicate.cs">
+      <Link>Filter\FilterPredicate.cs</Link>
+    </Compile>
+    <Compile Include="..\NET45\Filter\IFilterExpression.cs">
+      <Link>Filter\IFilterExpression.cs</Link>
+    </Compile>
+    <Compile Include="..\NET45\Filter\IFilterPredicate.cs">
+      <Link>Filter\IFilterPredicate.cs</Link>
+    </Compile>
+    <Compile Include="..\NET45\Filter\IFilterPredicateVisitor.cs">
+      <Link>Filter\IFilterPredicateVisitor.cs</Link>
+    </Compile>
+    <Compile Include="..\NET45\Filter\ISortVisitor.cs">
+      <Link>Filter\ISortVisitor.cs</Link>
+    </Compile>
+    <Compile Include="..\NET45\Filter\SortBy.cs">
+      <Link>Filter\SortBy.cs</Link>
+    </Compile>
     <Compile Include="..\NET45\Mapping\ColumnAttribute.cs">
       <Link>Mapping\ColumnAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\NET45\Mapping\PropertyDescriptor.cs">
+      <Link>Mapping\PropertyDescriptor.cs</Link>
+    </Compile>
+    <Compile Include="..\NET45\Mapping\PropertyMap.cs">
+      <Link>Mapping\PropertyMap.cs</Link>
+    </Compile>
+    <Compile Include="..\NET45\Mapping\PropertyMapRegistry.cs">
+      <Link>Mapping\PropertyMapRegistry.cs</Link>
     </Compile>
     <Compile Include="..\NET45\Mapping\TableAttribute.cs">
       <Link>Mapping\TableAttribute.cs</Link>
@@ -95,15 +126,26 @@
     <Compile Include="..\NET45\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="..\NET45\Statements\SqlPredicateVisitor.cs">
+      <Link>Statements\SqlPredicateVisitor.cs</Link>
+    </Compile>
+    <Compile Include="..\NET45\Statements\SqlSortVisitor.cs">
+      <Link>Statements\SqlSortVisitor.cs</Link>
+    </Compile>
     <Compile Include="..\NET45\Transforms\IDataTableTransform.cs">
       <Link>Transforms\IDataTableTransform.cs</Link>
     </Compile>
     <Compile Include="..\NET45\Transforms\TransformationPipeline.cs">
       <Link>Transforms\TransformationPipeline.cs</Link>
     </Compile>
+    <Compile Include="..\NET45\Utilities\DataTableHelper.cs">
+      <Link>Utilities\DataTableHelper.cs</Link>
+    </Compile>
     <Compile Include="..\NET45\Utilities\DebugUtility.cs">
       <Link>Utilities\DebugUtility.cs</Link>
     </Compile>
+    <Compile Include="Filter\Generated\Filter.cs" />
+    <Compile Include="Filter\Generated\Sort.cs" />
     <Compile Include="Properties\AssemblyInfo.Net35.cs" />
     <Compile Include="..\NET45\Statements\SqlDeleteTemplate.cs">
       <Link>Statements\SqlDeleteTemplate.cs</Link>
@@ -145,7 +187,12 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\NET45\BUILD\prebuild.targets">
+      <Link>BUILD\prebuild.targets</Link>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\NET45\BUILD\prebuild.targets" />
 </Project>

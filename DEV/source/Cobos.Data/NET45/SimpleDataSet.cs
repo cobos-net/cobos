@@ -1,7 +1,7 @@
 ﻿// ----------------------------------------------------------------------------
 // <copyright file="SimpleDataSet.cs" company="Cobos SDK">
 //
-//      Copyright (c) 2009-2012 Nicholas Davis - nick@cobos.co.uk
+//      Copyright (c) 2009-2014 Nicholas Davis - nick@cobos.co.uk
 //
 //      Cobos Software Development Kit
 //
@@ -135,7 +135,7 @@ namespace Cobos.Data
                 xsltArgs = new XsltArgumentList();
             }
 
-            ////xsltArgs.AddParam( "example", "", example );
+            ////xsltArgs.AddParam("example", "", example);
 
             // do the transform
             xslt.Transform(doc.CreateNavigator(), xsltArgs, result);
@@ -144,13 +144,13 @@ namespace Cobos.Data
         /// <summary>
         /// Serialize the data set to an object.
         /// </summary>
-        /// <typeparam name="TObject">The type of object to serialize to.</typeparam>
+        /// <typeparam name="T">The type of object to serialize to.</typeparam>
         /// <param name="xslt">The transform to use.  May be null.</param>
         /// <param name="xsltArgs">The arguments for the transform.</param>
         /// <returns>The serialized object.</returns>
-        public TObject ToObject<TObject>(XslCompiledTransform xslt, XsltArgumentList xsltArgs)
+        public T ToObject<T>(XslCompiledTransform xslt, XsltArgumentList xsltArgs)
         {
-            TObject result = default(TObject);
+            T result = default(T);
 
             XmlDocument doc = this.ToXml();
 
@@ -159,19 +159,19 @@ namespace Cobos.Data
                 xsltArgs = new XsltArgumentList();
             }
 
-            ////xsltArgs.AddParam( "example", "", example );
+            ////xsltArgs.AddParam("example", "", example);
 
             using (MemoryStream stream = new MemoryStream())
             {
                 xslt.Transform(doc.CreateNavigator(), xsltArgs, stream);
                 stream.Seek(0, SeekOrigin.Begin);
 
-                ////FileStream fstream = new FileStream( @"C:\temp\test.xml", FileMode.Create );
-                ////stream.WriteTo( fstream );
+                ////FileStream fstream = new FileStream(@"C:\temp\debug.xml", FileMode.Create);
+                ////stream.WriteTo(fstream);
                 ////fstream.Close();
-                ////stream.Seek( 0, SeekOrigin.Begin );
+                ////stream.Seek(0, SeekOrigin.Begin);
 
-                result = XmlHelper<TObject>.Deserialize(stream);
+                result = XmlHelper.Deserialize<T>(stream);
             }
 
             return result;

@@ -54,7 +54,20 @@
   </PropertyGroup>
   <!-- Database tables to process -->
   <ItemGroup>
-    <DatabaseToXsdTable Include="customers;employees;products"/>
+    <DatabaseToXsdTable Include="
+                        categories;
+                        customercustomerdemo;
+                        customerdemographics;
+                        customers;
+                        employees;
+                        employeeterritories;
+                        orderdetails;
+                        orders;
+                        products;
+                        region;
+                        shippers;
+                        suppliers;
+                        territories"/>
   </ItemGroup>
   <!--
   =============================================================================
@@ -62,7 +75,7 @@
   =============================================================================
   -->
   <ItemGroup>
-    <DataModel Include="$(ProjectDir)Data\DataModel.xml">
+    <DataModel Include="$(ProjectDir)..\NET45\Data\DataModel.xml">
       <Id>Northwind</Id>
       <SchemaOptions>
         <Parameter Name="multiplicityMode" Value="optional" />

@@ -1,7 +1,7 @@
 ﻿// ----------------------------------------------------------------------------
 // <copyright file="TestManager.cs" company="Cobos SDK">
 //
-//      Copyright (c) 2009-2012 Nicholas Davis - nick@cobos.co.uk
+//      Copyright (c) 2009-2014 Nicholas Davis - nick@cobos.co.uk
 //
 //      Cobos Software Development Kit
 //
@@ -34,6 +34,8 @@ namespace Cobos.Codegen.Tests
     using System.Diagnostics;
     using System.IO;
     using Cobos.Data;
+    using Cobos.Utilities.Xml;
+    using NUnit.Framework;
 
     /// <summary>
     /// Manages test data.
@@ -49,6 +51,48 @@ namespace Cobos.Codegen.Tests
             {
                 yield return DatabaseAdapterFactory.Instance.TryCreate("MySQL", "Server=localhost;Database=Northwind;Uid=root;Pwd=mysql;");
             }
+        }
+
+        /// <summary>
+        /// Serialize an entity to file.
+        /// </summary>
+        /// <typeparam name="T">The entity type.</typeparam>
+        /// <param name="entity">The entity to serialize.</param>
+        public static void Serialize<T>(T entity)
+        {
+            const string Folder = @"C:\temp\";
+
+            string name;
+
+            if (typeof(T).IsGenericType == true)
+            {
+#if NET35
+                name = typeof(T).GetGenericArguments()[0].Name;
+#else
+                name = typeof(T).GenericTypeArguments[0].Name;
+#endif
+            }
+            else
+            {
+                name = typeof(T).Name;
+            }
+
+            var filePath = Folder + name + ".xml";
+
+            if (File.Exists(filePath) == true)
+            {
+                File.Delete(filePath);
+            }
+
+            Assert.DoesNotThrow(() =>
+            {
+                using (var writer = new StreamWriter(filePath))
+                {
+                    writer.Write(DataContractHelper.Serialize<T>(entity, new Type[0]));
+                }
+            });
+
+            Assert.True(File.Exists(filePath));
         }
     }
 }

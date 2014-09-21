@@ -1,7 +1,7 @@
 ﻿// ----------------------------------------------------------------------------
 // <copyright file="AssemblyGenerator.cs" company="Cobos SDK">
 //
-//      Copyright (c) 2009-2012 Nicholas Davis - nick@cobos.co.uk
+//      Copyright (c) 2009-2014 Nicholas Davis - nick@cobos.co.uk
 //
 //      Cobos Software Development Kit
 //
@@ -50,14 +50,18 @@ namespace Cobos.AssemblyGen
         /// The compiler version.
         /// </summary>
 #if NET35
-        private const string compilerVersion = "v3.5";
+        private const string CompilerVersion = "v3.5";
 #elif NET45
-        private const string compilerVersion = "v4.5";
+        private const string CompilerVersion = "v4.5";
 #endif
         
         /// <summary>
         /// Build the source files into an assembly.
         /// </summary>
+        /// <param name="assemblyName">The name of the assembly.</param>
+        /// <param name="sourceFiles">The source files to build.</param>
+        /// <param name="references">The assembly references.</param>
+        /// <param name="searchPaths">The paths to look in to resolve references.</param>
         /// <returns>An assembly containing the compiled byte code.</returns>
         public static AssemblyRef Build(string assemblyName, string[] sourceFiles, string[] references, string[] searchPaths)
         {
@@ -74,7 +78,7 @@ namespace Cobos.AssemblyGen
                 }
             }
 
-            var compiler = new CSharpCodeProvider(new Dictionary<string, string>() { { "CompilerVersion", compilerVersion } });
+            var compiler = new CSharpCodeProvider(new Dictionary<string, string>() { { "CompilerVersion", CompilerVersion } });
 
             var parameters = GetParameters(assemblyPath, references, searchPaths);
 
@@ -111,6 +115,8 @@ namespace Cobos.AssemblyGen
         /// Get all of the parameters for the compiler.
         /// </summary>
         /// <param name="assemblyPath">The path of the output assembly.</param>
+        /// <param name="references">The assembly references.</param>
+        /// <param name="searchPaths">The paths to look in to resolve references.</param>
         /// <returns>An object representing the compiler parameters.</returns>
         private static CompilerParameters GetParameters(string assemblyPath, string[] references, string[] searchPaths)
         {

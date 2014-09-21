@@ -126,7 +126,7 @@
   =============================================================================
   -->
   <xsl:template match="cobos:Property[@dbType = 'cobos:bitField']" mode="propertyType">
-    <xsl:text>global::System.BitArray</xsl:text>
+    <xsl:text>global::System.Collections.BitArray</xsl:text>
   </xsl:template>
   <!--
   =============================================================================

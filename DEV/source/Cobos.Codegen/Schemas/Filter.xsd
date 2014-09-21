@@ -1,0 +1,298 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema targetNamespace="http://schemas.cobos.co.uk/datamodel/1.0.0"
+    elementFormDefault="qualified"
+    xmlns="http://schemas.cobos.co.uk/datamodel/1.0.0"
+    xmlns:cobos="http://schemas.cobos.co.uk/datamodel/1.0.0"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <xsd:annotation>
+    <xsd:documentation>
+      Filter Encoding is an OGC Standard.
+      Copyright (c) 2010 Open Geospatial Consortium.
+      To obtain additional rights of use, visit http://www.opengeospatial.org/legal/ .
+    </xsd:documentation>
+  </xsd:annotation>
+   <xsd:annotation>
+    <xsd:documentation>
+      THIS SOFTWARE AND DOCUMENTATION IS PROVIDED "AS IS," AND COPYRIGHT 
+      HOLDERS MAKE NO REPRESENTATIONS OR WARRANTIES, EXPRESS OR IMPLIED, 
+      INCLUDING BUT NOT LIMITED TO, WARRANTIES OF MERCHANTABILITY OR FITNESS 
+      FOR ANY PARTICULAR PURPOSE OR THAT THE USE OF THE SOFTWARE OR 
+      DOCUMENTATION WILL NOT INFRINGE ANY THIRD PARTY PATENTS, COPYRIGHTS, 
+      TRADEMARKS OR OTHER RIGHTS.
+
+      COPYRIGHT HOLDERS WILL NOT BE LIABLE FOR ANY DIRECT, INDIRECT, SPECIAL 
+      OR CONSEQUENTIAL DAMAGES ARISING OUT OF ANY USE OF THE SOFTWARE OR 
+      DOCUMENTATION.    
+    </xsd:documentation>
+  </xsd:annotation>
+  <xsd:annotation>
+    <xsd:documentation>
+      ===================================================================
+      COBOS SDK - 2014-08-03
+      ===================================================================
+      This schema has been modified from the original OGC definition 
+      in oder to provide compatibility with .NET DataContractSerializer.
+      The result is that this derivative schema is not OGC compliant.
+
+      1. Expanded xsd:group elements.
+      2. Removed nested subsitution groups.
+      3. Removed attribute types.
+      4. Removed abstract elements and substitution groups.
+      5. Transferred elements to the cobos namespace.
+      6. Literal elements are of type string.
+      7. Removed the 'Type' suffix from type names.
+      8. The following OGC types are not supported:
+          - Temporal Ops
+          - Spatial Ops
+          - Extension Ops
+          - ResourceId
+          - MeasureType
+      ===================================================================
+    </xsd:documentation>
+  </xsd:annotation>
+  <!--
+  =============================================================================
+  EXPRESSIONS 
+  =============================================================================
+  -->
+  <xsd:element name="ValueReference" type="xsd:string"/>
+  <xsd:element name="Literal" type="xsd:string"/>
+  <!--
+  =============================================================================
+  FILTER DEFINITION                                                   
+  =============================================================================
+  -->
+  <xsd:complexType name="FilterPredicate"/>
+  <!-- 
+  =============================================================================
+  -->
+  <xsd:element name="Filter" type="cobos:Filter"/>
+  <xsd:complexType name="Filter">
+    <xsd:sequence>
+      <xsd:element name="Predicate" type="cobos:FilterPredicate" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <!--
+  =============================================================================
+  COMPARISON OPERATORS                                                
+  =============================================================================
+  -->
+  <xsd:complexType name="ComparisonOps">
+    <xsd:complexContent>
+      <xsd:extension base="cobos:FilterPredicate"/>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- 
+  =============================================================================
+  -->
+  <xsd:complexType name="BinaryComparisonOp">
+    <xsd:complexContent>
+      <xsd:extension base="cobos:ComparisonOps">
+        <xsd:sequence>
+          <xsd:element name="ValueReference" type="xsd:string"/>
+          <xsd:element name="Literal" type="xsd:string"/>
+          <xsd:element name="Options" minOccurs="0" type="cobos:BinaryComparisonOpOptions"/>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:complexType name="BinaryComparisonOpOptions">
+    <xsd:sequence>
+      <xsd:element name="MatchCase" minOccurs="0" type="xsd:boolean"/>
+      <xsd:element name="MatchAction" minOccurs="0">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="All"/>
+            <xsd:enumeration value="Any"/>
+            <xsd:enumeration value="One"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- 
+  =============================================================================
+  -->
+  <xsd:element name="PropertyIsEqualTo" type="cobos:PropertyIsEqualTo"/>
+  <xsd:complexType name="PropertyIsEqualTo">
+    <xsd:complexContent>
+      <xsd:extension base="cobos:BinaryComparisonOp"/>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- 
+  =============================================================================
+  -->
+  <xsd:element name="PropertyIsNotEqualTo" type="cobos:PropertyIsNotEqualTo"/>
+  <xsd:complexType name="PropertyIsNotEqualTo">
+    <xsd:complexContent>
+      <xsd:extension base="cobos:BinaryComparisonOp"/>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- 
+  =============================================================================
+  -->
+  <xsd:element name="PropertyIsLessThan" type="cobos:PropertyIsLessThan"/>
+  <xsd:complexType name="PropertyIsLessThan">
+    <xsd:complexContent>
+      <xsd:extension base="cobos:BinaryComparisonOp"/>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- 
+  =============================================================================
+  -->
+  <xsd:element name="PropertyIsGreaterThan" type="cobos:PropertyIsGreaterThan"/>
+  <xsd:complexType name="PropertyIsGreaterThan">
+    <xsd:complexContent>
+      <xsd:extension base="cobos:BinaryComparisonOp"/>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- 
+  =============================================================================
+  -->
+  <xsd:element name="PropertyIsLessThanOrEqualTo" type="cobos:PropertyIsLessThanOrEqualTo"/>
+  <xsd:complexType name="PropertyIsLessThanOrEqualTo">
+    <xsd:complexContent>
+      <xsd:extension base="cobos:BinaryComparisonOp"/>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- 
+  =============================================================================
+  -->
+  <xsd:element name="PropertyIsGreaterThanOrEqualTo" type="cobos:PropertyIsGreaterThanOrEqualTo"/>
+  <xsd:complexType name="PropertyIsGreaterThanOrEqualTo">
+    <xsd:complexContent>
+      <xsd:extension base="cobos:BinaryComparisonOp"/>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- 
+  =============================================================================
+  -->
+  <xsd:element name="PropertyIsLike" type="cobos:PropertyIsLike"/>
+  <xsd:complexType name="PropertyIsLike">
+    <xsd:complexContent>
+      <xsd:extension base="cobos:ComparisonOps">
+        <xsd:sequence>
+          <xsd:element name="ValueReference" type="xsd:string"/>
+          <xsd:element name="Literal" type="xsd:string"/>
+          <xsd:element name="Options" minOccurs="0" type="cobos:PropertyIsLikeOptions"/>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- 
+  =============================================================================
+  -->
+  <xsd:complexType name="PropertyIsLikeOptions">
+    <xsd:sequence>
+      <xsd:element name="WildCard" type="xsd:string"/>
+      <xsd:element name="SingleChar" type="xsd:string"/>
+      <xsd:element name="EscapeChar" type="xsd:string"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- 
+  =============================================================================
+  -->
+  <xsd:element name="PropertyIsNull" type="cobos:PropertyIsNull"/>
+  <xsd:complexType name="PropertyIsNull">
+    <xsd:complexContent>
+      <xsd:extension base="cobos:ComparisonOps">
+        <xsd:sequence>
+          <xsd:element name="ValueReference" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- 
+  =============================================================================
+  -->
+  <xsd:element name="PropertyIsBetween" type="cobos:PropertyIsBetween"/>
+  <xsd:complexType name="PropertyIsBetween">
+    <xsd:complexContent>
+      <xsd:extension base="cobos:ComparisonOps">
+        <xsd:sequence>
+          <xsd:element name="ValueReference" type="xsd:string"/>
+          <xsd:element name="LowerBoundary" type="cobos:LowerBoundary"/>
+          <xsd:element name="UpperBoundary" type="cobos:UpperBoundary"/>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:complexType name="LowerBoundary">
+    <xsd:sequence>
+      <xsd:element name="Literal" type="xsd:string"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="UpperBoundary">
+    <xsd:sequence>
+      <xsd:element name="Literal" type="xsd:string"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!--
+  =============================================================================
+  LOGICAL OPERATORS                                                   
+  =============================================================================
+  -->
+  <xsd:element name="logicOps" type="cobos:LogicOps"/>
+  <xsd:complexType name="LogicOps">
+    <xsd:complexContent>
+      <xsd:extension base="cobos:FilterPredicate"/>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- 
+  =============================================================================
+  -->
+  <xsd:complexType name="BinaryLogicOp">
+    <xsd:complexContent>
+      <xsd:extension base="cobos:LogicOps">
+        <xsd:sequence>
+          <xsd:element name="Predicate">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="ArrayOfFilterPredicate" type="cobos:FilterPredicate" minOccurs="2" maxOccurs="unbounded"/>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- 
+  =============================================================================
+  -->
+  <xsd:complexType name="UnaryLogicOp">
+    <xsd:complexContent>
+      <xsd:extension base="cobos:LogicOps">
+        <xsd:sequence>
+          <xsd:element name="Predicate" type="cobos:FilterPredicate" />
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- 
+  =============================================================================
+  -->
+  <xsd:element name="And" type="cobos:And"/>
+  <xsd:complexType name="And">
+    <xsd:complexContent>
+      <xsd:extension base="cobos:BinaryLogicOp"/>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- 
+  =============================================================================
+  -->
+  <xsd:element name="Or" type="cobos:Or"/>
+  <xsd:complexType name="Or">
+    <xsd:complexContent>
+      <xsd:extension base="cobos:BinaryLogicOp"/>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- 
+  =============================================================================
+  -->
+  <xsd:element name="Not" type="cobos:Not"/>
+  <xsd:complexType name="Not">
+    <xsd:complexContent>
+      <xsd:extension base="cobos:UnaryLogicOp"/>
+    </xsd:complexContent>
+  </xsd:complexType>
+</xsd:schema>

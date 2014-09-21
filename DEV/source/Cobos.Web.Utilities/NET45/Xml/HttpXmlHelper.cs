@@ -1,7 +1,7 @@
 ﻿// ----------------------------------------------------------------------------
 // <copyright file="HttpXmlHelper.cs" company="Cobos SDK">
 //
-//      Copyright (c) 2009-2012 Nicholas Davis - nick@cobos.co.uk
+//      Copyright (c) 2009-2014 Nicholas Davis - nick@cobos.co.uk
 //
 //      Cobos Software Development Kit
 //
@@ -53,7 +53,7 @@ namespace Cobos.Web.Utilities.Xml
             context.Response.ContentEncoding = Encoding.UTF8;
             context.Response.Cache.SetCacheability(HttpCacheability.NoCache);
 
-            XmlHelper<T>.Serialize(entity, context.Response.OutputStream);
+            XmlHelper.Serialize<T>(entity, context.Response.OutputStream);
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace Cobos.Web.Utilities.Xml
         /// <returns>The deserialized object.</returns>
         public static T Deserialize(HttpContext context)
         {
-            return XmlHelper<T>.Deserialize(context.Request.InputStream);
+            return XmlHelper.Deserialize<T>(context.Request.InputStream);
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace Cobos.Web.Utilities.Xml
         {
             context.Response.ContentType = "text/xml";
             context.Response.Cache.SetNoStore();
-            XmlHelper<T>.Serialize(entity, context.Response.OutputStream, prefix, ns);
+            XmlHelper.Serialize<T>(entity, context.Response.OutputStream, prefix, ns);
         }
     }
 }

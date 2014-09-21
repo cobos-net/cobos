@@ -45,4 +45,36 @@
   <xsl:template match="@*">
     <xsl:copy/>
   </xsl:template>
+  <!-- 
+  =============================================================================
+  Simple serialization of elements
+  =============================================================================
+  -->
+  <xsl:template match="node()" mode="serialize">
+    <xsl:param name="namespace"/>
+    <xsl:variable name="namespaceDecl">
+      <xsl:if test="$namespace != ''">
+        <xsl:value-of select="concat(' xmlns=&quot;&quot;', $namespace, '&quot;&quot; xmlns:xsi=&quot;&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&quot;')"/>
+      </xsl:if>
+    </xsl:variable>
+    <xsl:variable name="attributes">
+      <xsl:apply-templates select="@*" mode="serialize"/>
+    </xsl:variable>
+    <xsl:variable name="content">
+      <xsl:apply-templates select="node()" mode="serialize"/>
+    </xsl:variable>
+    <xsl:value-of select="concat('&lt;', name(), $namespaceDecl, $attributes, '&gt;', $content, '&lt;/', name(), '&gt;')"/>
+  </xsl:template>
+  <!-- 
+  =============================================================================
+  -->
+  <xsl:template match="@*" mode="serialize">
+    <xsl:value-of select="concat(' ', name(), '=&quot;&quot;', ., '&quot;&quot;')"/>
+  </xsl:template>
+  <!-- 
+  =============================================================================
+  -->
+  <xsl:template match="text()" mode="serialize">
+    <xsl:value-of select="."/>
+  </xsl:template>
 </xsl:stylesheet>

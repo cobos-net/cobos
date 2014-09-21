@@ -4,6 +4,7 @@
   <xsl:include href="./New.xslt"/>
   <xsl:include href="./GetEntities.xslt"/>
   <xsl:include href="./Changes.xslt"/>
+  <xsl:include href="./Filter.xslt"/>
   <xsl:include href="./Fill.xslt"/>
   <xsl:include href="./Insert.xslt"/>
   <xsl:include href="./Update.xslt"/>

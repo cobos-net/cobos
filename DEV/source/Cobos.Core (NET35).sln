@@ -34,8 +34,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.Utilities (NET35)", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.Utilities.Tests (NET35)", "Cobos.Utilities.Tests\NET35\Cobos.Utilities.Tests (NET35).csproj", "{3C92257A-8265-4787-B8CA-B8F70357F4B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.Web.Utilities (NET35)", "Cobos.Web.Utilities\NET35\Cobos.Web.Utilities (NET35).csproj", "{582F9F9B-E6E8-4D7D-B5AD-AAE116C47029}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.Data (NET35)", "Cobos.Data\NET35\Cobos.Data (NET35).csproj", "{F2609602-12E4-47FD-90FB-CC17526EC27B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.Data.Tests (NET35)", "Cobos.Data.Tests\NET35\Cobos.Data.Tests (NET35).csproj", "{68BF847D-36AF-42ED-8F98-68DA5C51D767}"
@@ -164,18 +162,6 @@ Global
 		{3C92257A-8265-4787-B8CA-B8F70357F4B3}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{3C92257A-8265-4787-B8CA-B8F70357F4B3}.Release|x64.ActiveCfg = Release|Any CPU
 		{3C92257A-8265-4787-B8CA-B8F70357F4B3}.Release|x86.ActiveCfg = Release|Any CPU
-		{582F9F9B-E6E8-4D7D-B5AD-AAE116C47029}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{582F9F9B-E6E8-4D7D-B5AD-AAE116C47029}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{582F9F9B-E6E8-4D7D-B5AD-AAE116C47029}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{582F9F9B-E6E8-4D7D-B5AD-AAE116C47029}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{582F9F9B-E6E8-4D7D-B5AD-AAE116C47029}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{582F9F9B-E6E8-4D7D-B5AD-AAE116C47029}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{582F9F9B-E6E8-4D7D-B5AD-AAE116C47029}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{582F9F9B-E6E8-4D7D-B5AD-AAE116C47029}.Release|Any CPU.Build.0 = Release|Any CPU
-		{582F9F9B-E6E8-4D7D-B5AD-AAE116C47029}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{582F9F9B-E6E8-4D7D-B5AD-AAE116C47029}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{582F9F9B-E6E8-4D7D-B5AD-AAE116C47029}.Release|x64.ActiveCfg = Release|Any CPU
-		{582F9F9B-E6E8-4D7D-B5AD-AAE116C47029}.Release|x86.ActiveCfg = Release|Any CPU
 		{F2609602-12E4-47FD-90FB-CC17526EC27B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F2609602-12E4-47FD-90FB-CC17526EC27B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F2609602-12E4-47FD-90FB-CC17526EC27B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU

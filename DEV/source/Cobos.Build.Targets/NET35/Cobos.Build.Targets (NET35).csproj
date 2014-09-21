@@ -42,8 +42,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\NET45\DatabaseToXsd.cs">
-      <Link>DatabaseToXsd.cs</Link>
+    <Compile Include="..\NET45\CobosDatabaseToXsd.cs">
+      <Link>CobosDatabaseToXsd.cs</Link>
     </Compile>
     <Compile Include="..\NET45\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>

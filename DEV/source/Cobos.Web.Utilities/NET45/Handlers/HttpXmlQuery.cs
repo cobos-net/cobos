@@ -1,7 +1,7 @@
 // ----------------------------------------------------------------------------
 // <copyright file="HttpXmlQuery.cs" company="Cobos SDK">
 //
-//      Copyright (c) 2009-2012 Nicholas Davis - nick@cobos.co.uk
+//      Copyright (c) 2009-2014 Nicholas Davis - nick@cobos.co.uk
 //
 //      Cobos Software Development Kit
 //
@@ -80,12 +80,12 @@ namespace Cobos.Web.Utilities.Handlers
 
             using (var output = request.GetRequestStream())
             {
-                XmlHelper<RequestType>.Serialize(data, output, null, null);
+                XmlHelper.Serialize<RequestType>(data, output, null, null);
             }
             
             using (var response = (HttpWebResponse)request.GetResponse())
             {
-                return XmlHelper<ResponseType>.Deserialize(response.GetResponseStream());
+                return XmlHelper.Deserialize<ResponseType>(response.GetResponseStream());
             }
         }
 
@@ -124,7 +124,7 @@ namespace Cobos.Web.Utilities.Handlers
 
             using (var output = request.GetRequestStream())
             {
-                XmlHelper<RequestType>.Serialize(data, output, null, null);
+                XmlHelper.Serialize<RequestType>(data, output, null, null);
             }
 
             using (var response = (HttpWebResponse)request.GetResponse())

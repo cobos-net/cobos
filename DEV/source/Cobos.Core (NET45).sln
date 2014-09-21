@@ -6,6 +6,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Schemas", "Schemas", "{6EDA8BED-1F3E-4A58-ADDB-A4096FC394DD}"
 	ProjectSection(SolutionItems) = preProject
 		Cobos.Codegen\Schemas\DataModel.xsd = Cobos.Codegen\Schemas\DataModel.xsd
+		Cobos.Codegen\Schemas\Filter.xsd = Cobos.Codegen\Schemas\Filter.xsd
+		Cobos.Codegen\Schemas\Sort.xsd = Cobos.Codegen\Schemas\Sort.xsd
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Stylesheets", "Stylesheets", "{734596B3-3329-4336-B41D-A0804C78B745}"
@@ -33,8 +35,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.Utilities (NET45)", "Cobos.Utilities\NET45\Cobos.Utilities (NET45).csproj", "{5EC3C9B9-DAE8-481C-8495-2A0A737D87A3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.Utilities.Tests (NET45)", "Cobos.Utilities.Tests\NET45\Cobos.Utilities.Tests (NET45).csproj", "{891CDC60-F542-47A2-B3E7-F656AB9F4CD8}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.Web.Utilities (NET45)", "Cobos.Web.Utilities\NET45\Cobos.Web.Utilities (NET45).csproj", "{D5196DEE-1711-4AD3-97C8-5215BE26264C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.Data (NET45)", "Cobos.Data\NET45\Cobos.Data (NET45).csproj", "{6906B107-C149-4682-AF7B-FEF9F697FE36}"
 EndProject
@@ -79,6 +79,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Methods", "Methods", "{24D3
 		Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Methods\Delegates.xslt = Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Methods\Delegates.xslt
 		Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Methods\Delete.xslt = Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Methods\Delete.xslt
 		Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Methods\Fill.xslt = Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Methods\Fill.xslt
+		Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Methods\Filter.xslt = Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Methods\Filter.xslt
 		Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Methods\GetEntities.xslt = Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Methods\GetEntities.xslt
 		Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Methods\Insert.xslt = Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Methods\Insert.xslt
 		Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Methods\Methods.inc = Cobos.Codegen\Stylesheets\DataAdapter\CSharp\Methods\Methods.inc
@@ -166,18 +167,6 @@ Global
 		{891CDC60-F542-47A2-B3E7-F656AB9F4CD8}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{891CDC60-F542-47A2-B3E7-F656AB9F4CD8}.Release|x64.ActiveCfg = Release|Any CPU
 		{891CDC60-F542-47A2-B3E7-F656AB9F4CD8}.Release|x86.ActiveCfg = Release|Any CPU
-		{D5196DEE-1711-4AD3-97C8-5215BE26264C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D5196DEE-1711-4AD3-97C8-5215BE26264C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D5196DEE-1711-4AD3-97C8-5215BE26264C}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{D5196DEE-1711-4AD3-97C8-5215BE26264C}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{D5196DEE-1711-4AD3-97C8-5215BE26264C}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{D5196DEE-1711-4AD3-97C8-5215BE26264C}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{D5196DEE-1711-4AD3-97C8-5215BE26264C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D5196DEE-1711-4AD3-97C8-5215BE26264C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D5196DEE-1711-4AD3-97C8-5215BE26264C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{D5196DEE-1711-4AD3-97C8-5215BE26264C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{D5196DEE-1711-4AD3-97C8-5215BE26264C}.Release|x64.ActiveCfg = Release|Any CPU
-		{D5196DEE-1711-4AD3-97C8-5215BE26264C}.Release|x86.ActiveCfg = Release|Any CPU
 		{6906B107-C149-4682-AF7B-FEF9F697FE36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6906B107-C149-4682-AF7B-FEF9F697FE36}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6906B107-C149-4682-AF7B-FEF9F697FE36}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU

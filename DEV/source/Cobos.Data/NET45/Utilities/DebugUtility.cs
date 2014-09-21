@@ -1,7 +1,7 @@
 ﻿// ----------------------------------------------------------------------------
-// <copyright file="DataColumnDescriptor.cs" company="Cobos SDK">
+// <copyright file="DebugUtility.cs" company="Cobos SDK">
 //
-//      Copyright (c) 2009-2012 Nicholas Davis - nick@cobos.co.uk
+//      Copyright (c) 2009-2014 Nicholas Davis - nick@cobos.co.uk
 //
 //      Cobos Software Development Kit
 //
@@ -42,7 +42,7 @@ namespace Cobos.Data.Utilities
         /// </summary>
         /// <param name="dataset">The dataset to dump.</param>
         /// <remarks>
-        /// http://www.codeproject.com/Tips/405938/Debugging-DataSet-Constraint-Errors
+        /// See: <c>http://www.codeproject.com/Tips/405938/Debugging-DataSet-Constraint-Errors</c>
         /// </remarks>
         public static void DumpDataSetErrors(DataSet dataset)
         {

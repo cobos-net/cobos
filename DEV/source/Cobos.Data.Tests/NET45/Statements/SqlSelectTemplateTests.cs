@@ -1,7 +1,7 @@
 ﻿// ----------------------------------------------------------------------------
 // <copyright file="SqlSelectTemplateTests.cs" company="Cobos SDK">
 //
-//      Copyright (c) 2009-2012 Nicholas Davis - nick@cobos.co.uk
+//      Copyright (c) 2009-2014 Nicholas Davis - nick@cobos.co.uk
 //
 //      Cobos Software Development Kit
 //
@@ -153,7 +153,7 @@ namespace Cobos.Data.Tests.Statements
         /// <summary>
         /// Strategy:
         /// ---------
-        /// 1. Test the outer join parameters. 
+        /// 1. Test the LEFT OUTER JOIN parameters. 
         /// </summary>
         [TestCase]
         public void Outer_join_parameters_return_correct_query()
@@ -164,24 +164,24 @@ namespace Cobos.Data.Tests.Statements
 
             SqlSelectTemplate select = new SqlSelectTemplate("COL", null, null, outerJoin1, null, null, null);
 
-            Assert.AreEqual("SELECT COL OUTER JOIN TABLE1", select.ToString());
-            Assert.AreEqual("SELECT COL OUTER JOIN TABLE1 OUTER JOIN TABLE1", select.ToString(null, null, null, outerJoin1, null, null, null));
-            Assert.AreEqual("SELECT COL OUTER JOIN TABLE1 OUTER JOIN TABLE2 OUTER JOIN TABLE3", select.ToString(null, null, null, outerJoin2, null, null, null));
-            Assert.AreEqual("SELECT COL OUTER JOIN TABLE1 OUTER JOIN TABLE4 OUTER JOIN TABLE5 OUTER JOIN TABLE6", select.ToString(null, null, null, outerJoin3, null, null, null));
+            Assert.AreEqual("SELECT COL LEFT OUTER JOIN TABLE1", select.ToString());
+            Assert.AreEqual("SELECT COL LEFT OUTER JOIN TABLE1 LEFT OUTER JOIN TABLE1", select.ToString(null, null, null, outerJoin1, null, null, null));
+            Assert.AreEqual("SELECT COL LEFT OUTER JOIN TABLE1 LEFT OUTER JOIN TABLE2 LEFT OUTER JOIN TABLE3", select.ToString(null, null, null, outerJoin2, null, null, null));
+            Assert.AreEqual("SELECT COL LEFT OUTER JOIN TABLE1 LEFT OUTER JOIN TABLE4 LEFT OUTER JOIN TABLE5 LEFT OUTER JOIN TABLE6", select.ToString(null, null, null, outerJoin3, null, null, null));
 
             select = new SqlSelectTemplate("COL", null, null, outerJoin2, null, null, null);
 
-            Assert.AreEqual("SELECT COL OUTER JOIN TABLE2 OUTER JOIN TABLE3", select.ToString());
-            Assert.AreEqual("SELECT COL OUTER JOIN TABLE2 OUTER JOIN TABLE3 OUTER JOIN TABLE1", select.ToString(null, null, null, outerJoin1, null, null, null));
-            Assert.AreEqual("SELECT COL OUTER JOIN TABLE2 OUTER JOIN TABLE3 OUTER JOIN TABLE2 OUTER JOIN TABLE3", select.ToString(null, null, null, outerJoin2, null, null, null));
-            Assert.AreEqual("SELECT COL OUTER JOIN TABLE2 OUTER JOIN TABLE3 OUTER JOIN TABLE4 OUTER JOIN TABLE5 OUTER JOIN TABLE6", select.ToString(null, null, null, outerJoin3, null, null, null));
+            Assert.AreEqual("SELECT COL LEFT OUTER JOIN TABLE2 LEFT OUTER JOIN TABLE3", select.ToString());
+            Assert.AreEqual("SELECT COL LEFT OUTER JOIN TABLE2 LEFT OUTER JOIN TABLE3 LEFT OUTER JOIN TABLE1", select.ToString(null, null, null, outerJoin1, null, null, null));
+            Assert.AreEqual("SELECT COL LEFT OUTER JOIN TABLE2 LEFT OUTER JOIN TABLE3 LEFT OUTER JOIN TABLE2 LEFT OUTER JOIN TABLE3", select.ToString(null, null, null, outerJoin2, null, null, null));
+            Assert.AreEqual("SELECT COL LEFT OUTER JOIN TABLE2 LEFT OUTER JOIN TABLE3 LEFT OUTER JOIN TABLE4 LEFT OUTER JOIN TABLE5 LEFT OUTER JOIN TABLE6", select.ToString(null, null, null, outerJoin3, null, null, null));
 
             select = new SqlSelectTemplate("COL", null, null, outerJoin3, null, null, null);
 
-            Assert.AreEqual("SELECT COL OUTER JOIN TABLE4 OUTER JOIN TABLE5 OUTER JOIN TABLE6", select.ToString());
-            Assert.AreEqual("SELECT COL OUTER JOIN TABLE4 OUTER JOIN TABLE5 OUTER JOIN TABLE6 OUTER JOIN TABLE1", select.ToString(null, null, null, outerJoin1, null, null, null));
-            Assert.AreEqual("SELECT COL OUTER JOIN TABLE4 OUTER JOIN TABLE5 OUTER JOIN TABLE6 OUTER JOIN TABLE2 OUTER JOIN TABLE3", select.ToString(null, null, null, outerJoin2, null, null, null));
-            Assert.AreEqual("SELECT COL OUTER JOIN TABLE4 OUTER JOIN TABLE5 OUTER JOIN TABLE6 OUTER JOIN TABLE4 OUTER JOIN TABLE5 OUTER JOIN TABLE6", select.ToString(null, null, null, outerJoin3, null, null, null));
+            Assert.AreEqual("SELECT COL LEFT OUTER JOIN TABLE4 LEFT OUTER JOIN TABLE5 LEFT OUTER JOIN TABLE6", select.ToString());
+            Assert.AreEqual("SELECT COL LEFT OUTER JOIN TABLE4 LEFT OUTER JOIN TABLE5 LEFT OUTER JOIN TABLE6 LEFT OUTER JOIN TABLE1", select.ToString(null, null, null, outerJoin1, null, null, null));
+            Assert.AreEqual("SELECT COL LEFT OUTER JOIN TABLE4 LEFT OUTER JOIN TABLE5 LEFT OUTER JOIN TABLE6 LEFT OUTER JOIN TABLE2 LEFT OUTER JOIN TABLE3", select.ToString(null, null, null, outerJoin2, null, null, null));
+            Assert.AreEqual("SELECT COL LEFT OUTER JOIN TABLE4 LEFT OUTER JOIN TABLE5 LEFT OUTER JOIN TABLE6 LEFT OUTER JOIN TABLE4 LEFT OUTER JOIN TABLE5 LEFT OUTER JOIN TABLE6", select.ToString(null, null, null, outerJoin3, null, null, null));
         }
 
         /// <summary>
@@ -278,38 +278,38 @@ namespace Cobos.Data.Tests.Statements
 
             SqlSelectTemplate select = new SqlSelectTemplate("COL", "TABLE1", innerJoin, outerJoin, whereClause, "GROUPCOL", "ORDERCOL");
 
-            Assert.AreEqual("SELECT COL FROM TABLE1 INNER JOIN INNER_JOIN1 INNER JOIN INNER_JOIN2 OUTER JOIN OUTER_JOIN1 OUTER JOIN OUTER_JOIN2 WHERE (CLAUSE1) AND (CLAUSE2) GROUP BY GROUPCOL ORDER BY ORDERCOL", select.ToString());
-            Assert.AreEqual("SELECT COL, COL2 FROM TABLE1 INNER JOIN INNER_JOIN1 INNER JOIN INNER_JOIN2 OUTER JOIN OUTER_JOIN1 OUTER JOIN OUTER_JOIN2 WHERE (CLAUSE1) AND (CLAUSE2) GROUP BY GROUPCOL ORDER BY ORDERCOL", select.ToString("COL2", null, null, null, null, null, null));
-            Assert.AreEqual("SELECT COL FROM TABLE1, TABLE2 INNER JOIN INNER_JOIN1 INNER JOIN INNER_JOIN2 OUTER JOIN OUTER_JOIN1 OUTER JOIN OUTER_JOIN2 WHERE (CLAUSE1) AND (CLAUSE2) GROUP BY GROUPCOL ORDER BY ORDERCOL", select.ToString(null, "TABLE2", null, null, null, null, null));
-            Assert.AreEqual("SELECT COL FROM TABLE1 INNER JOIN INNER_JOIN1 INNER JOIN INNER_JOIN2 INNER JOIN INNER_JOIN1 INNER JOIN INNER_JOIN2 OUTER JOIN OUTER_JOIN1 OUTER JOIN OUTER_JOIN2 WHERE (CLAUSE1) AND (CLAUSE2) GROUP BY GROUPCOL ORDER BY ORDERCOL", select.ToString(null, null, innerJoin, null, null, null, null));
-            Assert.AreEqual("SELECT COL FROM TABLE1 INNER JOIN INNER_JOIN1 INNER JOIN INNER_JOIN2 OUTER JOIN OUTER_JOIN1 OUTER JOIN OUTER_JOIN2 OUTER JOIN OUTER_JOIN1 OUTER JOIN OUTER_JOIN2 WHERE (CLAUSE1) AND (CLAUSE2) GROUP BY GROUPCOL ORDER BY ORDERCOL", select.ToString(null, null, null, outerJoin, null, null, null));
-            Assert.AreEqual("SELECT COL FROM TABLE1 INNER JOIN INNER_JOIN1 INNER JOIN INNER_JOIN2 OUTER JOIN OUTER_JOIN1 OUTER JOIN OUTER_JOIN2 WHERE (CLAUSE1) AND (CLAUSE2) AND (CLAUSE1) AND (CLAUSE2) GROUP BY GROUPCOL ORDER BY ORDERCOL", select.ToString(null, null, null, null, whereClause, null, null));
-            Assert.AreEqual("SELECT COL FROM TABLE1 INNER JOIN INNER_JOIN1 INNER JOIN INNER_JOIN2 OUTER JOIN OUTER_JOIN1 OUTER JOIN OUTER_JOIN2 WHERE (CLAUSE1) AND (CLAUSE2) GROUP BY GROUPCOL, GROUPCOL2 ORDER BY ORDERCOL", select.ToString(null, null, null, null, null, "GROUPCOL2", null));
-            Assert.AreEqual("SELECT COL FROM TABLE1 INNER JOIN INNER_JOIN1 INNER JOIN INNER_JOIN2 OUTER JOIN OUTER_JOIN1 OUTER JOIN OUTER_JOIN2 WHERE (CLAUSE1) AND (CLAUSE2) GROUP BY GROUPCOL ORDER BY ORDERCOL, ORDERCOL2", select.ToString(null, null, null, null, null, null, "ORDERCOL2"));
+            Assert.AreEqual("SELECT COL FROM TABLE1 INNER JOIN INNER_JOIN1 INNER JOIN INNER_JOIN2 LEFT OUTER JOIN OUTER_JOIN1 LEFT OUTER JOIN OUTER_JOIN2 WHERE (CLAUSE1) AND (CLAUSE2) GROUP BY GROUPCOL ORDER BY ORDERCOL", select.ToString());
+            Assert.AreEqual("SELECT COL, COL2 FROM TABLE1 INNER JOIN INNER_JOIN1 INNER JOIN INNER_JOIN2 LEFT OUTER JOIN OUTER_JOIN1 LEFT OUTER JOIN OUTER_JOIN2 WHERE (CLAUSE1) AND (CLAUSE2) GROUP BY GROUPCOL ORDER BY ORDERCOL", select.ToString("COL2", null, null, null, null, null, null));
+            Assert.AreEqual("SELECT COL FROM TABLE1, TABLE2 INNER JOIN INNER_JOIN1 INNER JOIN INNER_JOIN2 LEFT OUTER JOIN OUTER_JOIN1 LEFT OUTER JOIN OUTER_JOIN2 WHERE (CLAUSE1) AND (CLAUSE2) GROUP BY GROUPCOL ORDER BY ORDERCOL", select.ToString(null, "TABLE2", null, null, null, null, null));
+            Assert.AreEqual("SELECT COL FROM TABLE1 INNER JOIN INNER_JOIN1 INNER JOIN INNER_JOIN2 INNER JOIN INNER_JOIN1 INNER JOIN INNER_JOIN2 LEFT OUTER JOIN OUTER_JOIN1 LEFT OUTER JOIN OUTER_JOIN2 WHERE (CLAUSE1) AND (CLAUSE2) GROUP BY GROUPCOL ORDER BY ORDERCOL", select.ToString(null, null, innerJoin, null, null, null, null));
+            Assert.AreEqual("SELECT COL FROM TABLE1 INNER JOIN INNER_JOIN1 INNER JOIN INNER_JOIN2 LEFT OUTER JOIN OUTER_JOIN1 LEFT OUTER JOIN OUTER_JOIN2 LEFT OUTER JOIN OUTER_JOIN1 LEFT OUTER JOIN OUTER_JOIN2 WHERE (CLAUSE1) AND (CLAUSE2) GROUP BY GROUPCOL ORDER BY ORDERCOL", select.ToString(null, null, null, outerJoin, null, null, null));
+            Assert.AreEqual("SELECT COL FROM TABLE1 INNER JOIN INNER_JOIN1 INNER JOIN INNER_JOIN2 LEFT OUTER JOIN OUTER_JOIN1 LEFT OUTER JOIN OUTER_JOIN2 WHERE (CLAUSE1) AND (CLAUSE2) AND (CLAUSE1) AND (CLAUSE2) GROUP BY GROUPCOL ORDER BY ORDERCOL", select.ToString(null, null, null, null, whereClause, null, null));
+            Assert.AreEqual("SELECT COL FROM TABLE1 INNER JOIN INNER_JOIN1 INNER JOIN INNER_JOIN2 LEFT OUTER JOIN OUTER_JOIN1 LEFT OUTER JOIN OUTER_JOIN2 WHERE (CLAUSE1) AND (CLAUSE2) GROUP BY GROUPCOL, GROUPCOL2 ORDER BY ORDERCOL", select.ToString(null, null, null, null, null, "GROUPCOL2", null));
+            Assert.AreEqual("SELECT COL FROM TABLE1 INNER JOIN INNER_JOIN1 INNER JOIN INNER_JOIN2 LEFT OUTER JOIN OUTER_JOIN1 LEFT OUTER JOIN OUTER_JOIN2 WHERE (CLAUSE1) AND (CLAUSE2) GROUP BY GROUPCOL ORDER BY ORDERCOL, ORDERCOL2", select.ToString(null, null, null, null, null, null, "ORDERCOL2"));
 
             select = new SqlSelectTemplate();
-            Assert.AreEqual("SELECT COL FROM TABLE1 INNER JOIN INNER_JOIN1 INNER JOIN INNER_JOIN2 OUTER JOIN OUTER_JOIN1 OUTER JOIN OUTER_JOIN2 WHERE (CLAUSE1) AND (CLAUSE2) GROUP BY GROUPCOL ORDER BY ORDERCOL", select.ToString("COL", "TABLE1", innerJoin, outerJoin, whereClause, "GROUPCOL", "ORDERCOL"));
+            Assert.AreEqual("SELECT COL FROM TABLE1 INNER JOIN INNER_JOIN1 INNER JOIN INNER_JOIN2 LEFT OUTER JOIN OUTER_JOIN1 LEFT OUTER JOIN OUTER_JOIN2 WHERE (CLAUSE1) AND (CLAUSE2) GROUP BY GROUPCOL ORDER BY ORDERCOL", select.ToString("COL", "TABLE1", innerJoin, outerJoin, whereClause, "GROUPCOL", "ORDERCOL"));
 
             select = new SqlSelectTemplate("COL", null, null, null, null, null, null);
-            Assert.AreEqual("SELECT COL, COL2 FROM TABLE2 INNER JOIN INNER_JOIN1 INNER JOIN INNER_JOIN2 OUTER JOIN OUTER_JOIN1 OUTER JOIN OUTER_JOIN2 WHERE (CLAUSE1) AND (CLAUSE2) GROUP BY GROUPCOL2 ORDER BY ORDERCOL2", select.ToString("COL2", "TABLE2", innerJoin, outerJoin, whereClause, "GROUPCOL2", "ORDERCOL2"));
+            Assert.AreEqual("SELECT COL, COL2 FROM TABLE2 INNER JOIN INNER_JOIN1 INNER JOIN INNER_JOIN2 LEFT OUTER JOIN OUTER_JOIN1 LEFT OUTER JOIN OUTER_JOIN2 WHERE (CLAUSE1) AND (CLAUSE2) GROUP BY GROUPCOL2 ORDER BY ORDERCOL2", select.ToString("COL2", "TABLE2", innerJoin, outerJoin, whereClause, "GROUPCOL2", "ORDERCOL2"));
 
             select = new SqlSelectTemplate(null, "TABLE1", null, null, null, null, null);
-            Assert.AreEqual("SELECT COL2 FROM TABLE1, TABLE2 INNER JOIN INNER_JOIN1 INNER JOIN INNER_JOIN2 OUTER JOIN OUTER_JOIN1 OUTER JOIN OUTER_JOIN2 WHERE (CLAUSE1) AND (CLAUSE2) GROUP BY GROUPCOL2 ORDER BY ORDERCOL2", select.ToString("COL2", "TABLE2", innerJoin, outerJoin, whereClause, "GROUPCOL2", "ORDERCOL2"));
+            Assert.AreEqual("SELECT COL2 FROM TABLE1, TABLE2 INNER JOIN INNER_JOIN1 INNER JOIN INNER_JOIN2 LEFT OUTER JOIN OUTER_JOIN1 LEFT OUTER JOIN OUTER_JOIN2 WHERE (CLAUSE1) AND (CLAUSE2) GROUP BY GROUPCOL2 ORDER BY ORDERCOL2", select.ToString("COL2", "TABLE2", innerJoin, outerJoin, whereClause, "GROUPCOL2", "ORDERCOL2"));
 
             select = new SqlSelectTemplate(null, null, innerJoin, null, null, null, null);
-            Assert.AreEqual("SELECT COL2 FROM TABLE2 INNER JOIN INNER_JOIN1 INNER JOIN INNER_JOIN2 INNER JOIN INNER_JOIN1 INNER JOIN INNER_JOIN2 OUTER JOIN OUTER_JOIN1 OUTER JOIN OUTER_JOIN2 WHERE (CLAUSE1) AND (CLAUSE2) GROUP BY GROUPCOL2 ORDER BY ORDERCOL2", select.ToString("COL2", "TABLE2", innerJoin, outerJoin, whereClause, "GROUPCOL2", "ORDERCOL2"));
+            Assert.AreEqual("SELECT COL2 FROM TABLE2 INNER JOIN INNER_JOIN1 INNER JOIN INNER_JOIN2 INNER JOIN INNER_JOIN1 INNER JOIN INNER_JOIN2 LEFT OUTER JOIN OUTER_JOIN1 LEFT OUTER JOIN OUTER_JOIN2 WHERE (CLAUSE1) AND (CLAUSE2) GROUP BY GROUPCOL2 ORDER BY ORDERCOL2", select.ToString("COL2", "TABLE2", innerJoin, outerJoin, whereClause, "GROUPCOL2", "ORDERCOL2"));
 
             select = new SqlSelectTemplate(null, null, null, outerJoin, null, null, null);
-            Assert.AreEqual("SELECT COL2 FROM TABLE2 INNER JOIN INNER_JOIN1 INNER JOIN INNER_JOIN2 OUTER JOIN OUTER_JOIN1 OUTER JOIN OUTER_JOIN2 OUTER JOIN OUTER_JOIN1 OUTER JOIN OUTER_JOIN2 WHERE (CLAUSE1) AND (CLAUSE2) GROUP BY GROUPCOL2 ORDER BY ORDERCOL2", select.ToString("COL2", "TABLE2", innerJoin, outerJoin, whereClause, "GROUPCOL2", "ORDERCOL2"));
+            Assert.AreEqual("SELECT COL2 FROM TABLE2 INNER JOIN INNER_JOIN1 INNER JOIN INNER_JOIN2 LEFT OUTER JOIN OUTER_JOIN1 LEFT OUTER JOIN OUTER_JOIN2 LEFT OUTER JOIN OUTER_JOIN1 LEFT OUTER JOIN OUTER_JOIN2 WHERE (CLAUSE1) AND (CLAUSE2) GROUP BY GROUPCOL2 ORDER BY ORDERCOL2", select.ToString("COL2", "TABLE2", innerJoin, outerJoin, whereClause, "GROUPCOL2", "ORDERCOL2"));
 
             select = new SqlSelectTemplate(null, null, null, null, whereClause, null, null);
-            Assert.AreEqual("SELECT COL2 FROM TABLE2 INNER JOIN INNER_JOIN1 INNER JOIN INNER_JOIN2 OUTER JOIN OUTER_JOIN1 OUTER JOIN OUTER_JOIN2 WHERE (CLAUSE1) AND (CLAUSE2) AND (CLAUSE1) AND (CLAUSE2) GROUP BY GROUPCOL2 ORDER BY ORDERCOL2", select.ToString("COL2", "TABLE2", innerJoin, outerJoin, whereClause, "GROUPCOL2", "ORDERCOL2"));
+            Assert.AreEqual("SELECT COL2 FROM TABLE2 INNER JOIN INNER_JOIN1 INNER JOIN INNER_JOIN2 LEFT OUTER JOIN OUTER_JOIN1 LEFT OUTER JOIN OUTER_JOIN2 WHERE (CLAUSE1) AND (CLAUSE2) AND (CLAUSE1) AND (CLAUSE2) GROUP BY GROUPCOL2 ORDER BY ORDERCOL2", select.ToString("COL2", "TABLE2", innerJoin, outerJoin, whereClause, "GROUPCOL2", "ORDERCOL2"));
 
             select = new SqlSelectTemplate(null, null, null, null, null, "GROUPCOL", null);
-            Assert.AreEqual("SELECT COL2 FROM TABLE2 INNER JOIN INNER_JOIN1 INNER JOIN INNER_JOIN2 OUTER JOIN OUTER_JOIN1 OUTER JOIN OUTER_JOIN2 WHERE (CLAUSE1) AND (CLAUSE2) GROUP BY GROUPCOL, GROUPCOL2 ORDER BY ORDERCOL2", select.ToString("COL2", "TABLE2", innerJoin, outerJoin, whereClause, "GROUPCOL2", "ORDERCOL2"));
+            Assert.AreEqual("SELECT COL2 FROM TABLE2 INNER JOIN INNER_JOIN1 INNER JOIN INNER_JOIN2 LEFT OUTER JOIN OUTER_JOIN1 LEFT OUTER JOIN OUTER_JOIN2 WHERE (CLAUSE1) AND (CLAUSE2) GROUP BY GROUPCOL, GROUPCOL2 ORDER BY ORDERCOL2", select.ToString("COL2", "TABLE2", innerJoin, outerJoin, whereClause, "GROUPCOL2", "ORDERCOL2"));
 
             select = new SqlSelectTemplate(null, null, null, null, null, null, "ORDERCOL");
-            Assert.AreEqual("SELECT COL2 FROM TABLE2 INNER JOIN INNER_JOIN1 INNER JOIN INNER_JOIN2 OUTER JOIN OUTER_JOIN1 OUTER JOIN OUTER_JOIN2 WHERE (CLAUSE1) AND (CLAUSE2) GROUP BY GROUPCOL2 ORDER BY ORDERCOL, ORDERCOL2", select.ToString("COL2", "TABLE2", innerJoin, outerJoin, whereClause, "GROUPCOL2", "ORDERCOL2"));
+            Assert.AreEqual("SELECT COL2 FROM TABLE2 INNER JOIN INNER_JOIN1 INNER JOIN INNER_JOIN2 LEFT OUTER JOIN OUTER_JOIN1 LEFT OUTER JOIN OUTER_JOIN2 WHERE (CLAUSE1) AND (CLAUSE2) GROUP BY GROUPCOL2 ORDER BY ORDERCOL, ORDERCOL2", select.ToString("COL2", "TABLE2", innerJoin, outerJoin, whereClause, "GROUPCOL2", "ORDERCOL2"));
         }
 
         /// <summary>
@@ -338,11 +338,11 @@ namespace Cobos.Data.Tests.Statements
 
             Assert.AreEqual("SELECT COL", select.ToString());
             Assert.AreEqual("SELECT COL", select.ToString(null, null, empty, empty, empty, null, null));
-            Assert.AreEqual("SELECT COL INNER JOIN INNER_JOIN1 INNER JOIN INNER_JOIN2 OUTER JOIN OUTER_JOIN1 OUTER JOIN OUTER_JOIN2 WHERE (CLAUSE1) AND (CLAUSE2)", select.ToString(null, null, innerJoin, outerJoin, where, null, null));
+            Assert.AreEqual("SELECT COL INNER JOIN INNER_JOIN1 INNER JOIN INNER_JOIN2 LEFT OUTER JOIN OUTER_JOIN1 LEFT OUTER JOIN OUTER_JOIN2 WHERE (CLAUSE1) AND (CLAUSE2)", select.ToString(null, null, innerJoin, outerJoin, where, null, null));
 
             select = new SqlSelectTemplate("COL", null, innerJoin, outerJoin, where, null, null);
 
-            Assert.AreEqual("SELECT COL INNER JOIN INNER_JOIN1 INNER JOIN INNER_JOIN2 OUTER JOIN OUTER_JOIN1 OUTER JOIN OUTER_JOIN2 WHERE (CLAUSE1) AND (CLAUSE2)", select.ToString(null, null, empty, empty, empty, null, null));
+            Assert.AreEqual("SELECT COL INNER JOIN INNER_JOIN1 INNER JOIN INNER_JOIN2 LEFT OUTER JOIN OUTER_JOIN1 LEFT OUTER JOIN OUTER_JOIN2 WHERE (CLAUSE1) AND (CLAUSE2)", select.ToString(null, null, empty, empty, empty, null, null));
         }
 
         /// <summary>

@@ -14,34 +14,27 @@
 	=============================================================================
 	Filename: Dataset.xslt
 	Description: XSLT for creation of DataSet Xsd definitions
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	=============================================================================
 	Created by: N.Davis                        Date: 2010-04-09
 	Modified by:                               Date:
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	=============================================================================
 	Notes: We expand the object hierarchy so that each top level object is 
 	represented by a single query and single data table.
 
-	============================================================================
+	=============================================================================
 	-->
-
 	<xsl:include href="../Utilities/Utilities.inc"/>
-
 	<xsl:key name="dbTableKey" match="cobos:Object|cobos:Property" use="@dbTable"/>
-
 	<!--
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	=============================================================================
 	Process the data model into a dataset schema
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	=============================================================================
 	-->
-
 	<xsl:template match="/cobos:DataModel">
-
 		<xsl:call-template name="generatedXmlWarning"/>
-
 		<xsl:variable name="name">
 			<xsl:apply-templates select="." mode="className"/>
 		</xsl:variable>
-
 		<xsd:schema targetNamespace="http://schemas.cobos.co.uk/datamodel/1.0.0"
 				elementFormDefault="qualified" 
 				xmlns="http://schemas.cobos.co.uk/datamodel/1.0.0"
@@ -66,15 +59,12 @@
 			<!-- copy the database type definitions -->
 			<xsl:copy-of select="$databaseTypesNodeSet"/>
 		</xsd:schema>
-	
 	</xsl:template>
-
 	<!--
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	=============================================================================
 	Process a top level object 
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	=============================================================================
 	-->
-
 	<!-- Match a processed object -->
 	<xsl:template match="cobos:Object">
 		<xsl:element name="xsd:element">
@@ -93,15 +83,12 @@
 			</xsd:complexType>
 		</xsl:element>
 	</xsl:template>
-
 	<!--
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	=============================================================================
 	Process a property in a top level object
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	=============================================================================
 	-->
-
 	<xsl:template match="cobos:Property">
-		
 		<xsl:element name="xsd:element">
 			<xsl:variable name="fullName">
 				<xsl:apply-templates mode="fullName" select="."/>
@@ -131,15 +118,12 @@
       </xsl:if>
 			<xsl:copy-of select="@minOccurs"/>
 		</xsl:element>
-	
 	</xsl:template>
-
 	<!--
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	=============================================================================
 	Process a reference
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	=============================================================================
 	-->
-
 	<xsl:template match="cobos:Reference">
 		<xsl:variable name="keyName">
 			<xsl:value-of select="../@name"/>
@@ -160,42 +144,40 @@
 			<xsd:field xpath="{$keyreffield}"/>
 		</xsd:keyref>
 	</xsl:template>
-
-
 	<!--
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	=============================================================================
 	Process a top level object's constraints
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	=============================================================================
 	-->
-
 	<xsl:template match="cobos:Object" mode="constraints">
 		<xsl:variable name="object" select="."/>
-		
 		<xsl:for-each select="$databaseConstraintsNodeSet/*[self::xsd:key|self::xsd:unique|self::xsd:keyref][translate(xsd:selector/@xpath, $lowercase, $uppercase) = concat('.//', translate($object/@dbTable, $lowercase, $uppercase))]">
-			
 			<xsl:element name="{name()}">
 				<xsl:attribute name="name">
-					<xsl:value-of select="concat($object/@name, '_', @name)"/>
+					<xsl:value-of select="concat($object/@name, '_', translate(@name, ' ', '_'))"/>
 				</xsl:attribute>
 				<xsl:apply-templates select="." mode="constraintAttributes"/>
 				<xsd:selector xpath=".//{$object/@name}"/>
 				<xsl:copy-of select="xsd:field"/>
 			</xsl:element>
-
 		</xsl:for-each>
-	
 	</xsl:template>
-	
-	<!-- Add extra dataset processing attributes to key constraints -->
-
-	<xsl:template match="xsd:key" mode="constraintAttributes">
+  <!--
+	=============================================================================
+  Add extra dataset processing attributes to key constraints
+  =============================================================================
+  -->
+  <xsl:template match="xsd:key" mode="constraintAttributes">
 		<xsl:attribute name="msdata:PrimaryKey">true</xsl:attribute>
 	</xsl:template>
-
+  <!--
+	=============================================================================
+  -->
 	<xsl:template match="xsd:unique" mode="constraintAttributes">
 	</xsl:template>
-
-	<xsl:template match="xsd:keyref" mode="constraintAttributes">
+  <!--
+	=============================================================================
+  -->
+  <xsl:template match="xsd:keyref" mode="constraintAttributes">
 	</xsl:template>
-
 </xsl:stylesheet>

@@ -55,6 +55,7 @@
     <xsl:apply-templates select="." mode="events"/>
     <xsl:apply-templates select="cobos:Object|cobos:Reference|cobos:Property[not(@hidden)]" mode="propertyDefinition"/>
     <xsl:apply-templates select="/cobos:DataModel//cobos:Reference[@ref = current()/@name]" mode="parentReferencePropertyDefinition"/>
+    <xsl:apply-templates select="cobos:Property[@hidden]" mode="propertyDefinition"/>
     <xsl:apply-templates select="." mode="notifyChanged"/>
     <xsl:apply-templates select="cobos:Object" mode="classDefinition"/>
     <xsl:value-of select="concat($indent, '}')"/>
@@ -133,7 +134,7 @@
   Property definitions.
   =============================================================================
   -->
-  <xsl:template match="*" mode="propertyDefinition">
+  <xsl:template match="cobos:Object|cobos:Reference|cobos:Property" mode="propertyDefinition">
     <xsl:variable name="indent">
       <xsl:apply-templates select="." mode="newlineIndent"/>
     </xsl:variable>
@@ -142,7 +143,10 @@
     </xsl:variable>
     <xsl:value-of select="$indent"/>
     <xsl:apply-templates select="." mode="commentProperty"/>
-    <xsl:value-of select="concat($indent, '[global::System.Runtime.Serialization.DataMember(Order = ', position() - 1, ')]')"/>
+    <xsl:apply-templates select="." mode="propertySerializationAttribute">
+      <xsl:with-param name="indent" select="$indent"/>
+      <xsl:with-param name="order" select="position() - 1"/>
+    </xsl:apply-templates>
     <xsl:apply-templates select="." mode="mappingProperty">
       <xsl:with-param name="indent" select="$indent"/>
     </xsl:apply-templates>
@@ -152,6 +156,21 @@
     <xsl:value-of select="$indent"/>
     <xsl:apply-templates select="." mode="propertySet"/>
     <xsl:value-of select="concat($indent, '}')"/>
+  </xsl:template>
+  <!-- 
+  =============================================================================
+  -->
+  <xsl:template match="cobos:Object|cobos:Reference|cobos:Property" mode="propertySerializationAttribute">
+    <xsl:param name="indent"/>
+    <xsl:param name="order"/>
+    <xsl:value-of select="concat($indent, '[global::System.Runtime.Serialization.DataMember(Order = ', $order, ')]')"/>
+  </xsl:template>
+  <!-- 
+  =============================================================================
+  -->
+  <xsl:template match="cobos:Property[@hidden]" mode="propertySerializationAttribute">
+    <xsl:param name="indent"/>
+    <xsl:value-of select="concat($indent, '[global::System.Runtime.Serialization.IgnoreDataMember()]')"/>
   </xsl:template>
   <!-- 
   =============================================================================

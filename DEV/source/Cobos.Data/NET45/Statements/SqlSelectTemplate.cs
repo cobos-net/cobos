@@ -1,7 +1,7 @@
 ﻿// ----------------------------------------------------------------------------
 // <copyright file="SqlSelectTemplate.cs" company="Cobos SDK">
 //
-//      Copyright (c) 2009-2012 Nicholas Davis - nick@cobos.co.uk
+//      Copyright (c) 2009-2014 Nicholas Davis - nick@cobos.co.uk
 //
 //      Cobos Software Development Kit
 //
@@ -226,7 +226,7 @@ namespace Cobos.Data.Statements
             {
                 for (int i = 0; i < this.outerJoin.Length; ++i)
                 {
-                    buffer.Append(" OUTER JOIN " + this.outerJoin[i]);
+                    buffer.Append(" LEFT OUTER JOIN " + this.outerJoin[i]);
                 }
             }
 
@@ -234,7 +234,7 @@ namespace Cobos.Data.Statements
             {
                 for (int i = 0; i < outerJoin.Length; ++i)
                 {
-                    buffer.Append(" OUTER JOIN " + outerJoin[i]);
+                    buffer.Append(" LEFT OUTER JOIN " + outerJoin[i]);
                 }
             }
 
@@ -393,7 +393,7 @@ namespace Cobos.Data.Statements
             {
                 for (int i = 0; i < this.outerJoin.Length; ++i)
                 {
-                    buffer.Append(" OUTER JOIN " + this.outerJoin[i]);
+                    buffer.Append(" LEFT OUTER JOIN " + this.outerJoin[i]);
                 }
             }
 

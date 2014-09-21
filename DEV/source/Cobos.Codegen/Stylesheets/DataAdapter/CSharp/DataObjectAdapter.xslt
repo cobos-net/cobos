@@ -65,27 +65,56 @@
         /// &lt;summary&gt;
         /// Represents the order by clause.
         /// &lt;/summary&gt;
-        private const string OrderBy = <xsl:apply-templates mode="sqlOrderBy" select="."/>;
+        private const string Filter = <xsl:apply-templates mode="filterDefinition" select="."/>;
+
+        /// &lt;summary&gt;
+        /// Represents the order by clause.
+        /// &lt;/summary&gt;
+        private const string SortBy = <xsl:apply-templates mode="sortByDefinition" select="."/>;
 
         /// &lt;summary&gt;
         /// Represents the tables to join on.
         /// &lt;/summary&gt;
-        private static readonly string[] InnerJoin = <xsl:apply-templates mode="sqlInnerJoin" select="."/>;
+        private static readonly string[] InnerJoin;
 
         /// &lt;summary&gt;
         /// Represents the tables to join on.
         /// &lt;/summary&gt;
-        private static readonly string[] OuterJoin = <xsl:apply-templates mode="sqlOuterJoin" select="."/>;
+        private static readonly string[] OuterJoin;
 
         /// &lt;summary&gt;
-        /// Represents the sub-clauses in the where clause.
+        /// Represents the where clause.
         /// &lt;/summary&gt;
-        private static readonly string[] Where = <xsl:apply-templates mode="sqlWhere" select="."/>;
+        private static readonly string[] Where;
+
+        /// &lt;summary&gt;
+        /// Represents the order by clause.
+        /// &lt;/summary&gt;
+        private static readonly string OrderBy;
 
         /// &lt;summary&gt;
         /// Gets the select template.
         /// &lt;/summary&gt;
-        private static readonly Cobos.Data.Statements.SqlSelectTemplate selectTemplate = new Cobos.Data.Statements.SqlSelectTemplate(Select, From, InnerJoin, OuterJoin, Where, GroupBy, OrderBy, true);
+        private static readonly Cobos.Data.Statements.SqlSelectTemplate selectTemplate;
+
+        /// &lt;summary&gt;
+        /// Initializes the static members of the &lt;see cref="<xsl:value-of select="@className"/>DataAdapter"/&gt; class.
+        /// &lt;/summary&gt;
+        static <xsl:value-of select="@className"/>DataAdapter()
+        {
+            InnerJoin = <xsl:apply-templates mode="sqlInnerJoin" select="."/>;
+            OuterJoin = <xsl:apply-templates mode="sqlOuterJoin" select="."/>;
+            
+            var where = Cobos.Data.Statements.SqlPredicateVisitor&lt;<xsl:value-of select="@className"/>&gt;.FilterToSql(Filter);
+            if (string.IsNullOrEmpty(where) == false)
+            {
+                Where = new string[] { where };
+            }
+            
+            OrderBy = Cobos.Data.Statements.SqlSortVisitor&lt;<xsl:value-of select="@className"/>&gt;.SortToSql(SortBy);
+
+            selectTemplate = new Cobos.Data.Statements.SqlSelectTemplate(Select, From, InnerJoin, OuterJoin, Where, GroupBy, OrderBy, true);
+        }
 
         /// &lt;summary&gt;
         /// Initializes a new instance of the &lt;see cref="<xsl:value-of select="@className"/>DataAdapter"/&gt; class.
@@ -190,6 +219,7 @@
         <xsl:apply-templates select="." mode="getEntityByMethodBody"/>
         <xsl:apply-templates select="." mode="getEntitiesMethodBody"/>
         <xsl:apply-templates select="." mode="hasChangesMethodBody"/>
+        <xsl:apply-templates select="." mode="filterMethodBody"/>
         <xsl:apply-templates select="." mode="fillMethodBody"/>
         <xsl:apply-templates select="." mode="newMethodBody"/>
         <xsl:apply-templates select="." mode="rejectChangesMethodBody"/>
@@ -199,5 +229,41 @@
         <xsl:apply-templates select="." mode="updateRowsMethodBody"/>
         <xsl:apply-templates select="." mode="delegatesDeclarations"/>
     }
-  </xsl:template> 
+  </xsl:template>
+  <!-- 
+  =============================================================================
+  Filter Definition
+  =============================================================================
+  -->
+  <xsl:template match="cobos:Object[cobos:Metadata/cobos:Filter]" mode="filterDefinition">
+    <xsl:text>@"</xsl:text>
+    <xsl:apply-templates select="cobos:Metadata/cobos:Filter" mode="serialize">
+      <xsl:with-param name="namespace">http://schemas.cobos.co.uk/datamodel/1.0.0</xsl:with-param>
+    </xsl:apply-templates>
+    <xsl:text>"</xsl:text>
+  </xsl:template>
+  <!-- 
+  =============================================================================
+  -->
+  <xsl:template match="cobos:Object" mode="filterDefinition">
+    <xsl:text>null</xsl:text>
+  </xsl:template>
+  <!-- 
+  =============================================================================
+  Sort By Definition
+  =============================================================================
+  -->
+  <xsl:template match="cobos:Object[cobos:Metadata/cobos:SortBy]" mode="sortByDefinition">
+    <xsl:text>@"</xsl:text>
+    <xsl:apply-templates select="cobos:Metadata/cobos:SortBy" mode="serialize">
+      <xsl:with-param name="namespace">http://schemas.cobos.co.uk/datamodel/1.0.0</xsl:with-param>
+    </xsl:apply-templates>
+    <xsl:text>"</xsl:text>
+  </xsl:template>
+  <!-- 
+  =============================================================================
+  -->
+  <xsl:template match="cobos:Object" mode="sortByDefinition">
+    <xsl:text>null</xsl:text>
+  </xsl:template>
 </xsl:stylesheet>

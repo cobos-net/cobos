@@ -1,7 +1,7 @@
 ﻿// ----------------------------------------------------------------------------
 // <copyright file="ObjectExtensions.cs" company="Cobos SDK">
 //
-//      Copyright (c) 2009-2012 Nicholas Davis - nick@cobos.co.uk
+//      Copyright (c) 2009-2014 Nicholas Davis - nick@cobos.co.uk
 //
 //      Cobos Software Development Kit
 //
@@ -43,12 +43,12 @@ namespace Cobos.Web.Utilities.Extensions
         /// <summary>
         /// serialize the object to JSON
         /// </summary>
-        /// <param name="obj">The 'this' object reference</param>
+        /// <param name="self">The 'this' object reference</param>
         /// <returns>String representation of the object in JSON notation</returns>
-        public static string ToJson(this object obj)
+        public static string ToJson(this object self)
         {
             JavaScriptSerializer serializer = new JavaScriptSerializer();
-            return serializer.Serialize(obj);
+            return serializer.Serialize(self);
         }
     }
 }

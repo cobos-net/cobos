@@ -82,12 +82,19 @@
     <xsl:variable name="object" select="."/>
     <xsl:for-each select="$databaseConstraintsNodeSet//xsd:key//xsd:field[translate(../xsd:selector/@xpath, $lowercase, $uppercase) = concat('.//', translate($object/@dbTable, $lowercase, $uppercase))]">
       <xsl:variable name="property" select="$object//cobos:Property[translate(@dbColumn, $lowercase, $uppercase) = translate(current()/@xpath, $lowercase, $uppercase)]"/>
-      <xsl:value-of select="$property/@name"/>
+      <xsl:apply-templates select="$property" mode="getEntityByMethodNamePath"/>
     </xsl:for-each>
   </xsl:template>
   <!--
 	============================================================================
-	Method params: LineupName, UnitId.
+	-->
+  <xsl:template match="cobos:Property|cobos:Object" mode="getEntityByMethodNamePath">
+    <xsl:apply-templates select="parent::cobos:Object[parent::cobos:Object]" mode="getEntityByMethodNamePath"/>
+    <xsl:value-of select="@name"/>
+  </xsl:template>
+  <!--
+	============================================================================
+	Method parameters
 	============================================================================
 	-->
   <xsl:template match="cobos:Object" mode="getEntityByMethodParams">
