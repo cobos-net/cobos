@@ -1,9 +1,9 @@
-# Ignore file for Visual Studio 2008
+# Ignore file for Visual Studio
 
 # use glob syntax
 syntax: glob
 
-# Ignore Visual Studio 2008/10 files
+# Ignore Visual Studio files
 *.csproj.user
 *.vcproj*.user
 *.vs10x
@@ -11,6 +11,7 @@ syntax: glob
 */[Bb]in/*
 */[Ll]ib/*
 */[Gg]enerated/*
+*/packages/*
 */~*/*
 *.ncb
 *.sdf
@@ -27,4 +28,3 @@ UpgradeLog*.XML
 UpgradeLog*.htm
 */ipch/*
 StyleCop.Cache
-

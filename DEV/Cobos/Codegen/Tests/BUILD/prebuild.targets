@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- 
+  =============================================================================
+  Filename: cobos.build.targets
+  Description: Cobos Build Targets definitions.
+  =============================================================================
+  Created by: N.Davis                        Date: 2010-02-09
+  Modified by:                               Date:
+  =============================================================================
+  Notes: 
+
+
+  =============================================================================
+  -->
+  <Import Project="$(ProjectDir)..\MSBuild\cobos.codegen.net45.targets"/>
+  <!--
+  =============================================================================
+  Build Definitions
+  =============================================================================
+  -->
+  <PropertyGroup>
+    <BinFolderNet45>$(ProjectDir)..\..\~bin\net45\</BinFolderNet45>
+  </PropertyGroup>
+  <!--
+  =============================================================================
+  Build Targets
+  =============================================================================
+  -->
+  <Target Name="AfterBuild">
+    <ItemGroup>
+      <CobosBinariesX86 Include="$(BinFolderNet45)x86\*.*"/>
+      <CobosBinariesX64 Include="$(BinFolderNet45)x64\*.*"/>
+    </ItemGroup>
+    <Copy DestinationFolder="$(TargetDir)x86" SourceFiles="@(CobosBinariesX86)"/>
+    <Copy DestinationFolder="$(TargetDir)x64" SourceFiles="@(CobosBinariesX64)"/>
+  </Target>
+  <!--
+  =============================================================================
+  Codegen definitions
+  =============================================================================
+  -->
+  <!-- Codegen properties -->
+  <PropertyGroup>
+    <CodegenCodeLanguage>CSharp</CodegenCodeLanguage>
+    <CodegenStylesheetsDirectory>$(ProjectDir)Stylesheets\</CodegenStylesheetsDirectory>
+    <CodegenNamespaceCode>Cobos.Codegen.Tests</CodegenNamespaceCode>
+    <CodegenNamespaceXml>http://schemas.cobos.co.uk/codegen/tests/1.0.0</CodegenNamespaceXml>
+  </PropertyGroup>
+  <!-- Database properties -->
+  <PropertyGroup>
+    <DatabaseToXsdConnectionString>Server=192.168.94.4;Database=Northwind;Uid=cobos;Pwd=password;</DatabaseToXsdConnectionString>
+    <DatabaseToXsdDatabasePlatform>MySQL</DatabaseToXsdDatabasePlatform>
+    <DatabaseToXsdDatabaseSchema>Northwind</DatabaseToXsdDatabaseSchema>
+  </PropertyGroup>
+  <!-- Database tables to process -->
+  <ItemGroup>
+    <DatabaseToXsdTable Include="
+                        categories;
+                        customercustomerdemo;
+                        customerdemographics;
+                        customers;
+                        employees;
+                        employeeterritories;
+                        orderdetails;
+                        orders;
+                        products;
+                        region;
+                        shippers;
+                        suppliers;
+                        territories"/>
+  </ItemGroup>
+  <!--
+  =============================================================================
+  Model definitions
+  =============================================================================
+  -->
+  <ItemGroup>
+    <DataModel Include="$(ProjectDir)Data\DataModel.xml">
+      <Id>Northwind</Id>
+      <SchemaOptions>
+        <Parameter Name="multiplicityMode" Value="optional" />
+      </SchemaOptions>
+    </DataModel>
+  </ItemGroup>
+</Project>
+

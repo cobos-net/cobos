@@ -1,0 +1,305 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29201.188
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cobos.Codegen", "Cobos.Codegen", "{F563C737-98D0-42B5-B2FF-CC9143347784}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Schemas", "Schemas", "{6EDA8BED-1F3E-4A58-ADDB-A4096FC394DD}"
+	ProjectSection(SolutionItems) = preProject
+		Cobos\Codegen\Schemas\DataModel.xsd = Cobos\Codegen\Schemas\DataModel.xsd
+		Cobos\Codegen\Schemas\Filter.xsd = Cobos\Codegen\Schemas\Filter.xsd
+		Cobos\Codegen\Schemas\Sort.xsd = Cobos\Codegen\Schemas\Sort.xsd
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Stylesheets", "Stylesheets", "{734596B3-3329-4336-B41D-A0804C78B745}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataModel", "DataModel", "{AA03B289-390E-4A38-93A7-B4E9856B769D}"
+	ProjectSection(SolutionItems) = preProject
+		Cobos\Codegen\Stylesheets\DataModel\Dataset.xslt = Cobos\Codegen\Stylesheets\DataModel\Dataset.xslt
+		Cobos\Codegen\Stylesheets\DataModel\Process.xslt = Cobos\Codegen\Stylesheets\DataModel\Process.xslt
+		Cobos\Codegen\Stylesheets\DataModel\Schema.xslt = Cobos\Codegen\Stylesheets\DataModel\Schema.xslt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{431A7087-1C7A-4C5E-8619-3FE737D0C75C}"
+	ProjectSection(SolutionItems) = preProject
+		Cobos\Codegen\Stylesheets\Database\DatabaseSchema.xslt = Cobos\Codegen\Stylesheets\Database\DatabaseSchema.xslt
+		Cobos\Codegen\Stylesheets\Database\DatabaseVariables.xslt = Cobos\Codegen\Stylesheets\Database\DatabaseVariables.xslt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MSBuild", "MSBuild", "{B7F60FFC-70E9-419C-A7E9-055458CA5BBB}"
+	ProjectSection(SolutionItems) = preProject
+		Cobos\Codegen\MSBuild\cobos.clean.generated.targets = Cobos\Codegen\MSBuild\cobos.clean.generated.targets
+		Cobos\Codegen\MSBuild\cobos.codegen.net45.targets = Cobos\Codegen\MSBuild\cobos.codegen.net45.targets
+		Cobos\Codegen\MSBuild\cobos.codegen.targets = Cobos\Codegen\MSBuild\cobos.codegen.targets
+		Cobos\Codegen\MSBuild\cobos.definitions.targets = Cobos\Codegen\MSBuild\cobos.definitions.targets
+		Cobos\Codegen\MSBuild\cobos.runxsd.targets = Cobos\Codegen\MSBuild\cobos.runxsd.targets
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.Utilities (NET45)", "Cobos\Utilities\Cobos.Utilities (NET45).csproj", "{5EC3C9B9-DAE8-481C-8495-2A0A737D87A3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.Utilities.Tests (NET45)", "Cobos\Utilities\Tests\Cobos.Utilities.Tests (NET45).csproj", "{891CDC60-F542-47A2-B3E7-F656AB9F4CD8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.Data (NET45)", "Cobos\Data\Cobos.Data (NET45).csproj", "{6906B107-C149-4682-AF7B-FEF9F697FE36}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.Data.Tests (NET45)", "Cobos\Data\Tests\Cobos.Data.Tests (NET45).csproj", "{45697D04-D665-448A-BB4B-939F8F3E66FF}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8E56B766-40D3-4C35-9EE2-E8BE8B70D372} = {8E56B766-40D3-4C35-9EE2-E8BE8B70D372}
+		{000EF8AC-C6EB-445F-BD7F-DD98F900379B} = {000EF8AC-C6EB-445F-BD7F-DD98F900379B}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.Codegen.Tests (NET45)", "Cobos\Codegen\Tests\Cobos.Codegen.Tests (NET45).csproj", "{AB2BFBE4-62CE-4BB7-BC37-E3F8AAF789C0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1FC4F6FF-51BD-4FC2-8464-6CCF971F6ADC} = {1FC4F6FF-51BD-4FC2-8464-6CCF971F6ADC}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.Build.Targets (NET45)", "Cobos\Build\Targets\Cobos.Build.Targets (NET45).csproj", "{1FC4F6FF-51BD-4FC2-8464-6CCF971F6ADC}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8E56B766-40D3-4C35-9EE2-E8BE8B70D372} = {8E56B766-40D3-4C35-9EE2-E8BE8B70D372}
+		{000EF8AC-C6EB-445F-BD7F-DD98F900379B} = {000EF8AC-C6EB-445F-BD7F-DD98F900379B}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.Build.Targets.Tests (NET45)", "Cobos\Build\Targets\Tests\Cobos.Build.Targets.Tests (NET45).csproj", "{98F41521-D93D-4E57-9007-924F79AAF242}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utilities", "Utilities", "{E299B50E-6E19-4EB6-A3E7-C4A8B6A9B1F5}"
+	ProjectSection(SolutionItems) = preProject
+		Cobos\Codegen\Stylesheets\Utilities\Boilerplate.xslt = Cobos\Codegen\Stylesheets\Utilities\Boilerplate.xslt
+		Cobos\Codegen\Stylesheets\Utilities\Formatting.xslt = Cobos\Codegen\Stylesheets\Utilities\Formatting.xslt
+		Cobos\Codegen\Stylesheets\Utilities\Indent.xslt = Cobos\Codegen\Stylesheets\Utilities\Indent.xslt
+		Cobos\Codegen\Stylesheets\Utilities\Names.xslt = Cobos\Codegen\Stylesheets\Utilities\Names.xslt
+		Cobos\Codegen\Stylesheets\Utilities\Nodes.xslt = Cobos\Codegen\Stylesheets\Utilities\Nodes.xslt
+		Cobos\Codegen\Stylesheets\Utilities\Strings.xslt = Cobos\Codegen\Stylesheets\Utilities\Strings.xslt
+		Cobos\Codegen\Stylesheets\Utilities\Types.xslt = Cobos\Codegen\Stylesheets\Utilities\Types.xslt
+		Cobos\Codegen\Stylesheets\Utilities\Utilities.inc = Cobos\Codegen\Stylesheets\Utilities\Utilities.inc
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataObject", "DataObject", "{6683CB7C-850A-45A9-A661-F1619C343C04}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataAdapter", "DataAdapter", "{743A12FC-49B3-484E-B93F-1183BB773076}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Methods", "Methods", "{24D36217-A97A-444F-AA3E-D81A45F8D670}"
+	ProjectSection(SolutionItems) = preProject
+		Cobos\Codegen\Stylesheets\DataAdapter\CSharp\Methods\Changes.xslt = Cobos\Codegen\Stylesheets\DataAdapter\CSharp\Methods\Changes.xslt
+		Cobos\Codegen\Stylesheets\DataAdapter\CSharp\Methods\Delegates.xslt = Cobos\Codegen\Stylesheets\DataAdapter\CSharp\Methods\Delegates.xslt
+		Cobos\Codegen\Stylesheets\DataAdapter\CSharp\Methods\Delete.xslt = Cobos\Codegen\Stylesheets\DataAdapter\CSharp\Methods\Delete.xslt
+		Cobos\Codegen\Stylesheets\DataAdapter\CSharp\Methods\Fill.xslt = Cobos\Codegen\Stylesheets\DataAdapter\CSharp\Methods\Fill.xslt
+		Cobos\Codegen\Stylesheets\DataAdapter\CSharp\Methods\Filter.xslt = Cobos\Codegen\Stylesheets\DataAdapter\CSharp\Methods\Filter.xslt
+		Cobos\Codegen\Stylesheets\DataAdapter\CSharp\Methods\GetEntities.xslt = Cobos\Codegen\Stylesheets\DataAdapter\CSharp\Methods\GetEntities.xslt
+		Cobos\Codegen\Stylesheets\DataAdapter\CSharp\Methods\Insert.xslt = Cobos\Codegen\Stylesheets\DataAdapter\CSharp\Methods\Insert.xslt
+		Cobos\Codegen\Stylesheets\DataAdapter\CSharp\Methods\Methods.inc = Cobos\Codegen\Stylesheets\DataAdapter\CSharp\Methods\Methods.inc
+		Cobos\Codegen\Stylesheets\DataAdapter\CSharp\Methods\New.xslt = Cobos\Codegen\Stylesheets\DataAdapter\CSharp\Methods\New.xslt
+		Cobos\Codegen\Stylesheets\DataAdapter\CSharp\Methods\Update.xslt = Cobos\Codegen\Stylesheets\DataAdapter\CSharp\Methods\Update.xslt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sql", "Sql", "{BF394EA6-FF03-4E82-8D52-F604D07C2808}"
+	ProjectSection(SolutionItems) = preProject
+		Cobos\Codegen\Stylesheets\DataAdapter\CSharp\Sql\Delete.xslt = Cobos\Codegen\Stylesheets\DataAdapter\CSharp\Sql\Delete.xslt
+		Cobos\Codegen\Stylesheets\DataAdapter\CSharp\Sql\GroupBy.xslt = Cobos\Codegen\Stylesheets\DataAdapter\CSharp\Sql\GroupBy.xslt
+		Cobos\Codegen\Stylesheets\DataAdapter\CSharp\Sql\Having.xslt = Cobos\Codegen\Stylesheets\DataAdapter\CSharp\Sql\Having.xslt
+		Cobos\Codegen\Stylesheets\DataAdapter\CSharp\Sql\Insert.xslt = Cobos\Codegen\Stylesheets\DataAdapter\CSharp\Sql\Insert.xslt
+		Cobos\Codegen\Stylesheets\DataAdapter\CSharp\Sql\Join.xslt = Cobos\Codegen\Stylesheets\DataAdapter\CSharp\Sql\Join.xslt
+		Cobos\Codegen\Stylesheets\DataAdapter\CSharp\Sql\OrderBy.xslt = Cobos\Codegen\Stylesheets\DataAdapter\CSharp\Sql\OrderBy.xslt
+		Cobos\Codegen\Stylesheets\DataAdapter\CSharp\Sql\Select.xslt = Cobos\Codegen\Stylesheets\DataAdapter\CSharp\Sql\Select.xslt
+		Cobos\Codegen\Stylesheets\DataAdapter\CSharp\Sql\Sql.inc = Cobos\Codegen\Stylesheets\DataAdapter\CSharp\Sql\Sql.inc
+		Cobos\Codegen\Stylesheets\DataAdapter\CSharp\Sql\Update.xslt = Cobos\Codegen\Stylesheets\DataAdapter\CSharp\Sql\Update.xslt
+		Cobos\Codegen\Stylesheets\DataAdapter\CSharp\Sql\Values.xslt = Cobos\Codegen\Stylesheets\DataAdapter\CSharp\Sql\Values.xslt
+		Cobos\Codegen\Stylesheets\DataAdapter\CSharp\Sql\Where.xslt = Cobos\Codegen\Stylesheets\DataAdapter\CSharp\Sql\Where.xslt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CSharp", "CSharp", "{5081793B-11C2-4AD0-9333-326C01221B34}"
+	ProjectSection(SolutionItems) = preProject
+		Cobos\Codegen\Stylesheets\DataAdapter\CSharp\DataModelAdapter.xslt = Cobos\Codegen\Stylesheets\DataAdapter\CSharp\DataModelAdapter.xslt
+		Cobos\Codegen\Stylesheets\DataAdapter\CSharp\DataObjectAdapter.xslt = Cobos\Codegen\Stylesheets\DataAdapter\CSharp\DataObjectAdapter.xslt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CSharp", "CSharp", "{F781FDAA-768D-4213-8E5F-93FCD38CC001}"
+	ProjectSection(SolutionItems) = preProject
+		Cobos\Codegen\Stylesheets\DataObject\CSharp\DataObject.xslt = Cobos\Codegen\Stylesheets\DataObject\CSharp\DataObject.xslt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{36815A7B-EBB0-4F5C-8364-F607BA79DCC4}"
+	ProjectSection(SolutionItems) = preProject
+		Cobos\Codegen\Examples\DatabaseVariables.def = Cobos\Codegen\Examples\DatabaseVariables.def
+		Cobos\Codegen\Examples\DataObject.xslt = Cobos\Codegen\Examples\DataObject.xslt
+		Cobos\Codegen\Examples\DataObjectAdapter.xslt = Cobos\Codegen\Examples\DataObjectAdapter.xslt
+		Cobos\Codegen\Examples\DataSet.xslt = Cobos\Codegen\Examples\DataSet.xslt
+		Cobos\Codegen\Examples\Process.xslt = Cobos\Codegen\Examples\Process.xslt
+		Cobos\Codegen\Examples\Schema.xslt = Cobos\Codegen\Examples\Schema.xslt
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.Data.Adapters.x64 (NET45)", "Cobos\Data\Adapters\x64\Cobos.Data.Adapters.x64 (NET45).csproj", "{000EF8AC-C6EB-445F-BD7F-DD98F900379B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.Data.Adapters.x86 (NET45)", "Cobos\Data\Adapters\x86\Cobos.Data.Adapters.x86 (NET45).csproj", "{8E56B766-40D3-4C35-9EE2-E8BE8B70D372}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.AssemblyGen (NET45)", "Cobos\AssemblyGen\Cobos.AssemblyGen (NET45).csproj", "{2741733E-DDF4-40CB-B8E7-5288245FE93B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cobos.AssemblyGen.Tests (NET45)", "Cobos\AssemblyGen\Tests\Cobos.AssemblyGen.Tests (NET45).csproj", "{4BE62ED8-31C4-402C-A08C-BEDACABE2F9A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|Mixed Platforms = Debug|Mixed Platforms
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|Mixed Platforms = Release|Mixed Platforms
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5EC3C9B9-DAE8-481C-8495-2A0A737D87A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5EC3C9B9-DAE8-481C-8495-2A0A737D87A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5EC3C9B9-DAE8-481C-8495-2A0A737D87A3}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{5EC3C9B9-DAE8-481C-8495-2A0A737D87A3}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{5EC3C9B9-DAE8-481C-8495-2A0A737D87A3}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{5EC3C9B9-DAE8-481C-8495-2A0A737D87A3}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5EC3C9B9-DAE8-481C-8495-2A0A737D87A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5EC3C9B9-DAE8-481C-8495-2A0A737D87A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5EC3C9B9-DAE8-481C-8495-2A0A737D87A3}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{5EC3C9B9-DAE8-481C-8495-2A0A737D87A3}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{5EC3C9B9-DAE8-481C-8495-2A0A737D87A3}.Release|x64.ActiveCfg = Release|Any CPU
+		{5EC3C9B9-DAE8-481C-8495-2A0A737D87A3}.Release|x86.ActiveCfg = Release|Any CPU
+		{891CDC60-F542-47A2-B3E7-F656AB9F4CD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{891CDC60-F542-47A2-B3E7-F656AB9F4CD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{891CDC60-F542-47A2-B3E7-F656AB9F4CD8}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{891CDC60-F542-47A2-B3E7-F656AB9F4CD8}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{891CDC60-F542-47A2-B3E7-F656AB9F4CD8}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{891CDC60-F542-47A2-B3E7-F656AB9F4CD8}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{891CDC60-F542-47A2-B3E7-F656AB9F4CD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{891CDC60-F542-47A2-B3E7-F656AB9F4CD8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{891CDC60-F542-47A2-B3E7-F656AB9F4CD8}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{891CDC60-F542-47A2-B3E7-F656AB9F4CD8}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{891CDC60-F542-47A2-B3E7-F656AB9F4CD8}.Release|x64.ActiveCfg = Release|Any CPU
+		{891CDC60-F542-47A2-B3E7-F656AB9F4CD8}.Release|x86.ActiveCfg = Release|Any CPU
+		{6906B107-C149-4682-AF7B-FEF9F697FE36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6906B107-C149-4682-AF7B-FEF9F697FE36}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6906B107-C149-4682-AF7B-FEF9F697FE36}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{6906B107-C149-4682-AF7B-FEF9F697FE36}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{6906B107-C149-4682-AF7B-FEF9F697FE36}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{6906B107-C149-4682-AF7B-FEF9F697FE36}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6906B107-C149-4682-AF7B-FEF9F697FE36}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6906B107-C149-4682-AF7B-FEF9F697FE36}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6906B107-C149-4682-AF7B-FEF9F697FE36}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{6906B107-C149-4682-AF7B-FEF9F697FE36}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{6906B107-C149-4682-AF7B-FEF9F697FE36}.Release|x64.ActiveCfg = Release|Any CPU
+		{6906B107-C149-4682-AF7B-FEF9F697FE36}.Release|x86.ActiveCfg = Release|Any CPU
+		{45697D04-D665-448A-BB4B-939F8F3E66FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45697D04-D665-448A-BB4B-939F8F3E66FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45697D04-D665-448A-BB4B-939F8F3E66FF}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{45697D04-D665-448A-BB4B-939F8F3E66FF}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{45697D04-D665-448A-BB4B-939F8F3E66FF}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{45697D04-D665-448A-BB4B-939F8F3E66FF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{45697D04-D665-448A-BB4B-939F8F3E66FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45697D04-D665-448A-BB4B-939F8F3E66FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45697D04-D665-448A-BB4B-939F8F3E66FF}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{45697D04-D665-448A-BB4B-939F8F3E66FF}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{45697D04-D665-448A-BB4B-939F8F3E66FF}.Release|x64.ActiveCfg = Release|Any CPU
+		{45697D04-D665-448A-BB4B-939F8F3E66FF}.Release|x86.ActiveCfg = Release|Any CPU
+		{AB2BFBE4-62CE-4BB7-BC37-E3F8AAF789C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB2BFBE4-62CE-4BB7-BC37-E3F8AAF789C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB2BFBE4-62CE-4BB7-BC37-E3F8AAF789C0}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{AB2BFBE4-62CE-4BB7-BC37-E3F8AAF789C0}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{AB2BFBE4-62CE-4BB7-BC37-E3F8AAF789C0}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{AB2BFBE4-62CE-4BB7-BC37-E3F8AAF789C0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{AB2BFBE4-62CE-4BB7-BC37-E3F8AAF789C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB2BFBE4-62CE-4BB7-BC37-E3F8AAF789C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB2BFBE4-62CE-4BB7-BC37-E3F8AAF789C0}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{AB2BFBE4-62CE-4BB7-BC37-E3F8AAF789C0}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{AB2BFBE4-62CE-4BB7-BC37-E3F8AAF789C0}.Release|x64.ActiveCfg = Release|Any CPU
+		{AB2BFBE4-62CE-4BB7-BC37-E3F8AAF789C0}.Release|x86.ActiveCfg = Release|Any CPU
+		{1FC4F6FF-51BD-4FC2-8464-6CCF971F6ADC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1FC4F6FF-51BD-4FC2-8464-6CCF971F6ADC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1FC4F6FF-51BD-4FC2-8464-6CCF971F6ADC}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{1FC4F6FF-51BD-4FC2-8464-6CCF971F6ADC}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{1FC4F6FF-51BD-4FC2-8464-6CCF971F6ADC}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1FC4F6FF-51BD-4FC2-8464-6CCF971F6ADC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1FC4F6FF-51BD-4FC2-8464-6CCF971F6ADC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1FC4F6FF-51BD-4FC2-8464-6CCF971F6ADC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1FC4F6FF-51BD-4FC2-8464-6CCF971F6ADC}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{1FC4F6FF-51BD-4FC2-8464-6CCF971F6ADC}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{1FC4F6FF-51BD-4FC2-8464-6CCF971F6ADC}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{1FC4F6FF-51BD-4FC2-8464-6CCF971F6ADC}.Release|x64.ActiveCfg = Release|Any CPU
+		{1FC4F6FF-51BD-4FC2-8464-6CCF971F6ADC}.Release|x86.ActiveCfg = Release|Any CPU
+		{98F41521-D93D-4E57-9007-924F79AAF242}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98F41521-D93D-4E57-9007-924F79AAF242}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98F41521-D93D-4E57-9007-924F79AAF242}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{98F41521-D93D-4E57-9007-924F79AAF242}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{98F41521-D93D-4E57-9007-924F79AAF242}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{98F41521-D93D-4E57-9007-924F79AAF242}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{98F41521-D93D-4E57-9007-924F79AAF242}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98F41521-D93D-4E57-9007-924F79AAF242}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98F41521-D93D-4E57-9007-924F79AAF242}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{98F41521-D93D-4E57-9007-924F79AAF242}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{98F41521-D93D-4E57-9007-924F79AAF242}.Release|x64.ActiveCfg = Release|Any CPU
+		{98F41521-D93D-4E57-9007-924F79AAF242}.Release|x86.ActiveCfg = Release|Any CPU
+		{000EF8AC-C6EB-445F-BD7F-DD98F900379B}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{000EF8AC-C6EB-445F-BD7F-DD98F900379B}.Debug|Mixed Platforms.ActiveCfg = Debug|x64
+		{000EF8AC-C6EB-445F-BD7F-DD98F900379B}.Debug|Mixed Platforms.Build.0 = Debug|x64
+		{000EF8AC-C6EB-445F-BD7F-DD98F900379B}.Debug|x64.ActiveCfg = Debug|x64
+		{000EF8AC-C6EB-445F-BD7F-DD98F900379B}.Debug|x64.Build.0 = Debug|x64
+		{000EF8AC-C6EB-445F-BD7F-DD98F900379B}.Debug|x86.ActiveCfg = Debug|x64
+		{000EF8AC-C6EB-445F-BD7F-DD98F900379B}.Release|Any CPU.ActiveCfg = Release|x64
+		{000EF8AC-C6EB-445F-BD7F-DD98F900379B}.Release|Mixed Platforms.ActiveCfg = Release|x64
+		{000EF8AC-C6EB-445F-BD7F-DD98F900379B}.Release|Mixed Platforms.Build.0 = Release|x64
+		{000EF8AC-C6EB-445F-BD7F-DD98F900379B}.Release|x64.ActiveCfg = Release|x64
+		{000EF8AC-C6EB-445F-BD7F-DD98F900379B}.Release|x64.Build.0 = Release|x64
+		{000EF8AC-C6EB-445F-BD7F-DD98F900379B}.Release|x86.ActiveCfg = Release|x64
+		{8E56B766-40D3-4C35-9EE2-E8BE8B70D372}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{8E56B766-40D3-4C35-9EE2-E8BE8B70D372}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{8E56B766-40D3-4C35-9EE2-E8BE8B70D372}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{8E56B766-40D3-4C35-9EE2-E8BE8B70D372}.Debug|x64.ActiveCfg = Debug|x86
+		{8E56B766-40D3-4C35-9EE2-E8BE8B70D372}.Debug|x86.ActiveCfg = Debug|x86
+		{8E56B766-40D3-4C35-9EE2-E8BE8B70D372}.Debug|x86.Build.0 = Debug|x86
+		{8E56B766-40D3-4C35-9EE2-E8BE8B70D372}.Release|Any CPU.ActiveCfg = Release|x86
+		{8E56B766-40D3-4C35-9EE2-E8BE8B70D372}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{8E56B766-40D3-4C35-9EE2-E8BE8B70D372}.Release|Mixed Platforms.Build.0 = Release|x86
+		{8E56B766-40D3-4C35-9EE2-E8BE8B70D372}.Release|x64.ActiveCfg = Release|x86
+		{8E56B766-40D3-4C35-9EE2-E8BE8B70D372}.Release|x86.ActiveCfg = Release|x86
+		{8E56B766-40D3-4C35-9EE2-E8BE8B70D372}.Release|x86.Build.0 = Release|x86
+		{2741733E-DDF4-40CB-B8E7-5288245FE93B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2741733E-DDF4-40CB-B8E7-5288245FE93B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2741733E-DDF4-40CB-B8E7-5288245FE93B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{2741733E-DDF4-40CB-B8E7-5288245FE93B}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{2741733E-DDF4-40CB-B8E7-5288245FE93B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2741733E-DDF4-40CB-B8E7-5288245FE93B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2741733E-DDF4-40CB-B8E7-5288245FE93B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2741733E-DDF4-40CB-B8E7-5288245FE93B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2741733E-DDF4-40CB-B8E7-5288245FE93B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{2741733E-DDF4-40CB-B8E7-5288245FE93B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{2741733E-DDF4-40CB-B8E7-5288245FE93B}.Release|x64.ActiveCfg = Release|Any CPU
+		{2741733E-DDF4-40CB-B8E7-5288245FE93B}.Release|x86.ActiveCfg = Release|Any CPU
+		{4BE62ED8-31C4-402C-A08C-BEDACABE2F9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BE62ED8-31C4-402C-A08C-BEDACABE2F9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BE62ED8-31C4-402C-A08C-BEDACABE2F9A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{4BE62ED8-31C4-402C-A08C-BEDACABE2F9A}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{4BE62ED8-31C4-402C-A08C-BEDACABE2F9A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{4BE62ED8-31C4-402C-A08C-BEDACABE2F9A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4BE62ED8-31C4-402C-A08C-BEDACABE2F9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BE62ED8-31C4-402C-A08C-BEDACABE2F9A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4BE62ED8-31C4-402C-A08C-BEDACABE2F9A}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{4BE62ED8-31C4-402C-A08C-BEDACABE2F9A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{4BE62ED8-31C4-402C-A08C-BEDACABE2F9A}.Release|x64.ActiveCfg = Release|Any CPU
+		{4BE62ED8-31C4-402C-A08C-BEDACABE2F9A}.Release|x86.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6EDA8BED-1F3E-4A58-ADDB-A4096FC394DD} = {F563C737-98D0-42B5-B2FF-CC9143347784}
+		{734596B3-3329-4336-B41D-A0804C78B745} = {F563C737-98D0-42B5-B2FF-CC9143347784}
+		{AA03B289-390E-4A38-93A7-B4E9856B769D} = {734596B3-3329-4336-B41D-A0804C78B745}
+		{431A7087-1C7A-4C5E-8619-3FE737D0C75C} = {734596B3-3329-4336-B41D-A0804C78B745}
+		{B7F60FFC-70E9-419C-A7E9-055458CA5BBB} = {F563C737-98D0-42B5-B2FF-CC9143347784}
+		{E299B50E-6E19-4EB6-A3E7-C4A8B6A9B1F5} = {734596B3-3329-4336-B41D-A0804C78B745}
+		{6683CB7C-850A-45A9-A661-F1619C343C04} = {734596B3-3329-4336-B41D-A0804C78B745}
+		{743A12FC-49B3-484E-B93F-1183BB773076} = {734596B3-3329-4336-B41D-A0804C78B745}
+		{24D36217-A97A-444F-AA3E-D81A45F8D670} = {5081793B-11C2-4AD0-9333-326C01221B34}
+		{BF394EA6-FF03-4E82-8D52-F604D07C2808} = {5081793B-11C2-4AD0-9333-326C01221B34}
+		{5081793B-11C2-4AD0-9333-326C01221B34} = {743A12FC-49B3-484E-B93F-1183BB773076}
+		{F781FDAA-768D-4213-8E5F-93FCD38CC001} = {6683CB7C-850A-45A9-A661-F1619C343C04}
+		{36815A7B-EBB0-4F5C-8364-F607BA79DCC4} = {F563C737-98D0-42B5-B2FF-CC9143347784}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {13A579DC-FCC7-4B11-B26A-F4496C011A5F}
+	EndGlobalSection
+EndGlobal
