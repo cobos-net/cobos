@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Build.Framework" Version="16.11.0" />
+    <PackageReference Include="MySql.Data" Version="8.0.26" />
+    <PackageReference Include="Npgsql" Version="5.0.7" />
+    <PackageReference Include="Oracle.ManagedDataAccess" Version="21.3.0" />
+  </ItemGroup>
+
+  <Target Name="CustomPrepareForBuild" AfterTargets="PrepareForBuild">
+    <CallTarget Targets="GenerateDataFilters" />
+  </Target>
+
+  <PropertyGroup Label="Generate Data Filters">
+    <CodegenSchemaDirectory>$(MSBuildProjectDirectory)\Codegen\Schemas\</CodegenSchemaDirectory>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <DataFilterSchema Include="$(CodegenSchemaDirectory)Filter.xsd;$(CodegenSchemaDirectory)Sort.xsd"/>
+    
+    <CustomCompile Include="@(DataFilterSchema->'$(IntermediateOutputPath)%(Filename).cs')"/>
+    <Compile Include="@(CustomCompile)" />
+    <FileWrites Include="@(CustomCompile)" />
+
+  </ItemGroup>
+
+  <Target Name="GenerateDataFilters" Inputs="@(DataFilterSchema)" Outputs="@(DataFilterSchema->'$(IntermediateOutputPath)%(Filename).cs')">
+
+    <Exec Command="dotnet-svcutil &quot;%(DataFilterSchema.Identity)&quot; /dataContractOnly /edb /namespace:*,Cobos.Data.Filter /out:&quot;$(IntermediateOutputPath)%(DataFilterSchema.Filename).cs&quot;" />
+
+    <ReplaceFileText Filename="$(IntermediateOutputPath)Sort.cs" MatchExpression="public class SortBy" ReplacementText="public partial class SortBy" />
+
+  </Target>
+
+</Project>
