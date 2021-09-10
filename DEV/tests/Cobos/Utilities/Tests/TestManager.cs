@@ -51,7 +51,7 @@ namespace Cobos.Utilities.Tests
             {
                 StackTrace st = new StackTrace(new StackFrame(true));
                 StackFrame sf = st.GetFrame(0);
-                return Path.GetDirectoryName(sf.GetFileName()) + @"\TestFiles\";
+                return Path.GetDirectoryName(sf.GetFileName()) + @"\TestData\";
             }
         }
 

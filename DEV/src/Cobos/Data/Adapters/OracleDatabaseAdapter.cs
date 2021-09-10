@@ -47,6 +47,12 @@ namespace Cobos.Data.Adapters
         {
         }
 
+        /// <inheritdoc />
+        public override Type IntegerType => typeof(decimal);
+
+        /// <inheritdoc />
+        public override Type BigIntegerType => typeof(decimal);
+
         /// <summary>
         /// Test the connection to the database to ensure that the adapter 
         /// is correctly configured.
@@ -58,9 +64,9 @@ namespace Cobos.Data.Adapters
             {
                 object @object = ExecuteScalar("select 1 from dual");
 
-                if (@object != null && @object is int)
+                if (@object != null)
                 {
-                    return (int)@object == 1;
+                    return (int)Convert.ChangeType(@object, typeof(int)) == 1;
                 }
 
                 return false;

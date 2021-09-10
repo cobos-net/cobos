@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31605.320
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cobos", "src\Cobos\Cobos.csproj", "{2647091C-2A9F-4025-A281-AACD95E11A53}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cobos.Tests", "tests\Cobos\Cobos.Tests.csproj", "{C220A6DF-C325-4E2F-B606-2EB06B8715E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DEV", "DEV", "{2EE69F10-8BDA-4C0B-85D5-AF40D1B75165}"
+	ProjectSection(SolutionItems) = preProject
+		AssemblyInfo.props = AssemblyInfo.props
+		Directory.Build.targets = Directory.Build.targets
+		stylecop.json = stylecop.json
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2647091C-2A9F-4025-A281-AACD95E11A53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2647091C-2A9F-4025-A281-AACD95E11A53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2647091C-2A9F-4025-A281-AACD95E11A53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2647091C-2A9F-4025-A281-AACD95E11A53}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C220A6DF-C325-4E2F-B606-2EB06B8715E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C220A6DF-C325-4E2F-B606-2EB06B8715E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C220A6DF-C325-4E2F-B606-2EB06B8715E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C220A6DF-C325-4E2F-B606-2EB06B8715E8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7A239C99-793D-43DB-A828-B04AC1717773}
+	EndGlobalSection
+EndGlobal

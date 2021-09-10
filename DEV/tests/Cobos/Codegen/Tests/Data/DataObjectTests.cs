@@ -129,7 +129,7 @@ namespace Cobos.Codegen.Tests.Data
                 Assert.AreNotEqual(0, products.Count);
                 TestManager.Serialize(products);
 
-                Assert.IsTrue(products.All(p => p.Discontinued == false));
+                Assert.IsTrue(products.All(p => (long)Convert.ChangeType(p.Discontinued, typeof(long)) == 0));
 
                 var firstProduct = products[0].Productname;
                 var filter = new Filter

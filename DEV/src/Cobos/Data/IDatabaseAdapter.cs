@@ -42,19 +42,22 @@ namespace Cobos.Data
         /// <summary>
         /// Gets or sets the connection string
         /// </summary>
-        string ConnectionString
-        {
-            get;
-            set;
-        }
+        string ConnectionString { get; set; }
 
         /// <summary>
         /// Gets the Database Provider factory instance.
         /// </summary>
-        DbProviderFactory ProviderFactory
-        {
-            get;
-        }
+        DbProviderFactory ProviderFactory { get; }
+
+        /// <summary>
+        /// Gets the type that represents an integer (typically 32 bit) value.
+        /// </summary>
+        Type IntegerType { get; }
+
+        /// <summary>
+        /// Gets the type that represents an integer (typically 64 bit) value.
+        /// </summary>
+        Type BigIntegerType { get; }
 
         /// <summary>
         /// Executes an SQL statement against the Connection object of a .NET Framework
@@ -63,7 +66,7 @@ namespace Cobos.Data
         /// <param name="commandText">The command to execute.</param>
         /// <returns>The number of rows affected.</returns>
         int ExecuteNonQuery(string commandText);
-        
+
         /// <summary>
         /// Executes the <c>System.Data.IDbCommand.CommandText</c> against the <c>System.Data.IDbCommand.Connection</c>
         /// and builds an <c>System.Data.IDataReader</c>.
@@ -71,7 +74,7 @@ namespace Cobos.Data
         /// <param name="commandText">The command to execute.</param>
         /// <returns>An <c>System.Data.IDataReader</c> object.</returns>
         IDataReader ExecuteReader(string commandText);
-        
+
         /// <summary>
         /// Executes the query, and returns the first column of the first row in the
         /// result set returned by the query. Extra columns or rows are ignored.

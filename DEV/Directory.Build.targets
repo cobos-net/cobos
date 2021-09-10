@@ -1,43 +1,15 @@
-<Project InitialTargets="CobosInitial" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-    <PropertyGroup Label="Global Properties">
-      <CurrentDate>$([System.DateTime]::Now.ToString(yyyyMMdd-mmss))</CurrentDate>
-      <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
-    </PropertyGroup>
+  <PropertyGroup Label="Global Properties">
+    <CurrentDate>$([System.DateTime]::Now.ToString(yyyyMMdd-mmss))</CurrentDate>
+    <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
+  </PropertyGroup>
 
-    <Import Project="AssemblyInfo.props" />
+  <Import Project="AssemblyInfo.props" />
+  <Import Project="src/Cobos/Codegen/MSBuild/cobos.tools.targets"/>
 
-    <Target Name="CobosInitial">
-        <PropertyGroup>
-        <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
-        <NetSdkInstallationFolder>$(registry:HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\Microsoft SDKs\NETFXSDK\4.6.2@InstallationFolder)</NetSdkInstallationFolder>
-        <WindowsSDK_ExecutablePath_x64 Condition="'$(WindowsSDK_ExecutablePath_x64)' == ''">$(NetSdkInstallationFolder)bin\NETFX 4.6.2 Tools\x64\</WindowsSDK_ExecutablePath_x64>
-        <WindowsSDK_ExecutablePath_x86 Condition="'$(WindowsSDK_ExecutablePath_x86)' == ''">$(NetSdkInstallationFolder)bin\NETFX 4.6.2 Tools\</WindowsSDK_ExecutablePath_x86>
-        <SvcUtilExe>$(WindowsSDK_ExecutablePath_x64)SvcUtil.exe</SvcUtilExe>
-        <XsdExe>$(WindowsSDK_ExecutablePath_x64)Xsd.exe</XsdExe>
-        </PropertyGroup>
-    </Target>
-
-    <!-- Replace File text using regular expression matching -->
-    <UsingTask TaskName="ReplaceFileText" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
-        <ParameterGroup>
-        <Filename ParameterType="System.String" Required="true" />
-        <MatchExpression ParameterType="System.String" Required="true" />
-        <ReplacementText ParameterType="System.String" Required="true" />
-        </ParameterGroup>
-        <Task>
-        <Using Namespace="System" />
-        <Using Namespace="System.IO" />
-        <Using Namespace="System.Text.RegularExpressions" />
-        <Code Type="Fragment" Language="cs">
-            <![CDATA[  
-            File.WriteAllText(
-                Filename,
-                Regex.Replace(File.ReadAllText(Filename), MatchExpression, ReplacementText)
-                );
-            ]]>
-        </Code>
-        </Task>
-    </UsingTask>
+  <ItemGroup>
+    <AdditionalFiles Include="$(MSBuildThisFileDirectory)stylecop.json" />
+  </ItemGroup>
 
 </Project>

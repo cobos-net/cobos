@@ -49,9 +49,9 @@
   </PropertyGroup>
   <!-- Database properties -->
   <PropertyGroup>
-    <DatabaseToXsdConnectionString>Server=192.168.94.4;Database=Northwind;Uid=cobos;Pwd=password;</DatabaseToXsdConnectionString>
-    <DatabaseToXsdDatabasePlatform>MySQL</DatabaseToXsdDatabasePlatform>
-    <DatabaseToXsdDatabaseSchema>Northwind</DatabaseToXsdDatabaseSchema>
+    <DatabaseToXsdConnectionString>Server=localhost:1521/cad94.dev;User Id=northwind;Password=oracle</DatabaseToXsdConnectionString>
+    <DatabaseToXsdDatabasePlatform>Oracle</DatabaseToXsdDatabasePlatform>
+    <DatabaseToXsdDatabaseSchema>northwind</DatabaseToXsdDatabaseSchema>
   </PropertyGroup>
   <!-- Database tables to process -->
   <ItemGroup>

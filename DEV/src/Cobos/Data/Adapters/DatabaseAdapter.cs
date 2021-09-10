@@ -71,6 +71,12 @@ namespace Cobos.Data.Adapters
             private set;
         }
 
+        /// <inheritdoc />
+        public abstract Type IntegerType { get; }
+
+        /// <inheritdoc />
+        public abstract Type BigIntegerType { get; }
+
         /// <summary>
         /// Executes an SQL statement against the Connection object of a .NET Framework
         /// data provider, and returns the number of rows affected.
@@ -254,7 +260,7 @@ namespace Cobos.Data.Adapters
         {
             SimpleDataSet dataset = this.TableMetadata(schema, tables);
 
-            XslCompiledTransform transform = XsltHelper.Load("Database/DatabaseSchema.xslt", "Cobos.Data.Stylesheets");
+            XslCompiledTransform transform = XsltHelper.Load("Database/DatabaseSchema.xslt", "Cobos.Codegen.Stylesheets");
 
             if (transform != null)
             {

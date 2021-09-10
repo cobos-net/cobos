@@ -51,23 +51,24 @@ namespace Cobos.Build.Targets.Tests
         [TestMethod]
         public void Can_generate_database_schema()
         {
-            foreach (var source in TestManager.DataSource)
+            foreach (var (ProviderName, ConnectionString) in TestManager.DataSource)
             {
-                string output = TestManager.TestFiles + source.ProviderName + ".xsd";
+                string output = TestManager.TestFiles + ProviderName + ".xsd";
 
                 if (File.Exists(output))
                 {
                     File.Delete(output);
                 }
 
-                CobosDatabaseToXsd target = new CobosDatabaseToXsd();
-
-                target.BuildEngine = Substitute.For<IBuildEngine>();
-                target.ConnectionString = source.ConnectionString;
-                target.DatabasePlatform = source.ProviderName;
-                target.DatabaseSchema = "Northwind";
-                target.DatabaseTables = new TaskItem[] { new TaskItem("Customers"), new TaskItem("Employees"), new TaskItem("Products"), new TaskItem("Order Details") };
-                target.OutputFile = output;
+                CobosDatabaseToXsd target = new CobosDatabaseToXsd
+                {
+                    BuildEngine = Substitute.For<IBuildEngine>(),
+                    ConnectionString = ConnectionString,
+                    DatabasePlatform = ProviderName,
+                    DatabaseSchema = "Northwind",
+                    DatabaseTables = new TaskItem[] { new TaskItem("Customers"), new TaskItem("Employees"), new TaskItem("Products"), new TaskItem("Order Details") },
+                    OutputFile = output
+                };
 
                 Assert.IsTrue(target.Execute());
 

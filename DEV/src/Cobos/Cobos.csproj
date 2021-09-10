@@ -1,16 +1,76 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;net45;net451;net46;net461</TargetFrameworks>
   </PropertyGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
     <PackageReference Include="Microsoft.Build.Framework" Version="16.11.0" />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="16.11.0" />
     <PackageReference Include="MySql.Data" Version="8.0.26" />
     <PackageReference Include="Npgsql" Version="5.0.7" />
-    <PackageReference Include="Oracle.ManagedDataAccess" Version="21.3.0" />
+    <PackageReference Include="Oracle.ManagedDataAccess" Version="21.3.0">
+      <NoWarn>NU1701</NoWarn>
+    </PackageReference>
+    <PackageReference Include="System.Data.DataSetExtensions" Version="4.6.0-preview3.19128.7" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
   </ItemGroup>
 
+  <ItemGroup Condition="'$(TargetFramework)' == 'net45'">
+    <PackageReference Include="Microsoft.Build.Framework" Version="14.3.0" />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="14.3.0" />
+    <PackageReference Include="MySql.Data" Version="6.7.9" />
+    <PackageReference Include="Npgsql" Version="3.2.7" />
+    <PackageReference Include="Oracle.ManagedDataAccess" Version="19.12.0">
+      <NoWarn>NU1701</NoWarn>
+    </PackageReference>
+    <PackageReference Include="System.Data.DataSetExtensions" Version="4.6.0-preview3.19128.7" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.1.0-rc2-24027" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net451'">
+    <PackageReference Include="Microsoft.Build.Framework" Version="14.3.0" />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="14.3.0" />
+    <PackageReference Include="MySql.Data" Version="6.7.9" />
+    <PackageReference Include="Npgsql" Version="3.2.7" />
+    <PackageReference Include="Oracle.ManagedDataAccess" Version="19.12.0">
+      <NoWarn>NU1701</NoWarn>
+    </PackageReference>
+    <PackageReference Include="System.Data.DataSetExtensions" Version="4.6.0-preview3.19128.7" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net46'">
+    <PackageReference Include="Microsoft.Build.Framework" Version="15.9.20" />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.9.20" />
+    <PackageReference Include="MySql.Data" Version="8.0.26" />
+    <PackageReference Include="Npgsql" Version="3.2.7" />
+    <PackageReference Include="Oracle.ManagedDataAccess" Version="19.12.0">
+      <NoWarn>NU1701</NoWarn>
+    </PackageReference>
+    <PackageReference Include="System.Data.DataSetExtensions" Version="4.6.0-preview3.19128.7" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
+    <PackageReference Include="Microsoft.Build.Framework" Version="16.11.0" />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="16.11.0" />
+    <PackageReference Include="MySql.Data" Version="8.0.26" />
+    <PackageReference Include="Npgsql" Version="3.2.7" />
+    <PackageReference Include="Oracle.ManagedDataAccess" Version="19.12.0">
+      <NoWarn>NU1701</NoWarn>
+    </PackageReference>
+    <PackageReference Include="System.Data.DataSetExtensions" Version="4.6.0-preview3.19128.7" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <CobosCodegenFiles Include="Codegen/**/*.*" />
+    <Content Include="@(CobosCodegenFiles)">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+    
   <Target Name="CustomPrepareForBuild" AfterTargets="PrepareForBuild">
     <CallTarget Targets="GenerateDataFilters" />
   </Target>
@@ -20,20 +80,32 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <DataFilterSchema Include="$(CodegenSchemaDirectory)Filter.xsd;$(CodegenSchemaDirectory)Sort.xsd"/>
-    
-    <CustomCompile Include="@(DataFilterSchema->'$(IntermediateOutputPath)%(Filename).cs')"/>
+    <EmbeddedResource Include="Codegen\Stylesheets\Database\DatabaseSchema.xslt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <DataFilterSchema Include="$(CodegenSchemaDirectory)Filter.xsd;$(CodegenSchemaDirectory)Sort.xsd" />
+    <CustomCompile Include="@(DataFilterSchema->'$(IntermediateOutputPath)%(Filename).cs')" />
     <Compile Include="@(CustomCompile)" />
     <FileWrites Include="@(CustomCompile)" />
-
   </ItemGroup>
 
   <Target Name="GenerateDataFilters" Inputs="@(DataFilterSchema)" Outputs="@(DataFilterSchema->'$(IntermediateOutputPath)%(Filename).cs')">
 
-    <Exec Command="dotnet-svcutil &quot;%(DataFilterSchema.Identity)&quot; /dataContractOnly /edb /namespace:*,Cobos.Data.Filter /out:&quot;$(IntermediateOutputPath)%(DataFilterSchema.Filename).cs&quot;" />
-
+    <Exec Command="&quot;$(SvcUtilExe)&quot; &quot;%(DataFilterSchema.Identity)&quot; /dataContractOnly /edb /namespace:*,Cobos.Data.Filter /out:&quot;$(IntermediateOutputPath)%(DataFilterSchema.Filename).cs&quot;" />
     <ReplaceFileText Filename="$(IntermediateOutputPath)Sort.cs" MatchExpression="public class SortBy" ReplacementText="public partial class SortBy" />
 
   </Target>
 
+  <Target Name="CopyCodegenToTests" AfterTargets="AfterBuild">
+    <PropertyGroup>
+      <CobosTestsTarget>$(MSBuildThisFileDirectory)..\..\tests\Cobos\.cobos</CobosTestsTarget>
+    </PropertyGroup>
+    <ItemGroup>
+      <CobosOutputFiles Include="$(OutDir)**\*.*" />
+    </ItemGroup>
+    <MakeDir Condition="!Exists($(CobosTestsTarget))" Directories="$(CobosTestsTarget)" />
+    <Copy SourceFiles="@(CobosOutputFiles)" DestinationFiles="@(CobosOutputFiles->'$(CobosTestsTarget)\$(TargetFramework)\%(RecursiveDir)\%(Filename)%(Extension)')" />
+  </Target>
+  
 </Project>

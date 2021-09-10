@@ -30,6 +30,7 @@
 namespace Cobos.Codegen.Tests.Data
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Data;
     using System.Data.Common;
@@ -97,37 +98,51 @@ namespace Cobos.Codegen.Tests.Data
                 Assert.AreEqual(1, customers.Count);
                 Assert.AreEqual(1, model.Customer.Table.Rows.Count);
 
-                object countOrders = database.ExecuteScalar("select count(*) from Orders where CustomerID = 'ALFKI'");
-                Assert.AreEqual(countOrders, (long)customers[0].Orders.Count);
-                Assert.AreEqual(countOrders, (long)model.CustomerOrder.Table.Rows.Count);
+                var countOrders = Convert.ChangeType(database.ExecuteScalar("select count(*) from Orders where CustomerID = 'ALFKI'"), typeof(int));
+                Assert.AreEqual(countOrders, customers[0].Orders.Count);
+                Assert.AreEqual(countOrders, model.CustomerOrder.Table.Rows.Count);
 
                 var result = new DataTable();
                 database.Fill("select OrderID from Orders where CustomerID = 'ALFKI'", result);
-                var values = Cobos.Data.Utilities.DataTableHelper.GetColumnValues<int>(result, "OrderID");
+
+                IList values = null;
+
+                if (database.IntegerType == typeof(decimal))
+                {
+                    values = Cobos.Data.Utilities.DataTableHelper.GetColumnValues<decimal>(result, "OrderID");
+                }
+                else
+                {
+                    values = Cobos.Data.Utilities.DataTableHelper.GetColumnValues<long>(result, "OrderID");
+                }
 
                 foreach (var order in customers[0].Orders)
                 {
-                    CollectionAssert.Contains(values, order.OrderID);
+                    CollectionAssert.Contains(values, Convert.ChangeType(order.OrderID, database.IntegerType));
                 }
 
-#if NET35
-                var inValues = string.Join(",", values.Select(i => i.ToString()).ToArray());
-#else
-                var inValues = string.Join(",", values);
-#endif
+                var inValues = string.Join(",", values.Cast<object>());
 
-                object countOrderDetails = database.ExecuteScalar("select count(*) from OrderDetails where OrderID in (" + inValues + ")");
-                Assert.AreEqual(countOrderDetails, (long)model.OrderDetails.Table.Rows.Count);
+                var countOrderDetails = database.ExecuteScalar("select count(*) from OrderDetails where OrderID in (" + inValues + ")");
+                Assert.AreEqual(Convert.ChangeType(countOrderDetails, typeof(long)), (long)model.OrderDetails.Table.Rows.Count);
 
                 result = new DataTable();
                 database.Fill("select ProductID from OrderDetails where OrderID in (" + inValues + ")", result);
-                values = Cobos.Data.Utilities.DataTableHelper.GetColumnValues<int>(result, "ProductID");
+
+                if (database.IntegerType == typeof(decimal))
+                {
+                    values = Cobos.Data.Utilities.DataTableHelper.GetColumnValues<decimal>(result, "ProductID");
+                }
+                else
+                {
+                    values = Cobos.Data.Utilities.DataTableHelper.GetColumnValues<int>(result, "ProductID");
+                }
 
                 foreach (var order in customers[0].Orders)
                 {
                     foreach (var orderDetails in order.Details)
                     {
-                        CollectionAssert.Contains(values, orderDetails.Product.ID);
+                        CollectionAssert.Contains(values, Convert.ChangeType(orderDetails.Product.ID, database.IntegerType));
                     }
                 }
 

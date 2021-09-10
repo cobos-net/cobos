@@ -1,0 +1,56 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <NetSdkInstallationFolder>$(registry:HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\Microsoft SDKs\NETFXSDK\4.6.2@InstallationFolder)</NetSdkInstallationFolder>
+    <WindowsSDK_ExecutablePath_x64 Condition="'$(WindowsSDK_ExecutablePath_x64)' == ''">$(NetSdkInstallationFolder)bin\NETFX 4.6.2 Tools\x64\</WindowsSDK_ExecutablePath_x64>
+    <WindowsSDK_ExecutablePath_x86 Condition="'$(WindowsSDK_ExecutablePath_x86)' == ''">$(NetSdkInstallationFolder)bin\NETFX 4.6.2 Tools\</WindowsSDK_ExecutablePath_x86>
+    <SvcUtilExe>$(WindowsSDK_ExecutablePath_x64)SvcUtil.exe</SvcUtilExe>
+    <XsdExe>$(WindowsSDK_ExecutablePath_x64)Xsd.exe</XsdExe>
+  </PropertyGroup>
+
+  <!-- Replace File text using regular expression matching -->
+  <UsingTask TaskName="ReplaceFileText" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup>
+      <Filename ParameterType="System.String" Required="true" />
+      <MatchExpression ParameterType="System.String" Required="true" />
+      <ReplacementText ParameterType="System.String" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System" />
+      <Using Namespace="System.IO" />
+      <Using Namespace="System.Text.RegularExpressions" />
+      <Code Type="Fragment" Language="cs">
+        <![CDATA[  
+            File.WriteAllText(
+                Filename,
+                Regex.Replace(File.ReadAllText(Filename), MatchExpression, ReplacementText)
+                );
+            ]]>
+      </Code>
+    </Task>
+  </UsingTask>
+
+  <!-- Post-process generated files to suppress XML documentation warnings -->
+  <UsingTask TaskName="SuppressXmlDocumentationWarnings" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup>
+      <Filename ParameterType="System.String" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System" />
+      <Using Namespace="System.IO" />
+      <Using Namespace="System.Text" />
+      <Code Type="Fragment" Language="cs">
+        <![CDATA[  
+          var sb = new StringBuilder((int)(new FileInfo(Filename).Length + 256));
+          sb.AppendLine("#pragma warning disable 1591");
+          sb.Append(File.ReadAllText(Filename));
+          File.WriteAllText(
+             Filename,
+             sb.ToString()
+            );
+        ]]>
+      </Code>
+    </Task>
+  </UsingTask>
+
+</Project>

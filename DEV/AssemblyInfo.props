@@ -1,15 +1,15 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-    <PropertyGroup Label="Assembly Information">
-        <Company>Cobos Open Source</Company>
-        <Configuration>$(Configuration) Build</Configuration>
-        <Copyright>Copyright (c) 2009-$(CurrentYear) Nicholas Davis</Copyright>
-        <Description>Cobos Data Access Toolkit.</Description>
-        <FileVersion>0.8.1.0</FileVersion>
-        <InformationalVersion>0.8.0.0</InformationalVersion>
-        <Product>Cobos Core SDK for .NET</Product>
-        <!-- <AssemblyTitle></AssemblyTitle> -->
-        <AssemblyVersion>0.8</AssemblyVersion>
-    </PropertyGroup>
+  <PropertyGroup Label="Assembly Information">
+    <Company>Cobos Open Source</Company>
+    <Configuration>$(Configuration) Build</Configuration>
+    <Copyright>Copyright (c) 2009-$(CurrentYear) Nicholas Davis</Copyright>
+    <Description>Cobos Data Access Toolkit.</Description>
+    <FileVersion>0.8.1.0</FileVersion>
+    <InformationalVersion>0.8.0.0</InformationalVersion>
+    <Product>Cobos Core SDK for .NET</Product>
+    <!-- <AssemblyTitle></AssemblyTitle> -->
+    <AssemblyVersion>0.8</AssemblyVersion>
+  </PropertyGroup>
 
 </Project>

@@ -47,6 +47,12 @@ namespace Cobos.Data.Adapters
         {
         }
 
+        /// <inheritdoc />
+        public override Type IntegerType => typeof(int);
+
+        /// <inheritdoc />
+        public override Type BigIntegerType => typeof(long);
+
         /// <summary>
         /// Test the connection to the database to ensure that the adapter is correctly configured.
         /// </summary>
@@ -57,9 +63,9 @@ namespace Cobos.Data.Adapters
             {
                 object result = ExecuteScalar("select 1");
 
-                if (result != null && result is long)
+                if (result != null)
                 {
-                    return (long)result == 1;
+                    return (long)Convert.ChangeType(result, typeof(long)) == 1;
                 }
 
                 return false;

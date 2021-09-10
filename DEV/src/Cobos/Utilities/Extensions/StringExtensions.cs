@@ -34,8 +34,6 @@ namespace Cobos.Utilities.Extensions
     using System.Security;
     using System.Text;
     using System.Text.RegularExpressions;
-    using System.Web;
-    using System.Web.Script.Serialization;
     using Cobos.Utilities.Text;
 
     /// <summary>
@@ -92,7 +90,7 @@ namespace Cobos.Utilities.Extensions
         /// <returns>An unescaped XML string.</returns>
         public static string UnescapeXml(this string self)
         {
-            return HttpUtility.HtmlDecode(self);
+            return System.Net.WebUtility.HtmlDecode(self);
         }
 
         /// <summary>
@@ -113,40 +111,6 @@ namespace Cobos.Utilities.Extensions
         public static string ConvertToString(this byte[] self)
         {
             return new System.Text.UTF8Encoding().GetString(self);
-        }
-
-        /// <summary>
-        /// deserialize from JSON
-        /// </summary>
-        /// <param name="self">The 'this' object reference</param>
-        /// <returns>Deserialized object</returns>
-        public static object FromJson(this string self)
-        {
-            JavaScriptSerializer serializer = new JavaScriptSerializer();
-            return serializer.DeserializeObject(self);
-        }
-
-        /// <summary>
-        /// Deserialize from JSON as a specified type
-        /// </summary>
-        /// <typeparam name="T">The type to cast to</typeparam>
-        /// <param name="self">The 'this' object reference</param>
-        /// <param name="example">An instance of an anonymous type</param>
-        /// <returns>A reference to the anonymous type.  If the cast fails, then null.</returns>
-        public static T FromJsonAs<T>(this string self, T example)
-        {
-            JavaScriptSerializer serializer = new JavaScriptSerializer();
-            object json = serializer.DeserializeObject(self);
-
-            if (json is Dictionary<string, object>)
-            {
-                return ((Dictionary<string, object>)json).CastByExample(example);
-            }
-            else
-            {
-                // this may or may not work depending on the object type
-                return json.CastByExample(example);
-            }
         }
 
         /// <summary>

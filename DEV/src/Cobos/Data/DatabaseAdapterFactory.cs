@@ -64,6 +64,7 @@ namespace Cobos.Data
         private DatabaseAdapterFactory()
         {
             this.Register<MySqlDatabaseAdapter>("MySQL");
+            this.Register<OracleDatabaseAdapter>("Oracle");
             this.Register<PostgreSqlDatabaseAdapter>("PostgreSQL");
             this.Register<SqlServerDatabaseAdapter>("SqlServer");
 

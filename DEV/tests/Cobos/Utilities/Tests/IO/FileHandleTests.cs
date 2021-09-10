@@ -93,7 +93,7 @@ namespace Cobos.Utilities.Tests.IO
         public void File_handle_comparison_for_same_file_but_different_path_succeeds()
         {
             string path1 = TestManager.TestFilesLocation + @"\TestFile.txt";
-            string path2 = TestManager.TestFilesLocation + @"\..\TestFiles\TestFile.txt";
+            string path2 = TestManager.TestFilesLocation + @"\..\TestData\TestFile.txt";
 
             // jumble the paths up a bit
             path1 = path1.ToLower();
@@ -134,7 +134,7 @@ namespace Cobos.Utilities.Tests.IO
         public void File_handle_comparison_for_same_folder_but_different_path_succeeds()
         {
             string path1 = TestManager.TestFilesLocation + @"\TestDirectory";
-            string path2 = TestManager.TestFilesLocation + @"\..\TestFiles\TestDirectory";
+            string path2 = TestManager.TestFilesLocation + @"\..\TestData\TestDirectory";
 
             // jumble the paths up a bit
             path1 = path1.ToLower();

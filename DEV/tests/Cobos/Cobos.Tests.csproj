@@ -1,0 +1,67 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net45;net451;net46;net461</TargetFrameworks>
+    <RootNamespace>Cobos</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MSTest.TestAdapter" Version="2.2.7" />
+    <PackageReference Include="MSTest.TestFramework" Version="2.2.7" />
+    <PackageReference Include="NSubstitute" Version="4.2.2" />
+    <PackageReference Include="System.Reflection.Emit.Lightweight" Version="4.7.0" />
+    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="**\TestFiles\**\*.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Cobos\Cobos.csproj" />
+  </ItemGroup>
+  
+  <!--
+  =============================================================================
+  Codegen definitions
+  =============================================================================
+  -->
+  <!-- Codegen properties -->
+  <PropertyGroup>
+    <CobosCodeLanguage>CSharp</CobosCodeLanguage>
+    <CobosStylesheetsDirectory>$(MSBuildThisFileDirectory)Codegen\Tests\Stylesheets\</CobosStylesheetsDirectory>
+    <CobosNamespaceCode>Cobos.Codegen.Tests</CobosNamespaceCode>
+    <CobosNamespaceXml>http://schemas.cobos.co.uk/codegen/tests/1.0.0</CobosNamespaceXml>
+  </PropertyGroup>
+  <!-- Database properties -->
+  <PropertyGroup>
+    <CobosDatabaseConnectionString>Data Source=localhost:1521/cad94.dev;User Id=northwind;Password=oracle</CobosDatabaseConnectionString>
+    <CobosDatabasePlatform>Oracle</CobosDatabasePlatform>
+    <CobosDatabaseSchema>northwind</CobosDatabaseSchema>
+  </PropertyGroup>
+  <!-- Database tables to process -->
+  <ItemGroup>
+    <CobosDatabaseTable Include="categories;customercustomerdemo;customerdemographics;customers;employees;employeeterritories;orderdetails;orders;products;region;shippers;suppliers;territories" />
+  </ItemGroup>
+  <!--
+  =============================================================================
+  Model definitions
+  =============================================================================
+  -->
+  <ItemGroup>
+    <CobosDataModel Include="$(ProjectDir)Codegen\Tests\Data\DataModel.xml">
+      <Id>Northwind</Id>
+      <SchemaOptions>
+        <Parameter Name="multiplicityMode" Value="optional" />
+      </SchemaOptions>
+    </CobosDataModel>
+  </ItemGroup>
+
+  <PropertyGroup>
+    <_BuildToolsAssemblyTfm Condition="'$(MSBuildRuntimeType)' == 'Core'">netstandard2.0</_BuildToolsAssemblyTfm>
+    <_BuildToolsAssemblyTfm Condition="'$(MSBuildRuntimeType)' != 'Core'">net46</_BuildToolsAssemblyTfm>   
+  </PropertyGroup>
+
+  <Import Project=".cobos/$(_BuildToolsAssemblyTfm)/Codegen/MSBuild/cobos.codegen.targets" />
+  
+</Project>
