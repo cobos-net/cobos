@@ -8,6 +8,10 @@
   <Import Project="AssemblyInfo.props" />
   <Import Project="src/Cobos/Codegen/MSBuild/cobos.tools.targets"/>
 
+  <PropertyGroup>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  
   <ItemGroup>
     <AdditionalFiles Include="$(MSBuildThisFileDirectory)stylecop.json" />
   </ItemGroup>

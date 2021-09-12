@@ -1,47 +1,19 @@
 ﻿// ----------------------------------------------------------------------------
-// <copyright file="DataObjectTests.cs" company="Cobos SDK">
-//
-//      Copyright (c) 2009-2014 Nicholas Davis - nick@cobos.co.uk
-//
-//      Cobos Software Development Kit
-//
-//      Permission is hereby granted, free of charge, to any person obtaining
-//      a copy of this software and associated documentation files (the
-//      "Software"), to deal in the Software without restriction, including
-//      without limitation the rights to use, copy, modify, merge, publish,
-//      distribute, sublicense, and/or sell copies of the Software, and to
-//      permit persons to whom the Software is furnished to do so, subject to
-//      the following conditions:
-//      
-//      The above copyright notice and this permission notice shall be
-//      included in all copies or substantial portions of the Software.
-//      
-//      THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-//      EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-//      MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-//      NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-//      LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-//      OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-//      WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-//
+// <copyright file="DataObjectTests.cs" company="Nicholas Davis">
+// Copyright (c) Nicholas Davis. All rights reserved.
 // </copyright>
 // ----------------------------------------------------------------------------
 
 namespace Cobos.Codegen.Tests.Data
 {
     using System;
-    using System.Collections.Generic;
     using System.Data;
     using System.Data.Common;
-    using System.Diagnostics;
-    using System.IO;
     using System.Linq;
     using System.Reflection;
     using System.Reflection.Emit;
     using Cobos.Codegen.Tests.Northwind;
-    using Cobos.Data;
     using Cobos.Data.Filter;
-    using Cobos.Utilities.Xml;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
@@ -412,10 +384,10 @@ namespace Cobos.Codegen.Tests.Data
                                                             this.GetDelegateParameterTypes(typeofDelegate, this.GetType()),
                                                             this.GetType());
 
-                    // Generate a method body. This method loads a string, calls  
-                    // the Show method overload that takes a string, pops the  
-                    // return value off the stack (because the handler has no 
-                    // return type), and returns. 
+                    // Generate a method body. This method loads a string, calls
+                    // the Show method overload that takes a string, pops the
+                    // return value off the stack (because the handler has no
+                    // return type), and returns.
                     ILGenerator ilgen = handler.GetILGenerator();
 
                     var methodInfoHandler = this.GetType().GetMethod("OnRowUpdated", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -456,7 +428,7 @@ namespace Cobos.Codegen.Tests.Data
 
                 ////employee.Employment.HireDate = Epoch.AddYears(-2);
                 ////Assert.DoesNotThrow(() => employeeData.AcceptChanges());
-            }                
+            }
         }
 
         /// <summary>

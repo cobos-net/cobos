@@ -1,29 +1,6 @@
 ﻿// ----------------------------------------------------------------------------
-// <copyright file="SqlSelectTemplate.cs" company="Cobos SDK">
-//
-//      Copyright (c) 2009-2014 Nicholas Davis - nick@cobos.co.uk
-//
-//      Cobos Software Development Kit
-//
-//      Permission is hereby granted, free of charge, to any person obtaining
-//      a copy of this software and associated documentation files (the
-//      "Software"), to deal in the Software without restriction, including
-//      without limitation the rights to use, copy, modify, merge, publish,
-//      distribute, sublicense, and/or sell copies of the Software, and to
-//      permit persons to whom the Software is furnished to do so, subject to
-//      the following conditions:
-//      
-//      The above copyright notice and this permission notice shall be
-//      included in all copies or substantial portions of the Software.
-//      
-//      THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-//      EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-//      MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-//      NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-//      LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-//      OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-//      WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-//
+// <copyright file="SqlSelectTemplate.cs" company="Nicholas Davis">
+// Copyright (c) Nicholas Davis. All rights reserved.
 // </copyright>
 // ----------------------------------------------------------------------------
 
@@ -46,7 +23,7 @@ namespace Cobos.Data.Statements
         /// The 'select' clause of the statement.
         /// </summary>
         private readonly string select;
-        
+
         /// <summary>
         /// The 'from' clause of the statement.
         /// </summary>
@@ -66,17 +43,17 @@ namespace Cobos.Data.Statements
         /// The 'where' clause of the statement.
         /// </summary>
         private readonly string[] where;
-        
+
         /// <summary>
         /// The 'group by' clause of the statement.
         /// </summary>
         private readonly string groupBy;
-        
+
         /// <summary>
         /// The 'order by' clause of the statement.
         /// </summary>
         private readonly string orderBy;
-        
+
         /// <summary>
         /// A buffered copy of the statement that can be returned quickly.
         /// </summary>
@@ -93,12 +70,12 @@ namespace Cobos.Data.Statements
         /// Initializes a new instance of the <see cref="SqlSelectTemplate"/> class.
         /// </summary>
         /// <param name="select">The 'select' clause of the statement.</param>
-        /// <param name="from">The 'from' clause of the statement</param>
-        /// <param name="innerJoin">The 'inner join' clause of the statement</param>
-        /// <param name="outerJoin">The 'outer join' clause of the statement</param>
-        /// <param name="where">The 'where' clause of the statement</param>
-        /// <param name="groupBy">The 'group by' clause of the statement</param>
-        /// <param name="orderBy">The 'order by' clause of the statement</param>
+        /// <param name="from">The 'from' clause of the statement.</param>
+        /// <param name="innerJoin">The 'inner join' clause of the statement.</param>
+        /// <param name="outerJoin">The 'outer join' clause of the statement.</param>
+        /// <param name="where">The 'where' clause of the statement.</param>
+        /// <param name="groupBy">The 'group by' clause of the statement.</param>
+        /// <param name="orderBy">The 'order by' clause of the statement.</param>
         public SqlSelectTemplate(string select, string from, string[] innerJoin, string[] outerJoin, string[] where, string groupBy, string orderBy)
             : this(select, from, innerJoin, outerJoin, where, groupBy, orderBy, false)
         {
@@ -108,12 +85,12 @@ namespace Cobos.Data.Statements
         /// Initializes a new instance of the <see cref="SqlSelectTemplate"/> class.
         /// </summary>
         /// <param name="select">The 'select' clause of the statement.</param>
-        /// <param name="from">The 'from' clause of the statement</param>
-        /// <param name="innerJoin">The 'inner join' clause of the statement</param>
-        /// <param name="outerJoin">The 'outer join' clause of the statement</param>
-        /// <param name="where">The 'where' clause of the statement</param>
-        /// <param name="groupBy">The 'group by' clause of the statement</param>
-        /// <param name="orderBy">The 'order by' clause of the statement</param>
+        /// <param name="from">The 'from' clause of the statement.</param>
+        /// <param name="innerJoin">The 'inner join' clause of the statement.</param>
+        /// <param name="outerJoin">The 'outer join' clause of the statement.</param>
+        /// <param name="where">The 'where' clause of the statement.</param>
+        /// <param name="groupBy">The 'group by' clause of the statement.</param>
+        /// <param name="orderBy">The 'order by' clause of the statement.</param>
         /// <param name="buffered">Indicates whether the statement should be buffered.</param>
         public SqlSelectTemplate(string select, string from, string[] innerJoin, string[] outerJoin, string[] where, string groupBy, string orderBy, bool buffered)
         {
@@ -151,12 +128,12 @@ namespace Cobos.Data.Statements
         /// Augment the select statement with additional clauses.
         /// </summary>
         /// <param name="select">The 'select' clause of the statement.</param>
-        /// <param name="from">The 'from' clause of the statement</param>
-        /// <param name="innerJoin">The 'inner join' clause of the statement</param>
-        /// <param name="outerJoin">The 'outer join' clause of the statement</param>
-        /// <param name="where">The 'where' clause of the statement</param>
-        /// <param name="groupBy">The 'group by' clause of the statement</param>
-        /// <param name="orderBy">The 'order by' clause of the statement</param>
+        /// <param name="from">The 'from' clause of the statement.</param>
+        /// <param name="innerJoin">The 'inner join' clause of the statement.</param>
+        /// <param name="outerJoin">The 'outer join' clause of the statement.</param>
+        /// <param name="where">The 'where' clause of the statement.</param>
+        /// <param name="groupBy">The 'group by' clause of the statement.</param>
+        /// <param name="orderBy">The 'order by' clause of the statement.</param>
         /// <returns>The augmented select statement.</returns>
         public string ToString(string select, string from, string[] innerJoin, string[] outerJoin, string[] where, string groupBy, string orderBy)
         {
@@ -309,8 +286,8 @@ namespace Cobos.Data.Statements
         /// <summary>
         /// Augment the statement with the common filtering clauses.
         /// </summary>
-        /// <param name="where">The 'where' clause of the statement</param>
-        /// <param name="orderBy">The 'order by' clause of the statement</param>
+        /// <param name="where">The 'where' clause of the statement.</param>
+        /// <param name="orderBy">The 'order by' clause of the statement.</param>
         /// <returns>A string representing the augmented statement.</returns>
         public string ToString(string[] where, string orderBy)
         {
@@ -327,9 +304,9 @@ namespace Cobos.Data.Statements
         /// <summary>
         /// Augment the statement with the common filtering clauses.
         /// </summary>
-        /// <param name="where">The 'where' clause of the statement</param>
-        /// <param name="groupBy">The 'group by' clause of the statement</param>
-        /// <param name="orderBy">The 'order by' clause of the statement</param>
+        /// <param name="where">The 'where' clause of the statement.</param>
+        /// <param name="groupBy">The 'group by' clause of the statement.</param>
+        /// <param name="orderBy">The 'order by' clause of the statement.</param>
         /// <returns>A string representing the augmented statement.</returns>
         public string ToString(string[] where, string groupBy, string orderBy)
         {
@@ -346,7 +323,7 @@ namespace Cobos.Data.Statements
         /// <summary>
         /// Augment the statement with the a where clauses.
         /// </summary>
-        /// <param name="where">The 'where' clause of the statement</param>
+        /// <param name="where">The 'where' clause of the statement.</param>
         /// <returns>A string representing the augmented statement.</returns>
         public string ToString(string[] where)
         {

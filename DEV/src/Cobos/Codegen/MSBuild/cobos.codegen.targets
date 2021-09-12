@@ -12,7 +12,7 @@
     <CobosNamespaceXml></CobosNamespaceXml>
     <CobosStylesheetsDirectory></CobosStylesheetsDirectory>
 	  -->
-    <CobosStylesheetsDirectory Condition="!$(CobosStylesheetsDirectory.TrimEnd().EndsWith('/')) and !$(CobosStylesheetsDirectory.TrimEnd().EndsWith('\'))">$(CobosStylesheetsDirectory)\</CobosStylesheetsDirectory>
+    <CobosStylesheetsDirectory2>$(MSBuildThisFileDirectory)..\Stylesheets\</CobosStylesheetsDirectory2>
   </PropertyGroup>
 
   <PropertyGroup Label="Cobos Database properties">
@@ -40,7 +40,6 @@
     <Error Condition="'$(CobosDatabaseSchema)' == ''" Text="Cobos: The CobosDatabaseSchema property has not been defined"/>
     <Error Condition="'$(CobosNamespaceCode)' == ''" Text="Cobos: The CobosNamespaceCode property has not been defined"/>
     <Error Condition="'$(CobosNamespaceXml)' == ''" Text="Cobos: The CobosNamespaceXml property has not been defined"/>
-    <Error Condition="'$(CobosStylesheetsDirectory)' == '' or !Exists($(CobosStylesheetsDirectory))" Text="Cobos: The CobosStylesheetsDirectory property has not been defined or the directory does not exist"/>
     
     <!-- Create output directories -->
     <MakeDir Directories="@(CobosDataModel->'$(IntermediateOutputPath)%(Id)')" />
@@ -79,16 +78,26 @@
   </ItemGroup>
 
   <Target Name="CobosDatabaseSchema" Condition="!Exists('$(IntermediateOutputPath)DatabaseSchema.xsd')">
-    <CobosDatabaseToXsd ConnectionString="$(CobosDatabaseConnectionString)" DatabasePlatform="$(CobosDatabasePlatform)" DatabaseSchema="$(CobosDatabaseSchema)" DatabaseTables="@(CobosDatabaseTable)" OutputFile="$(IntermediateOutputPath)DatabaseSchema.xsd" />
+    
+    <CobosDatabaseToXsd ConnectionString="$(CobosDatabaseConnectionString)" 
+                        DatabasePlatform="$(CobosDatabasePlatform)" 
+                        DatabaseSchema="$(CobosDatabaseSchema)" 
+                        DatabaseTables="@(CobosDatabaseTable)" 
+                        OutputFile="$(IntermediateOutputPath)DatabaseSchema.xsd" />
+  
   </Target>
 
   <Target Name="CobosDatabaseVariables"
           Inputs="$(IntermediateOutputPath)DatabaseSchema.xsd"
           Outputs="$(IntermediateOutputPath)DatabaseVariables.def">
 
-    <XslTransformation XmlInputPaths="$(IntermediateOutputPath)DatabaseSchema.xsd" XslInputPath="$(MSBuildThisFileDirectory)..\Stylesheets\Database\DatabaseVariables.xslt" OutputPaths="$(IntermediateOutputPath)DatabaseVariables.def" />
+    <XslTransformation XmlInputPaths="$(IntermediateOutputPath)DatabaseSchema.xsd" 
+                       XslInputPath="$(MSBuildThisFileDirectory)..\Stylesheets\Database\DatabaseVariables.xslt" 
+                       OutputPaths="$(IntermediateOutputPath)DatabaseVariables.def"/>
     
-    <Copy SourceFiles="$(IntermediateOutputPath)DatabaseVariables.def" DestinationFolder="$(CobosStylesheetsDirectory)" OverwriteReadOnlyFiles="true"/>
+    <Copy SourceFiles="$(IntermediateOutputPath)DatabaseVariables.def" 
+          DestinationFolder="$(MSBuildThisFileDirectory)..\Stylesheets\Database" 
+          OverwriteReadOnlyFiles="true"/>
   
   </Target>
 
@@ -96,7 +105,9 @@
           Inputs="@(CobosDataModel)"
           Outputs="@(CobosDataModel->'$(IntermediateOutputPath)%(Id)\%(Filename).Processed.xml')">
 
-    <XslTransformation XmlInputPaths="%(CobosDataModel.Identity)" XslInputPath="$(CobosStylesheetsDirectory)Process.xslt" OutputPaths="$(IntermediateOutputPath)%(CobosDataModel.Id)\%(CobosDataModel.Filename).Processed.xml" />
+    <XslTransformation XmlInputPaths="%(CobosDataModel.Identity)" 
+                       XslInputPath="$(CobosStylesheetsDirectory2)DataModel\Process.xslt" 
+                       OutputPaths="$(IntermediateOutputPath)%(CobosDataModel.Id)\%(CobosDataModel.Filename).Processed.xml" />
 
   </Target>
 
@@ -104,7 +115,9 @@
           Inputs="@(CobosDataModel->'$(IntermediateOutputPath)%(Id)\%(Filename).Processed.xml')"
           Outputs="@(CobosDataModel->'$(IntermediateOutputPath)%(Id)\DataSet.xsd')">
 
-    <XslTransformation XmlInputPaths="$(IntermediateOutputPath)%(CobosDataModel.Id)\%(CobosDataModel.Filename).Processed.xml" XslInputPath="$(CobosStylesheetsDirectory)Dataset.xslt" OutputPaths="$(IntermediateOutputPath)%(CobosDataModel.Id)\Dataset.xsd" />
+    <XslTransformation XmlInputPaths="$(IntermediateOutputPath)%(CobosDataModel.Id)\%(CobosDataModel.Filename).Processed.xml" 
+                       XslInputPath="$(CobosStylesheetsDirectory2)DataModel\Dataset.xslt" 
+                       OutputPaths="$(IntermediateOutputPath)%(CobosDataModel.Id)\Dataset.xsd" />
 
   </Target>
 
@@ -121,7 +134,10 @@
           Inputs="@(CobosDataModel->'$(IntermediateOutputPath)%(Id)\%(Filename).Processed.xml')"
           Outputs="@(CobosDataModel->'$(IntermediateOutputPath)%(Id)\DataObject.cs')">
 
-    <XslTransformation XmlInputPaths="$(IntermediateOutputPath)%(CobosDataModel.Id)\%(CobosDataModel.Filename).Processed.xml" XslInputPath="$(CobosStylesheetsDirectory)DataObject.xslt" OutputPaths="$(IntermediateOutputPath)%(CobosDataModel.Id)\DataObject.cs" Parameters="&lt;Parameter Name='codeNamespace' Value='$(CobosNamespaceCode).%(CobosDataModel.Id)'/&gt;&lt;Parameter Name='xmlNamespace' Value='$(CobosNamespaceXml)'/&gt;" />
+    <XslTransformation XmlInputPaths="$(IntermediateOutputPath)%(CobosDataModel.Id)\%(CobosDataModel.Filename).Processed.xml" 
+                       XslInputPath="$(CobosStylesheetsDirectory2)DataObject\$(CobosCodeLanguage)\DataObject.xslt" 
+                       OutputPaths="$(IntermediateOutputPath)%(CobosDataModel.Id)\DataObject.cs" 
+                       Parameters="&lt;Parameter Name='codeNamespace' Value='$(CobosNamespaceCode).%(CobosDataModel.Id)'/&gt;&lt;Parameter Name='xmlNamespace' Value='$(CobosNamespaceXml)'/&gt;" />
     
     <SuppressXmlDocumentationWarnings Filename="$(IntermediateOutputPath)%(CobosDataModel.Id)\DataObject.cs " />
 
@@ -131,7 +147,10 @@
           Inputs="@(CobosDataModel->'$(IntermediateOutputPath)%(Id)\%(Filename).Processed.xml')"
           Outputs="@(CobosDataModel->'$(IntermediateOutputPath)%(Id)\DataObjectAdapter.cs')">
     
-    <XslTransformation XmlInputPaths="$(IntermediateOutputPath)%(CobosDataModel.Id)\%(CobosDataModel.Filename).Processed.xml" XslInputPath="$(CobosStylesheetsDirectory)DataObjectAdapter.xslt" OutputPaths="$(IntermediateOutputPath)%(CobosDataModel.Id)\DataObjectAdapter.cs" Parameters="&lt;Parameter Name='codeNamespace' Value='$(CobosNamespaceCode).%(CobosDataModel.Id)'/&gt;&lt;Parameter Name='xmlNamespace' Value='$(CobosNamespaceXml)'/&gt;" />
+    <XslTransformation XmlInputPaths="$(IntermediateOutputPath)%(CobosDataModel.Id)\%(CobosDataModel.Filename).Processed.xml" 
+                       XslInputPath="$(CobosStylesheetsDirectory2)DataAdapter\$(CobosCodeLanguage)\DataObjectAdapter.xslt" 
+                       OutputPaths="$(IntermediateOutputPath)%(CobosDataModel.Id)\DataObjectAdapter.cs"
+                       Parameters="&lt;Parameter Name='codeNamespace' Value='$(CobosNamespaceCode).%(CobosDataModel.Id)'/&gt;&lt;Parameter Name='xmlNamespace' Value='$(CobosNamespaceXml)'/&gt;" />
     
     <SuppressXmlDocumentationWarnings Filename="$(IntermediateOutputPath)%(CobosDataModel.Id)\DataObjectAdapter.cs " />
 
@@ -141,7 +160,10 @@
           Inputs="@(CobosDataModel->'$(IntermediateOutputPath)%(Id)\%(Filename).Processed.xml')"
           Outputs="@(CobosDataModel->'$(IntermediateOutputPath)%(Id)\DataModelAdapter.cs')">
 
-    <XslTransformation XmlInputPaths="$(IntermediateOutputPath)%(CobosDataModel.Id)\%(CobosDataModel.Filename).Processed.xml" XslInputPath="$(CobosStylesheetsDirectory)DataModelAdapter.xslt" OutputPaths="$(IntermediateOutputPath)%(CobosDataModel.Id)\DataModelAdapter.cs" Parameters="&lt;Parameter Name='codeNamespace' Value='$(CobosNamespaceCode).%(CobosDataModel.Id)'/&gt;&lt;Parameter Name='xmlNamespace' Value='$(CobosNamespaceXml)'/&gt;" />
+    <XslTransformation XmlInputPaths="$(IntermediateOutputPath)%(CobosDataModel.Id)\%(CobosDataModel.Filename).Processed.xml" 
+                       XslInputPath="$(CobosStylesheetsDirectory2)DataAdapter\$(CobosCodeLanguage)\DataModelAdapter.xslt"
+                       OutputPaths="$(IntermediateOutputPath)%(CobosDataModel.Id)\DataModelAdapter.cs" 
+                       Parameters="&lt;Parameter Name='codeNamespace' Value='$(CobosNamespaceCode).%(CobosDataModel.Id)'/&gt;&lt;Parameter Name='xmlNamespace' Value='$(CobosNamespaceXml)'/&gt;" />
     
     <SuppressXmlDocumentationWarnings Filename="$(IntermediateOutputPath)%(CobosDataModel.Id)\DataModelAdapter.cs " />
 
@@ -151,7 +173,10 @@
           Inputs="@(CobosDataModel)"
           Outputs="@(CobosDataModel->'$(IntermediateOutputPath)%(Id)\DataModel.xsd')">
 
-    <XslTransformation XmlInputPaths="%(CobosDataModel.Identity)" XslInputPath="$(CobosStylesheetsDirectory)Schema.xslt" OutputPaths="$(IntermediateOutputPath)%(CobosDataModel.Id)\DataModel.xsd" Parameters="&lt;Parameter Name='xmlNamespace' Value='$(CobosNamespaceXml)'/&gt;@(%(CobosDataModel.SchemaOptions))" />
+    <XslTransformation XmlInputPaths="%(CobosDataModel.Identity)" 
+                       XslInputPath="$(CobosStylesheetsDirectory2)DataModel\Schema.xslt" 
+                       OutputPaths="$(IntermediateOutputPath)%(CobosDataModel.Id)\DataModel.xsd" 
+                       Parameters="&lt;Parameter Name='xmlNamespace' Value='$(CobosNamespaceXml)'/&gt;@(%(CobosDataModel.SchemaOptions))" />
 
   </Target>
 

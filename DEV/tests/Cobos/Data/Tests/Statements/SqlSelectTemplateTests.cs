@@ -1,38 +1,12 @@
 ﻿// ----------------------------------------------------------------------------
-// <copyright file="SqlSelectTemplateTests.cs" company="Cobos SDK">
-//
-//      Copyright (c) 2009-2014 Nicholas Davis - nick@cobos.co.uk
-//
-//      Cobos Software Development Kit
-//
-//      Permission is hereby granted, free of charge, to any person obtaining
-//      a copy of this software and associated documentation files (the
-//      "Software"), to deal in the Software without restriction, including
-//      without limitation the rights to use, copy, modify, merge, publish,
-//      distribute, sublicense, and/or sell copies of the Software, and to
-//      permit persons to whom the Software is furnished to do so, subject to
-//      the following conditions:
-//      
-//      The above copyright notice and this permission notice shall be
-//      included in all copies or substantial portions of the Software.
-//      
-//      THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-//      EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-//      MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-//      NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-//      LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-//      OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-//      WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-//
+// <copyright file="SqlSelectTemplateTests.cs" company="Nicholas Davis">
+// Copyright (c) Nicholas Davis. All rights reserved.
 // </copyright>
 // ----------------------------------------------------------------------------
 
 namespace Cobos.Data.Tests.Statements
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
     using Cobos.Data.Statements;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -45,7 +19,7 @@ namespace Cobos.Data.Tests.Statements
         /// <summary>
         /// Strategy:
         /// ---------
-        /// 1. Test the invalid cases. 
+        /// 1. Test the invalid cases.
         /// </summary>
         [TestMethod]
         public void Invalid_parameters_throws_exception()
@@ -62,7 +36,7 @@ namespace Cobos.Data.Tests.Statements
         /// <summary>
         /// Strategy:
         /// ---------
-        /// 1. Test the simple case. 
+        /// 1. Test the simple case.
         /// </summary>
         [TestMethod]
         public void Simple_select_succeeds()
@@ -80,7 +54,7 @@ namespace Cobos.Data.Tests.Statements
         /// <summary>
         /// Strategy:
         /// ---------
-        /// 1. Test the select parameters in isolation. 
+        /// 1. Test the select parameters in isolation.
         /// </summary>
         [TestMethod]
         public void Select_parameters_return_correct_query()
@@ -116,7 +90,7 @@ namespace Cobos.Data.Tests.Statements
         /// <summary>
         /// Strategy:
         /// ---------
-        /// 1. Test the inner join parameters. 
+        /// 1. Test the inner join parameters.
         /// </summary>
         [TestMethod]
         public void Inner_join_parameters_return_correct_query()
@@ -150,7 +124,7 @@ namespace Cobos.Data.Tests.Statements
         /// <summary>
         /// Strategy:
         /// ---------
-        /// 1. Test the LEFT OUTER JOIN parameters. 
+        /// 1. Test the LEFT OUTER JOIN parameters.
         /// </summary>
         [TestMethod]
         public void Outer_join_parameters_return_correct_query()
@@ -184,7 +158,7 @@ namespace Cobos.Data.Tests.Statements
         /// <summary>
         /// Strategy:
         /// ---------
-        /// 1. Test the where parameters. 
+        /// 1. Test the where parameters.
         /// </summary>
         [TestMethod]
         public void Where_parameters_return_correct_query()
@@ -223,7 +197,7 @@ namespace Cobos.Data.Tests.Statements
         /// <summary>
         /// Strategy:
         /// ---------
-        /// 1. Test the group by parameters. 
+        /// 1. Test the group by parameters.
         /// </summary>
         [TestMethod]
         public void GroupBy_parameters_return_correct_query()
@@ -243,7 +217,7 @@ namespace Cobos.Data.Tests.Statements
         /// <summary>
         /// Strategy:
         /// ---------
-        /// 1. Test the order by parameters. 
+        /// 1. Test the order by parameters.
         /// </summary>
         [TestMethod]
         public void OrderBy_parameters_return_correct_query()
@@ -264,7 +238,7 @@ namespace Cobos.Data.Tests.Statements
         /// <summary>
         /// Strategy:
         /// ---------
-        /// 1. Test all parameters. 
+        /// 1. Test all parameters.
         /// </summary>
         [TestMethod]
         public void Full_query_returns_correct_query()
@@ -312,7 +286,7 @@ namespace Cobos.Data.Tests.Statements
         /// <summary>
         /// Strategy:
         /// ---------
-        /// 1. Test empty arrays don't cause the template to fail. 
+        /// 1. Test empty arrays don't cause the template to fail.
         /// </summary>
         [TestMethod]
         public void Empty_arrays_dont_fail()

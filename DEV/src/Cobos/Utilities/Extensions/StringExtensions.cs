@@ -1,29 +1,6 @@
 ﻿// ----------------------------------------------------------------------------
-// <copyright file="StringExtensions.cs" company="Cobos SDK">
-//
-//      Copyright (c) 2009-2014 Nicholas Davis - nick@cobos.co.uk
-//
-//      Cobos Software Development Kit
-//
-//      Permission is hereby granted, free of charge, to any person obtaining
-//      a copy of this software and associated documentation files (the
-//      "Software"), to deal in the Software without restriction, including
-//      without limitation the rights to use, copy, modify, merge, publish,
-//      distribute, sublicense, and/or sell copies of the Software, and to
-//      permit persons to whom the Software is furnished to do so, subject to
-//      the following conditions:
-//      
-//      The above copyright notice and this permission notice shall be
-//      included in all copies or substantial portions of the Software.
-//      
-//      THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-//      EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-//      MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-//      NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-//      LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-//      OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-//      WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-//
+// <copyright file="StringExtensions.cs" company="Nicholas Davis">
+// Copyright (c) Nicholas Davis. All rights reserved.
 // </copyright>
 // ----------------------------------------------------------------------------
 
@@ -37,7 +14,7 @@ namespace Cobos.Utilities.Extensions
     using Cobos.Utilities.Text;
 
     /// <summary>
-    /// Extension methods for the <see cref="String"/> class.
+    /// Extension methods for the <see cref="string"/> class.
     /// </summary>
     /// <remarks>
     /// Many of these methods are helpers for SQL string handling.
@@ -45,7 +22,7 @@ namespace Cobos.Utilities.Extensions
     public static class StringExtensions
     {
         /// <summary>
-        /// Tokenize a string and return the result as a single <c>CamelCase</c> value. 
+        /// Tokenize a string and return the result as a single <c>CamelCase</c> value.
         /// </summary>
         /// <param name="self">The 'this' object reference.</param>
         /// <returns>The <c>CamelCase</c> result.</returns>
@@ -114,7 +91,7 @@ namespace Cobos.Utilities.Extensions
         }
 
         /// <summary>
-        /// Tests whether the string is enclosed in quotes: ''
+        /// Tests whether the string is enclosed in quotes: ''.
         /// </summary>
         /// <param name="self">The 'this' object reference.</param>
         /// <returns>true if the string is enclosed in quotes; otherwise false.</returns>
@@ -161,11 +138,11 @@ namespace Cobos.Utilities.Extensions
 
             self = self.Trim();
 
-            // return SQL friendly quoted text 
+            // return SQL friendly quoted text
             StringBuilder newValue = new StringBuilder(self);
 
             // if the string is already quoted, remove quotes so we can check for special characters
-            if (self.StartsWith("'") && self.EndsWith("'") && self.Length > 1)  
+            if (self.StartsWith("'") && self.EndsWith("'") && self.Length > 1)
             {
                 // disallow match on only single quote
                 newValue.Remove(self.Length - 1, 1);
@@ -181,7 +158,7 @@ namespace Cobos.Utilities.Extensions
             // another single quote, backslash before real backslash, backslash before double quoute, backslash before questionmark
             char[] appendTo = new char[] { '\'', '\\', '\\', '\\' };
 
-            // TODO: perhaps could use regex here.  Not sure if that will be quicker though... 
+            // TODO: perhaps could use regex here.  Not sure if that will be quicker though...
             int k = 0;
             for (int i = 0; i < self.Length; ++i, ++k)
             {

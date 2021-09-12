@@ -1,29 +1,6 @@
 ﻿// ----------------------------------------------------------------------------
-// <copyright file="ObservableObject.cs" company="Cobos SDK">
-//
-//      Copyright (c) 2009-2014 Nicholas Davis - nick@cobos.co.uk
-//
-//      Cobos Software Development Kit
-//
-//      Permission is hereby granted, free of charge, to any person obtaining
-//      a copy of this software and associated documentation files (the
-//      "Software"), to deal in the Software without restriction, including
-//      without limitation the rights to use, copy, modify, merge, publish,
-//      distribute, sublicense, and/or sell copies of the Software, and to
-//      permit persons to whom the Software is furnished to do so, subject to
-//      the following conditions:
-//      
-//      The above copyright notice and this permission notice shall be
-//      included in all copies or substantial portions of the Software.
-//      
-//      THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-//      EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-//      MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-//      NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-//      LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-//      OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-//      WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-//
+// <copyright file="ObservableObject.cs" company="Nicholas Davis">
+// Copyright (c) Nicholas Davis. All rights reserved.
 // </copyright>
 // ----------------------------------------------------------------------------
 
@@ -86,13 +63,11 @@ namespace Cobos.Utilities.ComponentModel
         [DebuggerStepThrough]
         public void VerifyPropertyName(string propertyName)
         {
-            var myType = GetType();
+            var myType = this.GetType();
 
             if (!string.IsNullOrEmpty(propertyName) && myType.GetProperty(propertyName) == null)
             {
-                var descriptor = this as ICustomTypeDescriptor;
-
-                if (descriptor != null)
+                if (this is ICustomTypeDescriptor descriptor)
                 {
                     if (descriptor.GetProperties()
                         .Cast<PropertyDescriptor>()
@@ -114,16 +89,11 @@ namespace Cobos.Utilities.ComponentModel
         /// exception is thrown in DEBUG configuration only.</remarks>
         /// <param name="propertyName">The name of the property that
         /// changed.</param>
-        [SuppressMessage("Microsoft.Design", "CA1030:UseEventsWhereAppropriate", Justification = "This cannot be an event")]
         protected virtual void RaisePropertyChanging(string propertyName)
         {
             this.VerifyPropertyName(propertyName);
 
-            var handler = this.PropertyChanging;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangingEventArgs(propertyName));
-            }
+            this.PropertyChanging?.Invoke(this, new PropertyChangingEventArgs(propertyName));
         }
 
         /// <summary>
@@ -134,21 +104,16 @@ namespace Cobos.Utilities.ComponentModel
         /// exception is thrown in DEBUG configuration only.</remarks>
         /// <param name="propertyName">The name of the property that
         /// changed.</param>
-        [SuppressMessage("Microsoft.Design", "CA1030:UseEventsWhereAppropriate", Justification = "This cannot be an event")]
-        protected virtual void RaisePropertyChanged(string propertyName) 
+        protected virtual void RaisePropertyChanged(string propertyName)
         {
             this.VerifyPropertyName(propertyName);
 
-            var handler = this.PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         /// <summary>
         /// Assigns a new value to the property. Then, raises the
-        /// PropertyChanged event if needed. 
+        /// PropertyChanged event if needed.
         /// </summary>
         /// <typeparam name="T">The type of the property that
         /// changed.</typeparam>
@@ -160,7 +125,6 @@ namespace Cobos.Utilities.ComponentModel
         /// <returns>True if the PropertyChanged event has been raised,
         /// false otherwise. The event is not raised if the old
         /// value is equal to the new value.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "1#", Justification = "This syntax is more convenient than the alternatives.")]
         protected bool Set<T>(string propertyName, ref T field, T newValue)
         {
             if (EqualityComparer<T>.Default.Equals(field, newValue))

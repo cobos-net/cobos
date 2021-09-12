@@ -1,38 +1,13 @@
 ﻿// ----------------------------------------------------------------------------
-// <copyright file="ArrayExtensions.cs" company="Cobos SDK">
-//
-//      Copyright (c) 2009-2014 Nicholas Davis - nick@cobos.co.uk
-//
-//      Cobos Software Development Kit
-//
-//      Permission is hereby granted, free of charge, to any person obtaining
-//      a copy of this software and associated documentation files (the
-//      "Software"), to deal in the Software without restriction, including
-//      without limitation the rights to use, copy, modify, merge, publish,
-//      distribute, sublicense, and/or sell copies of the Software, and to
-//      permit persons to whom the Software is furnished to do so, subject to
-//      the following conditions:
-//      
-//      The above copyright notice and this permission notice shall be
-//      included in all copies or substantial portions of the Software.
-//      
-//      THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-//      EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-//      MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-//      NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-//      LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-//      OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-//      WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-//
+// <copyright file="ArrayExtensions.cs" company="Nicholas Davis">
+// Copyright (c) Nicholas Davis. All rights reserved.
 // </copyright>
 // ----------------------------------------------------------------------------
 
 namespace Cobos.Utilities.Extensions
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
 
     /// <summary>
     /// Extension methods for the System.Array class.
@@ -45,7 +20,7 @@ namespace Cobos.Utilities.Extensions
         /// <typeparam name="T">The type of the element contained in the array.</typeparam>
         /// <param name="self">The 'this' object reference.</param>
         /// <param name="append">The array to append.</param>
-        /// <returns>The new a1 array with the appended result</returns>
+        /// <returns>The new a1 array with the appended result.</returns>
         public static T[] Append<T>(this T[] self, T[] append)
         {
             return self.Concat(append).Cast<T>().ToArray();
@@ -57,7 +32,7 @@ namespace Cobos.Utilities.Extensions
         /// <typeparam name="T">The type of the element contained in the array.</typeparam>
         /// <param name="self">The 'this' object reference.</param>
         /// <param name="obj">The object to append.</param>
-        /// <returns>The new a1 array with the appended result</returns>
+        /// <returns>The new a1 array with the appended result.</returns>
         public static T[] Append<T>(this T[] self, T obj)
         {
             return self.Concat(new T[] { obj }).Cast<T>().ToArray();
@@ -110,7 +85,7 @@ namespace Cobos.Utilities.Extensions
         }
 
         /// <summary>
-        /// Find the index of the specified object in the array
+        /// Find the index of the specified object in the array.
         /// </summary>
         /// <typeparam name="T">The type of the element contained in the array.</typeparam>
         /// <param name="self">The 'this' object reference.</param>
@@ -196,10 +171,10 @@ namespace Cobos.Utilities.Extensions
         /// <typeparam name="T">The type of the element contained in the array.</typeparam>
         /// <param name="self">The 'this' object reference.</param>
         /// <param name="index">Index at which to start changing the array. If negative, will begin that many elements from the end.</param>
-        /// <param name="howMany">An integer indicating the number of old array elements to remove. 
+        /// <param name="howMany">An integer indicating the number of old array elements to remove.
         /// If howMany is 0, no elements are removed. In this case, you should specify at least one new element.</param>
         /// <param name="elements">The elements to add to the array. If you don't specify any elements, splice simply removes elements from the array.</param>
-        /// <returns>The modified array a</returns>
+        /// <returns>The modified array a.</returns>
         public static T[] Splice<T>(this T[] self, int index, int howMany, params T[] elements)
         {
             if (index >= self.Length)

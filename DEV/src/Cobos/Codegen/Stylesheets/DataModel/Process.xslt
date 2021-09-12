@@ -7,6 +7,7 @@
 						xmlns:cobos="http://schemas.cobos.co.uk/datamodel/1.0.0"
 						xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 >
+  <xsl:include href="../Database/DatabaseVariables.def"/>
   <xsl:include href="../Utilities/Utilities.inc"/>
   <!-- 
 	=============================================================================

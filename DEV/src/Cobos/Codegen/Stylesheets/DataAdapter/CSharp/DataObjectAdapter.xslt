@@ -21,6 +21,7 @@
   =============================================================================
   -->
   <xsl:include href="../../Utilities/Utilities.inc"/>
+  <xsl:include href="../../Database/DatabaseVariables.def"/>
   <xsl:include href="./Methods/Methods.inc"/>
   <xsl:include href="./Sql/Sql.inc"/>
   <!-- 

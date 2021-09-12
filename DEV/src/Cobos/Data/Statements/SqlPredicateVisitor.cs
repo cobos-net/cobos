@@ -1,45 +1,18 @@
 ﻿// ----------------------------------------------------------------------------
-// <copyright file="SqlPredicateVisitor.cs" company="Cobos SDK">
-//
-//      Copyright (c) 2009-2014 Nicholas Davis - nick@cobos.co.uk
-//
-//      Cobos Software Development Kit
-//
-//      Permission is hereby granted, free of charge, to any person obtaining
-//      a copy of this software and associated documentation files (the
-//      "Software"), to deal in the Software without restriction, including
-//      without limitation the rights to use, copy, modify, merge, publish,
-//      distribute, sublicense, and/or sell copies of the Software, and to
-//      permit persons to whom the Software is furnished to do so, subject to
-//      the following conditions:
-//      
-//      The above copyright notice and this permission notice shall be
-//      included in all copies or substantial portions of the Software.
-//      
-//      THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-//      EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-//      MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-//      NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-//      LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-//      OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-//      WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-//
+// <copyright file="SqlPredicateVisitor.cs" company="Nicholas Davis">
+// Copyright (c) Nicholas Davis. All rights reserved.
 // </copyright>
 // ----------------------------------------------------------------------------
 
 namespace Cobos.Data.Statements
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Text;
     using Cobos.Data.Filter;
     using Cobos.Data.Mapping;
-    using Cobos.Data.Statements;
     using Cobos.Utilities.Extensions;
 
     /// <summary>
-    /// Class specification and implementation of <see cref="SqlPredicateVisitor"/>.
+    /// Class specification and implementation of <see cref="SqlPredicateVisitor{T}"/>.
     /// </summary>
     /// <typeparam name="T">The entity type to map to.</typeparam>
     public class SqlPredicateVisitor<T> : IFilterPredicateVisitor
@@ -47,12 +20,12 @@ namespace Cobos.Data.Statements
         /// <summary>
         /// The internal buffer.
         /// </summary>
-        private StringBuilder buffer;
+        private readonly StringBuilder buffer;
 
         /// <summary>
         /// The property map to map properties to columns.
         /// </summary>
-        private PropertyMap map;
+        private readonly PropertyMap map;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SqlPredicateVisitor{T}"/> class.
@@ -98,7 +71,7 @@ namespace Cobos.Data.Statements
         {
             return this.buffer.ToString();
         }
-        
+
         /// <summary>
         /// Visit the predicate.
         /// </summary>
@@ -116,7 +89,7 @@ namespace Cobos.Data.Statements
 
                 predicate.Predicate[i].Accept(this);
             }
-            
+
             this.buffer.Append(')');
         }
 
@@ -240,7 +213,7 @@ namespace Cobos.Data.Statements
         /// <param name="predicate">The predicate.</param>
         public void Visit(PropertyIsNull predicate)
         {
-            this.buffer.Append(this.map[predicate.ValueReference].ToString() + " IS NULL"); 
+            this.buffer.Append(this.map[predicate.ValueReference].ToString() + " IS NULL");
         }
 
         /// <summary>

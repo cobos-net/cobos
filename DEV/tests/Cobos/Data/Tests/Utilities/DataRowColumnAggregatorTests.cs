@@ -1,38 +1,13 @@
 ﻿// ----------------------------------------------------------------------------
-// <copyright file="DataRowColumnAggregatorTests.cs" company="Cobos SDK">
-//
-//      Copyright (c) 2009-2014 Nicholas Davis - nick@cobos.co.uk
-//
-//      Cobos Software Development Kit
-//
-//      Permission is hereby granted, free of charge, to any person obtaining
-//      a copy of this software and associated documentation files (the
-//      "Software"), to deal in the Software without restriction, including
-//      without limitation the rights to use, copy, modify, merge, publish,
-//      distribute, sublicense, and/or sell copies of the Software, and to
-//      permit persons to whom the Software is furnished to do so, subject to
-//      the following conditions:
-//      
-//      The above copyright notice and this permission notice shall be
-//      included in all copies or substantial portions of the Software.
-//      
-//      THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-//      EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-//      MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-//      NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-//      LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-//      OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-//      WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-//
+// <copyright file="DataRowColumnAggregatorTests.cs" company="Nicholas Davis">
+// Copyright (c) Nicholas Davis. All rights reserved.
 // </copyright>
 // ----------------------------------------------------------------------------
 
 namespace Cobos.Data.Tests.Utilities
 {
     using System;
-    using System.Collections.Generic;
     using System.Data;
-    using System.Text;
     using Cobos.Data.Utilities;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -43,13 +18,13 @@ namespace Cobos.Data.Tests.Utilities
     public class DataRowColumnAggregatorTests
     {
         /// <summary>
-        /// Test row data.  
+        /// Test row data.
         /// Grouping is performed on Col2, Col3 and Col5.
         /// The different data types are included to test sorting and grouping by key values.
         /// Some columns have extra spaces to check the trimming and concatenation.
         /// Some of the keys in Col5 are lower case to check case insensitive comparisons.
         /// </summary>
-        private static readonly object[][] rowData =
+        private static readonly object[][] RowData =
         {
             ////          | ID    | Col1            | Col2          | Col3      | Col4                                  | Col5              | Col6
             //// ----------------------------------------------------------------------------------------------------------------------------------------------
@@ -122,7 +97,7 @@ namespace Cobos.Data.Tests.Utilities
         /// 2. Repeat 1) but sort descending to produce the opposite output.
         /// 3. Repeat 1) but sort on multiple columns.  The first sort column must belong to a group
         /// of values to test that the sorting is broken into groups.
-        /// 4. Repeat 2) but use case sensitive matching to produce a different output
+        /// 4. Repeat 2) but use case sensitive matching to produce a different output.
         /// </summary>
         [TestMethod]
         public void Can_aggregate_and_sort_columns()
@@ -197,7 +172,7 @@ namespace Cobos.Data.Tests.Utilities
         /// <summary>
         /// Strategy:
         /// ---------
-        /// 1. Assert that attempting to aggregate on any column type other than string 
+        /// 1. Assert that attempting to aggregate on any column type other than string
         /// results in an exception being thrown.
         /// </summary>
         [TestMethod]
@@ -290,7 +265,7 @@ namespace Cobos.Data.Tests.Utilities
 
             DataColumn aggregateOn = table.Columns["Col1"];
             DataColumn[] groupBy = new DataColumn[] { table.Columns["Col5"] };
-            
+
             // sorting by the dates, they are in reverse order
             DataColumn[] sortBy = new DataColumn[] { table.Columns["Col4"] };
 
@@ -308,7 +283,7 @@ namespace Cobos.Data.Tests.Utilities
         }
 
         /// <summary>
-        /// Simple data table to use for testing
+        /// Simple data table to use for testing.
         /// </summary>
         /// <param name="rowOrder">The order to create the rows in.</param>
         /// <returns>A data table for testing.</returns>
@@ -328,7 +303,7 @@ namespace Cobos.Data.Tests.Utilities
             {
                 DataRow row = table.NewRow();
 
-                row.ItemArray = (object[])rowData[i].Clone();
+                row.ItemArray = (object[])RowData[i].Clone();
 
                 table.Rows.Add(row);
             }

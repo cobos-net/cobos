@@ -1,29 +1,6 @@
 ﻿// ----------------------------------------------------------------------------
-// <copyright file="ResourcePoolImpl.cs" company="Cobos SDK">
-//
-//      Copyright (c) 2009-2014 Nicholas Davis - nick@cobos.co.uk
-//
-//      Cobos Software Development Kit
-//
-//      Permission is hereby granted, free of charge, to any person obtaining
-//      a copy of this software and associated documentation files (the
-//      "Software"), to deal in the Software without restriction, including
-//      without limitation the rights to use, copy, modify, merge, publish,
-//      distribute, sublicense, and/or sell copies of the Software, and to
-//      permit persons to whom the Software is furnished to do so, subject to
-//      the following conditions:
-//      
-//      The above copyright notice and this permission notice shall be
-//      included in all copies or substantial portions of the Software.
-//      
-//      THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-//      EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-//      MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-//      NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-//      LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-//      OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-//      WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-//
+// <copyright file="ResourcePoolImpl.cs" company="Nicholas Davis">
+// Copyright (c) Nicholas Davis. All rights reserved.
 // </copyright>
 // ----------------------------------------------------------------------------
 
@@ -31,18 +8,36 @@ namespace Cobos.Utilities.Threading.Resource
 {
     using System;
     using System.Collections.Generic;
-    using System.Text;
     using System.Threading;
-    using Cobos.Utilities.Extensions;
 
     /// <summary>
     /// Implementation of a resource pool.  The class is marked as internal
-    /// to hide the ReleaseResource method to force clients to use the 
+    /// to hide the ReleaseResource method to force clients to use the
     /// correct IResource.Dispose method.
     /// </summary>
     /// <typeparam name="T">The type of the resource to be managed.</typeparam>
     internal partial class ResourcePoolImpl<T> : IResourcePool<T>
     {
+        /// <summary>
+        /// List of all resources managed by the pool.
+        /// </summary>
+        private readonly List<T> resources;
+
+        /// <summary>
+        /// List of all available resources in the pool.
+        /// </summary>
+        private readonly LinkedList<T> freeList;
+
+        /// <summary>
+        /// Synchronized access to the limited resources.
+        /// </summary>
+        private readonly Semaphore semaphore;
+
+        /// <summary>
+        /// Control access to the resource and free list.
+        /// </summary>
+        private readonly object lockResource = new object();
+
         /// <summary>
         /// The settings for this pool.
         /// </summary>
@@ -54,26 +49,6 @@ namespace Cobos.Utilities.Threading.Resource
         private ResourcePoolStatistics statistics;
 
         /// <summary>
-        /// List of all resources managed by the pool.
-        /// </summary>
-        private List<T> resources;
-
-        /// <summary>
-        /// List of all available resources in the pool.
-        /// </summary>
-        private LinkedList<T> freeList;
-
-        /// <summary>
-        /// Synchronized access to the limited resources.
-        /// </summary>
-        private Semaphore semaphore;
-
-        /// <summary>
-        /// Control access to the resource and free list.
-        /// </summary>
-        private object lockResource = new object();
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="ResourcePoolImpl{T}"/> class.
         /// </summary>
         /// <param name="settings">The settings for the resource pool.</param>
@@ -82,7 +57,7 @@ namespace Cobos.Utilities.Threading.Resource
             this.settings = settings;
             this.resources = new List<T>((int)this.settings.MaxPoolSize);
             this.freeList = new LinkedList<T>();
-            this.statistics = new ResourcePoolStatistics();
+            this.statistics = default;
 
             if (this.settings.MinPoolSize > 0)
             {
@@ -233,7 +208,7 @@ namespace Cobos.Utilities.Threading.Resource
         /// </summary>
         /// <remarks>
         /// WARNING: this.lockResource must be acquired before calling this method.
-        /// This method should not be called directly, resources should be 
+        /// This method should not be called directly, resources should be
         /// accessed via GetFirstAvailableResource.
         /// </remarks>
         private void AddNewResource()
@@ -274,20 +249,10 @@ namespace Cobos.Utilities.Threading.Resource
         }
 
         /// <summary>
-        /// Helper class to manage a resource
+        /// Helper class to manage a resource.
         /// </summary>
         private class ResourceItem
         {
-            /// <summary>
-            /// Access the underlying instance
-            /// </summary>
-            public readonly T Instance;
-
-            /// <summary>
-            /// Epoch seconds when this item was created
-            /// </summary>
-            public readonly long Created;
-
             /// <summary>
             /// Initializes a new instance of the <see cref="ResourceItem"/> class.
             /// </summary>
@@ -297,15 +262,30 @@ namespace Cobos.Utilities.Threading.Resource
                 this.Instance = instance;
                 this.Created = DateTime.Now.Ticks;
             }
+
+            /// <summary>
+            /// Gets the underlying instance.
+            /// </summary>
+            public T Instance { get; }
+
+            /// <summary>
+            /// Gets the epoch seconds when this item was created.
+            /// </summary>
+            public long Created { get; }
         }
     }
 
-    /// <summary>
-    /// Implements IDisposable via <see cref="IResourcePool{T}"/>
-    /// </summary>
-    /// <typeparam name="T">The type of the resource to be managed.</typeparam>
+    /// <content>
+    /// Implements IDisposable via <see cref="IResourcePool{T}"/>.
+    /// </content>
     internal partial class ResourcePoolImpl<T>
     {
+        /// <summary>
+        /// Finish all pending jobs when trying to dispose.
+        /// Don't accept any new jobs while we're disposing.
+        /// </summary>
+        private readonly object lockDisposed = new object();
+
         /// <summary>
         /// Indicates whether the object is disposed.
         /// </summary>
@@ -315,12 +295,6 @@ namespace Cobos.Utilities.Threading.Resource
         /// Indicates whether the object is currently disposing.
         /// </summary>
         private volatile bool disposeInProgress = false;
-
-        /// <summary>
-        /// Finish all pending jobs when trying to dispose.
-        /// Don't accept any new jobs while we're disposing.
-        /// </summary>
-        private object lockDisposed = new object();
 
         /// <summary>
         /// Wait for a signal from worker threads to indicate that all
@@ -361,7 +335,7 @@ namespace Cobos.Utilities.Threading.Resource
                 {
                     return;
                 }
-                
+
                 this.disposeInProgress = true;
             }
 
@@ -407,9 +381,7 @@ namespace Cobos.Utilities.Threading.Resource
             {
                 foreach (T resource in this.resources)
                 {
-                    IDisposable dispose = resource as IDisposable;
-
-                    if (dispose != null)
+                    if (resource is IDisposable dispose)
                     {
                         dispose.Dispose();
                     }

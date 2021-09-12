@@ -10,7 +10,7 @@
 >
 	<xsl:output method="xml" indent="yes"/>
 
-	<!-- 
+  <!-- 
 	=============================================================================
 	Filename: Dataset.xslt
 	Description: XSLT for creation of DataSet Xsd definitions
@@ -23,6 +23,7 @@
 
 	=============================================================================
 	-->
+  <xsl:include href="../Database/DatabaseVariables.def"/>
 	<xsl:include href="../Utilities/Utilities.inc"/>
 	<xsl:key name="dbTableKey" match="cobos:Object|cobos:Property" use="@dbTable"/>
 	<!--

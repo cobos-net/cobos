@@ -1,29 +1,6 @@
 ﻿// ----------------------------------------------------------------------------
-// <copyright file="FileVersionHelper.cs" company="Cobos SDK">
-//
-//      Copyright (c) 2009-2014 Nicholas Davis - nick@cobos.co.uk
-//
-//      Cobos Software Development Kit
-//
-//      Permission is hereby granted, free of charge, to any person obtaining
-//      a copy of this software and associated documentation files (the
-//      "Software"), to deal in the Software without restriction, including
-//      without limitation the rights to use, copy, modify, merge, publish,
-//      distribute, sublicense, and/or sell copies of the Software, and to
-//      permit persons to whom the Software is furnished to do so, subject to
-//      the following conditions:
-//      
-//      The above copyright notice and this permission notice shall be
-//      included in all copies or substantial portions of the Software.
-//      
-//      THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-//      EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-//      MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-//      NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-//      LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-//      OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-//      WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-//
+// <copyright file="FileVersionHelper.cs" company="Nicholas Davis">
+// Copyright (c) Nicholas Davis. All rights reserved.
 // </copyright>
 // ----------------------------------------------------------------------------
 
@@ -38,41 +15,6 @@ namespace Cobos.Utilities.IO
     /// </summary>
     public class FileVersionHelper : IComparable, IComparable<FileVersionHelper>
     {
-        /// <summary>
-        /// The major version number.
-        /// </summary>
-        public readonly ushort Major = 0;
-        
-        /// <summary>
-        /// The minor version number.
-        /// </summary>
-        public readonly ushort Minor = 0;
-        
-        /// <summary>
-        /// The build number.
-        /// </summary>
-        public readonly ushort Build = 0; 
-        
-        /// <summary>
-        /// The revision number.
-        /// </summary>
-        public readonly ushort Revision = 0;
-
-        /// <summary>
-        /// The full version number.
-        /// </summary>
-        public readonly ulong VersionNumber = 0;
-
-        /// <summary>
-        /// The string representation of the version number.
-        /// </summary>
-        public readonly string StringValue = null;
-
-        /// <summary>
-        /// Indicates whether this version number is null.
-        /// </summary>
-        public readonly bool IsNull = false;
-
         /// <summary>
         /// Regular expression for parsing the version information.
         /// </summary>
@@ -116,6 +58,41 @@ namespace Cobos.Utilities.IO
                 this.Revision = Convert.ToByte(tokens[5]);
             }
         }
+
+        /// <summary>
+        /// Gets the major version number.
+        /// </summary>
+        public ushort Major { get; } = 0;
+
+        /// <summary>
+        /// Gets the minor version number.
+        /// </summary>
+        public ushort Minor { get; } = 0;
+
+        /// <summary>
+        /// Gets the build number.
+        /// </summary>
+        public ushort Build { get; } = 0;
+
+        /// <summary>
+        /// Gets the revision number.
+        /// </summary>
+        public ushort Revision { get; } = 0;
+
+        /// <summary>
+        /// Gets the full version number.
+        /// </summary>
+        public ulong VersionNumber { get; } = 0;
+
+        /// <summary>
+        /// Gets the string representation of the version number.
+        /// </summary>
+        public string StringValue { get; } = null;
+
+        /// <summary>
+        /// Gets a value indicating whether this version number is null.
+        /// </summary>
+        public bool IsNull { get; } = false;
 
         /// <summary>
         /// Determines whether the specified object instances are considered equal.
@@ -181,9 +158,7 @@ namespace Cobos.Utilities.IO
                 return false;
             }
 
-            FileVersionHelper version = obj as FileVersionHelper;
-
-            if ((object)version == null)
+            if (!(obj is FileVersionHelper version))
             {
                 return false;
             }
@@ -194,7 +169,7 @@ namespace Cobos.Utilities.IO
         /// <summary>
         /// Serves as a hash function for a particular type.
         /// </summary>
-        /// <returns>A hash code for the current <see cref="FileVersionHelper"/></returns>
+        /// <returns>A hash code for the current <see cref="FileVersionHelper"/>.</returns>
         public override int GetHashCode()
         {
             return this.VersionNumber.GetHashCode();

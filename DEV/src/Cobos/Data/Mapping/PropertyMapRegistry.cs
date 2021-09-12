@@ -1,29 +1,6 @@
 ﻿// ----------------------------------------------------------------------------
-// <copyright file="PropertyMapRegistry.cs" company="Cobos SDK">
-//
-//      Copyright (c) 2009-2014 Nicholas Davis - nick@cobos.co.uk
-//
-//      Cobos Software Development Kit
-//
-//      Permission is hereby granted, free of charge, to any person obtaining
-//      a copy of this software and associated documentation files (the
-//      "Software"), to deal in the Software without restriction, including
-//      without limitation the rights to use, copy, modify, merge, publish,
-//      distribute, sublicense, and/or sell copies of the Software, and to
-//      permit persons to whom the Software is furnished to do so, subject to
-//      the following conditions:
-//      
-//      The above copyright notice and this permission notice shall be
-//      included in all copies or substantial portions of the Software.
-//      
-//      THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-//      EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-//      MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-//      NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-//      LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-//      OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-//      WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-//
+// <copyright file="PropertyMapRegistry.cs" company="Nicholas Davis">
+// Copyright (c) Nicholas Davis. All rights reserved.
 // </copyright>
 // ----------------------------------------------------------------------------
 
@@ -31,7 +8,6 @@ namespace Cobos.Data.Mapping
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 #if NET35
     using Cobos.Utilities.Wrappers;
 #endif
@@ -44,17 +20,17 @@ namespace Cobos.Data.Mapping
         /// <summary>
         /// The singleton instance of the class.
         /// </summary>
-        private static Lazy<PropertyMapRegistry> instance = new Lazy<PropertyMapRegistry>(() => new PropertyMapRegistry());
+        private static readonly Lazy<PropertyMapRegistry> InstanceValue = new Lazy<PropertyMapRegistry>(() => new PropertyMapRegistry());
 
         /// <summary>
         /// The registry instance.
         /// </summary>
-        private Dictionary<Type, PropertyMap> registry = new Dictionary<Type, PropertyMap>();
+        private readonly Dictionary<Type, PropertyMap> registry = new Dictionary<Type, PropertyMap>();
 
         /// <summary>
         /// Synchronize access to the registry.
         /// </summary>
-        private object registryLock = new object();
+        private readonly object registryLock = new object();
 
         /// <summary>
         /// Prevents a default instance of the <see cref="PropertyMapRegistry"/> class from being created.
@@ -70,7 +46,7 @@ namespace Cobos.Data.Mapping
         {
             get
             {
-                return PropertyMapRegistry.instance.Value;
+                return PropertyMapRegistry.InstanceValue.Value;
             }
         }
 

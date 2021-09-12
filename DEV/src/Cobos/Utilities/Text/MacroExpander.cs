@@ -1,29 +1,6 @@
 ﻿// ----------------------------------------------------------------------------
-// <copyright file="MacroExpander.cs" company="Cobos SDK">
-//
-//      Copyright (c) 2009-2014 Nicholas Davis - nick@cobos.co.uk
-//
-//      Cobos Software Development Kit
-//
-//      Permission is hereby granted, free of charge, to any person obtaining
-//      a copy of this software and associated documentation files (the
-//      "Software"), to deal in the Software without restriction, including
-//      without limitation the rights to use, copy, modify, merge, publish,
-//      distribute, sublicense, and/or sell copies of the Software, and to
-//      permit persons to whom the Software is furnished to do so, subject to
-//      the following conditions:
-//      
-//      The above copyright notice and this permission notice shall be
-//      included in all copies or substantial portions of the Software.
-//      
-//      THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-//      EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-//      MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-//      NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-//      LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-//      OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-//      WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-//
+// <copyright file="MacroExpander.cs" company="Nicholas Davis">
+// Copyright (c) Nicholas Davis. All rights reserved.
 // </copyright>
 // ----------------------------------------------------------------------------
 
@@ -31,25 +8,24 @@ namespace Cobos.Utilities.Text
 {
     using System;
     using System.Collections.Generic;
-    using System.Text;
     using System.Text.RegularExpressions;
 
     /// <summary>
-    /// Expand inline macro definitions in string values
+    /// Expand inline macro definitions in string values.
     /// </summary>
     public class MacroExpander
     {
         /// <summary>
-        /// Optional format specified for a macro token.  Useful for 
+        /// Optional format specified for a macro token.  Useful for
         /// cases such as Visual Studio where a macro is normally in
         /// the form $(_TOKEN_).
         /// </summary>
         private readonly string format;
 
         /// <summary>
-        /// Internal lookup of macros
+        /// Internal lookup of macros.
         /// </summary>
-        private Dictionary<string, string> tokens = new Dictionary<string, string>(StringComparer.CurrentCultureIgnoreCase);
+        private readonly Dictionary<string, string> tokens = new Dictionary<string, string>(StringComparer.CurrentCultureIgnoreCase);
 
         /// <summary>
         /// Cached regular expression pattern based on the this.tokens keys.
@@ -70,7 +46,7 @@ namespace Cobos.Utilities.Text
         /// <remarks>
         /// The macro format must include the _TOKEN_ keyword
         /// to indicate where the actual token should be inserted.
-        /// E.g. $(_TOKEN_)
+        /// E.g. $(_TOKEN_).
         /// </remarks>
         public MacroExpander(string format)
         {
@@ -119,9 +95,7 @@ namespace Cobos.Utilities.Text
                 token = this.format.Replace("_TOKEN_", token);
             }
 
-            string found;
-
-            if (!this.tokens.TryGetValue(token, out found))
+            if (!this.tokens.TryGetValue(token, out _))
             {
                 this.tokens.Add(token, value);
             }
@@ -147,12 +121,10 @@ namespace Cobos.Utilities.Text
             }
 
             return this.GetRegExPattern().Replace(
-                                            raw, 
-                                            match => 
+                                            raw,
+                                            match =>
                                             {
-                                                string found;
-
-                                                if (this.tokens.TryGetValue(match.Value, out found))
+                                                if (this.tokens.TryGetValue(match.Value, out string found))
                                                 {
                                                     return found;
                                                 }
@@ -172,7 +144,7 @@ namespace Cobos.Utilities.Text
                 return this.regex;
             }
 
-            // copy the token keys to an array 
+            // copy the token keys to an array
             string[] regexTokens = new string[this.tokens.Keys.Count];
             this.tokens.Keys.CopyTo(regexTokens, 0);
 
@@ -182,7 +154,7 @@ namespace Cobos.Utilities.Text
             for (int i = 0; i < regexTokens.Length; ++i)
             {
                 regexTokens[i] = regexEscape.Replace(
-                                                regexTokens[i], 
+                                                regexTokens[i],
                                                 match =>
                                                 {
                                                     return @"\" + match.Value;

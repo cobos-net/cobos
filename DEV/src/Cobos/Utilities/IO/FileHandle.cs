@@ -1,36 +1,12 @@
 ﻿// ----------------------------------------------------------------------------
-// <copyright file="FileHandle.cs" company="Cobos SDK">
-//
-//      Copyright (c) 2009-2014 Nicholas Davis - nick@cobos.co.uk
-//
-//      Cobos Software Development Kit
-//
-//      Permission is hereby granted, free of charge, to any person obtaining
-//      a copy of this software and associated documentation files (the
-//      "Software"), to deal in the Software without restriction, including
-//      without limitation the rights to use, copy, modify, merge, publish,
-//      distribute, sublicense, and/or sell copies of the Software, and to
-//      permit persons to whom the Software is furnished to do so, subject to
-//      the following conditions:
-//      
-//      The above copyright notice and this permission notice shall be
-//      included in all copies or substantial portions of the Software.
-//      
-//      THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-//      EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-//      MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-//      NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-//      LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-//      OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-//      WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-//
+// <copyright file="FileHandle.cs" company="Nicholas Davis">
+// Copyright (c) Nicholas Davis. All rights reserved.
 // </copyright>
 // ----------------------------------------------------------------------------
 
 namespace Cobos.Utilities.IO
 {
     using System;
-    using System.IO;
     using System.Runtime.CompilerServices;
     using System.Runtime.InteropServices;
     using Cobos.Utilities.Win32;
@@ -39,26 +15,21 @@ namespace Cobos.Utilities.IO
     /// <summary>
     /// The file handle is used to uniquely identify a file on disk based on the
     /// underlying file information from the OS.  This allows us to compare file
-    /// paths and determine whether two paths refer to the same file.  This is 
+    /// paths and determine whether two paths refer to the same file.  This is
     /// cannot be done reliably using string paths.
     /// </summary>
     public class FileHandle : IComparable
     {
         /// <summary>
-        /// The path to the file on disk.
-        /// </summary>
-        public readonly NormalisedPath FilePath;
-
-        /// <summary>
         /// The serial number of the volume that contains a file.
         /// </summary>
         private readonly uint volumeSerialNumber;
-        
+
         /// <summary>
         /// The high-order part of a unique identifier that is associated with a file.
         /// </summary>
         private readonly uint fileIndexHigh;
-        
+
         /// <summary>
         /// The low-order part of a unique identifier that is associated with a file.
         /// </summary>
@@ -88,16 +59,14 @@ namespace Cobos.Utilities.IO
                                             IntPtr.Zero);
 
                 // If the handle is invalid,
-                // get the last Win32 error 
+                // get the last Win32 error
                 // and throw a Win32Exception.
                 if (handleValue.IsInvalid)
                 {
                     Marshal.ThrowExceptionForHR(Marshal.GetHRForLastWin32Error());
                 }
 
-                Win32File.BY_HANDLE_FILE_INFORMATION info;
-
-                if (Win32File.GetFileInformationByHandle(handleValue, out info))
+                if (Win32File.GetFileInformationByHandle(handleValue, out Win32File.BY_HANDLE_FILE_INFORMATION info))
                 {
                     this.volumeSerialNumber = info.dwVolumeSerialNumber;
                     this.fileIndexHigh = info.nFileIndexHigh;
@@ -118,6 +87,11 @@ namespace Cobos.Utilities.IO
         }
 
         /// <summary>
+        /// Gets the path to the file on disk.
+        /// </summary>
+        public NormalisedPath FilePath { get; }
+
+        /// <summary>
         /// Determines whether the specified object instances are considered equal.
         /// </summary>
         /// <param name="a">The first object to compare.</param>
@@ -132,7 +106,7 @@ namespace Cobos.Utilities.IO
             }
 
             // If one is null, but not both, return false.
-            if (((object)a == null) || ((object)b == null))
+            if ((a is null) || (b is null))
             {
                 return false;
             }

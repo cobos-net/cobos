@@ -1,29 +1,6 @@
 ﻿// ----------------------------------------------------------------------------
-// <copyright file="DataRowColumnComparer.cs" company="Cobos SDK">
-//
-//      Copyright (c) 2009-2014 Nicholas Davis - nick@cobos.co.uk
-//
-//      Cobos Software Development Kit
-//
-//      Permission is hereby granted, free of charge, to any person obtaining
-//      a copy of this software and associated documentation files (the
-//      "Software"), to deal in the Software without restriction, including
-//      without limitation the rights to use, copy, modify, merge, publish,
-//      distribute, sublicense, and/or sell copies of the Software, and to
-//      permit persons to whom the Software is furnished to do so, subject to
-//      the following conditions:
-//      
-//      The above copyright notice and this permission notice shall be
-//      included in all copies or substantial portions of the Software.
-//      
-//      THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-//      EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-//      MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-//      NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-//      LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-//      OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-//      WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-//
+// <copyright file="DataRowColumnComparer.cs" company="Nicholas Davis">
+// Copyright (c) Nicholas Davis. All rights reserved.
 // </copyright>
 // ----------------------------------------------------------------------------
 
@@ -32,7 +9,6 @@ namespace Cobos.Data.Utilities
     using System;
     using System.Collections.Generic;
     using System.Data;
-    using System.Text;
 
     /// <summary>
     /// Compares tow DataRow objects by column value.
@@ -103,12 +79,12 @@ namespace Cobos.Data.Utilities
             /// <summary>
             /// Sort descending.
             /// </summary>
-            Descending
+            Descending,
         }
 
         /// <summary>
         /// Compare the two rows for sort order based on the instance's sort columns.
-        /// This assumes that both rows either belong to the same table or that 
+        /// This assumes that both rows either belong to the same table or that
         /// they have the same column format.
         /// </summary>
         /// <param name="lhs">The first object to compare.</param>
@@ -119,7 +95,7 @@ namespace Cobos.Data.Utilities
         /// in the following table:
         /// </para>
         /// <para>
-        /// Value               | Meaning 
+        /// Value               | Meaning
         /// --------------------|------------------------
         /// Less than zero      | x is less than y.
         /// Zero                | x equals y.
@@ -156,14 +132,12 @@ namespace Cobos.Data.Utilities
                     // special case for strings, use the case sensitive matching if required.
                     result = string.Compare((string)lhs[ordinal], (string)rhs[ordinal], this.ignoreCase);
                 }
-                else 
+                else
                 {
                     // Any other primitive type (including DateTime).
-                    // Both objects *should* be of the same type based on the assumptions listed 
+                    // Both objects *should* be of the same type based on the assumptions listed
                     // in the method summary.
-                    IComparable comparable = lhs[ordinal] as IComparable;
-
-                    if (comparable != null)
+                    if (lhs[ordinal] is IComparable comparable)
                     {
                         result = comparable.CompareTo(rhs[ordinal]);
                     }

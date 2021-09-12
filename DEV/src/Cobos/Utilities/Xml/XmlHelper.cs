@@ -1,39 +1,14 @@
 ﻿// ----------------------------------------------------------------------------
-// <copyright file="XmlHelper.cs" company="Cobos SDK">
-//
-//      Copyright (c) 2009-2014 Nicholas Davis - nick@cobos.co.uk
-//
-//      Cobos Software Development Kit
-//
-//      Permission is hereby granted, free of charge, to any person obtaining
-//      a copy of this software and associated documentation files (the
-//      "Software"), to deal in the Software without restriction, including
-//      without limitation the rights to use, copy, modify, merge, publish,
-//      distribute, sublicense, and/or sell copies of the Software, and to
-//      permit persons to whom the Software is furnished to do so, subject to
-//      the following conditions:
-//      
-//      The above copyright notice and this permission notice shall be
-//      included in all copies or substantial portions of the Software.
-//      
-//      THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-//      EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-//      MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-//      NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-//      LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-//      OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-//      WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-//
+// <copyright file="XmlHelper.cs" company="Nicholas Davis">
+// Copyright (c) Nicholas Davis. All rights reserved.
 // </copyright>
 // ----------------------------------------------------------------------------
 
 namespace Cobos.Utilities.Xml
 {
     using System;
-    using System.Collections.Generic;
     using System.IO;
     using System.Text;
-    using System.Web;
     using System.Xml;
     using System.Xml.Serialization;
 
@@ -68,10 +43,12 @@ namespace Cobos.Utilities.Xml
 
             XmlSerializer serializer = new XmlSerializer(typeof(T), null, knownTypes, null, DefaultNamespace);
 
-            XmlWriterSettings settings = new XmlWriterSettings();
-            settings.Encoding = new UnicodeEncoding(false, false);
-            settings.Indent = false;
-            settings.OmitXmlDeclaration = true;
+            XmlWriterSettings settings = new XmlWriterSettings
+            {
+                Encoding = new UnicodeEncoding(false, false),
+                Indent = false,
+                OmitXmlDeclaration = true,
+            };
 
             using (StringWriter textWriter = new StringWriter())
             {
@@ -95,7 +72,7 @@ namespace Cobos.Utilities.Xml
         {
             if (string.IsNullOrEmpty(xml))
             {
-                return default(T);
+                return default;
             }
 
             if (knownTypes == null)
@@ -123,7 +100,7 @@ namespace Cobos.Utilities.Xml
         /// <param name="filename">The filename containing the entity.</param>
         public static void Deserialize<T>(out T entity, string filename)
         {
-            entity = default(T);
+            entity = default;
 
             XmlSerializer s = new XmlSerializer(typeof(T));
 

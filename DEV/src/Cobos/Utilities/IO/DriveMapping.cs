@@ -1,29 +1,6 @@
 ﻿// ----------------------------------------------------------------------------
-// <copyright file="DriveMapping.cs" company="Cobos SDK">
-//
-//      Copyright (c) 2009-2014 Nicholas Davis - nick@cobos.co.uk
-//
-//      Cobos Software Development Kit
-//
-//      Permission is hereby granted, free of charge, to any person obtaining
-//      a copy of this software and associated documentation files (the
-//      "Software"), to deal in the Software without restriction, including
-//      without limitation the rights to use, copy, modify, merge, publish,
-//      distribute, sublicense, and/or sell copies of the Software, and to
-//      permit persons to whom the Software is furnished to do so, subject to
-//      the following conditions:
-//      
-//      The above copyright notice and this permission notice shall be
-//      included in all copies or substantial portions of the Software.
-//      
-//      THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-//      EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-//      MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-//      NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-//      LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-//      OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-//      WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-//
+// <copyright file="DriveMapping.cs" company="Nicholas Davis">
+// Copyright (c) Nicholas Davis. All rights reserved.
 // </copyright>
 // ----------------------------------------------------------------------------
 
@@ -31,7 +8,6 @@ namespace Cobos.Utilities.IO
 {
     using System;
     using System.ComponentModel;
-    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Runtime.InteropServices;
     using System.Text;
@@ -39,49 +15,49 @@ namespace Cobos.Utilities.IO
     /// <summary>
     /// Utility methods for mapping network drives in Windows.
     /// </summary>
-    [SuppressMessage("Microsoft.StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation", Justification = "Using Win32 naming for consistency.")]
-    [SuppressMessage("Microsoft.StyleCop.CSharp.NamingRules", "SA1310:FieldNamesMustNotContainUnderscore", Justification = "Using Win32 naming for consistency.")]
     public static partial class DriveMapping
     {
         /// <summary>
         /// See the Win32 API documentation.
         /// </summary>
-        private const uint RESOURCETYPE_DISK = 1;
+        private const uint ResourceTypeDisk = 1;
 
         /// <summary>
         /// See the Win32 API documentation.
         /// </summary>
-        private const uint CONNECT_UPDATE_PROFILE = 0x1;
+        private const uint ConnectUpdateProfile = 0x1;
 
         /// <summary>
         /// See the Win32 API documentation.
         /// </summary>
-        private const uint CONNECT_INTERACTIVE = 0x8;
+#pragma warning disable IDE0051 // Remove unused private members
+        private const uint ConnectInteractive = 0x8;
 
         /// <summary>
         /// See the Win32 API documentation.
         /// </summary>
-        private const uint CONNECT_PROMPT = 0x10;
+        private const uint ConnectPrompt = 0x10;
 
         /// <summary>
         /// See the Win32 API documentation.
         /// </summary>
-        private const uint CONNECT_REDIRECT = 0x80;
+        private const uint ConnectRedirect = 0x80;
 
         /// <summary>
         /// See the Win32 API documentation.
         /// </summary>
-        private const uint CONNECT_COMMANDLINE = 0x800;
+        private const uint ConnectCommandLine = 0x800;
 
         /// <summary>
         /// See the Win32 API documentation.
         /// </summary>
-        private const uint CONNECT_CMD_SAVECRED = 0x1000;
+        private const uint ConnectCommandSaveCredentials = 0x1000;
+#pragma warning restore IDE0051 // Remove unused private members
 
         /// <summary>
         /// No error code taken from WINERR.h.
         /// </summary>
-        private const uint ERROR_SUCCESS = 0x0;
+        private const uint ErrorSuccess = 0x0;
 
         /// <summary>
         /// Map a network resource to a drive letter.
@@ -93,15 +69,17 @@ namespace Cobos.Utilities.IO
         {
             RemoveNetworkDrive(driveLetter);
 
-            NETRESOURCE networkResource = new NETRESOURCE();
-            networkResource.dwType = RESOURCETYPE_DISK;
-            networkResource.lpLocalName = driveLetter + ":";
-            networkResource.lpRemoteName = path;
-            networkResource.lpProvider = null;
+            NETRESOURCE networkResource = new NETRESOURCE
+            {
+                ResourceType = ResourceTypeDisk,
+                LocalName = driveLetter + ":",
+                RemoteName = path,
+                Provider = null,
+            };
 
             uint result = WNetAddConnection2(ref networkResource, null, null, 0);
 
-            return result == ERROR_SUCCESS;
+            return result == ErrorSuccess;
         }
 
         /// <summary>
@@ -116,9 +94,9 @@ namespace Cobos.Utilities.IO
                 return true;
             }
 
-            uint result = WNetCancelConnection2(driveLetter + ":", CONNECT_UPDATE_PROFILE, false);
+            uint result = WNetCancelConnection2(driveLetter + ":", ConnectUpdateProfile, false);
 
-            return result == ERROR_SUCCESS;
+            return result == ErrorSuccess;
         }
 
         [DllImport("mpr.dll")]
@@ -129,23 +107,52 @@ namespace Cobos.Utilities.IO
 
         [DllImport("mpr.dll")]
         private static extern uint WNetCancelConnection2(string lpName, uint dwFlags, bool bForce);
- 
+
         /// <summary>
         /// The NETRESOURCE structure contains information about a network resource.
         /// </summary>
         [StructLayout(LayoutKind.Sequential)]
-        [SuppressMessage("Microsoft.StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Using Win32 naming for consistency.")]
-        [SuppressMessage("Microsoft.StyleCop.CSharp.NamingRules", "SA1307:AccessibleFieldsMustBeginWithUpperCaseLetter", Justification = "Using Win32 naming for consistency.")]
         public struct NETRESOURCE
         {
-            public uint dwScope;
-            public uint dwType;
-            public uint dwDisplayType;
-            public uint dwUsage;
-            public string lpLocalName;
-            public string lpRemoteName;
-            public string lpComment;
-            public string lpProvider;
+            /// <summary>
+            /// Specifies the scope of the enumeration.
+            /// </summary>
+            public uint Scope;
+
+            /// <summary>
+            /// Specifies a bitmask that gives the resource type.
+            /// </summary>
+            public uint ResourceType;
+
+            /// <summary>
+            /// Specifies how the network object should be displayed in a network browsing user interface.
+            /// </summary>
+            public uint DisplayType;
+
+            /// <summary>
+            /// Specifies a bitmask that gives the resource usage.
+            /// </summary>
+            public uint Usage;
+
+            /// <summary>
+            /// The local name of a network resource if the dwScope member is RESOURCE_CONNECTED or RESOURCE_REMEMBERED. This member is NULL if the connection does not have a local name.
+            /// </summary>
+            public string LocalName;
+
+            /// <summary>
+            /// The remote network name if the entry is a network resource.
+            /// </summary>
+            public string RemoteName;
+
+            /// <summary>
+            /// Provider-supplied comment.
+            /// </summary>
+            public string Comment;
+
+            /// <summary>
+            /// The name of the provider owning this resource. This member can be NULL if the provider name is unknown.
+            /// </summary>
+            public string Provider;
         }
     }
 
@@ -154,36 +161,36 @@ namespace Cobos.Utilities.IO
     /// </summary>
     /// <remarks>
     /// DOS folder mapping functions taken from:
-    /// http://bytes.com/topic/c-sharp/answers/517053-virtual-drive
+    /// http://bytes.com/topic/c-sharp/answers/517053-virtual-drive.
     /// </remarks>
-    [SuppressMessage("Microsoft.StyleCop.CSharp.NamingRules", "SA1305:FieldNamesMustNotUseHungarianNotation", Justification = "Using Win32 naming for consistency.")]
-    [SuppressMessage("Microsoft.StyleCop.CSharp.NamingRules", "SA1310:FieldNamesMustNotContainUnderscore", Justification = "Using Win32 naming for consistency.")]
     public static partial class DriveMapping
     {
         /// <summary>
         /// See the Win32 API documentation.
         /// </summary>
-        private const uint DDD_RAW_TARGET_PATH = 0x00000001;
+#pragma warning disable IDE0051 // Remove unused private members
+        private const uint RawTargetPath = 0x00000001;
 
         /// <summary>
         /// See the Win32 API documentation.
         /// </summary>
-        private const uint DDD_REMOVE_DEFINITION = 0x00000002;
+        private const uint RemoveDefinition = 0x00000002;
 
         /// <summary>
         /// See the Win32 API documentation.
         /// </summary>
-        private const uint DDD_EXACT_MATCH_ON_REMOVE = 0x00000004;
+        private const uint ExactMatchOnRemove = 0x00000004;
 
         /// <summary>
         /// See the Win32 API documentation.
         /// </summary>
-        private const uint DDD_NO_BROADCAST_SYSTEM = 0x00000008;
+        private const uint NoBroadcastSystem = 0x00000008;
+#pragma warning restore IDE0051 // Remove unused private members
 
         /// <summary>
         /// See the Win32 API documentation.
         /// </summary>
-        private const string MAPPED_FOLDER_INDICATOR = @"\??\";
+        private const string MappedFolderIndicator = @"\??\";
 
         /// <summary>
         /// Map the folder to a drive letter.
@@ -195,9 +202,9 @@ namespace Cobos.Utilities.IO
         {
             // Is this drive already mapped? If so, we don't remap it!
             StringBuilder volumeMap = new StringBuilder(1024);
-            QueryDosDevice(driveLetter + ":", volumeMap, (uint)1024);
+            QueryDosDevice(driveLetter + ":", volumeMap, 1024U);
 
-            if (volumeMap.ToString().StartsWith(MAPPED_FOLDER_INDICATOR))
+            if (volumeMap.ToString().StartsWith(MappedFolderIndicator))
             {
                 if (!RemoveLocalFolder(driveLetter, null))
                 {
@@ -219,16 +226,16 @@ namespace Cobos.Utilities.IO
                 return false;
             }
         }
-        
+
         /// <summary>
         /// Un-map a drive letter. Always un-map the drive, without checking the folder name.
         /// </summary>
-        /// <param name="driveLetter">Drive letter to be released, the the format "C:"</param>
+        /// <param name="driveLetter">Drive letter to be released, the the format "C:".</param>
         /// <param name="folderName">Folder name that the drive is mapped to.</param>
         /// <returns>true if the method succeeded; otherwise false.</returns>
         public static bool RemoveLocalFolder(char driveLetter, string folderName)
         {
-            if (DefineDosDevice(DDD_REMOVE_DEFINITION, driveLetter + ":", folderName))
+            if (DefineDosDevice(RemoveDefinition, driveLetter + ":", folderName))
             {
                 return true;
             }
@@ -241,7 +248,7 @@ namespace Cobos.Utilities.IO
                 return false;
             }
         }
-        
+
         /// <summary>
         /// Returns the folder that a drive is mapped to. If not mapped, return an empty string.
         /// </summary>
@@ -253,11 +260,11 @@ namespace Cobos.Utilities.IO
             string mappedVolumeName = string.Empty;
 
             // If it's not a mapped drive, just remove it from the list
-            uint mapped = QueryDosDevice(driveLetter + ":", volumeMap, (uint)512);
+            uint mapped = QueryDosDevice(driveLetter + ":", volumeMap, 512U);
 
             if (mapped != 0)
             {
-                if (volumeMap.ToString().StartsWith(MAPPED_FOLDER_INDICATOR))
+                if (volumeMap.ToString().StartsWith(MappedFolderIndicator))
                 {
                     // It's a mapped drive, so return the mapped folder name
                     mappedVolumeName = volumeMap.ToString().Substring(4);

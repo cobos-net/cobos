@@ -1,37 +1,12 @@
 ﻿// ----------------------------------------------------------------------------
-// <copyright file="OracleDatabaseAdapter.cs" company="Cobos SDK">
-//
-//      Copyright (c) 2009-2014 Nicholas Davis - nick@cobos.co.uk
-//
-//      Cobos Software Development Kit
-//
-//      Permission is hereby granted, free of charge, to any person obtaining
-//      a copy of this software and associated documentation files (the
-//      "Software"), to deal in the Software without restriction, including
-//      without limitation the rights to use, copy, modify, merge, publish,
-//      distribute, sublicense, and/or sell copies of the Software, and to
-//      permit persons to whom the Software is furnished to do so, subject to
-//      the following conditions:
-//      
-//      The above copyright notice and this permission notice shall be
-//      included in all copies or substantial portions of the Software.
-//      
-//      THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-//      EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-//      MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-//      NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-//      LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-//      OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-//      WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-//
+// <copyright file="OracleDatabaseAdapter.cs" company="Nicholas Davis">
+// Copyright (c) Nicholas Davis. All rights reserved.
 // </copyright>
 // ----------------------------------------------------------------------------
 
 namespace Cobos.Data.Adapters
 {
     using System;
-    using System.Data;
-    using Cobos.Data.Adapters;
     using Oracle.ManagedDataAccess.Client;
 
     /// <summary>
@@ -54,7 +29,7 @@ namespace Cobos.Data.Adapters
         public override Type BigIntegerType => typeof(decimal);
 
         /// <summary>
-        /// Test the connection to the database to ensure that the adapter 
+        /// Test the connection to the database to ensure that the adapter
         /// is correctly configured.
         /// </summary>
         /// <returns>True if the test was successful; Otherwise false.</returns>
@@ -62,7 +37,7 @@ namespace Cobos.Data.Adapters
         {
             try
             {
-                object @object = ExecuteScalar("select 1 from dual");
+                object @object = this.ExecuteScalar("select 1 from dual");
 
                 if (@object != null)
                 {

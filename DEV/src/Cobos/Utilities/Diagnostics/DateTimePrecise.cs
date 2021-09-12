@@ -1,29 +1,6 @@
 ﻿// ----------------------------------------------------------------------------
-// <copyright file="DateTimePrecise.cs" company="Cobos SDK">
-//
-//      Copyright (c) 2009-2014 Nicholas Davis - nick@cobos.co.uk
-//
-//      Cobos Software Development Kit
-//
-//      Permission is hereby granted, free of charge, to any person obtaining
-//      a copy of this software and associated documentation files (the
-//      "Software"), to deal in the Software without restriction, including
-//      without limitation the rights to use, copy, modify, merge, publish,
-//      distribute, sublicense, and/or sell copies of the Software, and to
-//      permit persons to whom the Software is furnished to do so, subject to
-//      the following conditions:
-//      
-//      The above copyright notice and this permission notice shall be
-//      included in all copies or substantial portions of the Software.
-//      
-//      THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-//      EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-//      MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-//      NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-//      LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-//      OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-//      WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-//
+// <copyright file="DateTimePrecise.cs" company="Nicholas Davis">
+// Copyright (c) Nicholas Davis. All rights reserved.
 // </copyright>
 // ----------------------------------------------------------------------------
 
@@ -34,7 +11,7 @@ namespace Cobos.Utilities.Diagnostics
 
     /// <summary>
     /// DateTimePrecise provides a way to get a DateTime that exhibits the
-    /// relative precision of System.Diagnostics.Stopwatch, and the absolute 
+    /// relative precision of System.Diagnostics.Stopwatch, and the absolute
     /// accuracy of DateTime.Now.
     /// <para>
     /// Courtesy of James Brock <c>(http://www.codeproject.com/KB/cs/DateTimePrecise.aspx)</c>.
@@ -43,11 +20,6 @@ namespace Cobos.Utilities.Diagnostics
     public class DateTimePrecise
     {
         /// <summary>
-        /// The internal System.Diagnostics.Stopwatch used by this instance.
-        /// </summary>
-        public readonly Stopwatch Timer;
-
-        /// <summary>
         /// The frequency of the DateTime tick (100 nanoseconds).
         /// </summary>
         private const long ClockTickFrequency = 10000000;
@@ -55,13 +27,15 @@ namespace Cobos.Utilities.Diagnostics
         /// <summary>
         /// The elapsed time period in stop-watch ticks to re-synchronize.
         /// </summary>
-        private long synchronizePeriodStopwatchTicks;
+        private readonly long synchronizePeriodStopwatchTicks;
 
         /// <summary>
         /// The elapsed time period in clock ticks to re-synchronize.
         /// </summary>
-        private long synchronizePeriodClockTicks;
-        
+#pragma warning disable IDE0052 // Remove unread private members
+        private readonly long synchronizePeriodClockTicks;
+#pragma warning restore IDE0052 // Remove unread private members
+
         /// <summary>
         /// The internal counter for synchronizing.
         /// </summary>
@@ -89,6 +63,11 @@ namespace Cobos.Utilities.Diagnostics
         }
 
         /// <summary>
+        /// Gets the internal System.Diagnostics.Stopwatch used by this instance.
+        /// </summary>
+        public Stopwatch Timer { get; }
+
+        /// <summary>
         /// Gets the current date and time, just like <c>DateTime.UtcNow</c>.
         /// </summary>
         public DateTime UtcNow
@@ -108,8 +87,8 @@ namespace Cobos.Utilities.Diagnostics
                     DateTime newBaseline = this.counter.Baseline.AddTicks(((elapsedTicks - this.counter.TicksElapsed) * ClockTickFrequency) / this.counter.Frequency);
 
                     this.counter = new Counter(
-                                            now, 
-                                            newBaseline, 
+                                            now,
+                                            newBaseline,
                                             elapsedTicks,
                                             ((elapsedTicks - this.counter.TicksElapsed) * ClockTickFrequency * 2) / (now.Ticks - this.counter.Last.Ticks + now.Ticks + now.Ticks - newBaseline.Ticks - this.counter.Last.Ticks));
 
@@ -130,7 +109,7 @@ namespace Cobos.Utilities.Diagnostics
         }
 
         /// <summary>
-        /// Gets an ISO compliant date/time stamp
+        /// Gets an ISO compliant date/time stamp.
         /// </summary>
         public string Iso8601
         {
@@ -146,26 +125,6 @@ namespace Cobos.Utilities.Diagnostics
         internal sealed class Counter
         {
             /// <summary>
-            /// The last time observed.
-            /// </summary>
-            internal readonly DateTime Last;
-            
-            /// <summary>
-            /// The baseline time.
-            /// </summary>
-            internal readonly DateTime Baseline;
-            
-            /// <summary>
-            /// The number of ticks elapsed.
-            /// </summary>
-            internal readonly long TicksElapsed;
-            
-            /// <summary>
-            /// The StopWatch frequency.
-            /// </summary>
-            internal readonly long Frequency;
-
-            /// <summary>
             /// Initializes a new instance of the <see cref="Counter"/> class.
             /// </summary>
             /// <param name="lastTime">The last time observed.</param>
@@ -179,6 +138,26 @@ namespace Cobos.Utilities.Diagnostics
                 this.TicksElapsed = ticksObserved;
                 this.Frequency = frequency;
             }
+
+            /// <summary>
+            /// Gets the last time observed.
+            /// </summary>
+            internal DateTime Last { get; }
+
+            /// <summary>
+            /// Gets the baseline time.
+            /// </summary>
+            internal DateTime Baseline { get; }
+
+            /// <summary>
+            /// Gets the number of ticks elapsed.
+            /// </summary>
+            internal long TicksElapsed { get; }
+
+            /// <summary>
+            /// Gets the StopWatch frequency.
+            /// </summary>
+            internal long Frequency { get; }
         }
     }
 }

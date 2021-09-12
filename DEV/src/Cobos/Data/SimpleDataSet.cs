@@ -1,39 +1,13 @@
 ﻿// ----------------------------------------------------------------------------
-// <copyright file="SimpleDataSet.cs" company="Cobos SDK">
-//
-//      Copyright (c) 2009-2014 Nicholas Davis - nick@cobos.co.uk
-//
-//      Cobos Software Development Kit
-//
-//      Permission is hereby granted, free of charge, to any person obtaining
-//      a copy of this software and associated documentation files (the
-//      "Software"), to deal in the Software without restriction, including
-//      without limitation the rights to use, copy, modify, merge, publish,
-//      distribute, sublicense, and/or sell copies of the Software, and to
-//      permit persons to whom the Software is furnished to do so, subject to
-//      the following conditions:
-//      
-//      The above copyright notice and this permission notice shall be
-//      included in all copies or substantial portions of the Software.
-//      
-//      THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-//      EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-//      MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-//      NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-//      LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-//      OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-//      WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-//
+// <copyright file="SimpleDataSet.cs" company="Nicholas Davis">
+// Copyright (c) Nicholas Davis. All rights reserved.
 // </copyright>
 // ----------------------------------------------------------------------------
 
 namespace Cobos.Data
 {
-    using System;
     using System.Data;
-    using System.Diagnostics;
     using System.IO;
-    using System.Text;
     using System.Xml;
     using System.Xml.Xsl;
     using Cobos.Utilities.Xml;
@@ -68,8 +42,8 @@ namespace Cobos.Data
             // create any relationships that may be required
             foreach (Relationship relation in relationships)
             {
-                DataTable parentTable = Tables[relation.ParentTable];
-                DataTable childTable = Tables[relation.ChildTable];
+                DataTable parentTable = this.Tables[relation.ParentTable];
+                DataTable childTable = this.Tables[relation.ChildTable];
 
                 if (parentTable == null || childTable == null)
                 {
@@ -84,10 +58,12 @@ namespace Cobos.Data
                     continue;
                 }
 
-                DataRelation dataRelation = new DataRelation(relation.Name, parentColumn, childColumn, false);
-                dataRelation.Nested = true;
+                DataRelation dataRelation = new DataRelation(relation.Name, parentColumn, childColumn, false)
+                {
+                    Nested = true,
+                };
 
-                Relations.Add(dataRelation);
+                this.Relations.Add(dataRelation);
             }
         }
 
@@ -96,7 +72,7 @@ namespace Cobos.Data
         /// </summary>
         public void ClearRelationships()
         {
-            Relations.Clear();
+            this.Relations.Clear();
         }
 
         /// <summary>
@@ -150,7 +126,7 @@ namespace Cobos.Data
         /// <returns>The serialized object.</returns>
         public T ToObject<T>(XslCompiledTransform xslt, XsltArgumentList xsltArgs)
         {
-            T result = default(T);
+            T result = default;
 
             XmlDocument doc = this.ToXml();
 
@@ -183,31 +159,6 @@ namespace Cobos.Data
         public class Relationship
         {
             /// <summary>
-            /// The name of the relationship.
-            /// </summary>
-            public readonly string Name;
-            
-            /// <summary>
-            /// The name of the parent table.
-            /// </summary>
-            public readonly string ParentTable;
-            
-            /// <summary>
-            /// The name of the column in the parent table.
-            /// </summary>
-            public readonly string ParentColumn;
-            
-            /// <summary>
-            /// The name of the child table.
-            /// </summary>
-            public readonly string ChildTable;
-            
-            /// <summary>
-            /// The name of the column in the child table.
-            /// </summary>
-            public readonly string ChildColumn;
-
-            /// <summary>
             /// Initializes a new instance of the <see cref="Relationship"/> class.
             /// </summary>
             /// <param name="name">The name of the relationship.</param>
@@ -223,6 +174,31 @@ namespace Cobos.Data
                 this.ChildTable = childTable;
                 this.ChildColumn = childColumn;
             }
+
+            /// <summary>
+            /// Gets the name of the relationship.
+            /// </summary>
+            public string Name { get; }
+
+            /// <summary>
+            /// Gets the name of the parent table.
+            /// </summary>
+            public string ParentTable { get; }
+
+            /// <summary>
+            /// Gets the name of the column in the parent table.
+            /// </summary>
+            public string ParentColumn { get; }
+
+            /// <summary>
+            /// Gets the name of the child table.
+            /// </summary>
+            public string ChildTable { get; }
+
+            /// <summary>
+            /// Gets the name of the column in the child table.
+            /// </summary>
+            public string ChildColumn { get; }
         }
     }
 }

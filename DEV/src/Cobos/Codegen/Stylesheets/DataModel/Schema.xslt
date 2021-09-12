@@ -8,7 +8,7 @@
 >
 	<xsl:output method="xml" indent="yes"/>
 	<xsl:strip-space elements="xsl:attribute"/>
-	<!-- 
+  <!-- 
 	=============================================================================
 	Filename: Schema.xslt
 	Description: XSLT for creation of Xsd definitions from data model
@@ -22,6 +22,7 @@
 	============================================================================
 	-->
 	<xsl:include href="../Utilities/Utilities.inc"/>
+  <xsl:include href="../Database/DatabaseVariables.def"/>
 	<!--
 	=============================================================================
 	Default namespace for the generated schema.

@@ -1,29 +1,6 @@
 ﻿// ----------------------------------------------------------------------------
-// <copyright file="NormalisedPath.cs" company="Cobos SDK">
-//
-//      Copyright (c) 2009-2014 Nicholas Davis - nick@cobos.co.uk
-//
-//      Cobos Software Development Kit
-//
-//      Permission is hereby granted, free of charge, to any person obtaining
-//      a copy of this software and associated documentation files (the
-//      "Software"), to deal in the Software without restriction, including
-//      without limitation the rights to use, copy, modify, merge, publish,
-//      distribute, sublicense, and/or sell copies of the Software, and to
-//      permit persons to whom the Software is furnished to do so, subject to
-//      the following conditions:
-//      
-//      The above copyright notice and this permission notice shall be
-//      included in all copies or substantial portions of the Software.
-//      
-//      THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-//      EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-//      MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-//      NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-//      LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-//      OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-//      WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-//
+// <copyright file="NormalisedPath.cs" company="Nicholas Davis">
+// Copyright (c) Nicholas Davis. All rights reserved.
 // </copyright>
 // ----------------------------------------------------------------------------
 
@@ -47,13 +24,13 @@ namespace Cobos.Utilities.IO
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="NormalisedPath"/> class 
+        /// Initializes a new instance of the <see cref="NormalisedPath"/> class
         /// by creating an absolute normalized path from a relative path.
         /// </summary>
-        /// <param name="relativePath">The relative file path</param>
+        /// <param name="relativePath">The relative file path.</param>
         /// <param name="relativeTo">This must be a folder.  The class cannot easily differentiate
         /// between a folder path and a file with no extension.  We cannot always test whether
-        /// it's a file or folder because there is no guarantee that the file or folder will exist</param>
+        /// it's a file or folder because there is no guarantee that the file or folder will exist.</param>
         public NormalisedPath(string relativePath, string relativeTo)
         {
             this.Value = NormalisePath(relativeTo + @"\" + relativePath);
@@ -63,7 +40,7 @@ namespace Cobos.Utilities.IO
         /// Prevents a default instance of the <see cref="NormalisedPath"/> class from being created.
         /// </summary>
         /// <remarks>
-        /// To provide a more efficient method of copying some or all of a normalized path, 
+        /// To provide a more efficient method of copying some or all of a normalized path,
         /// bypassing the normal parsing required of an arbitrary path.
         /// </remarks>
         private NormalisedPath()
@@ -88,6 +65,38 @@ namespace Cobos.Utilities.IO
             {
                 return string.IsNullOrEmpty(this.Value);
             }
+        }
+
+        /// <summary>
+        /// Determines whether the specified object instances are considered equal.
+        /// </summary>
+        /// <param name="a">The first object to compare.</param>
+        /// <param name="b">The second object to compare.</param>
+        /// <returns>true if the objects are considered equal; otherwise, false.</returns>
+        public static bool operator ==(NormalisedPath a, NormalisedPath b)
+        {
+            if (object.ReferenceEquals(a, b))
+            {
+                return true;
+            }
+
+            if ((a is null) || (b is null))
+            {
+                return false;
+            }
+
+            return a.Value == b.Value;
+        }
+
+        /// <summary>
+        /// Determines whether the specified object instances are not considered equal.
+        /// </summary>
+        /// <param name="a">The first object to compare.</param>
+        /// <param name="b">The second object to compare.</param>
+        /// <returns>true if the objects are considered not equal; otherwise, false.</returns>
+        public static bool operator !=(NormalisedPath a, NormalisedPath b)
+        {
+            return !(a == b);
         }
 
         /// <summary>
@@ -152,45 +161,15 @@ namespace Cobos.Utilities.IO
         }
 
         /// <summary>
-        /// Determines whether the specified object instances are considered equal.
-        /// </summary>
-        /// <param name="a">The first object to compare.</param>
-        /// <param name="b">The second object to compare.</param>
-        /// <returns>true if the objects are considered equal; otherwise, false.</returns>
-        public static bool operator ==(NormalisedPath a, NormalisedPath b)
-        {
-            if (object.ReferenceEquals(a, b))
-            {
-                return true;
-            }
-
-            if (((object)a == null) || ((object)b == null))
-            {
-                return false;
-            }
-
-            return a.Value == b.Value;
-        }
-
-        /// <summary>
-        /// Determines whether the specified object instances are not considered equal.
-        /// </summary>
-        /// <param name="a">The first object to compare.</param>
-        /// <param name="b">The second object to compare.</param>
-        /// <returns>true if the objects are considered not equal; otherwise, false.</returns>
-        public static bool operator !=(NormalisedPath a, NormalisedPath b)
-        {
-            return !(a == b);
-        }
-
-        /// <summary>
         /// Gets a normalized directory representation of the path.
         /// </summary>
         /// <returns>A normalized representation of the directory.</returns>
         public NormalisedPath GetDirectoryName()
         {
-            NormalisedPath path = new NormalisedPath();
-            path.Value = Path.GetDirectoryName(this.Value);
+            NormalisedPath path = new NormalisedPath
+            {
+                Value = Path.GetDirectoryName(this.Value),
+            };
             return path;
         }
 
@@ -263,9 +242,7 @@ namespace Cobos.Utilities.IO
                 return false;
             }
 
-            NormalisedPath p = obj as NormalisedPath;
-
-            if ((object)p == null)
+            if (!(obj is NormalisedPath p))
             {
                 return false;
             }
@@ -276,7 +253,7 @@ namespace Cobos.Utilities.IO
         /// <summary>
         /// Serves as a hash function for a particular type.
         /// </summary>
-        /// <returns>A hash code for the current <see cref="NormalisedPath"/></returns>
+        /// <returns>A hash code for the current <see cref="NormalisedPath"/>.</returns>
         public override int GetHashCode()
         {
             return this.Value.GetHashCode();
