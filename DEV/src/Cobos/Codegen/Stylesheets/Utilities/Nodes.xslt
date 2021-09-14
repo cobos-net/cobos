@@ -77,4 +77,9 @@
   <xsl:template match="text()" mode="serialize">
     <xsl:value-of select="."/>
   </xsl:template>
+  <!-- 
+  =============================================================================
+  -->
+  <xsl:template match="comment()" mode="serialize">
+  </xsl:template>
 </xsl:stylesheet>

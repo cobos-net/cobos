@@ -110,6 +110,19 @@
   <xsl:template match="cobos:Property" mode="getEntityByMethodParamValue">
     <xsl:value-of select="@name"/>
   </xsl:template>
+  <xsl:template match="cobos:Property[@stringFormat]" mode="getEntityByMethodParamValue">
+    <xsl:variable name="codeTemplate">
+      <xsl:value-of select="normalize-space(./cobos:StringFormat/cobos:ConvertTo)" disable-output-escaping="yes"/>
+    </xsl:variable>
+    <xsl:variable name="code">
+      <xsl:call-template name="string-replace-all">
+        <xsl:with-param name="text" select="$codeTemplate" />
+        <xsl:with-param name="replace" select="string('$propertyName')" />
+        <xsl:with-param name="by" select="@name" />
+      </xsl:call-template>
+    </xsl:variable>
+    <xsl:value-of select="$code"/>
+  </xsl:template>
   <!--
 	============================================================================
 	GetEntities: Gets all entities stored in the data table.

@@ -32,6 +32,7 @@ namespace Cobos.Codegen.Tests.Data
         /// ---------
         /// 1. Fetch Customer records from the database.
         /// </summary>
+        [TestMethod]
         public void Can_get_customers()
         {
             foreach (var database in TestManager.DataSource)
@@ -50,6 +51,7 @@ namespace Cobos.Codegen.Tests.Data
         /// ---------
         /// 1. Fetch EmployeeTerritory records from the database.
         /// </summary>
+        [TestMethod]
         public void Can_get_territories()
         {
             foreach (var database in TestManager.DataSource)
@@ -68,6 +70,7 @@ namespace Cobos.Codegen.Tests.Data
         /// ---------
         /// 1. Fetch Employee records from the database.
         /// </summary>
+        [TestMethod]
         public void Can_get_employees()
         {
             foreach (var database in TestManager.DataSource)
@@ -89,6 +92,7 @@ namespace Cobos.Codegen.Tests.Data
         /// 1. Fetch Active Products from the database.  These entities have a default filter (Discontinued == false).
         /// 2. Apply an additional filter to test against the default filter.
         /// </summary>
+        [TestMethod]
         public void Can_get_filtered_entities()
         {
             foreach (var database in TestManager.DataSource)
@@ -126,6 +130,7 @@ namespace Cobos.Codegen.Tests.Data
         /// 1. Fetch Sorted Order Details from the database.  These entities have a default sort (UnitPrice, ASC).
         /// 2. Apply an additional sort to the default sort.
         /// </summary>
+        [TestMethod]
         public void Can_get_sorted_entities()
         {
             foreach (var database in TestManager.DataSource)
@@ -164,6 +169,7 @@ namespace Cobos.Codegen.Tests.Data
         /// ---------
         /// 1. Perform simple CRUD operations.
         /// </summary>
+        [TestMethod]
         public void Can_perform_CRUD_operations()
         {
             foreach (var database in TestManager.DataSource)
@@ -195,7 +201,7 @@ namespace Cobos.Codegen.Tests.Data
 
                 Assert.IsNotNull(customer);
                 Assert.AreEqual("Cobos SDK's", customer.CompanyName);
-                Assert.AreEqual("Davis", customer.Contact.Name);
+                Assert.AreEqual("Davis".ToUpper(), customer.Contact.Name); // Testing UpperCase StringFormat. See DataModel.xml.
                 Assert.AreEqual("Mr", customer.Contact.Title);
                 Assert.AreEqual("Address", customer.Address.Address);
                 Assert.AreEqual("City", customer.Address.City);
@@ -224,7 +230,7 @@ namespace Cobos.Codegen.Tests.Data
 
                 Assert.IsNotNull(customer);
                 Assert.AreEqual("Updated Company", customer.CompanyName);
-                Assert.AreEqual("Updated Name", customer.Contact.Name);
+                Assert.AreEqual("Updated Name".ToUpper(), customer.Contact.Name); // Testing UpperCase StringFormat. See DataModel.xml.
                 Assert.AreEqual("Mr", customer.Contact.Title);
                 Assert.AreEqual("Updated Address", customer.Address.Address);
                 Assert.AreEqual("City", customer.Address.City);
@@ -256,6 +262,7 @@ namespace Cobos.Codegen.Tests.Data
         /// ---------
         /// 1. Perform multiple CRUD operations at the same time.
         /// </summary>
+        [TestMethod]
         public void Can_perform_multiple_CRUD_operations()
         {
             foreach (var database in TestManager.DataSource)
@@ -305,7 +312,7 @@ namespace Cobos.Codegen.Tests.Data
                 customer0 = customerData.GetEntityByCustomerID(ids[0]);
                 Assert.IsNotNull(customer0);
                 Assert.AreEqual("Updated Company", customer0.CompanyName);
-                Assert.AreEqual("Updated Name", customer0.Contact.Name);
+                Assert.AreEqual("Updated Name".ToUpper(), customer0.Contact.Name); // Testing UpperCase StringFormat. See DataModel.xml.
                 Assert.AreEqual("Mr", customer0.Contact.Title);
                 Assert.AreEqual("Updated Address", customer0.Address.Address);
             }
@@ -316,6 +323,7 @@ namespace Cobos.Codegen.Tests.Data
         /// ---------
         /// 1. Perform multiple updates for date time fields.
         /// </summary>
+        [TestMethod]
         public void Can_perform_multiple_updates()
         {
             foreach (var database in TestManager.DataSource)
@@ -381,7 +389,7 @@ namespace Cobos.Codegen.Tests.Data
                     DynamicMethod handler = new DynamicMethod(
                                                             string.Empty,
                                                             null,
-                                                            this.GetDelegateParameterTypes(typeofDelegate, this.GetType()),
+                                                            GetDelegateParameterTypes(typeofDelegate, this.GetType()),
                                                             this.GetType());
 
                     // Generate a method body. This method loads a string, calls
@@ -480,25 +488,12 @@ namespace Cobos.Codegen.Tests.Data
         }
 
         /// <summary>
-        /// Called when a row is updated.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The event arguments.</param>
-        private void OnRowUpdated(object sender, RowUpdatedEventArgs e)
-        {
-            if (e.StatementType == StatementType.Insert)
-            {
-                e.Status = UpdateStatus.SkipCurrentRow;
-            }
-        }
-
-        /// <summary>
         /// Get the parameter types of a delegate.
         /// </summary>
         /// <param name="d">The type of the delegate.</param>
         /// <param name="target">The target for the delegate.</param>
         /// <returns>The parameter types.</returns>
-        private Type[] GetDelegateParameterTypes(Type d, Type target)
+        private static Type[] GetDelegateParameterTypes(Type d, Type target)
         {
             if (d.BaseType != typeof(MulticastDelegate))
             {
@@ -529,7 +524,7 @@ namespace Cobos.Codegen.Tests.Data
         /// </summary>
         /// <param name="d">The delegate type.</param>
         /// <returns>The type of the return.</returns>
-        private Type GetDelegateReturnType(Type d)
+        private static Type GetDelegateReturnType(Type d)
         {
             if (d.BaseType != typeof(MulticastDelegate))
             {
@@ -544,6 +539,19 @@ namespace Cobos.Codegen.Tests.Data
             }
 
             return invoke.ReturnType;
+        }
+
+        /// <summary>
+        /// Called when a row is updated.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnRowUpdated(object sender, RowUpdatedEventArgs e)
+        {
+            if (e.StatementType == StatementType.Insert)
+            {
+                e.Status = UpdateStatus.SkipCurrentRow;
+            }
         }
 
         /// <summary>

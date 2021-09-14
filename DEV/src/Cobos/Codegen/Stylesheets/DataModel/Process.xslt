@@ -7,6 +7,7 @@
 						xmlns:cobos="http://schemas.cobos.co.uk/datamodel/1.0.0"
 						xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 >
+  <xsl:output method="xml" cdata-section-elements="cobos:SchemaType cobos:CodeType cobos:PropertyGet cobos:PropertySet cobos:ConvertTo"/>
   <xsl:include href="../Database/DatabaseVariables.def"/>
   <xsl:include href="../Utilities/Utilities.inc"/>
   <!-- 
@@ -154,6 +155,7 @@
       </xsl:if>
       <xsl:apply-templates mode="expand" select="$databaseTablesNodeSet/xsd:element[translate(@name, $lowercase, $uppercase) = translate($dbTable, $lowercase, $uppercase)]
                            //xsd:element[translate(@name, $lowercase, $uppercase) = translate(current()/@dbColumn, $lowercase, $uppercase)]"/>
+      <xsl:apply-templates mode="stringFormat" select="."/>
     </xsl:element>
   </xsl:template>
 
@@ -184,6 +186,16 @@
       <xsl:value-of select="@type"/>
     </xsl:attribute>
     <xsl:copy-of select="@minOccurs"/>
+  </xsl:template>
+
+  <xsl:template match="cobos:Property[@stringFormat]" mode="stringFormat">
+    <xsl:if test="not(/cobos:DataModel/cobos:StringFormats/cobos:StringFormat[@name = current()/@stringFormat])">
+      <xsl:value-of select="concat('Error: no string format found for ', @stringFormat)"/>
+    </xsl:if>
+    <xsl:copy-of select="/cobos:DataModel/cobos:StringFormats/cobos:StringFormat[@name = current()/@stringFormat]"/>
+  </xsl:template>
+
+  <xsl:template match="cobos:Property[not(@stringFormat)]" mode="stringFormat">
   </xsl:template>
 
   <!--

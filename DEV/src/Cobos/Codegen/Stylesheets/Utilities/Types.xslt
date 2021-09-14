@@ -21,6 +21,20 @@
   -->
   <!--
   =============================================================================
+  Custom String Format
+  =============================================================================
+  -->
+  <xsl:template match="cobos:Property[@stringFormat]" mode="propertyType">
+    <xsl:variable name="dataType">
+      <xsl:value-of select="normalize-space(./cobos:StringFormat/cobos:CodeType)"/>
+    </xsl:variable>
+    <xsl:value-of select="$dataType"/>
+    <xsl:if test="$dataType != 'string'">
+      <xsl:apply-templates select="@minOccurs" mode="propertyType"/>
+    </xsl:if>
+  </xsl:template>
+  <!--
+  =============================================================================
   String
   =============================================================================
   -->

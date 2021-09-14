@@ -20,7 +20,7 @@
 	-->
   <Type name="CustomerContact" dbTable="Customers">
     <Property name="Title" dbColumn="ContactTitle"/>
-    <Property name="Name" dbColumn="ContactName"/>
+    <Property name="Name" dbColumn="ContactName" stringFormat="UpperCase"/>
   </Type>
   <!--
 	==============================================================================
@@ -177,7 +177,8 @@
       <Filter>
         <Predicate xsi:type="PropertyIsEqualTo">
           <ValueReference>Discontinued</ValueReference>
-          <Literal>false</Literal>
+          <!--<Literal>false</Literal>-->
+          <Literal>0</Literal>
         </Predicate>
       </Filter>
     </Metadata>
@@ -197,4 +198,30 @@
       </SortBy>
     </Metadata>
   </TableObject>
+
+  <!--
+	==============================================================================
+	Custom String Formats.
+	==============================================================================
+	-->
+  <StringFormats>
+    <StringFormat name="UpperCase">
+      <SchemaType>
+        <![CDATA[string]]>
+      </SchemaType>
+      <CodeType>
+        <![CDATA[string]]>
+      </CodeType>
+      <PropertyGet>
+        <![CDATA[return $columnValue?.ToUpper();]]>
+      </PropertyGet>
+      <PropertySet>
+        <![CDATA[$columnValue = $dataValue;]]>
+      </PropertySet>
+      <ConvertTo>
+        <![CDATA[$propertyName?.ToUpper()]]>
+      </ConvertTo>
+    </StringFormat>
+  </StringFormats>
+  
 </DataModel>

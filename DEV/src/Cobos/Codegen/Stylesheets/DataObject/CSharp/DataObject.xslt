@@ -359,6 +359,32 @@
   </xsl:template>
   <!-- 
   =============================================================================
+  =============================================================================
+  -->
+  <xsl:template match="cobos:Property[@stringFormat]" mode="propertyGetValue">
+    <xsl:variable name="indent">
+      <xsl:apply-templates select="." mode="newlineIndentLevel2"/>
+    </xsl:variable>
+    <xsl:variable name="columnName">
+      <xsl:apply-templates select="." mode="fullName"/>
+    </xsl:variable>
+    <xsl:variable name="columnValue">
+      <xsl:value-of select="concat('this.DataRowSource.', $columnName)"/>
+    </xsl:variable>
+    <xsl:variable name="codeTemplate">
+      <xsl:value-of select="normalize-space(./cobos:StringFormat/cobos:PropertyGet)" disable-output-escaping="yes"/>
+    </xsl:variable>
+    <xsl:variable name="code">
+      <xsl:call-template name="string-replace-all">
+        <xsl:with-param name="text" select="$codeTemplate" />
+        <xsl:with-param name="replace" select="string('$columnValue')" />
+        <xsl:with-param name="by" select="$columnValue" />
+      </xsl:call-template>
+    </xsl:variable>
+    <xsl:value-of select="concat($indent, $code)"/>
+  </xsl:template>
+  <!-- 
+  =============================================================================
   Property Set value.
   =============================================================================
   -->
@@ -375,6 +401,39 @@
   =============================================================================
   =============================================================================
   -->
+  <xsl:template match="cobos:Property[@stringFormat]" mode="propertySetValue">
+    <xsl:variable name="columnName">
+      <xsl:apply-templates mode="fullName" select="."/>
+    </xsl:variable>
+    <xsl:variable name="columnValue">
+      <xsl:value-of select="concat('this.DataRowSource.', $columnName)"/>
+    </xsl:variable>
+    <xsl:variable name="dataValue">
+      <xsl:apply-templates mode="propertySetValueValue" select="."/>
+    </xsl:variable>
+    <xsl:variable name="codeTemplate">
+      <xsl:value-of select="normalize-space(./cobos:StringFormat/cobos:PropertySet)" disable-output-escaping="yes"/>
+    </xsl:variable>
+    <xsl:variable name="code1">
+      <xsl:call-template name="string-replace-all">
+        <xsl:with-param name="text" select="$codeTemplate" />
+        <xsl:with-param name="replace" select="string('$columnValue')" />
+        <xsl:with-param name="by" select="$columnValue" />
+      </xsl:call-template>
+    </xsl:variable>
+    <xsl:variable name="code2">
+      <xsl:call-template name="string-replace-all">
+        <xsl:with-param name="text" select="$code1" />
+        <xsl:with-param name="replace" select="string('$dataValue')" />
+        <xsl:with-param name="by" select="$dataValue" />
+      </xsl:call-template>
+    </xsl:variable>
+    <xsl:value-of select="$code2"/>
+  </xsl:template>
+  <!-- 
+  =============================================================================
+  =============================================================================
+  -->
   <!-- simple case for any non-nullable type -->
   <xsl:template match="cobos:Property[@minOccurs = 1]" mode="propertySetValueValue">
     <xsl:text>value</xsl:text>
@@ -386,6 +445,21 @@
   <!-- Strings can be set to null -->
   <xsl:template match="cobos:Property[@minOccurs = 0]" mode="propertySetValueValue">
     <xsl:text>value</xsl:text>
+  </xsl:template>
+  <!-- 
+  =============================================================================
+  =============================================================================
+  -->
+  <xsl:template match="cobos:Property[@minOccurs = 0 and @stringFormat]" mode="propertySetValueValue">
+    <xsl:variable name="dataType" select="normalize-space(./cobos:StringFormat/cobos:CodeType)"/>
+    <xsl:choose>
+      <xsl:when test="$dataType = 'string'">
+        <xsl:text>value</xsl:text>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:text>value.Value</xsl:text>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
   <!-- 
   =============================================================================

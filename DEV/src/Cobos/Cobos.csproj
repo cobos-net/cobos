@@ -99,6 +99,10 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Codegen\Examples\" />
+  </ItemGroup>
+
   <Target Name="GenerateDataFilters" Inputs="@(DataFilterSchema)" Outputs="@(DataFilterSchema->'$(IntermediateOutputPath)%(Filename).cs')">
 
     <Exec Command="&quot;$(SvcUtilExe)&quot; &quot;%(DataFilterSchema.Identity)&quot; /dataContractOnly /edb /namespace:*,Cobos.Data.Filter /out:&quot;$(IntermediateOutputPath)%(DataFilterSchema.Filename).cs&quot;" />

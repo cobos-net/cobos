@@ -4,7 +4,7 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-namespace Cobos.Build.Targets.Tests
+namespace Cobos.Build.Tests
 {
     using System.Collections.Generic;
     using System.Configuration;

@@ -6,7 +6,11 @@
 
 namespace Cobos.Data.Tests
 {
+    using System;
+    using System.Diagnostics;
     using System.IO;
+    using System.Linq;
+    using Cobos.Codegen.Tests.Northwind;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
@@ -15,101 +19,99 @@ namespace Cobos.Data.Tests
     [TestClass]
     public class DatabaseAdapterTests
     {
-        ////[TestMethod]
-        ////public void Can_execute_asynchronous_database_queries()
-        ////{
-        ////   // Strategy:
-        ////   // ---------
-        ////   // 1) Assert that we perform asynchronous queries to simultaneously fill multiple tables in a DataSet.
+        /// <summary>
+        /// Strategy:
+        /// ---------
+        /// 1) Assert that we perform asynchronous queries to simultaneously fill multiple tables in a DataSet.
+        /// </summary>
+        [TestMethod]
+        public void Can_execute_asynchronous_database_queries()
+        {
+            var model = new NorthwindDataModel();
+            model.EnforceConstraints = false;
 
-        ////   EventDataModel model = new EventDataModel();
-        ////   model.EnforceConstraints = false;
+            var queries = new DatabaseQuery[]
+            {
+                new DatabaseQuery(CustomerDataAdapter.SelectTemplate.ToString(null, null), model.Customer),
+                new DatabaseQuery(CustomerOrderDataAdapter.SelectTemplate.ToString(null, null), model.CustomerOrder),
+                new DatabaseQuery(OrderDetailsDataAdapter.SelectTemplate.ToString(null, null), model.OrderDetails),
+            };
 
-        ////   DatabaseQuery[] queries = new DatabaseQuery[]
-        ////   {
-        ////      AgencyEventDataAdapter.GetQuery( model.AgencyEvent, null, null ),
-        ////      EventCommentDataAdapter.GetQuery( model.EventComment, null, null ),
-        ////      DispositionDataAdapter.GetQuery( model.Disposition, null, null )
-        ////   };
+            foreach (var database in TestManager.DataSource)
+            {
+                Stopwatch timer = new Stopwatch();
+                timer.Start();
 
-        ////   Stopwatch timer = new Stopwatch();
-        ////   timer.Start();
+                database.FillAsynch(queries);
 
-        ////   DatabaseAdapter database = new DatabaseAdapter( TestManager.ConnectionString );
-        ////   database.ExecuteAsynch( queries );
+                timer.Stop();
+                Console.WriteLine("Asynchronous queries took: " + timer.ElapsedMilliseconds.ToString());
 
-        ////   timer.Stop();
-        ////   Console.WriteLine( "Asynchronous queries took: " + timer.ElapsedMilliseconds.ToString() );
+                Assert.IsTrue(model.Customer.Rows.Count > 0);
+                Assert.IsTrue(model.CustomerOrder.Rows.Count > 0);
+                Assert.IsTrue(model.OrderDetails.Rows.Count > 0);
+            }
+        }
 
-        ////   Assert.NotEmpty( model.AgencyEvent.Rows );
-        ////   Assert.NotEmpty( model.EventComment.Rows );
-        ////   Assert.NotEmpty( model.Disposition.Rows );
-        ////   Assert.Empty( model.Agencies.Rows );
-        ////   Assert.Empty( model.AgencyEventSummary.Rows );
-        ////}
+        /// <summary>
+        /// Strategy:
+        /// ---------
+        /// 1) Assert that we perform asynchronous queries to simultaneously fill multiple tables in a DataSet.
+        /// 2) Test that the dataset relationships are set correctly and that we can find nested rows.
+        /// 3) Test that the multiplicity of the nested rows matches our expectations.  (this is partially data dependent).
+        /// </summary>
+        [TestMethod]
+        public void Can_execute_nested_queries()
+        {
+            var model = new NorthwindDataModel();
 
-        ////[TestMethod]
-        ////public void Can_execute_nested_queries()
-        ////{
-        ////   // Strategy:
-        ////   // ---------
-        ////   // 1) Assert that we perform asynchronous queries to simultaneously fill multiple tables in a DataSet.
-        ////   // 2) Test that the dataset relationships are set correctly and that we can find nested rows for comments and disposition.
-        ////   // 3) Test that the multiplicity of the nested rows matches our expectations.  (this is partially data dependent).
+            // Disable the contraints when performing asynchronous queries,
+            // otherwise, if the main table isn't filled, the child tables
+            // will violate the key constraints. This also improves performance.
+            model.EnforceConstraints = false;
 
-        ////   EventDataModel model = new EventDataModel();
+            var queries = new DatabaseQuery[]
+            {
+                new DatabaseQuery(CustomerDataAdapter.SelectTemplate.ToString(null, null), model.Customer),
+                new DatabaseQuery(CustomerOrderDataAdapter.SelectTemplate.ToString(null, null), model.CustomerOrder),
+                new DatabaseQuery(OrderDetailsDataAdapter.SelectTemplate.ToString(null, null), model.OrderDetails),
+            };
 
-        ////   // disable the contraints when performing asynchronous queries,
-        ////   // otherwise, if the main table isn't filled, the child tables
-        ////   // will violate the key constraints.
-        ////   // this also improves performance.
-        ////   model.EnforceConstraints = false;
+            foreach (var database in TestManager.DataSource)
+            {
+                var timer = new Stopwatch();
+                timer.Start();
+                database.FillAsynch(queries);
 
-        ////   DatabaseQuery[] queries = new DatabaseQuery[]
-        ////   {
-        ////      AgencyEventDataAdapter.GetQuery( model.AgencyEvent, null, null ),
-        ////      AgencyEventCommentDataAdapter.GetQuery( model.AgencyEventComment, null, null ),
-        ////      DispositionDataAdapter.GetQuery( model.Disposition, null, null )
-        ////   };
+                timer.Stop();
+                Console.WriteLine("Asynchronous queries took: " + timer.ElapsedMilliseconds.ToString());
 
-        ////   Stopwatch timer = new Stopwatch();
-        ////   timer.Start();
+                // get the first row in the comments, use this to find an event with comments
+                var customerOrder = model.CustomerOrder[0];
 
-        ////   DatabaseAdapter database = new DatabaseAdapter( TestManager.ConnectionString );
-        ////   database.ExecuteAsynch( queries );
+                // find the event that owns this comment
+                var customer = model.Customer.FindByCustomerID(customerOrder.CustomerID);
+                Assert.IsNotNull(customer);
 
-        ////   timer.Stop();
-        ////   Console.WriteLine( "Asynchronous queries took: " + timer.ElapsedMilliseconds.ToString() );
+                var customerOrders = customer.GetOrders();
+                Assert.IsNotNull(customerOrders);
+                Assert.IsTrue(customerOrders.Length > 0);
+                Console.WriteLine("Found " + customerOrders.Length.ToString() + " comments for " + customer.CustomerID);
 
-        ////   // get the first row in the comments, use this to find an event with comments
-        ////   EventDataModel.AgencyEventCommentRow eventComment = model.AgencyEventComment[ 0 ];
+                CollectionAssert.Contains(customerOrders, customerOrder);
 
-        ////   // find the event that owns this comment
-        ////   EventDataModel.AgencyEventRow agencyEvent = model.AgencyEvent.FindByAgencyEventId( eventComment.AgencyEventId );
+                // get the first row in the disposition, use this to find an event with disposition
+                var orderDetail = model.OrderDetails[0];
 
-        ////   Assert.IsNotNull( agencyEvent );
+                customerOrder = model.CustomerOrder.FindByOrderID(orderDetail.OrderID);
 
-        ////   EventDataModel.AgencyEventCommentRow[] comments = agencyEvent.GetComments();
-        ////   Console.WriteLine( "Found " + comments.Length.ToString() + " comments for " + agencyEvent.AgencyEventId );
+                var orderDetails = customerOrder.GetDetails();
 
-        ////   Assert.IsNotNull( comments );
-        ////   Assert.NotEmpty( comments );
-        ////   Assert.Contains<EventDataModel.AgencyEventCommentRow>( eventComment, comments );
-
-        ////   // get the first row in the disposition, use this to find an event with disposition
-        ////   EventDataModel.DispositionRow disposition = model.Disposition[ 0 ];
-
-        ////   agencyEvent = model.AgencyEvent.FindByAgencyEventId( disposition.AgencyEventId );
-
-        ////   EventDataModel.DispositionRow[] dispositions = agencyEvent.GetDisposition();
-
-        ////   Assert.IsNotNull( dispositions );
-        ////   Assert.NotEmpty( dispositions );
-        ////   Assert.Contains<EventDataModel.DispositionRow>( disposition, dispositions );
-
-        ////   // Disposition is a one-to-one relationship
-        ////   Assert.AreEqual( 1, dispositions.Length );
-        ////}
+                Assert.IsNotNull(orderDetails);
+                Assert.IsTrue(orderDetails.Length > 0);
+                CollectionAssert.Contains(orderDetails, orderDetail);
+            }
+        }
 
         /// <summary>
         /// Strategy:

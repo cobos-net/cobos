@@ -6,13 +6,12 @@
   
   <PropertyGroup Label="Cobos Codegen Properties">
     <CobosCodeLanguage Condition="'$(CobosCodeLanguage)' == ''">CSharp</CobosCodeLanguage>
+    <CobosStylesheetsDirectory>$(MSBuildThisFileDirectory)..\Stylesheets\</CobosStylesheetsDirectory>
     <!-- Define these before importing this targets file -->
 	  <!--
 	  <CobosNamespaceCode></CobosNamespaceCode>
     <CobosNamespaceXml></CobosNamespaceXml>
-    <CobosStylesheetsDirectory></CobosStylesheetsDirectory>
 	  -->
-    <CobosStylesheetsDirectory2>$(MSBuildThisFileDirectory)..\Stylesheets\</CobosStylesheetsDirectory2>
   </PropertyGroup>
 
   <PropertyGroup Label="Cobos Database properties">
@@ -106,7 +105,7 @@
           Outputs="@(CobosDataModel->'$(IntermediateOutputPath)%(Id)\%(Filename).Processed.xml')">
 
     <XslTransformation XmlInputPaths="%(CobosDataModel.Identity)" 
-                       XslInputPath="$(CobosStylesheetsDirectory2)DataModel\Process.xslt" 
+                       XslInputPath="$(CobosStylesheetsDirectory)DataModel\Process.xslt" 
                        OutputPaths="$(IntermediateOutputPath)%(CobosDataModel.Id)\%(CobosDataModel.Filename).Processed.xml" />
 
   </Target>
@@ -116,7 +115,7 @@
           Outputs="@(CobosDataModel->'$(IntermediateOutputPath)%(Id)\DataSet.xsd')">
 
     <XslTransformation XmlInputPaths="$(IntermediateOutputPath)%(CobosDataModel.Id)\%(CobosDataModel.Filename).Processed.xml" 
-                       XslInputPath="$(CobosStylesheetsDirectory2)DataModel\Dataset.xslt" 
+                       XslInputPath="$(CobosStylesheetsDirectory)DataModel\Dataset.xslt" 
                        OutputPaths="$(IntermediateOutputPath)%(CobosDataModel.Id)\Dataset.xsd" />
 
   </Target>
@@ -135,7 +134,7 @@
           Outputs="@(CobosDataModel->'$(IntermediateOutputPath)%(Id)\DataObject.cs')">
 
     <XslTransformation XmlInputPaths="$(IntermediateOutputPath)%(CobosDataModel.Id)\%(CobosDataModel.Filename).Processed.xml" 
-                       XslInputPath="$(CobosStylesheetsDirectory2)DataObject\$(CobosCodeLanguage)\DataObject.xslt" 
+                       XslInputPath="$(CobosStylesheetsDirectory)DataObject\$(CobosCodeLanguage)\DataObject.xslt" 
                        OutputPaths="$(IntermediateOutputPath)%(CobosDataModel.Id)\DataObject.cs" 
                        Parameters="&lt;Parameter Name='codeNamespace' Value='$(CobosNamespaceCode).%(CobosDataModel.Id)'/&gt;&lt;Parameter Name='xmlNamespace' Value='$(CobosNamespaceXml)'/&gt;" />
     
@@ -148,7 +147,7 @@
           Outputs="@(CobosDataModel->'$(IntermediateOutputPath)%(Id)\DataObjectAdapter.cs')">
     
     <XslTransformation XmlInputPaths="$(IntermediateOutputPath)%(CobosDataModel.Id)\%(CobosDataModel.Filename).Processed.xml" 
-                       XslInputPath="$(CobosStylesheetsDirectory2)DataAdapter\$(CobosCodeLanguage)\DataObjectAdapter.xslt" 
+                       XslInputPath="$(CobosStylesheetsDirectory)DataAdapter\$(CobosCodeLanguage)\DataObjectAdapter.xslt" 
                        OutputPaths="$(IntermediateOutputPath)%(CobosDataModel.Id)\DataObjectAdapter.cs"
                        Parameters="&lt;Parameter Name='codeNamespace' Value='$(CobosNamespaceCode).%(CobosDataModel.Id)'/&gt;&lt;Parameter Name='xmlNamespace' Value='$(CobosNamespaceXml)'/&gt;" />
     
@@ -161,7 +160,7 @@
           Outputs="@(CobosDataModel->'$(IntermediateOutputPath)%(Id)\DataModelAdapter.cs')">
 
     <XslTransformation XmlInputPaths="$(IntermediateOutputPath)%(CobosDataModel.Id)\%(CobosDataModel.Filename).Processed.xml" 
-                       XslInputPath="$(CobosStylesheetsDirectory2)DataAdapter\$(CobosCodeLanguage)\DataModelAdapter.xslt"
+                       XslInputPath="$(CobosStylesheetsDirectory)DataAdapter\$(CobosCodeLanguage)\DataModelAdapter.xslt"
                        OutputPaths="$(IntermediateOutputPath)%(CobosDataModel.Id)\DataModelAdapter.cs" 
                        Parameters="&lt;Parameter Name='codeNamespace' Value='$(CobosNamespaceCode).%(CobosDataModel.Id)'/&gt;&lt;Parameter Name='xmlNamespace' Value='$(CobosNamespaceXml)'/&gt;" />
     
@@ -174,7 +173,7 @@
           Outputs="@(CobosDataModel->'$(IntermediateOutputPath)%(Id)\DataModel.xsd')">
 
     <XslTransformation XmlInputPaths="%(CobosDataModel.Identity)" 
-                       XslInputPath="$(CobosStylesheetsDirectory2)DataModel\Schema.xslt" 
+                       XslInputPath="$(CobosStylesheetsDirectory)DataModel\Schema.xslt" 
                        OutputPaths="$(IntermediateOutputPath)%(CobosDataModel.Id)\DataModel.xsd" 
                        Parameters="&lt;Parameter Name='xmlNamespace' Value='$(CobosNamespaceXml)'/&gt;@(%(CobosDataModel.SchemaOptions))" />
 

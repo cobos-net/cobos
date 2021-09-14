@@ -230,24 +230,13 @@
 	=============================================================================
 	=============================================================================
 	-->
-  <xsl:template match="cobos:Property[@stringFormat = 'CadDts']" mode="setDataAttributes">
-		<xsl:attribute name="type">xsd:dateTime</xsl:attribute>
-		<xsl:apply-templates select="." mode="setDataMultiplicity"/>
-	</xsl:template>
-  <!--
-	=============================================================================
-	=============================================================================
-	-->
-  <xsl:template match="cobos:Property[@stringFormat = 'CadBoolean']" mode="setDataAttributes">
-		<xsl:attribute name="type">xsd:boolean</xsl:attribute>
-		<xsl:apply-templates select="." mode="setDataMultiplicity"/>
-	</xsl:template>
-  <!--
-	=============================================================================
-	=============================================================================
-	-->
-  <xsl:template match="cobos:Property[@stringFormat = 'Separator']" mode="setDataAttributes">
-		<xsl:attribute name="type">xsd:string</xsl:attribute>
+  <xsl:template match="cobos:Property[@stringFormat]" mode="setDataAttributes">
+    <xsl:variable name="attributeType">
+      <xsl:value-of select="./cobos:StringFormat/cobos:SchemaType"/>
+    </xsl:variable>
+		<xsl:attribute name="type">
+      <xsl:value-of select="concat('xsd:', $attributeType)"/>
+    </xsl:attribute>
 		<xsl:apply-templates select="." mode="setDataMultiplicity"/>
 	</xsl:template>
   <!--
