@@ -1,5 +1,10 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
+  <PropertyGroup Label="Global Properties">
+    <CurrentDate>$([System.DateTime]::Now.ToString(yyyyMMdd-mmss))</CurrentDate>
+    <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
+  </PropertyGroup>
+
   <PropertyGroup Label="Assembly Information">
     <Company>Cobos Open Source</Company>
     <Configuration>$(Configuration) Build</Configuration>
@@ -11,5 +16,13 @@
     <!-- <AssemblyTitle></AssemblyTitle> -->
     <AssemblyVersion>0.8</AssemblyVersion>
   </PropertyGroup>
+
+  <PropertyGroup>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <AdditionalFiles Include="$(MSBuildThisFileDirectory)stylecop.json" />
+  </ItemGroup>
 
 </Project>

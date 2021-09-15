@@ -3,20 +3,12 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
-# SDK files
-/SDK/*
-!/SDK/README.md
-!/SDK/Setup.ps1
-
-# Release Files
-/RELEASE/*
-
 # Cobos codgen files
 .cobos/
-!DEV/content/.cobos
+!content/.cobos
 
 # Cobos build targets
-DEV/build/*/*.*
+build/*/*.*
 
 # User-specific files
 *.suo
