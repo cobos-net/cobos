@@ -6,7 +6,6 @@
   </PropertyGroup>
 
   <Import Project="AssemblyInfo.props" />
-  <Import Project="src/Cobos/Codegen/MSBuild/cobos.tools.targets"/>
 
   <PropertyGroup>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>

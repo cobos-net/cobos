@@ -5,6 +5,8 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
+  <Import Project="../../build/cobos.tools.targets"/>
+    
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
     <PackageReference Include="Microsoft.Build.Framework" Version="16.11.0" />
     <PackageReference Include="Microsoft.Build.Utilities.Core" Version="16.11.0" />
@@ -64,25 +66,19 @@
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.6.0-preview3.19128.7" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
   </ItemGroup>
-
-  <ItemGroup>
-    <CobosCodegenFiles Include="Codegen/**/*.*" />
-    <CobosCodegenFiles Remove="Codegen\Stylesheets\Database\DatabaseVariables.def" />
-    <Content Include="@(CobosCodegenFiles)">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
     
   <Target Name="CustomPrepareForBuild" AfterTargets="PrepareForBuild">
     <CallTarget Targets="GenerateDataFilters" />
   </Target>
 
   <PropertyGroup Label="Generate Data Filters">
-    <CodegenSchemaDirectory>$(MSBuildProjectDirectory)\Codegen\Schemas\</CodegenSchemaDirectory>
+    <CodegenSchemaDirectory>$(MSBuildProjectDirectory)\..\..\content\.cobos\Schemas\</CodegenSchemaDirectory>
   </PropertyGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Codegen\Stylesheets\Database\DatabaseSchema.xslt" />
+    <EmbeddedResource Include="..\..\content\.cobos\Stylesheets\Database\DatabaseSchema.xslt">
+      <Link>Data\Database\DatabaseSchema.xslt</Link>
+    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>
@@ -99,10 +95,6 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Codegen\Examples\" />
-  </ItemGroup>
-
   <Target Name="GenerateDataFilters" Inputs="@(DataFilterSchema)" Outputs="@(DataFilterSchema->'$(IntermediateOutputPath)%(Filename).cs')">
 
     <Exec Command="&quot;$(SvcUtilExe)&quot; &quot;%(DataFilterSchema.Identity)&quot; /dataContractOnly /edb /namespace:*,Cobos.Data.Filter /out:&quot;$(IntermediateOutputPath)%(DataFilterSchema.Filename).cs&quot;" />
@@ -111,15 +103,18 @@
     
   </Target>
 
-  <Target Name="CopyCodegenToTests" AfterTargets="AfterBuild">
+  <Target Name="CobosAfterBuild" AfterTargets="AfterBuild" Condition="'$(TargetFramework)' == 'net46'" >
     <PropertyGroup>
-      <CobosTestsTarget>$(MSBuildThisFileDirectory)..\..\tests\Cobos\.cobos</CobosTestsTarget>
+      <CobosBuildTargetsFolder>$(MSBuildThisFileDirectory)..\..\build\$(TargetFramework)\</CobosBuildTargetsFolder>
+      <CobosTestsFolder>$(MSBuildThisFileDirectory)..\..\tests\Cobos\</CobosTestsFolder>
     </PropertyGroup>
     <ItemGroup>
+      <CobosCodegenFiles Include="..\..\content\**\*.*" />
       <CobosOutputFiles Include="$(OutDir)**\*.*" />
     </ItemGroup>
-    <MakeDir Condition="!Exists($(CobosTestsTarget))" Directories="$(CobosTestsTarget)" />
-    <Copy SourceFiles="@(CobosOutputFiles)" DestinationFiles="@(CobosOutputFiles->'$(CobosTestsTarget)\$(TargetFramework)\%(RecursiveDir)\%(Filename)%(Extension)')" />
-  </Target>
+    <MakeDir Condition="!Exists($(CobosBuildTargetsFolder))" Directories="$(CobosBuildTargetsFolder)" />
+    <Copy SourceFiles="@(CobosOutputFiles)" DestinationFiles="@(CobosOutputFiles->'$(CobosBuildTargetsFolder)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(CobosCodegenFiles)" DestinationFiles="@(CobosCodegenFiles->'$(CobosTestsFolder)%(RecursiveDir)%(Filename)%(Extension)')" />
+</Target>
   
 </Project>

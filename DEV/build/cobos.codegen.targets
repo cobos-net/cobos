@@ -1,12 +1,17 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-  <UsingTask AssemblyFile="$(MSBuildThisFileDirectory)../../Cobos.dll" TaskName="Cobos.Build.CobosDatabaseToXsd" />
+  <PropertyGroup>
+    <_BuildToolsAssemblyTfm Condition="'$(MSBuildRuntimeType)' == 'Core'">netstandard2.0</_BuildToolsAssemblyTfm>
+    <_BuildToolsAssemblyTfm Condition="'$(MSBuildRuntimeType)' != 'Core'">net46</_BuildToolsAssemblyTfm>   
+  </PropertyGroup>
+  
+  <UsingTask AssemblyFile="$(MSBuildThisFileDirectory)$(_BuildToolsAssemblyTfm)/Cobos.dll" TaskName="Cobos.Build.CobosDatabaseToXsd" />
 
   <Import Project="cobos.tools.targets"/>
   
   <PropertyGroup Label="Cobos Codegen Properties">
     <CobosCodeLanguage Condition="'$(CobosCodeLanguage)' == ''">CSharp</CobosCodeLanguage>
-    <CobosStylesheetsDirectory>$(MSBuildThisFileDirectory)..\Stylesheets\</CobosStylesheetsDirectory>
+    <CobosStylesheetsDirectory>$(MSBuildProjectDirectory)\.cobos\Stylesheets\</CobosStylesheetsDirectory>
     <!-- Define these before importing this targets file -->
 	  <!--
 	  <CobosNamespaceCode></CobosNamespaceCode>
@@ -65,7 +70,7 @@
     <CobosNone Include="
                 $(IntermediateOutputPath)DatabaseSchema.xsd;
                 $(IntermediateOutputPath)DatabaseVariables.def;
-                @(CobosDataModel->'$(IntermediateOutputPath)%(Id)\DataModel.Processed.xml');
+                @(CobosDataModel->'$(IntermediateOutputPath)%(Id)\%(Filename).Processed.xml');
                 @(CobosDataModel->'$(IntermediateOutputPath)%(Id)\DataModel.xsd');
                 @(CobosDataModel->'$(IntermediateOutputPath)%(Id)\DataSet.xsd');
                 @(CobosDataModel->'$(IntermediateOutputPath)%(Id)\DataSet.xsc');
@@ -91,17 +96,17 @@
           Outputs="$(IntermediateOutputPath)DatabaseVariables.def">
 
     <XslTransformation XmlInputPaths="$(IntermediateOutputPath)DatabaseSchema.xsd" 
-                       XslInputPath="$(MSBuildThisFileDirectory)..\Stylesheets\Database\DatabaseVariables.xslt" 
+                       XslInputPath="$(CobosStylesheetsDirectory)Database\DatabaseVariables.xslt" 
                        OutputPaths="$(IntermediateOutputPath)DatabaseVariables.def"/>
     
     <Copy SourceFiles="$(IntermediateOutputPath)DatabaseVariables.def" 
-          DestinationFolder="$(MSBuildThisFileDirectory)..\Stylesheets\Database" 
+          DestinationFolder="$(CobosStylesheetsDirectory)Database" 
           OverwriteReadOnlyFiles="true"/>
   
   </Target>
 
   <Target Name="CobosPreProcessDataModel"
-          Inputs="@(CobosDataModel)"
+          Inputs="@(CobosDataModel->'%(Identity)')"
           Outputs="@(CobosDataModel->'$(IntermediateOutputPath)%(Id)\%(Filename).Processed.xml')">
 
     <XslTransformation XmlInputPaths="%(CobosDataModel.Identity)" 

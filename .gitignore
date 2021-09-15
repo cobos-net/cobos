@@ -13,6 +13,10 @@
 
 # Cobos codgen files
 .cobos/
+!DEV/content/.cobos
+
+# Cobos build targets
+DEV/build/*/*.*
 
 # User-specific files
 *.suo

@@ -24,7 +24,7 @@ namespace Cobos.Data.Tests.Filter
         [TestMethod]
         public void Can_deserialize_filter_expressions()
         {
-            Cobos.Utilities.IO.FileUtility.TryFindAllFiles(TestManager.ProjectDirectory + @"..\..\.cobos\net46\Codegen\Schemas\examples", "*.xml", false, out string[] examples, out _);
+            Cobos.Utilities.IO.FileUtility.TryFindAllFiles(TestManager.ProjectDirectory + @"..\..\.cobos\Schemas\examples", "*.xml", false, out string[] examples, out _);
 
             foreach (var example in examples)
             {

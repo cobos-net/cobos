@@ -54,7 +54,7 @@
   =============================================================================
   -->
   <ItemGroup>
-    <CobosDataModel Include="$(ProjectDir)Codegen\Tests\Data\DataModel.xml">
+    <CobosDataModel Include="$(MSBuildProjectDirectory)\.cobos\Examples\Northwind.xml">
       <Id>Northwind</Id>
       <SchemaOptions>
         <Parameter Name="multiplicityMode" Value="optional" />
@@ -62,11 +62,6 @@
     </CobosDataModel>
   </ItemGroup>
 
-  <PropertyGroup>
-    <_BuildToolsAssemblyTfm Condition="'$(MSBuildRuntimeType)' == 'Core'">netstandard2.0</_BuildToolsAssemblyTfm>
-    <_BuildToolsAssemblyTfm Condition="'$(MSBuildRuntimeType)' != 'Core'">net46</_BuildToolsAssemblyTfm>   
-  </PropertyGroup>
-
-  <Import Project=".cobos/$(_BuildToolsAssemblyTfm)/Codegen/MSBuild/cobos.codegen.targets" />
+  <Import Project="../../build/cobos.codegen.targets" />
   
 </Project>

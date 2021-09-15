@@ -14,6 +14,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DEV", "DEV", "{2EE69F10-8BD
 		stylecop.json = stylecop.json
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{6BDB0BB5-C8DD-4661-93DC-2E2F090FE546}"
+	ProjectSection(SolutionItems) = preProject
+		build\cobos.codegen.targets = build\cobos.codegen.targets
+		build\cobos.tools.targets = build\cobos.tools.targets
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +37,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6BDB0BB5-C8DD-4661-93DC-2E2F090FE546} = {2EE69F10-8BDA-4C0B-85D5-AF40D1B75165}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7A239C99-793D-43DB-A828-B04AC1717773}

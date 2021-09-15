@@ -234,7 +234,7 @@ namespace Cobos.Data.Adapters
         {
             SimpleDataSet dataset = this.TableMetadata(schema, tables);
 
-            XslCompiledTransform transform = XsltHelper.Load("Database/DatabaseSchema.xslt", "Cobos.Codegen.Stylesheets");
+            XslCompiledTransform transform = XsltHelper.Load("Database/DatabaseSchema.xslt", "Cobos.Data");
 
             if (transform != null)
             {
