@@ -6,10 +6,13 @@
 
 namespace Cobos.Data.Tests
 {
+    using System;
     using System.Collections.Generic;
     using System.Configuration;
     using System.Diagnostics;
     using System.IO;
+    using Cobos.Utilities.Xml;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
     /// Manages test data.
@@ -47,5 +50,42 @@ namespace Cobos.Data.Tests
         /// Gets the location of the test files.
         /// </summary>
         public static string TestFiles => ProjectDirectory + @"TestData\";
+
+        /// <summary>
+        /// Serialize an entity to file.
+        /// </summary>
+        /// <typeparam name="T">The entity type.</typeparam>
+        /// <param name="entity">The entity to serialize.</param>
+        public static void Serialize<T>(T entity)
+        {
+            string name;
+
+            if (typeof(T).IsGenericType == true)
+            {
+#if NET35
+                name = typeof(T).GetGenericArguments()[0].Name;
+#else
+                name = typeof(T).GenericTypeArguments[0].Name;
+#endif
+            }
+            else
+            {
+                name = typeof(T).Name;
+            }
+
+            var filePath = TestFiles + name + ".xml";
+
+            if (File.Exists(filePath) == true)
+            {
+                File.Delete(filePath);
+            }
+
+            using (var writer = new StreamWriter(filePath))
+            {
+                writer.Write(DataContractHelper.Serialize<T>(entity, new Type[0]));
+            }
+
+            Assert.IsTrue(File.Exists(filePath));
+        }
     }
 }

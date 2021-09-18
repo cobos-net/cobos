@@ -55,11 +55,11 @@
     <xsl:apply-templates select="@minOccurs" mode="propertyType"/>
   </xsl:template>
   <xsl:template match="cobos:Property[@dbType = 'xsd:byte']" mode="propertyType">
-    <xsl:text>byte</xsl:text>
+    <xsl:text>sbyte</xsl:text>
     <xsl:apply-templates select="@minOccurs" mode="propertyType"/>
   </xsl:template>
   <xsl:template match="cobos:Property[@dbType = 'xsd:unsignedByte']" mode="propertyType">
-    <xsl:text>unsigned byte</xsl:text>
+    <xsl:text>byte</xsl:text>
     <xsl:apply-templates select="@minOccurs" mode="propertyType"/>
   </xsl:template>
   <xsl:template match="cobos:Property[@dbType = 'xsd:short']" mode="propertyType">
@@ -67,7 +67,7 @@
     <xsl:apply-templates select="@minOccurs" mode="propertyType"/>
   </xsl:template>
   <xsl:template match="cobos:Property[@dbType = 'xsd:unsignedShort']" mode="propertyType">
-    <xsl:text>unsigned short</xsl:text>
+    <xsl:text>ushort</xsl:text>
     <xsl:apply-templates select="@minOccurs" mode="propertyType"/>
   </xsl:template>
   <xsl:template match="cobos:Property[@dbType = 'xsd:int']" mode="propertyType">
@@ -75,7 +75,7 @@
     <xsl:apply-templates select="@minOccurs" mode="propertyType"/>
   </xsl:template>
   <xsl:template match="cobos:Property[@dbType = 'xsd:unsignedInt']" mode="propertyType">
-    <xsl:text>unsigned int</xsl:text>
+    <xsl:text>uint</xsl:text>
     <xsl:apply-templates select="@minOccurs" mode="propertyType"/>
   </xsl:template>
   <xsl:template match="cobos:Property[@dbType = 'xsd:long']" mode="propertyType">
@@ -83,7 +83,7 @@
     <xsl:apply-templates select="@minOccurs" mode="propertyType"/>
   </xsl:template>
   <xsl:template match="cobos:Property[@dbType = 'xsd:unsignedLong']" mode="propertyType">
-    <xsl:text>unsigned long</xsl:text>
+    <xsl:text>ulong</xsl:text>
     <xsl:apply-templates select="@minOccurs" mode="propertyType"/>
   </xsl:template>
   <!--

@@ -142,7 +142,7 @@ namespace Cobos.Data
                 xslt.Transform(doc.CreateNavigator(), xsltArgs, stream);
                 stream.Seek(0, SeekOrigin.Begin);
 
-                ////FileStream fstream = new FileStream(@"C:\temp\debug.xml", FileMode.Create);
+                ////FileStream fstream = new FileStream(@"C:\temp\simpledataset-debug.xml", FileMode.Create);
                 ////stream.WriteTo(fstream);
                 ////fstream.Close();
                 ////stream.Seek(0, SeekOrigin.Begin);

@@ -4,7 +4,7 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-namespace Cobos.Codegen.Tests.Data
+namespace Cobos.Data.Tests.DataObject
 {
     using System;
     using System.Data;
@@ -201,7 +201,7 @@ namespace Cobos.Codegen.Tests.Data
 
                 Assert.IsNotNull(customer);
                 Assert.AreEqual("Cobos SDK's", customer.CompanyName);
-                Assert.AreEqual("Davis".ToUpper(), customer.Contact.Name); // Testing UpperCase StringFormat. See DataModel.xml.
+                Assert.AreEqual("Davis".ToUpper(), customer.Contact.Name); // Testing UpperCase StringFormat. See Examples/Northwind.xml
                 Assert.AreEqual("Mr", customer.Contact.Title);
                 Assert.AreEqual("Address", customer.Address.Address);
                 Assert.AreEqual("City", customer.Address.City);
@@ -230,7 +230,7 @@ namespace Cobos.Codegen.Tests.Data
 
                 Assert.IsNotNull(customer);
                 Assert.AreEqual("Updated Company", customer.CompanyName);
-                Assert.AreEqual("Updated Name".ToUpper(), customer.Contact.Name); // Testing UpperCase StringFormat. See DataModel.xml.
+                Assert.AreEqual("Updated Name".ToUpper(), customer.Contact.Name); // Testing UpperCase StringFormat. See Examples/Northwind.xml
                 Assert.AreEqual("Mr", customer.Contact.Title);
                 Assert.AreEqual("Updated Address", customer.Address.Address);
                 Assert.AreEqual("City", customer.Address.City);
@@ -312,7 +312,7 @@ namespace Cobos.Codegen.Tests.Data
                 customer0 = customerData.GetEntityByCustomerID(ids[0]);
                 Assert.IsNotNull(customer0);
                 Assert.AreEqual("Updated Company", customer0.CompanyName);
-                Assert.AreEqual("Updated Name".ToUpper(), customer0.Contact.Name); // Testing UpperCase StringFormat. See DataModel.xml.
+                Assert.AreEqual("Updated Name".ToUpper(), customer0.Contact.Name); // Testing UpperCase StringFormat. See Examples/Northwind.xml
                 Assert.AreEqual("Mr", customer0.Contact.Title);
                 Assert.AreEqual("Updated Address", customer0.Address.Address);
             }
@@ -437,6 +437,25 @@ namespace Cobos.Codegen.Tests.Data
                 ////employee.Employment.HireDate = Epoch.AddYears(-2);
                 ////Assert.DoesNotThrow(() => employeeData.AcceptChanges());
             }
+        }
+
+        /// <summary>
+        /// Strategy:
+        /// ---------
+        /// 1. Verify the data objects have the correct integer types. This mostly tests the Oracle NUMER(p,s) mappings.
+        /// </summary>
+        [TestMethod]
+        public void DataObjects_have_correct_integer_types()
+        {
+            Assert.AreEqual(typeof(short), typeof(ActiveProduct).GetProperty(nameof(ActiveProduct.Productid)).PropertyType);
+            Assert.AreEqual(typeof(short?), typeof(ActiveProduct).GetProperty(nameof(ActiveProduct.Supplierid)).PropertyType);
+            Assert.AreEqual(typeof(byte?), typeof(ActiveProduct).GetProperty(nameof(ActiveProduct.Categoryid)).PropertyType);
+            Assert.AreEqual(typeof(decimal?), typeof(ActiveProduct).GetProperty(nameof(ActiveProduct.Unitprice)).PropertyType);
+            Assert.AreEqual(typeof(int?), typeof(ActiveProduct).GetProperty(nameof(ActiveProduct.Unitsinstock)).PropertyType);
+            Assert.AreEqual(typeof(int?), typeof(ActiveProduct).GetProperty(nameof(ActiveProduct.Unitsonorder)).PropertyType);
+            Assert.AreEqual(typeof(int?), typeof(ActiveProduct).GetProperty(nameof(ActiveProduct.Reorderlevel)).PropertyType);
+            Assert.AreEqual(typeof(byte), typeof(ActiveProduct).GetProperty(nameof(ActiveProduct.Discontinued)).PropertyType);
+            Assert.AreEqual(typeof(long), typeof(CustomerOrder).GetProperty(nameof(CustomerOrder.OrderID)).PropertyType);
         }
 
         /// <summary>

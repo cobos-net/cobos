@@ -4,7 +4,7 @@
 // </copyright>
 // ----------------------------------------------------------------------------
 
-namespace Cobos.Codegen.Tests.Data
+namespace Cobos.Data.Tests.DataObject
 {
     using System;
     using System.Collections;
@@ -98,20 +98,13 @@ namespace Cobos.Codegen.Tests.Data
                 result = new DataTable();
                 database.Fill("select ProductID from OrderDetails where OrderID in (" + inValues + ")", result);
 
-                if (database.IntegerType == typeof(decimal))
-                {
-                    values = Cobos.Data.Utilities.DataTableHelper.GetColumnValues<decimal>(result, "ProductID");
-                }
-                else
-                {
-                    values = Cobos.Data.Utilities.DataTableHelper.GetColumnValues<int>(result, "ProductID");
-                }
+                values = Cobos.Data.Utilities.DataTableHelper.GetColumnValues<int>(result, "ProductID");
 
                 foreach (var order in customers[0].Orders)
                 {
                     foreach (var orderDetails in order.Details)
                     {
-                        CollectionAssert.Contains(values, Convert.ChangeType(orderDetails.Product.ID, database.IntegerType));
+                        CollectionAssert.Contains(values, (int)orderDetails.Product.ID);
                     }
                 }
 
