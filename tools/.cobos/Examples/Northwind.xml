@@ -169,6 +169,20 @@
   </Object>
   <!--
 	==============================================================================
+	Territory Sales - Outer Join
+	==============================================================================
+	-->
+  <Object name="TerritorySalesTotals" dbTable="Territories">
+    <Property name="Territory" dbColumn="TerritoryId"/>
+    <Property name="Total" dbColumn="Total" dbTable="TerritorySales"/>
+    <Metadata>
+      <Joins>
+        <OuterJoin ref="TerritorySales" key="Territories.TerritoryId" refer="TerritorySales.TerritoryId"/>
+      </Joins>
+    </Metadata>
+  </Object>
+  <!--
+	==============================================================================
 	Active Products - Table object with default filter.
 	==============================================================================
 	-->

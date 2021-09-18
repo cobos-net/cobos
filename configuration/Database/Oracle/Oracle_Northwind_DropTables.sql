@@ -1,3 +1,4 @@
+DROP VIEW TerritorySales;
 DROP TABLE OrderDetails;
 DROP TABLE Orders;
 DROP TABLE CustomerCustomerDemo;

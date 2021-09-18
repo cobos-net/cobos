@@ -14,7 +14,7 @@
   </PropertyGroup>
   <!-- Database tables to process -->
   <ItemGroup>
-    <CobosDatabaseTable Include="categories;customercustomerdemo;customerdemographics;customers;employees;employeeterritories;orderdetails;orders;products;region;shippers;suppliers;territories" />
+    <CobosDatabaseTable Include="categories;customercustomerdemo;customerdemographics;customers;employees;employeeterritories;orderdetails;orders;products;region;shippers;suppliers;territories;territorysales" />
   </ItemGroup>
   <!--
   =============================================================================

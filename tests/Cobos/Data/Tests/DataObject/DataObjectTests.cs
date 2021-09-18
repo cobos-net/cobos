@@ -459,6 +459,46 @@ namespace Cobos.Data.Tests.DataObject
         }
 
         /// <summary>
+        /// Strategy:
+        /// ---------
+        /// 1. Verify that outer joins return all rows.
+        /// </summary>
+        [TestMethod]
+        public void Can_perform_outer_joins()
+        {
+            foreach (var database in TestManager.DataSource)
+            {
+                var territoryCount = Convert.ChangeType(database.ExecuteScalar("select count(*) from territories"), typeof(long));
+
+                var territorySalesData = new TerritorySalesTotalsDataAdapter(database.ConnectionString, database.ProviderFactory);
+                territorySalesData.Fill(null, null);
+
+                var territorySales = territorySalesData.GetEntities();
+
+                Assert.AreEqual(territoryCount, (long)territorySales.Count);
+
+                long nullCount = 0;
+                long nonNullCount = 0;
+
+                foreach (var territorySale in territorySales)
+                {
+                    if (territorySale.Total == null)
+                    {
+                        nullCount++;
+                    }
+                    else
+                    {
+                        nonNullCount++;
+                    }
+                }
+
+                Assert.IsTrue(nullCount > 0);
+                Assert.IsTrue(nonNullCount > 0);
+                Assert.AreEqual(territoryCount, nullCount + nonNullCount);
+            }
+        }
+
+        /// <summary>
         /// Populate a customer object with test data.
         /// </summary>
         /// <param name="customer">The customer object.</param>

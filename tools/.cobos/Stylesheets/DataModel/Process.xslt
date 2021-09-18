@@ -154,7 +154,9 @@
         </xsl:attribute>
       </xsl:if>
       <xsl:apply-templates mode="expand" select="$databaseTablesNodeSet/xsd:element[translate(@name, $lowercase, $uppercase) = translate($dbTable, $lowercase, $uppercase)]
-                           //xsd:element[translate(@name, $lowercase, $uppercase) = translate(current()/@dbColumn, $lowercase, $uppercase)]"/>
+                           //xsd:element[translate(@name, $lowercase, $uppercase) = translate(current()/@dbColumn, $lowercase, $uppercase)]">
+        <xsl:with-param name="outerJoinCount" select="count(ancestor::cobos:Object/cobos:Metadata/cobos:Joins/cobos:OuterJoin[@references=$dbTable])"/>
+      </xsl:apply-templates>
       <xsl:apply-templates mode="stringFormat" select="."/>
     </xsl:element>
   </xsl:template>
@@ -166,10 +168,20 @@
 
   <!-- Copy the database type and mulitplicity to the expanded property -->
   <xsl:template match="xsd:element" mode="expand">
+    <xsl:param name="outerJoinCount"/>
     <xsl:attribute name="dbType">
       <xsl:value-of select="@type"/>
     </xsl:attribute>
-    <xsl:copy-of select="@minOccurs"/>
+    <xsl:choose>
+      <xsl:when test="$outerJoinCount &gt; 0">
+        <xsl:attribute name="minOccurs">
+          <xsl:text>0</xsl:text>
+        </xsl:attribute>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:copy-of select="@minOccurs"/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <!-- Create a property from the database type for TableObject types -->

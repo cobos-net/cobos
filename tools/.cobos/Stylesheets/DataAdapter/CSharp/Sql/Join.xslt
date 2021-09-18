@@ -43,7 +43,7 @@
   <!-- Find all outer join tables -->
   <xsl:template match="cobos:Object[./cobos:Metadata/cobos:Joins/cobos:OuterJoin]" mode="sqlOuterJoin">
     <xsl:text>new string[] { </xsl:text>
-    <xsl:apply-templates select="./cobos:Metadata/cobos:Joins/self::cobos:OuterJoin" mode="sqlJoin"/>
+    <xsl:apply-templates select="./cobos:Metadata/cobos:Joins/cobos:OuterJoin" mode="sqlJoin"/>
     <xsl:text> }</xsl:text>
   </xsl:template>
 

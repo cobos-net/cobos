@@ -117,7 +117,17 @@
         <xsl:attribute name="msdata:AutoIncrementSeed">-1</xsl:attribute>
         <xsl:attribute name="msdata:AutoIncrementStep">-1</xsl:attribute>
       </xsl:if>
-			<xsl:copy-of select="@minOccurs"/>
+      <!--<xsl:copy-of select="@minOccurs"/>-->
+      <xsl:choose>
+        <xsl:when test="count(ancestor::cobos:Object/cobos:Metadata/cobos:Joins/cobos:OuterJoin[@references = @dbTable]) &gt; 0">
+          <xsl:attribute name="minOccurs">
+            <xsl:text>0</xsl:text>
+          </xsl:attribute>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:copy-of select="@minOccurs"/>
+        </xsl:otherwise>
+      </xsl:choose>
 		</xsl:element>
 	</xsl:template>
 	<!--

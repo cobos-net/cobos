@@ -41,7 +41,7 @@ namespace Cobos.Build.Tests
                     ConnectionString = connectionString,
                     DatabasePlatform = providerName,
                     DatabaseSchema = "Northwind",
-                    DatabaseTables = new TaskItem[] { new TaskItem("Customers"), new TaskItem("Employees"), new TaskItem("Products"), new TaskItem("Order Details") },
+                    DatabaseTables = new TaskItem[] { new TaskItem("Customers"), new TaskItem("Employees"), new TaskItem("Products"), new TaskItem("OrderDetails") },
                     OutputFile = output,
                 };
 
