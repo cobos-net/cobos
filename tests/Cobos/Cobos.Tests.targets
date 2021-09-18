@@ -1,0 +1,34 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="CobosPrepareForBuild">
+  <!--
+  =============================================================================
+  Codegen definitions
+  =============================================================================
+  -->
+  <!-- Codegen properties -->
+  <PropertyGroup>
+    <CobosNamespaceCode>Cobos.Codegen.Tests</CobosNamespaceCode>
+    <CobosNamespaceXml>http://schemas.cobos.co.uk/codegen/tests/1.0.0</CobosNamespaceXml>
+    <CobosDatabaseConnectionString>Data Source=localhost:1521/cad94.dev;User Id=northwind;Password=oracle</CobosDatabaseConnectionString>
+    <CobosDatabasePlatform>Oracle</CobosDatabasePlatform>
+    <CobosDatabaseSchema>northwind</CobosDatabaseSchema>
+  </PropertyGroup>
+  <!-- Database tables to process -->
+  <ItemGroup>
+    <CobosDatabaseTable Include="categories;customercustomerdemo;customerdemographics;customers;employees;employeeterritories;orderdetails;orders;products;region;shippers;suppliers;territories" />
+  </ItemGroup>
+  <!--
+  =============================================================================
+  Model definitions
+  =============================================================================
+  -->
+  <ItemGroup>
+    <CobosDataModel Include="$(MSBuildProjectDirectory)\.cobos\Examples\Northwind.xml">
+      <Id>Northwind</Id>
+      <SchemaOptions>
+        <Parameter Name="multiplicityMode" Value="optional" />
+      </SchemaOptions>
+    </CobosDataModel>
+  </ItemGroup>
+  
+  <Import Project="../../build/Cobos.targets" />
+</Project>

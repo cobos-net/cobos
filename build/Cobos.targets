@@ -1,0 +1,27 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <UsingTask AssemblyFile="$(MSBuildThisFileDirectory)$(MSBuildRuntimeType)/Cobos.dll" TaskName="Cobos.Build.CobosDatabaseToXsd" />
+
+  <!-- Define these before importing Cobos.targets -->
+  <PropertyGroup Label="Cobos Codegen properties">
+    <!--
+	    <CobosNamespaceCode></CobosNamespaceCode>
+      <CobosNamespaceXml></CobosNamespaceXml>
+      <CobosDatabaseConnectionString></CobosDatabaseConnectionString>
+      <CobosDatabasePlatform></CobosDatabasePlatform>
+      <CobosDatabaseSchema></CobosDatabaseSchema>
+	  -->
+  </PropertyGroup>
+
+  <!-- Include Database Table names before importing Cobos.targets -->
+  <ItemGroup Label="Database tables">
+    <!--
+    <CobosDatabaseTable Include=""/>
+    -->
+  </ItemGroup>
+  
+  <Import Project="Cobos.tools.targets"/>
+  <Import Project="Cobos.files.targets"/>
+  <Import Project="Cobos.codegen.targets"/>
+
+</Project>

@@ -5,7 +5,7 @@
 
 # Cobos codgen files
 .cobos/
-!content/.cobos
+!tools/.cobos
 
 # Cobos build targets
 build/*/*.*

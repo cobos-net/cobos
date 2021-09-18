@@ -1,7 +1,7 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <PropertyGroup>
-    <NetSdkInstallationFolder>$(registry:HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\Microsoft SDKs\NETFXSDK\4.6.2@InstallationFolder)</NetSdkInstallationFolder>
+    <NetSdkInstallationFolder Condition="'$(NetSdkInstallationFolder)' == ''">$(registry:HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\Microsoft SDKs\NETFXSDK\4.6.2@InstallationFolder)</NetSdkInstallationFolder>
     <WindowsSDK_ExecutablePath_x64 Condition="'$(WindowsSDK_ExecutablePath_x64)' == ''">$(NetSdkInstallationFolder)bin\NETFX 4.6.2 Tools\x64\</WindowsSDK_ExecutablePath_x64>
     <WindowsSDK_ExecutablePath_x86 Condition="'$(WindowsSDK_ExecutablePath_x86)' == ''">$(NetSdkInstallationFolder)bin\NETFX 4.6.2 Tools\</WindowsSDK_ExecutablePath_x86>
     <SvcUtilExe>$(WindowsSDK_ExecutablePath_x64)SvcUtil.exe</SvcUtilExe>

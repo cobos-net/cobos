@@ -1,49 +1,27 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <PropertyGroup>
-    <_BuildToolsAssemblyTfm Condition="'$(MSBuildRuntimeType)' == 'Core'">netstandard2.0</_BuildToolsAssemblyTfm>
-    <_BuildToolsAssemblyTfm Condition="'$(MSBuildRuntimeType)' != 'Core'">net46</_BuildToolsAssemblyTfm>   
+    <CobosCodeLanguage>CSharp</CobosCodeLanguage>
+    <CobosCodegenDirectory>$(MSBuildProjectDirectory)\.cobos\</CobosCodegenDirectory>
+    <CobosStylesheetsDirectory>$(CobosCodegenDirectory)Stylesheets\</CobosStylesheetsDirectory>
   </PropertyGroup>
   
-  <UsingTask AssemblyFile="$(MSBuildThisFileDirectory)$(_BuildToolsAssemblyTfm)/Cobos.dll" TaskName="Cobos.Build.CobosDatabaseToXsd" />
+  <Target Name="CobosPrepareForBuild" AfterTargets="PrepareForBuild" Condition="'$(BuildingProject)' == 'true' and '@(CobosDataModel)' != ''">
 
-  <Import Project="cobos.tools.targets"/>
-  
-  <PropertyGroup Label="Cobos Codegen Properties">
-    <CobosCodeLanguage Condition="'$(CobosCodeLanguage)' == ''">CSharp</CobosCodeLanguage>
-    <CobosStylesheetsDirectory>$(MSBuildProjectDirectory)\.cobos\Stylesheets\</CobosStylesheetsDirectory>
-    <!-- Define these before importing this targets file -->
-	  <!--
-	  <CobosNamespaceCode></CobosNamespaceCode>
-    <CobosNamespaceXml></CobosNamespaceXml>
-	  -->
-  </PropertyGroup>
-
-  <PropertyGroup Label="Cobos Database properties">
-	  <!-- Define these before importing this targets file -->
-	  <!--
-      <CobosDatabaseConnectionString></CobosDatabaseConnectionString>
-      <CobosDatabasePlatform></CobosDatabasePlatform>
-      <CobosDatabaseSchema></CobosDatabaseSchema>
-	  -->
-  </PropertyGroup>
-
-  <ItemGroup Label="Database tables">
-	  <!-- Define these before importing this targets file -->
-	  <!--
-      <CobosDatabaseTable Include=""/>
-	  -->
-  </ItemGroup>
-
-  <Target Name="CobosPrepareForBuild" AfterTargets="PrepareForBuild">
-
-    <Error Condition="@(CobosDataModel) == ''" Text="Cobos: No CobosDataModel items have been defined"/>
-    <Error Condition="@(CobosDatabaseTable) == ''" Text="Cobos: No CobosDatabaseTable items have been defined"/>
+    <Error Condition="'@(CobosDatabaseTable)' == ''" Text="Cobos: No CobosDatabaseTable items have been defined"/>
     <Error Condition="'$(CobosDatabaseConnectionString)' == ''" Text="Cobos: The CobosDatabaseConnectionString property has not been defined"/>
     <Error Condition="'$(CobosDatabasePlatform)' == ''" Text="Cobos: The CobosDatabasePlatform property has not been defined"/>
     <Error Condition="'$(CobosDatabaseSchema)' == ''" Text="Cobos: The CobosDatabaseSchema property has not been defined"/>
     <Error Condition="'$(CobosNamespaceCode)' == ''" Text="Cobos: The CobosNamespaceCode property has not been defined"/>
     <Error Condition="'$(CobosNamespaceXml)' == ''" Text="Cobos: The CobosNamespaceXml property has not been defined"/>
+
+    <!-- Copy the codegen files to the project root -->
+    <ItemGroup>
+      <CobosCodegenFiles Include="$(MSBuildThisFileDirectory)..\tools\**\*.*" />
+    </ItemGroup>
+    
+    <Copy SourceFiles="@(CobosCodegenFiles)" DestinationFiles="@(CobosCodegenFiles->'$(MSBuildProjectDirectory)\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" OverwriteReadOnlyFiles="true" />
+    <Exec Command="attrib +H &quot;$(MSBuildProjectDirectory)\.cobos&quot; /D" />
     
     <!-- Create output directories -->
     <MakeDir Directories="@(CobosDataModel->'$(IntermediateOutputPath)%(Id)')" />
@@ -59,27 +37,6 @@
                 CobosDataModelAdapter;
                 CobosDataObjectSchema"/>
   </Target>
-
-  <ItemGroup Label="Custom Files">
-    <CobosCompile Include="
-                   @(CobosDataModel->'$(IntermediateOutputPath)%(Id)\DataModelAdapter.cs');
-                   @(CobosDataModel->'$(IntermediateOutputPath)%(Id)\DataObject.cs');
-                   @(CobosDataModel->'$(IntermediateOutputPath)%(Id)\DataObjectAdapter.cs');
-                   @(CobosDataModel->'$(IntermediateOutputPath)%(Id)\DataSet.cs')" />
-
-    <CobosNone Include="
-                $(IntermediateOutputPath)DatabaseSchema.xsd;
-                $(IntermediateOutputPath)DatabaseVariables.def;
-                @(CobosDataModel->'$(IntermediateOutputPath)%(Id)\%(Filename).Processed.xml');
-                @(CobosDataModel->'$(IntermediateOutputPath)%(Id)\DataModel.xsd');
-                @(CobosDataModel->'$(IntermediateOutputPath)%(Id)\DataSet.xsd');
-                @(CobosDataModel->'$(IntermediateOutputPath)%(Id)\DataSet.xsc');
-                @(CobosDataModel->'$(IntermediateOutputPath)%(Id)\DataSet.xss')" />
-
-    <Compile Include="@(CobosCompile)" />
-    <None Include="@(CobosNone)" />
-    <FileWrites Include="@(CobosCompile);@(CobosNone)" />
-  </ItemGroup>
 
   <Target Name="CobosDatabaseSchema" Condition="!Exists('$(IntermediateOutputPath)DatabaseSchema.xsd')">
     

@@ -5,8 +5,22 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
-  <Import Project="../../build/cobos.tools.targets"/>
-    
+  <PropertyGroup Label="NuGet">
+    <PackageId>Cobos</PackageId>
+    <Version>0.8.1</Version>
+    <Authors>Nicholas Davis</Authors>
+    <Company>Cobos Open Source</Company>
+    <Description>
+      Lighweight Data Access Objects based on ADO.NET. DAOs are specified in XML and transpiled into .NET code.
+    </Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageIcon>cobos.png</PackageIcon>
+    <NoWarn>$(NoWarn);NU5104</NoWarn>
+    <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);CobosBuildTargetsNuGet</TargetsForTfmSpecificContentInPackage>
+  </PropertyGroup>
+
+  <Import Project="../../build/cobos.tools.targets" />
+
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
     <PackageReference Include="Microsoft.Build.Framework" Version="16.11.0" />
     <PackageReference Include="Microsoft.Build.Utilities.Core" Version="16.11.0" />
@@ -15,7 +29,7 @@
     <PackageReference Include="Oracle.ManagedDataAccess" Version="21.3.0">
       <NoWarn>NU1701</NoWarn>
     </PackageReference>
-    <PackageReference Include="System.Data.DataSetExtensions" Version="4.6.0-preview3.19128.7" />
+    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
   </ItemGroup>
 
@@ -27,7 +41,7 @@
     <PackageReference Include="Oracle.ManagedDataAccess" Version="19.12.0">
       <NoWarn>NU1701</NoWarn>
     </PackageReference>
-    <PackageReference Include="System.Data.DataSetExtensions" Version="4.6.0-preview3.19128.7" />
+    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
     <PackageReference Include="System.Data.SqlClient" Version="4.1.0-rc2-24027" />
   </ItemGroup>
 
@@ -39,7 +53,7 @@
     <PackageReference Include="Oracle.ManagedDataAccess" Version="19.12.0">
       <NoWarn>NU1701</NoWarn>
     </PackageReference>
-    <PackageReference Include="System.Data.DataSetExtensions" Version="4.6.0-preview3.19128.7" />
+    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
   </ItemGroup>
 
@@ -51,7 +65,7 @@
     <PackageReference Include="Oracle.ManagedDataAccess" Version="19.12.0">
       <NoWarn>NU1701</NoWarn>
     </PackageReference>
-    <PackageReference Include="System.Data.DataSetExtensions" Version="4.6.0-preview3.19128.7" />
+    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
   </ItemGroup>
 
@@ -63,29 +77,8 @@
     <PackageReference Include="Oracle.ManagedDataAccess" Version="19.12.0">
       <NoWarn>NU1701</NoWarn>
     </PackageReference>
-    <PackageReference Include="System.Data.DataSetExtensions" Version="4.6.0-preview3.19128.7" />
+    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
-  </ItemGroup>
-    
-  <Target Name="CustomPrepareForBuild" AfterTargets="PrepareForBuild">
-    <CallTarget Targets="GenerateDataFilters" />
-  </Target>
-
-  <PropertyGroup Label="Generate Data Filters">
-    <CodegenSchemaDirectory>$(MSBuildProjectDirectory)\..\..\content\.cobos\Schemas\</CodegenSchemaDirectory>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="..\..\content\.cobos\Stylesheets\Database\DatabaseSchema.xslt">
-      <Link>Data\Database\DatabaseSchema.xslt</Link>
-    </EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <DataFilterSchema Include="$(CodegenSchemaDirectory)Filter.xsd;$(CodegenSchemaDirectory)Sort.xsd" />
-    <CustomCompile Include="@(DataFilterSchema->'$(IntermediateOutputPath)%(Filename).cs')" />
-    <Compile Include="@(CustomCompile)" />
-    <FileWrites Include="@(CustomCompile)" />
   </ItemGroup>
 
   <ItemGroup>
@@ -95,26 +88,85 @@
     </PackageReference>
   </ItemGroup>
 
-  <Target Name="GenerateDataFilters" Inputs="@(DataFilterSchema)" Outputs="@(DataFilterSchema->'$(IntermediateOutputPath)%(Filename).cs')">
+  <Target Name="CustomPrepareForBuild" AfterTargets="PrepareForBuild">
+    <CallTarget Targets="GenerateDataFilters" />
+  </Target>
 
+  <PropertyGroup Label="Generate Data Filters">
+    <CodegenSchemaDirectory>$(MSBuildProjectDirectory)\..\..\tools\.cobos\Schemas\</CodegenSchemaDirectory>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="..\..\tools\.cobos\Stylesheets\Database\DatabaseSchema.xslt">
+      <Link>Data\Database\DatabaseSchema.xslt</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <DataFilterSchema Include="$(CodegenSchemaDirectory)Filter.xsd;$(CodegenSchemaDirectory)Sort.xsd" />
+    <CustomCompile Include="@(DataFilterSchema->'$(IntermediateOutputPath)%(Filename).cs')">
+      <Visible>False</Visible>
+    </CustomCompile>
+    <Compile Include="@(CustomCompile)" />
+    <FileWrites Include="@(CustomCompile)" />
+  </ItemGroup>
+
+  <ItemGroup Label="NuGet Content">
+    <None Include="..\..\tools\**\*.*">
+      <Pack>true</Pack>
+      <PackagePath>tools</PackagePath>
+    </None>
+    <None Include="..\..\build\*.*">
+      <Pack>true</Pack>
+      <PackagePath>build</PackagePath>
+    </None>
+    <None Include="..\..\images\cobos.png">
+      <Pack>true</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <Target Name="GenerateDataFilters" Inputs="@(DataFilterSchema)" Outputs="@(DataFilterSchema->'$(IntermediateOutputPath)%(Filename).cs')">
     <Exec Command="&quot;$(SvcUtilExe)&quot; &quot;%(DataFilterSchema.Identity)&quot; /dataContractOnly /edb /namespace:*,Cobos.Data.Filter /out:&quot;$(IntermediateOutputPath)%(DataFilterSchema.Filename).cs&quot;" />
     <ReplaceFileText Filename="$(IntermediateOutputPath)Sort.cs" MatchExpression="public class SortBy" ReplacementText="public partial class SortBy" />
     <SuppressXmlDocumentationWarnings Filename="$(IntermediateOutputPath)%(DataFilterSchema.Filename).cs" />
-    
   </Target>
 
-  <Target Name="CobosAfterBuild" AfterTargets="AfterBuild" Condition="'$(TargetFramework)' == 'net46'" >
+  <Target Name="CobosAfterBuild" AfterTargets="AfterBuild">
+    <CallTarget Targets="CopyFullBuildTargets" Condition="'$(TargetFramework)' == 'net46'" />
+    <CallTarget Targets="CopyCoreBuildTargets" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
+  </Target>
+
+  <Target Name="CopyFullBuildTargets">
     <PropertyGroup>
-      <CobosBuildTargetsFolder>$(MSBuildThisFileDirectory)..\..\build\$(TargetFramework)\</CobosBuildTargetsFolder>
-      <CobosTestsFolder>$(MSBuildThisFileDirectory)..\..\tests\Cobos\</CobosTestsFolder>
+      <CobosBuildTargetsFolder>$(MSBuildThisFileDirectory)..\..\build\Full\</CobosBuildTargetsFolder>
     </PropertyGroup>
     <ItemGroup>
-      <CobosCodegenFiles Include="..\..\content\**\*.*" />
       <CobosOutputFiles Include="$(OutDir)**\*.*" />
     </ItemGroup>
     <MakeDir Condition="!Exists($(CobosBuildTargetsFolder))" Directories="$(CobosBuildTargetsFolder)" />
     <Copy SourceFiles="@(CobosOutputFiles)" DestinationFiles="@(CobosOutputFiles->'$(CobosBuildTargetsFolder)%(Filename)%(Extension)')" />
-    <Copy SourceFiles="@(CobosCodegenFiles)" DestinationFiles="@(CobosCodegenFiles->'$(CobosTestsFolder)%(RecursiveDir)%(Filename)%(Extension)')" />
-</Target>
-  
+  </Target>
+
+  <Target Name="CopyCoreBuildTargets">
+    <PropertyGroup>
+      <CobosBuildTargetsFolder>$(MSBuildThisFileDirectory)..\..\build\Core\</CobosBuildTargetsFolder>
+    </PropertyGroup>
+    <ItemGroup>
+      <CobosOutputFiles Include="$(OutDir)**\*.*" />
+    </ItemGroup>
+    <MakeDir Condition="!Exists($(CobosBuildTargetsFolder))" Directories="$(CobosBuildTargetsFolder)" />
+    <Copy SourceFiles="@(CobosOutputFiles)" DestinationFiles="@(CobosOutputFiles->'$(CobosBuildTargetsFolder)%(Filename)%(Extension)')" />
+  </Target>
+
+  <Target Name="CobosBuildTargetsNuGet">
+    <ItemGroup>
+      <TfmSpecificPackageFile Include="$(OutDir)**\*.*" Condition="'$(TargetFramework)' == 'net46'">
+        <PackagePath>build\Full</PackagePath>
+      </TfmSpecificPackageFile>
+      <TfmSpecificPackageFile Include="$(OutDir)**\*.*" Condition="'$(TargetFramework)' == 'netstandard2.0'">
+        <PackagePath>build\Core</PackagePath>
+      </TfmSpecificPackageFile>
+    </ItemGroup>
+  </Target>
 </Project>
