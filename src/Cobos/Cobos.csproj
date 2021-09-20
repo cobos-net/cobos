@@ -7,7 +7,7 @@
 
   <PropertyGroup Label="NuGet">
     <PackageId>Cobos</PackageId>
-    <Version>0.8.1</Version>
+    <Version>1.0.0</Version>
     <Authors>Nicholas Davis</Authors>
     <Company>Cobos Open Source</Company>
     <Description>

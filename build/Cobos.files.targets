@@ -1,6 +1,6 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-  <ItemGroup Label="Cobos Codegen Files">
+  <ItemGroup Label="Cobos Codegen Files" Condition="'@(CobosDataModel)' != ''">
     <CobosCompile Include="
                    @(CobosDataModel->'$(IntermediateOutputPath)%(Id)\DataModelAdapter.cs');
                    @(CobosDataModel->'$(IntermediateOutputPath)%(Id)\DataObject.cs');
