@@ -18,7 +18,7 @@
   ==================================================================== 
   -->
 
-  <Target Name="CobosOnOuterBuild" BeforeTargets="DispatchToInnerBuilds">
+  <Target Name="CobosOnOuterBuild" BeforeTargets="DispatchToInnerBuilds" Condition="'@(CobosDataModel)' != ''">
     <CallTarget Targets="CobosRefreshToolsAndDatabaseMetadata" />
   </Target>
 
@@ -31,7 +31,7 @@
   ==================================================================== 
   -->
   
-  <Target Name="CobosClean" AfterTargets="Clean">
+  <Target Name="CobosClean" AfterTargets="Clean" Condition="'@(CobosDataModel)' != ''">
     <Delete Files="@(CobosDatabaseFiles)" />  
   </Target>
 
