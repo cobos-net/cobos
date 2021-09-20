@@ -26,20 +26,19 @@
     <ProjectReference Include="..\..\src\Cobos\Cobos.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <CobosDataModel Include="$(MSBuildProjectDirectory)\.cobos\Examples\Northwind.xml">
-      <Id>Northwind</Id>
-      <SchemaOptions>
-        <Parameter Name="multiplicityMode" Value="optional" />
-      </SchemaOptions>
-    </CobosDataModel>
-  </ItemGroup>
-
-  <Import Project="../../build/Cobos.files.targets" />
-
-  <!-- Run the code generator in another process to stop MSBuild locking the file -->
-  <Target Name="CobosTestsPrepareForBuild" AfterTargets="PrepareForBuild" Condition="'$(BuildingProject)' == 'true'">
-    <Exec Command="&quot;$(MSBuildToolsPath)\msbuild.exe&quot; /p:BuildingProject=true /p:IntermediateOutputPath=$(IntermediateOutputPath) /tv:Current Cobos.Tests.targets" WorkingDirectory="$(MSBuildProjectDirectory)" />
+  <Target Name="CobosTestsOnOuterBuild" BeforeTargets="DispatchToInnerBuilds">
+    <Exec Command="&quot;$(MSBuildToolsPath)\msbuild.exe&quot; /t:CobosOnOuterBuild /p:BuildingFromCobosTests=true /tv:Current Cobos.Tests.targets" WorkingDirectory="$(MSBuildProjectDirectory)" />
   </Target>
   
+  <!-- Run the code generator in another process to stop MSBuild locking the build targets DLLs -->
+  <Target Name="CobosTestsPrepareForBuild" AfterTargets="PrepareForBuild" Condition="'$(DesignTimeBuild)' != 'true' and '$(BuildingProject)' == 'true'">
+    <Exec Command="&quot;$(MSBuildToolsPath)\msbuild.exe&quot; /t:CobosPrepareForBuild /p:BuildingProject=true /p:BuildingFromCobosTests=true /p:TargetFrameworks=&quot;$(TargetFrameworks)&quot; /p:TargetFramework=$(TargetFramework) /p:IntermediateOutputPath=$(IntermediateOutputPath) /tv:Current Cobos.Tests.targets" WorkingDirectory="$(MSBuildProjectDirectory)" />
+  </Target>
+
+  <Target Name="CobosTestsClean" AfterTargets="Clean">
+    <Exec Command="&quot;$(MSBuildToolsPath)\msbuild.exe&quot; /t:CobosClean /p:BuildingFromCobosTests=true /tv:Current Cobos.Tests.targets" WorkingDirectory="$(MSBuildProjectDirectory)" />
+  </Target>
+
+  <Import Project="Cobos.Tests.targets" />
+
 </Project>

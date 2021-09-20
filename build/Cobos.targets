@@ -21,7 +21,7 @@
   </ItemGroup>
   
   <Import Project="Cobos.tools.targets"/>
-  <Import Project="Cobos.files.targets"/>
   <Import Project="Cobos.codegen.targets"/>
+  <Import Project="Cobos.files.targets"/>
 
 </Project>

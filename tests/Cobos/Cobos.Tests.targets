@@ -1,4 +1,4 @@
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="CobosPrepareForBuild">
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <!--
   =============================================================================
   Codegen definitions
@@ -29,6 +29,11 @@
       </SchemaOptions>
     </CobosDataModel>
   </ItemGroup>
-  
-  <Import Project="../../build/Cobos.targets" />
+
+  <!-- When building this from the command line via the main project, import the full set of targets -->
+  <Import Project="../../build/Cobos.targets" Condition="$(BuildingFromCobosTests) == 'true'" />
+
+  <!-- When importing this in the main project, just import the FileWrites and Compile items -->
+  <Import Project="../../build/Cobos.files.targets" Condition="$(BuildingFromCobosTests) == ''" />
+
 </Project>

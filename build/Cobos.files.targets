@@ -9,9 +9,12 @@
       <Visible>False</Visible>
     </CobosCompile>
 
+    <CobosDatabaseFiles Include="
+                $(MSBuildProjectDirectory)\.cobos\Stylesheets\Database\DatabaseSchema.xsd;
+                $(MSBuildProjectDirectory)\.cobos\Stylesheets\Database\DatabaseVariables.def">
+    </CobosDatabaseFiles>
+    
     <CobosNone Include="
-                $(IntermediateOutputPath)DatabaseSchema.xsd;
-                $(IntermediateOutputPath)DatabaseVariables.def;
                 @(CobosDataModel->'$(IntermediateOutputPath)%(Id)\%(Filename).Processed.xml');
                 @(CobosDataModel->'$(IntermediateOutputPath)%(Id)\DataModel.xsd');
                 @(CobosDataModel->'$(IntermediateOutputPath)%(Id)\DataSet.xsd');
