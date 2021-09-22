@@ -143,17 +143,13 @@
         {
             int numRows = this.Table.Rows.Count;
 
-            var results = new <xsl:apply-templates select="." mode="listDecl"/>(numRows);
-
             for (int row = 0; row &lt; numRows; ++row)
             {
                 if (this.Table[row].RowState != global::System.Data.DataRowState.Deleted)
                 {
-                    results.Add(new <xsl:value-of select="@className"/>(this.Table[row]));
+                    yield return new <xsl:value-of select="@className"/>(this.Table[row]);
                 }
             }
-
-            return results;
         }
   </xsl:template>
 </xsl:stylesheet>

@@ -32,7 +32,7 @@
         /// &lt;/summary&gt;
         private void InsertRows(global::System.Data.IDbConnection connection, <xsl:apply-templates select="." mode="listDeclDataRow"/> changed)
         {
-            if (changed.Count == 0)
+            if (changed.Any() == false)
             {
                 return;
             }

@@ -184,12 +184,12 @@
   =============================================================================
   -->
   <xsl:template match="cobos:Object" mode="listDecl">
-    <xsl:value-of select="concat('global::System.Collections.Generic.List&lt;', @className, '&gt;')"/>
+    <xsl:value-of select="concat('global::System.Collections.Generic.IEnumerable&lt;', @className, '&gt;')"/>
   </xsl:template>
   <xsl:template match="cobos:Object" mode="listDeclDataRow">
-    <xsl:value-of select="concat('global::System.Collections.Generic.List&lt;', @datasetRowType, '&gt;')"/>
+    <xsl:value-of select="concat('global::System.Collections.Generic.IEnumerable&lt;', @datasetRowType, '&gt;')"/>
   </xsl:template>
   <xsl:template match="cobos:Reference" mode="listDecl">
-    <xsl:value-of select="concat('global::System.Collections.Generic.List&lt;', @ref, '&gt;')"/>
+    <xsl:value-of select="concat('global::System.Collections.Generic.IEnumerable&lt;', @ref, '&gt;')"/>
   </xsl:template>
 </xsl:stylesheet>

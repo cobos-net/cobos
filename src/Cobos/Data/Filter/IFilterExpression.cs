@@ -15,6 +15,6 @@ namespace Cobos.Data.Filter
         /// Accept the visitor.
         /// </summary>
         /// <param name="visitor">The predicate visitor.</param>
-        void Accept(IFilterPredicateVisitor visitor);
+        void Accept(IFilterExpressionVisitor visitor);
     }
 }

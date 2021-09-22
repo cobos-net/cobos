@@ -42,7 +42,7 @@ namespace Cobos.Data.Tests.DataObject
 
                 var customers = customerData.GetEntities();
                 Assert.IsNotNull(customers);
-                Assert.AreNotEqual(0, customers.Count);
+                Assert.AreNotEqual(0, customers.ToList().Count);
             }
         }
 
@@ -61,7 +61,7 @@ namespace Cobos.Data.Tests.DataObject
 
                 var territories = territoryData.GetEntities();
                 Assert.IsNotNull(territories);
-                Assert.AreNotEqual(0, territories.Count);
+                Assert.AreNotEqual(0, territories.ToList().Count);
             }
         }
 
@@ -69,6 +69,7 @@ namespace Cobos.Data.Tests.DataObject
         /// Strategy:
         /// ---------
         /// 1. Fetch Employee records from the database.
+        /// 2. Test that no territories are loaded without the EmployeeTerritoryDataAdapter being called.
         /// </summary>
         [TestMethod]
         public void Can_get_employees()
@@ -80,9 +81,9 @@ namespace Cobos.Data.Tests.DataObject
 
                 var employees = employeeData.GetEntities();
                 Assert.IsNotNull(employees);
-                Assert.AreNotEqual(0, employees.Count);
+                Assert.AreNotEqual(0, employees.ToList().Count);
 
-                employees.Any(e => e.Territories.Count > 0);
+                Assert.IsFalse(employees.Any(e => e.Territories.ToList().Count > 0));
             }
         }
 
@@ -100,7 +101,7 @@ namespace Cobos.Data.Tests.DataObject
                 var productData = new ActiveProductDataAdapter(database.ConnectionString, database.ProviderFactory);
                 productData.Fill(null, null);
 
-                var products = productData.GetEntities();
+                var products = productData.GetEntities().ToList();
                 Assert.IsNotNull(products);
                 Assert.AreNotEqual(0, products.Count);
                 TestManager.Serialize(products);
@@ -110,15 +111,19 @@ namespace Cobos.Data.Tests.DataObject
                 var firstProduct = products[0].Productname;
                 var filter = new Filter
                 {
-                    Predicate = new PropertyIsEqualTo() { ValueReference = "Productname", Literal = firstProduct },
+                    Predicate = new PropertyIsEqualTo()
+                    {
+                        Left = new PropertyName { Value = "Productname" },
+                        Right = new Literal { Value = firstProduct },
+                    },
                 };
 
                 productData.Table.Clear();
                 productData.Fill(filter, null);
 
-                products = productData.GetEntities();
+                products = productData.GetEntities().ToList();
                 Assert.IsNotNull(products);
-                Assert.AreNotEqual(0, products.Count);
+                Assert.AreNotEqual(0, products.ToList().Count);
                 Assert.AreEqual(1, products.Count);
                 Assert.AreEqual(firstProduct, products[0].Productname);
             }
@@ -137,7 +142,7 @@ namespace Cobos.Data.Tests.DataObject
             {
                 var orderDetailsData = new OrderDetailsSortedDataAdapter(database.ConnectionString, database.ProviderFactory);
                 orderDetailsData.Fill(null, null);
-                var orders = orderDetailsData.GetEntities();
+                var orders = orderDetailsData.GetEntities().ToList();
                 Assert.IsNotNull(orders);
                 Assert.AreNotEqual(0, orders.Count);
 
@@ -146,11 +151,11 @@ namespace Cobos.Data.Tests.DataObject
                     Assert.IsTrue(orders[i - 1].Unitprice <= orders[i].Unitprice);
                 }
 
-                var sort = new SortBy() { new SortProperty() { ValueReference = "Quantity", SortOrder = SortOrder.DESC } };
+                var sort = new SortBy() { new SortProperty() { PropertyName = "Quantity", SortOrder = SortOrder.DESC } };
 
                 orderDetailsData.Table.Clear();
                 orderDetailsData.Fill(null, sort);
-                orders = orderDetailsData.GetEntities();
+                orders = orderDetailsData.GetEntities().ToList();
                 Assert.IsNotNull(orders);
                 Assert.AreNotEqual(0, orders.Count);
 
@@ -473,7 +478,7 @@ namespace Cobos.Data.Tests.DataObject
                 var territorySalesData = new TerritorySalesTotalsDataAdapter(database.ConnectionString, database.ProviderFactory);
                 territorySalesData.Fill(null, null);
 
-                var territorySales = territorySalesData.GetEntities();
+                var territorySales = territorySalesData.GetEntities().ToList();
 
                 Assert.AreEqual(territoryCount, (long)territorySales.Count);
 

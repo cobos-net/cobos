@@ -69,7 +69,7 @@
         /// &lt;param name="changed"&gt;The rows that are to be deleted.&lt;/param&gt;
         private void DeleteRows(global::System.Data.IDbConnection connection, <xsl:apply-templates select="." mode="listDeclDataRow"/> changed)
         {
-            if (changed.Count == 0)
+            if (changed.Any() == false)
             {
                 return;
             }

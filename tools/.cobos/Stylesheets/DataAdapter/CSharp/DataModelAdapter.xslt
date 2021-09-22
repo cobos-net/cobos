@@ -280,7 +280,7 @@
     <xsl:value-of select="concat($indent, '/// &lt;param name=&quot;filter&quot;&gt;The filter specification. May be null&lt;/param&gt;')"/>
     <xsl:value-of select="concat($indent, '/// &lt;param name=&quot;sort&quot;&gt;The sort specification. May be null&lt;/param&gt;')"/>
     <xsl:value-of select="concat($indent, '/// &lt;returns&gt;A collection of objects from the database.&lt;/returns&gt;')"/>
-    <xsl:value-of select="concat($indent, 'public global::System.Collections.Generic.List&lt;',@className ,'&gt; Get', @className,'(Cobos.Data.Filter.Filter filter, Cobos.Data.Filter.SortBy sort)')"/>
+    <xsl:value-of select="concat($indent, 'public global::System.Collections.Generic.IEnumerable&lt;',@className ,'&gt; Get', @className,'(Cobos.Data.Filter.Filter filter, Cobos.Data.Filter.SortBy sort)')"/>
     <xsl:value-of select="concat($indent, '{')"/>
     <xsl:value-of select="concat($indent, '    this.DataModel.EnforceConstraints = false;')"/>
     <xsl:value-of select="$indent"/>

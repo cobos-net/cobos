@@ -19,27 +19,49 @@ namespace Cobos.Data.Filter
         /// <typeparam name="TLogic">The binary Logic type.</typeparam>
         /// <typeparam name="TComparison">The binary Comparison type.</typeparam>
         /// <typeparam name="TLiteral">The literal Type.</typeparam>
-        /// <param name="valueReference">The value reference name.</param>
+        /// <param name="propertyName">The value reference name.</param>
         /// <param name="values">The list of literal values.</param>
         /// <returns>The constructed Binary Logic operation.</returns>
-        public static TLogic FromList<TLogic, TComparison, TLiteral>(string valueReference, global::System.Collections.Generic.List<TLiteral> values)
+        public static FilterPredicate Compose<TLogic, TComparison, TLiteral>(string propertyName, global::System.Collections.Generic.IEnumerable<TLiteral> values)
             where TLogic : BinaryLogicOp, new()
             where TComparison : BinaryComparisonOp, new()
         {
-            if (values == null || values.Count == 0)
+            if (values?.Any() != true)
             {
                 return null;
             }
 
-            var comparisons = values.Select(v => new TComparison() { ValueReference = valueReference, Literal = v.ToString() }).ToList();
-
-            var logical = new TLogic
+            var comparisons = values.Select(v =>
+            new TComparison()
             {
-                Predicate = new BinaryLogicOp.PredicateType(),
-            };
-            logical.Predicate.AddRange(comparisons);
+                Left = new PropertyName { Value = propertyName },
+                Right = new Literal { Value = v.ToString() },
+            }).ToList();
 
-            return logical;
+            if (comparisons.Count == 1)
+            {
+                return comparisons[0];
+            }
+
+            var logic = new TLogic();
+            var current = logic;
+            current.Condition1 = comparisons[0];
+
+            for (int i = 1; i < comparisons.Count; ++i)
+            {
+                if (i == comparisons.Count - 1)
+                {
+                    current.Condition2 = comparisons[i];
+                }
+                else
+                {
+                    current.Condition2 = new TLogic();
+                    current = (TLogic)current.Condition2;
+                    current.Condition1 = comparisons[i];
+                }
+            }
+
+            return logic;
         }
     }
 }

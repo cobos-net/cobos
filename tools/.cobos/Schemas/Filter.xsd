@@ -55,8 +55,25 @@
   EXPRESSIONS 
   =============================================================================
   -->
-  <xsd:element name="ValueReference" type="xsd:string"/>
-  <xsd:element name="Literal" type="xsd:string"/>
+  <xsd:complexType name="Expression">
+    <xsd:sequence>
+      <xsd:element name="Value" type="xsd:string" />
+    </xsd:sequence>
+  </xsd:complexType>
+  
+  <xsd:element name="PropertyName" type="cobos:PropertyName"/>
+  <xsd:complexType name="PropertyName">
+    <xsd:complexContent>
+      <xsd:extension base="cobos:Expression" />
+     </xsd:complexContent>
+  </xsd:complexType>
+  
+  <xsd:element name="Literal" type="cobos:Literal"/>
+  <xsd:complexType name="Literal">
+    <xsd:complexContent>
+      <xsd:extension base="cobos:Expression" />
+    </xsd:complexContent>
+  </xsd:complexType>
   <!--
   =============================================================================
   FILTER DEFINITION                                                   
@@ -89,8 +106,8 @@
     <xsd:complexContent>
       <xsd:extension base="cobos:ComparisonOps">
         <xsd:sequence>
-          <xsd:element name="ValueReference" type="xsd:string"/>
-          <xsd:element name="Literal" type="xsd:string"/>
+          <xsd:element name="Left" type="cobos:Expression" />
+          <xsd:element name="Right" type="cobos:Expression" />
           <xsd:element name="Options" minOccurs="0" type="cobos:BinaryComparisonOpOptions"/>
         </xsd:sequence>
       </xsd:extension>
@@ -172,8 +189,8 @@
     <xsd:complexContent>
       <xsd:extension base="cobos:ComparisonOps">
         <xsd:sequence>
-          <xsd:element name="ValueReference" type="xsd:string"/>
-          <xsd:element name="Literal" type="xsd:string"/>
+          <xsd:element name="PropertyName" type="cobos:PropertyName"/>
+          <xsd:element name="Literal" type="cobos:Literal" />
           <xsd:element name="Options" minOccurs="0" type="cobos:PropertyIsLikeOptions"/>
         </xsd:sequence>
       </xsd:extension>
@@ -197,7 +214,7 @@
     <xsd:complexContent>
       <xsd:extension base="cobos:ComparisonOps">
         <xsd:sequence>
-          <xsd:element name="ValueReference" type="xsd:string"/>
+          <xsd:element name="PropertyName" type="cobos:PropertyName"/>
         </xsd:sequence>
       </xsd:extension>
     </xsd:complexContent>
@@ -210,7 +227,7 @@
     <xsd:complexContent>
       <xsd:extension base="cobos:ComparisonOps">
         <xsd:sequence>
-          <xsd:element name="ValueReference" type="xsd:string"/>
+          <xsd:element name="Expression" type="cobos:Expression"/>
           <xsd:element name="LowerBoundary" type="cobos:LowerBoundary"/>
           <xsd:element name="UpperBoundary" type="cobos:UpperBoundary"/>
         </xsd:sequence>
@@ -219,12 +236,12 @@
   </xsd:complexType>
   <xsd:complexType name="LowerBoundary">
     <xsd:sequence>
-      <xsd:element name="Literal" type="xsd:string"/>
+      <xsd:element name="Expression" type="cobos:Expression" />
     </xsd:sequence>
   </xsd:complexType>
   <xsd:complexType name="UpperBoundary">
     <xsd:sequence>
-      <xsd:element name="Literal" type="xsd:string"/>
+      <xsd:element name="Expression" type="cobos:Expression" />
     </xsd:sequence>
   </xsd:complexType>
   <!--
@@ -232,7 +249,7 @@
   LOGICAL OPERATORS                                                   
   =============================================================================
   -->
-  <xsd:element name="logicOps" type="cobos:LogicOps"/>
+  <xsd:element name="LogicOps" type="cobos:LogicOps"/>
   <xsd:complexType name="LogicOps">
     <xsd:complexContent>
       <xsd:extension base="cobos:FilterPredicate"/>
@@ -245,13 +262,8 @@
     <xsd:complexContent>
       <xsd:extension base="cobos:LogicOps">
         <xsd:sequence>
-          <xsd:element name="Predicate">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="ArrayOfFilterPredicate" type="cobos:FilterPredicate" minOccurs="2" maxOccurs="unbounded"/>
-              </xsd:sequence>
-            </xsd:complexType>
-          </xsd:element>
+          <xsd:element name="Condition1" type="cobos:FilterPredicate" />
+          <xsd:element name="Condition2" type="cobos:FilterPredicate" />
         </xsd:sequence>
       </xsd:extension>
     </xsd:complexContent>
@@ -263,7 +275,7 @@
     <xsd:complexContent>
       <xsd:extension base="cobos:LogicOps">
         <xsd:sequence>
-          <xsd:element name="Predicate" type="cobos:FilterPredicate" />
+          <xsd:element name="Condition" type="cobos:FilterPredicate" />
         </xsd:sequence>
       </xsd:extension>
     </xsd:complexContent>

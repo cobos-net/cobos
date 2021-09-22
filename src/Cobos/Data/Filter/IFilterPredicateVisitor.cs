@@ -7,7 +7,7 @@
 namespace Cobos.Data.Filter
 {
     /// <summary>
-    /// Interface specification of <see cref="IFilterPredicateVisitor"/>.
+    /// Vistor for a <see cref="IFilterPredicate"/>.
     /// </summary>
     public interface IFilterPredicateVisitor
     {

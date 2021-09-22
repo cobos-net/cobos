@@ -94,7 +94,7 @@ namespace Cobos.Data.Statements
         /// <param name="element">The element.</param>
         public void Visit(SortProperty element)
         {
-            this.columns.Add(this.map[element.ValueReference].ToString() + " " + element.SortOrder.ToEnumString());
+            this.columns.Add(this.map[element.PropertyName].ToString() + " " + element.SortOrder.ToEnumString());
         }
     }
 }

@@ -19,23 +19,48 @@ namespace Cobos.Data.Tests.Filter
         /// <summary>
         /// Strategy:
         /// ---------
-        /// 1. Test that filter expressions can be deserialized.
+        /// 1. Create a Binary Comparison from a list of literal values.
         /// </summary>
         [TestMethod]
-        public void Can_deserialize_filter_expressions()
+        public void Can_deserialize_PropertyIsEqualTo() => TestFilter<PropertyIsEqualTo>();
+
+        /// <summary>
+        /// Strategy:
+        /// ---------
+        /// 1. Create a Binary Logic operation from a list of literal values.
+        /// </summary>
+        [TestMethod]
+        public void Can_deserialize_And() => TestFilter<And>();
+
+        /// <summary>
+        /// Strategy:
+        /// ---------
+        /// 1. Create a Binary Logic operation from a list of literal values.
+        /// </summary>
+        [TestMethod]
+        public void Can_deserialize_Or() => TestFilter<Or>();
+
+        /// <summary>
+        /// Strategy:
+        /// ---------
+        /// 1. Create a Unary Logic operation from a list of literal values.
+        /// </summary>
+        [TestMethod]
+        public void Can_deserialize_Not() => TestFilter<Not>();
+
+        private static Filter TestFilter<TPredicate>()
         {
-            Cobos.Utilities.IO.FileUtility.TryFindAllFiles(TestManager.ProjectDirectory + @"..\..\.cobos\Schemas\examples", "*.xml", false, out string[] examples, out _);
+            var filename = TestManager.ProjectDirectory + $@"..\..\.cobos\Examples\{typeof(TPredicate).Name}.xml";
 
-            foreach (var example in examples)
-            {
-                Console.WriteLine("File: " + System.IO.Path.GetFileName(example));
-                var xml = System.IO.File.ReadAllText(example);
+            Console.WriteLine("File: " + System.IO.Path.GetFileName(filename));
+            var xml = System.IO.File.ReadAllText(filename);
 
-                var filter = Filter.Deserialize(xml);
-                Assert.IsNotNull(filter);
-                Assert.IsNotNull(filter.Predicate);
-                Assert.AreSame(typeof(PropertyIsEqualTo), filter.Predicate.GetType());
-            }
+            var filter = Filter.Deserialize(xml);
+            Assert.IsNotNull(filter);
+            Assert.IsNotNull(filter.Predicate);
+            Assert.AreSame(typeof(TPredicate), filter.Predicate.GetType());
+
+            return filter;
         }
     }
 }

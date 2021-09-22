@@ -6,6 +6,8 @@
 
 namespace Cobos.Data.Statements
 {
+    using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Text;
     using Cobos.Data.Filter;
     using Cobos.Data.Mapping;
@@ -15,7 +17,7 @@ namespace Cobos.Data.Statements
     /// Class specification and implementation of <see cref="SqlPredicateVisitor{T}"/>.
     /// </summary>
     /// <typeparam name="T">The entity type to map to.</typeparam>
-    public class SqlPredicateVisitor<T> : IFilterPredicateVisitor
+    public class SqlPredicateVisitor<T> : IFilterPredicateVisitor, IFilterExpressionVisitor
     {
         /// <summary>
         /// The internal buffer.
@@ -28,12 +30,18 @@ namespace Cobos.Data.Statements
         private readonly PropertyMap map;
 
         /// <summary>
+        /// Track context for evaluating expressions.
+        /// </summary>
+        private readonly Stack<ComparisonOps> expressionContext;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="SqlPredicateVisitor{T}"/> class.
         /// </summary>
         public SqlPredicateVisitor()
         {
             this.buffer = new StringBuilder(4096);
             this.map = PropertyMapRegistry.Instance[typeof(T)];
+            this.expressionContext = new Stack<ComparisonOps>();
         }
 
         /// <summary>
@@ -73,23 +81,63 @@ namespace Cobos.Data.Statements
         }
 
         /// <summary>
+        /// Visit the expression.
+        /// </summary>
+        /// <param name="expression">The expression.</param>
+        public void Visit(PropertyName expression)
+        {
+            var property = this.map[expression.Value];
+
+            if (property == null)
+            {
+                throw new System.InvalidOperationException($"Invalid property name '{expression.Value}' for {this.map.MappingType.Name}.");
+            }
+
+            this.buffer.Append(property.ToString());
+        }
+
+        /// <summary>
+        /// Visit the expression.
+        /// </summary>
+        /// <param name="expression">The expression.</param>
+        public void Visit(Literal expression)
+        {
+            var context = this.expressionContext.Peek();
+
+            if (string.IsNullOrEmpty(expression?.Value?.Trim()))
+            {
+                this.buffer.Append("NULL");
+                return;
+            }
+
+            if (context is BinaryComparisonOp comparison)
+            {
+                this.Evaluate(expression, comparison);
+            }
+            else if (context is PropertyIsBetween between)
+            {
+                this.Evaluate(expression, between);
+            }
+            else if (context is PropertyIsLike like)
+            {
+                this.Evaluate(expression, like);
+            }
+            else
+            {
+                Debug.Assert(false, $"Unsupported literal context: {context?.GetType().Name ?? "null reference"}");
+            }
+        }
+
+        /// <summary>
         /// Visit the predicate.
         /// </summary>
         /// <param name="predicate">The predicate.</param>
         public void Visit(And predicate)
         {
             this.buffer.Append('(');
-
-            for (int i = 0; i < predicate.Predicate.Count; ++i)
-            {
-                if (i > 0)
-                {
-                    this.buffer.Append(" AND ");
-                }
-
-                predicate.Predicate[i].Accept(this);
-            }
-
+            predicate.Condition1.Accept(this);
+            this.buffer.Append(" AND ");
+            predicate.Condition2.Accept(this);
             this.buffer.Append(')');
         }
 
@@ -99,19 +147,11 @@ namespace Cobos.Data.Statements
         /// <param name="predicate">The predicate.</param>
         public void Visit(Or predicate)
         {
-            this.buffer.Append("(");
-
-            for (int i = 0; i < predicate.Predicate.Count; ++i)
-            {
-                if (i > 0)
-                {
-                    this.buffer.Append(" OR ");
-                }
-
-                predicate.Predicate[i].Accept(this);
-            }
-
-            this.buffer.Append(")");
+            this.buffer.Append('(');
+            predicate.Condition1.Accept(this);
+            this.buffer.Append(" OR ");
+            predicate.Condition2.Accept(this);
+            this.buffer.Append(')');
         }
 
         /// <summary>
@@ -120,8 +160,8 @@ namespace Cobos.Data.Statements
         /// <param name="predicate">The predicate.</param>
         public void Visit(Not predicate)
         {
-            this.buffer.Append("NOT (");
-            predicate.Predicate.Accept(this);
+            this.buffer.Append($"NOT (");
+            predicate.Condition.Accept(this);
             this.buffer.Append(")");
         }
 
@@ -131,15 +171,24 @@ namespace Cobos.Data.Statements
         /// <param name="predicate">The predicate.</param>
         public void Visit(PropertyIsBetween predicate)
         {
-            var property = this.map[predicate.ValueReference];
-            var lower = this.Value(property, predicate.LowerBoundary.Literal);
-            var upper = this.Value(property, predicate.UpperBoundary.Literal);
+            if (predicate.Expression is PropertyName == false)
+            {
+                throw new System.NotSupportedException($"Cannot evaluate a {nameof(PropertyIsBetween)} comparison where the expression is not a {nameof(PropertyName)}");
+            }
+
+            this.expressionContext.Push(predicate);
 
             this.buffer.Append("(");
-            this.buffer.Append(property.ToString() + " > " + lower);
+            predicate.Expression.Accept(this);
+            this.buffer.Append(" >= ");
+            predicate.LowerBoundary.Expression.Accept(this);
             this.buffer.Append(" AND ");
-            this.buffer.Append(property.ToString() + " < " + upper);
+            predicate.Expression.Accept(this);
+            this.buffer.Append(" <= ");
+            predicate.UpperBoundary.Expression.Accept(this);
             this.buffer.Append(")");
+
+            this.expressionContext.Pop();
         }
 
         /// <summary>
@@ -148,7 +197,7 @@ namespace Cobos.Data.Statements
         /// <param name="predicate">The predicate.</param>
         public void Visit(PropertyIsEqualTo predicate)
         {
-            this.Comparison(predicate, " = ");
+            this.Comparison(predicate, "=");
         }
 
         /// <summary>
@@ -157,7 +206,7 @@ namespace Cobos.Data.Statements
         /// <param name="predicate">The predicate.</param>
         public void Visit(PropertyIsGreaterThan predicate)
         {
-            this.Comparison(predicate, " > ");
+            this.Comparison(predicate, ">");
         }
 
         /// <summary>
@@ -166,7 +215,7 @@ namespace Cobos.Data.Statements
         /// <param name="predicate">The predicate.</param>
         public void Visit(PropertyIsGreaterThanOrEqualTo predicate)
         {
-            this.Comparison(predicate, " >= ");
+            this.Comparison(predicate, ">=");
         }
 
         /// <summary>
@@ -175,7 +224,7 @@ namespace Cobos.Data.Statements
         /// <param name="predicate">The predicate.</param>
         public void Visit(PropertyIsLessThan predicate)
         {
-            this.Comparison(predicate, " < ");
+            this.Comparison(predicate, "<");
         }
 
         /// <summary>
@@ -184,7 +233,7 @@ namespace Cobos.Data.Statements
         /// <param name="predicate">The predicate.</param>
         public void Visit(PropertyIsLessThanOrEqualTo predicate)
         {
-            this.Comparison(predicate, " <= ");
+            this.Comparison(predicate, "<=");
         }
 
         /// <summary>
@@ -193,9 +242,13 @@ namespace Cobos.Data.Statements
         /// <param name="predicate">The predicate.</param>
         public void Visit(PropertyIsLike predicate)
         {
-            var property = this.map[predicate.ValueReference];
+            this.expressionContext.Push(predicate);
 
-            this.buffer.Append(property.ToString() + " LIKE " + this.Value(property, predicate.Literal));
+            predicate.PropertyName.Accept(this);
+            this.buffer.Append($" LIKE ");
+            predicate.Literal.Accept(this);
+
+            this.expressionContext.Pop();
         }
 
         /// <summary>
@@ -204,7 +257,7 @@ namespace Cobos.Data.Statements
         /// <param name="predicate">The predicate.</param>
         public void Visit(PropertyIsNotEqualTo predicate)
         {
-            this.Comparison(predicate, " != ");
+            this.Comparison(predicate, "!=");
         }
 
         /// <summary>
@@ -213,7 +266,7 @@ namespace Cobos.Data.Statements
         /// <param name="predicate">The predicate.</param>
         public void Visit(PropertyIsNull predicate)
         {
-            this.buffer.Append(this.map[predicate.ValueReference].ToString() + " IS NULL");
+            this.buffer.Append(this.map[predicate.PropertyName.Value].ToString() + " IS NULL");
         }
 
         /// <summary>
@@ -223,32 +276,75 @@ namespace Cobos.Data.Statements
         /// <param name="op">The operator.</param>
         private void Comparison(BinaryComparisonOp comparison, string op)
         {
-            var property = this.map[comparison.ValueReference];
+            this.expressionContext.Push(comparison);
 
-            this.buffer.Append(property.ToString() + op + this.Value(property, comparison.Literal));
+            comparison.Left.Accept(this);
+            this.buffer.Append($" {op} ");
+            comparison.Right.Accept(this);
+
+            this.expressionContext.Pop();
         }
 
-        /// <summary>
-        /// Format a property value as a string.
-        /// </summary>
-        /// <param name="property">The property descriptor.</param>
-        /// <param name="value">The property value.</param>
-        /// <returns>The value formatted as a string.</returns>
-        private string Value(PropertyDescriptor property, string value)
+        private void Evaluate(Literal literal, BinaryComparisonOp context)
         {
-            if (value == null)
+            var isLhs = object.ReferenceEquals(context.Left, literal);
+            var isRhs = object.ReferenceEquals(context.Right, literal);
+
+            Debug.Assert(isLhs || isRhs, "Invalid expression context");
+
+            var other = isLhs ? context.Right : context.Left;
+
+            if (other is PropertyName propertyName)
             {
-                return "NULL";
+                this.Evaluate(literal, propertyName);
+            }
+            else
+            {
+                this.buffer.Append(literal.Value);
+            }
+        }
+
+        private void Evaluate(Literal literal, PropertyIsLike context)
+        {
+            this.Evaluate(literal, context.PropertyName);
+        }
+
+        private void Evaluate(Literal literal, PropertyIsBetween context)
+        {
+            if (object.ReferenceEquals(literal, context.Expression))
+            {
+                Debug.Assert(false, $"Cannot evaluate a {nameof(PropertyIsBetween)} comparison where the expression is not a {nameof(PropertyName)}");
+                this.buffer.Append(literal.Value);
+                return;
             }
 
-            var type = property.Property.PropertyType;
-
-            if (type == typeof(string))
+            if (context.Expression is PropertyName propertyName)
             {
-                return value.SQLQuote();
+                this.Evaluate(literal, propertyName);
+            }
+            else
+            {
+                throw new System.NotSupportedException($"Cannot evaluate a {nameof(PropertyIsBetween)} comparison where the expression is not a {nameof(PropertyName)}");
+            }
+        }
+
+        private void Evaluate(Literal literal, PropertyName propertyName)
+        {
+            var property = this.map[propertyName.Value];
+
+            if (property == null)
+            {
+                throw new System.InvalidOperationException($"Invalid property name '{literal.Value}' for {this.map.MappingType.Name}.");
             }
 
-            return value;
+            if (property.Property.PropertyType == typeof(string))
+            {
+                this.buffer.Append(literal.Value.SQLQuote());
+            }
+            else
+            {
+                this.buffer.Append(literal.Value);
+            }
         }
     }
 }

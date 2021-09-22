@@ -46,7 +46,7 @@
             }
 
             var filter = new Cobos.Data.Filter.Filter();
-            filter.Predicate = Cobos.Data.Filter.BinaryLogicOp.FromList&lt;Cobos.Data.Filter.Or, Cobos.Data.Filter.PropertyIsEqualTo, T&gt;(childPropertyName, values);
+            filter.Predicate = Cobos.Data.Filter.BinaryLogicOp.Compose&lt;Cobos.Data.Filter.Or, Cobos.Data.Filter.PropertyIsEqualTo, T&gt;(childPropertyName, values);
 
             return filter;
         }

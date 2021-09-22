@@ -57,18 +57,22 @@ namespace Cobos.Data.Tests.DataObject
             {
                 var filter = new Filter
                 {
-                    Predicate = new PropertyIsEqualTo() { ValueReference = "CustomerID", Literal = "ALFKI" },
+                    Predicate = new PropertyIsEqualTo()
+                    {
+                        Left = new PropertyName { Value = "CustomerID" },
+                        Right = new Literal { Value = "ALFKI" },
+                    },
                 };
 
                 var model = new NorthwindDataModelAdapter(database);
-                var customers = model.GetCustomer(filter, null);
+                var customers = model.GetCustomer(filter, null).ToList();
 
                 Assert.IsNotNull(customers);
                 Assert.AreEqual(1, customers.Count);
                 Assert.AreEqual(1, model.Customer.Table.Rows.Count);
 
                 var countOrders = Convert.ChangeType(database.ExecuteScalar("select count(*) from Orders where CustomerID = 'ALFKI'"), typeof(int));
-                Assert.AreEqual(countOrders, customers[0].Orders.Count);
+                Assert.AreEqual(countOrders, customers[0].Orders.ToList().Count);
                 Assert.AreEqual(countOrders, model.CustomerOrder.Table.Rows.Count);
 
                 var result = new DataTable();

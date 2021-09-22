@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<Filter
+  xmlns="http://schemas.cobos.co.uk/datamodel/1.0.0"
+  xmlns:cobos="http://schemas.cobos.co.uk/datamodel/1.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Predicate xsi:type="cobos:Or">
+    <Condition1 xsi:type="PropertyIsEqualTo">
+      <Left xsi:type="PropertyName">
+        <Value>FirstProperty</Value>
+      </Left>
+      <Right xsi:type="Literal">
+        <Value>100</Value>
+      </Right>
+    </Condition1>
+    <Condition2 xsi:type="cobos:Or">
+      <Condition1 xsi:type="PropertyIsEqualTo">
+        <Left xsi:type="PropertyName">
+          <Value>SecondProperty</Value>
+        </Left>
+        <Right xsi:type="Literal">
+          <Value>200</Value>
+        </Right>
+      </Condition1>
+      <Condition2 xsi:type="PropertyIsEqualTo">
+        <Left xsi:type="PropertyName">
+          <Value>ThirdProperty</Value>
+        </Left>
+        <Right xsi:type="Literal">
+          <Value>300</Value>
+        </Right>
+      </Condition2>
+    </Condition2>
+  </Predicate>
+</Filter>

@@ -190,9 +190,12 @@
     <Metadata>
       <Filter>
         <Predicate xsi:type="PropertyIsEqualTo">
-          <ValueReference>Discontinued</ValueReference>
-          <!--<Literal>false</Literal>-->
-          <Literal>0</Literal>
+          <Left xsi:type="PropertyName">
+            <Value>Discontinued</Value>
+          </Left>
+          <Right xsi:type="Literal">
+            <Value>0</Value>
+          </Right>
         </Predicate>
       </Filter>
     </Metadata>
@@ -206,7 +209,7 @@
     <Metadata>
       <SortBy>
         <SortProperty>
-          <ValueReference>UnitPrice</ValueReference>
+          <PropertyName>UnitPrice</PropertyName>
           <SortOrder>ASC</SortOrder>
         </SortProperty>
       </SortBy>

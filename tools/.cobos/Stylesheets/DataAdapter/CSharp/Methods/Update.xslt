@@ -27,7 +27,7 @@
   /// <summary>
   /// Update all in-memory modified rows into the database.
   /// </summary>
-  private void UpdateRows(global::System.Data.IDbConnection connection, global::System.Collections.Generic.List<NorthwindDataModel.CustomerRow> changed)
+  private void UpdateRows(global::System.Data.IDbConnection connection, global::System.Collections.Generic.IEnumerable<NorthwindDataModel.CustomerRow> changed)
   {
       if (changed.Count == 0)
       {
@@ -74,7 +74,7 @@
         /// &lt;/summary&gt;
         private void UpdateRows(global::System.Data.IDbConnection connection, <xsl:apply-templates select="." mode="listDeclDataRow"/> changed)
         {
-            if (changed.Count == 0)
+            if (changed.Any() == false)
             {
                 return;
             }

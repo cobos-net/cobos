@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<Filter
+  xmlns="http://schemas.cobos.co.uk/datamodel/1.0.0"
+  xmlns:cobos="http://schemas.cobos.co.uk/datamodel/1.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Predicate xsi:type="cobos:PropertyIsEqualTo">
+    <Left xsi:type="PropertyName">
+      <Value>SomeProperty</Value>
+    </Left>
+    <Right xsi:type="Literal">
+      <Value>100</Value>
+    </Right>
+  </Predicate>
+</Filter>

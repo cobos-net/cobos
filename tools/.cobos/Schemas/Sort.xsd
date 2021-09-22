@@ -59,7 +59,7 @@
   -->
    <xsd:complexType name="SortProperty">
       <xsd:sequence>
-        <xsd:element name="ValueReference" type="xsd:string"/>
+        <xsd:element name="PropertyName" type="xsd:string"/>
         <xsd:element name="SortOrder" type="cobos:SortOrder" minOccurs="0"/>
       </xsd:sequence>
    </xsd:complexType>

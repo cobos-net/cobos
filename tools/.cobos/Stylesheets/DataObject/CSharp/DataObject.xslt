@@ -290,7 +290,7 @@
     <xsl:variable name="indent">
       <xsl:apply-templates select="." mode="newlineIndentLevel2"/>
     </xsl:variable>
-    <xsl:value-of select="concat($indent, 'return this.DataRowSource.Get', @name, '().Select(o => new ', @ref, '(o)).ToList();')"/>
+    <xsl:value-of select="concat($indent, 'return this.DataRowSource.Get', @name, '().Select(o => new ', @ref, '(o));')"/>
   </xsl:template>
   <!-- 
   =============================================================================
