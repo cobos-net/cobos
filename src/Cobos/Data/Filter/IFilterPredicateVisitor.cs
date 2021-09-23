@@ -57,6 +57,12 @@ namespace Cobos.Data.Filter
         /// Visit the predicate.
         /// </summary>
         /// <param name="predicate">The predicate.</param>
+        void Visit(PropertyIsInList predicate);
+
+        /// <summary>
+        /// Visit the predicate.
+        /// </summary>
+        /// <param name="predicate">The predicate.</param>
         void Visit(PropertyIsLessThan predicate);
 
         /// <summary>

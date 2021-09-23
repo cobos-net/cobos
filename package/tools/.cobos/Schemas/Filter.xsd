@@ -30,7 +30,7 @@
       ===================================================================
       COBOS SDK - 2014-08-03
       ===================================================================
-      This schema has been modified from the original OGC definition 
+      This schema has been modified from the original OGC definition
       in oder to provide compatibility with .NET DataContractSerializer.
       The result is that this derivative schema is not OGC compliant.
 
@@ -42,11 +42,17 @@
       6. Literal elements are of type string.
       7. Removed the 'Type' suffix from type names.
       8. The following OGC types are not supported:
-          - Temporal Ops
-          - Spatial Ops
-          - Extension Ops
-          - ResourceId
-          - MeasureType
+      - Temporal Ops
+      - Spatial Ops
+      - Extension Ops
+      - ResourceId
+      - MeasureType
+
+      ===================================================================
+      Changes Sep 21
+      
+      1. Added match case to PropertyIsLike
+      2. Added new InList predicate.
       ===================================================================
     </xsd:documentation>
   </xsd:annotation>
@@ -184,6 +190,35 @@
   <!-- 
   =============================================================================
   -->
+  <xsd:element name="PropertyIsInList" type="cobos:PropertyIsInList"/>
+  <xsd:complexType name="PropertyIsInList">
+    <xsd:complexContent>
+      <xsd:extension base="cobos:ComparisonOps">
+        <xsd:sequence>
+          <xsd:element name="PropertyName" type="cobos:PropertyName"/>
+          <xsd:element name="Values">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="ArrayOfString" type="xsd:string" minOccurs="1" maxOccurs="unbounded"/>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="Options" minOccurs="0" type="cobos:PropertyIsInListOptions"/>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- 
+  =============================================================================
+  -->
+  <xsd:complexType name="PropertyIsInListOptions">
+    <xsd:sequence>
+      <xsd:element name="MatchCase" minOccurs="0" type="xsd:boolean"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- 
+  =============================================================================
+  -->  
   <xsd:element name="PropertyIsLike" type="cobos:PropertyIsLike"/>
   <xsd:complexType name="PropertyIsLike">
     <xsd:complexContent>
@@ -201,6 +236,7 @@
   -->
   <xsd:complexType name="PropertyIsLikeOptions">
     <xsd:sequence>
+      <xsd:element name="MatchCase" minOccurs="0" type="xsd:boolean"/>
       <xsd:element name="WildCard" type="xsd:string"/>
       <xsd:element name="SingleChar" type="xsd:string"/>
       <xsd:element name="EscapeChar" type="xsd:string"/>
