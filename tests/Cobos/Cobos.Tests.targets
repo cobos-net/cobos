@@ -31,9 +31,12 @@
   </ItemGroup>
 
   <!-- When building this from the command line via the main project, import the full set of targets -->
-  <Import Project="../../build/Cobos.targets" Condition="$(BuildingFromCobosTests) == 'true'" />
+  <Import Project="../../package/buildCrossTargeting/Cobos.targets" Condition="$(CobosTestsOuterBuild) == 'true'" />
+
+  <!-- When building this from the command line via the main project, import the full set of targets -->
+  <Import Project="../../package/build/Cobos.targets" Condition="$(CobosTestsInnerBuild) == 'true'" />
 
   <!-- When importing this in the main project, just import the FileWrites and Compile items -->
-  <Import Project="../../build/Cobos.files.targets" Condition="$(BuildingFromCobosTests) == ''" />
+  <Import Project="../../package/build/Cobos.files.targets" Condition="$(CobosTestsInnerBuild) == ''" />
 
 </Project>

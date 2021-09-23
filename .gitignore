@@ -5,10 +5,10 @@
 
 # Cobos codgen files
 .cobos/
-!tools/.cobos
+!package/tools/.cobos
 
 # Cobos build targets
-build/*/*.*
+package/build/*/*.*
 
 # User-specific files
 *.suo

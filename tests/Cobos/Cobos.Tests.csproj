@@ -26,17 +26,18 @@
     <ProjectReference Include="..\..\src\Cobos\Cobos.csproj" />
   </ItemGroup>
 
+  <!-- Run the code generator in another process to stop MSBuild locking the build targets DLLs -->
+  
   <Target Name="CobosTestsOnOuterBuild" BeforeTargets="DispatchToInnerBuilds">
-    <Exec Command="&quot;$(MSBuildToolsPath)\msbuild.exe&quot; /t:CobosOnOuterBuild /p:BuildingFromCobosTests=true /tv:Current Cobos.Tests.targets" WorkingDirectory="$(MSBuildProjectDirectory)" />
+    <Exec Command="&quot;$(MSBuildToolsPath)\msbuild.exe&quot; /t:CobosCrossTargetingBuild /p:CobosTestsOuterBuild=true /tv:Current Cobos.Tests.targets" WorkingDirectory="$(MSBuildProjectDirectory)" />
   </Target>
   
-  <!-- Run the code generator in another process to stop MSBuild locking the build targets DLLs -->
   <Target Name="CobosTestsPrepareForBuild" AfterTargets="PrepareForBuild" Condition="'$(DesignTimeBuild)' != 'true' and '$(BuildingProject)' == 'true'">
-    <Exec Command="&quot;$(MSBuildToolsPath)\msbuild.exe&quot; /t:CobosPrepareForBuild /p:BuildingProject=true /p:BuildingFromCobosTests=true /p:TargetFrameworks=&quot;$(TargetFrameworks)&quot; /p:TargetFramework=$(TargetFramework) /p:IntermediateOutputPath=$(IntermediateOutputPath) /tv:Current Cobos.Tests.targets" WorkingDirectory="$(MSBuildProjectDirectory)" />
+    <Exec Command="&quot;$(MSBuildToolsPath)\msbuild.exe&quot; /t:CobosPrepareForBuild /p:BuildingProject=true /p:CobosTestsInnerBuild=true /p:TargetFrameworks=&quot;$(TargetFrameworks)&quot; /p:TargetFramework=$(TargetFramework) /p:IntermediateOutputPath=$(IntermediateOutputPath) /tv:Current Cobos.Tests.targets" WorkingDirectory="$(MSBuildProjectDirectory)" />
   </Target>
 
   <Target Name="CobosTestsClean" AfterTargets="Clean">
-    <Exec Command="&quot;$(MSBuildToolsPath)\msbuild.exe&quot; /t:CobosClean /p:BuildingFromCobosTests=true /tv:Current Cobos.Tests.targets" WorkingDirectory="$(MSBuildProjectDirectory)" />
+    <Exec Command="&quot;$(MSBuildToolsPath)\msbuild.exe&quot; /t:CobosClean /p:CobosTestsOuterBuild=true /tv:Current Cobos.Tests.targets" WorkingDirectory="$(MSBuildProjectDirectory)" />
   </Target>
 
   <Import Project="Cobos.Tests.targets" />

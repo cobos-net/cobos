@@ -1,0 +1,22 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <UsingTask AssemblyFile="$(MSBuildThisFileDirectory)../build/$(MSBuildRuntimeType)/Cobos.dll" TaskName="Cobos.Build.CobosDatabaseToXsd" />
+
+  <Import Project="$(MSBuildThisFileDirectory)../build/Cobos.codegen.targets" />
+
+  <!-- 
+  ==================================================================== 
+  CobosOnOuterBuild
+
+  For multi-targeting builds, make sure we only copy the tools and 
+  query the database metadata once per build rather than once per
+  target framework. If the inner builds are built in parallel then
+  race conditions occur.
+  ==================================================================== 
+  -->
+
+  <Target Name="CobosCrossTargetingBuild" BeforeTargets="DispatchToInnerBuilds" Condition="'@(CobosDataModel)' != ''">
+    <CallTarget Targets="CobosRefreshToolsAndDatabaseMetadata" />
+  </Target>
+
+</Project>

@@ -1,0 +1,279 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <CobosCodeLanguage>CSharp</CobosCodeLanguage>
+    <CobosCodegenDirectory>$(MSBuildProjectDirectory)\.cobos\</CobosCodegenDirectory>
+    <CobosStylesheetsDirectory>$(CobosCodegenDirectory)Stylesheets\</CobosStylesheetsDirectory>
+    <CobosIsCrossTargeted Condition="'$(TargetFrameworks)' != '' and $(TargetFrameworks.Contains(';')) and !$(TargetFrameworks.EndsWith(';'))">true</CobosIsCrossTargeted>
+  </PropertyGroup>
+
+  <!-- 
+  ==================================================================== 
+  CobosClean
+
+  Clean the generated files that aren't in the final output and 
+  intermediate output directories.
+  ==================================================================== 
+  -->
+  
+  <Target Name="CobosClean" AfterTargets="Clean">
+    <Delete Files="@(CobosDatabaseFiles)" />  
+  </Target>
+
+  <!-- 
+  ==================================================================== 
+  CobosPrepareForBuild
+
+  Runs after 'PrepareForBuild' to generate the source files prior to
+  compilation. Uses this extension point to ensure that the
+  $(IntermediateOutputPath) has been set.
+  ==================================================================== 
+  -->
+
+  <Target Name="CobosPrepareForBuild" AfterTargets="PrepareForBuild" Condition="'$(DesignTimeBuild)' != 'true' and '$(BuildingProject)' == 'true' and '@(CobosDataModel)' != ''">
+
+    <Error Condition="'$(CobosNamespaceCode)' == ''" Text="Cobos: The CobosNamespaceCode property has not been defined"/>
+    <Error Condition="'$(CobosNamespaceXml)' == ''" Text="Cobos: The CobosNamespaceXml property has not been defined"/>
+    
+    <!-- Create output directories -->
+    <MakeDir Directories="@(CobosDataModel->'$(IntermediateOutputPath)%(Id)')" />
+
+    <!-- Only copy the tools and update the database metadata for a single target framework build -->
+    <CallTarget Targets="CobosRefreshToolsAndDatabaseMetadata" Condition="'$(CobosIsCrossTargeted)' != 'true'" />
+
+    <CallTarget Targets="
+                CobosPreProcessDataModel;
+                CobosDatasetSchema;
+                CobosStronglyTypedDataset;
+                CobosDataObject;
+                CobosDataObjectAdapter;
+                CobosDataModelAdapter;
+                CobosDataObjectSchema"/>
+  </Target>
+  
+  <!-- 
+  ==================================================================== 
+  CobosRefreshToolsAndDatabase
+
+  Update the tools and database metadata. 
+  ==================================================================== 
+  -->
+  
+  <Target Name="CobosRefreshToolsAndDatabaseMetadata">
+    <CallTarget Targets="
+                CopyCobosTools;
+                CobosDatabaseSchema;
+                CobosDatabaseVariables;"/>
+  </Target>
+
+  <!-- 
+  ==================================================================== 
+  CopyCobosTools
+
+  Copy the Cobos tools to the project working directory. 
+  ==================================================================== 
+  -->
+
+  <Target Name="CopyCobosTools">
+    <PropertyGroup>
+      <CobosSetToolsHidden Condition="!Exists($(CobosCodegenDirectory))">true</CobosSetToolsHidden>
+    </PropertyGroup>
+
+    <MakeDir Directories="$(CobosCodegenDirectory)" Condition="!Exists($(CobosCodegenDirectory))" />
+    <Exec Command="attrib +H &quot;$(MSBuildProjectDirectory)\.cobos&quot; /D" Condition="'$(CobosSetToolsHidden)' == 'true'" />
+
+    <ItemGroup>
+      <CobosCodegenFiles Include="$(MSBuildThisFileDirectory)..\tools\**\*.*" />
+    </ItemGroup>
+
+    <Copy SourceFiles="@(CobosCodegenFiles)" DestinationFiles="@(CobosCodegenFiles->'$(MSBuildProjectDirectory)\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" OverwriteReadOnlyFiles="true" />
+
+  </Target>
+  
+  <!-- 
+  ==================================================================== 
+  CobosDatabaseSchema
+
+  Processes the Database Schema generated in the previous step into
+  XSLT variables that are used by various stages in the processing.
+  ==================================================================== 
+  -->
+
+  <Target Name="CobosDatabaseSchema" Condition="!Exists('$(CobosStylesheetsDirectory)Database\DatabaseSchema.xsd')">
+
+    <Error Condition="'$(CobosDatabaseConnectionString)' == ''" Text="Cobos: The CobosDatabaseConnectionString property has not been defined"/>
+    <Error Condition="'$(CobosDatabasePlatform)' == ''" Text="Cobos: The CobosDatabasePlatform property has not been defined"/>
+    <Error Condition="'$(CobosDatabaseSchema)' == ''" Text="Cobos: The CobosDatabaseSchema property has not been defined"/>
+    <Error Condition="'@(CobosDatabaseTable)' == ''" Text="Cobos: No CobosDatabaseTable items have been defined"/>
+
+    <CobosDatabaseToXsd ConnectionString="$(CobosDatabaseConnectionString)" 
+                        DatabasePlatform="$(CobosDatabasePlatform)" 
+                        DatabaseSchema="$(CobosDatabaseSchema)" 
+                        DatabaseTables="@(CobosDatabaseTable)" 
+                        OutputFile="$(CobosStylesheetsDirectory)Database\DatabaseSchema.xsd" />
+  
+  </Target>
+
+  <!-- 
+  ==================================================================== 
+  CobosDatabaseVariables
+
+  Processes the Database Schema generated in the previous step into
+  XSLT variables that are used by various stages in the processing.
+  ==================================================================== 
+  -->
+
+  <Target Name="CobosDatabaseVariables"
+    Inputs="$(CobosStylesheetsDirectory)Database\DatabaseSchema.xsd"
+    Outputs="$(CobosStylesheetsDirectory)Database\DatabaseVariables.def">
+
+    <XslTransformation XmlInputPaths="$(CobosStylesheetsDirectory)Database\DatabaseSchema.xsd"
+                       XslInputPath="$(CobosStylesheetsDirectory)Database\DatabaseVariables.xslt"
+                       OutputPaths="$(CobosStylesheetsDirectory)Database\DatabaseVariables.def"/>
+
+  </Target>
+
+  <!-- 
+  ==================================================================== 
+  CobosPreProcessDataModel
+
+  Combines the input Data Model with the type and constraint
+  information from the database into a processed data model that 
+  will be used by proceeding stages to generate strongly typed 
+  DataSets and DAOs.
+  ==================================================================== 
+  -->
+
+  <Target Name="CobosPreProcessDataModel"
+          Inputs="@(CobosDataModel->'%(Identity)')"
+          Outputs="@(CobosDataModel->'$(IntermediateOutputPath)%(Id)\%(Filename).Processed.xml')">
+
+    <XslTransformation XmlInputPaths="%(CobosDataModel.Identity)" 
+                       XslInputPath="$(CobosStylesheetsDirectory)DataModel\Process.xslt" 
+                       OutputPaths="$(IntermediateOutputPath)%(CobosDataModel.Id)\%(CobosDataModel.Filename).Processed.xml" />
+
+  </Target>
+
+  <!-- 
+  ==================================================================== 
+  CobosDatasetSchema
+  
+  Translates the (processed) Data Model into and XSD document that 
+  can be processed by xsd.exe.
+  ==================================================================== 
+  -->
+
+  <Target Name="CobosDatasetSchema"
+          Inputs="@(CobosDataModel->'$(IntermediateOutputPath)%(Id)\%(Filename).Processed.xml')"
+          Outputs="@(CobosDataModel->'$(IntermediateOutputPath)%(Id)\DataSet.xsd')">
+
+    <XslTransformation XmlInputPaths="$(IntermediateOutputPath)%(CobosDataModel.Id)\%(CobosDataModel.Filename).Processed.xml" 
+                       XslInputPath="$(CobosStylesheetsDirectory)DataModel\Dataset.xslt" 
+                       OutputPaths="$(IntermediateOutputPath)%(CobosDataModel.Id)\Dataset.xsd" />
+
+  </Target>
+
+  <!-- 
+  ==================================================================== 
+  CobosStronglyTypedDataset
+  
+  Uses xsd.exe to process the generated Dataset XSD and create the
+  ADO.NET strongly typed dataset.
+  ==================================================================== 
+  -->
+
+  <Target Name="CobosStronglyTypedDataset"
+          Inputs="@(CobosDataModel->'$(IntermediateOutputPath)%(Id)\DataSet.xsd')"
+          Outputs="@(CobosDataModel->'$(IntermediateOutputPath)%(Id)\DataSet.cs')">
+
+    <Exec Command="&quot;$(XsdExe)&quot; &quot;$(IntermediateOutputPath)%(CobosDataModel.Id)\DataSet.xsd&quot; /dataset /n:$(CobosNamespaceCode).%(CobosDataModel.Id) /out:&quot;$(IntermediateOutputPath)%(CobosDataModel.Id)&quot;" WorkingDirectory="$(MSBuildProjectDirectory)" />
+    <SuppressXmlDocumentationWarnings Filename="$(IntermediateOutputPath)%(CobosDataModel.Id)\DataSet.cs " />
+    
+  </Target>
+
+  <!-- 
+  ==================================================================== 
+  CobosDataObject
+  
+  Creates the data objects to wrap the ADO.NET DataRow.
+  ==================================================================== 
+  -->
+
+  <Target Name="CobosDataObject"
+          Inputs="@(CobosDataModel->'$(IntermediateOutputPath)%(Id)\%(Filename).Processed.xml')"
+          Outputs="@(CobosDataModel->'$(IntermediateOutputPath)%(Id)\DataObject.cs')">
+
+    <XslTransformation XmlInputPaths="$(IntermediateOutputPath)%(CobosDataModel.Id)\%(CobosDataModel.Filename).Processed.xml" 
+                       XslInputPath="$(CobosStylesheetsDirectory)DataObject\$(CobosCodeLanguage)\DataObject.xslt" 
+                       OutputPaths="$(IntermediateOutputPath)%(CobosDataModel.Id)\DataObject.cs" 
+                       Parameters="&lt;Parameter Name='codeNamespace' Value='$(CobosNamespaceCode).%(CobosDataModel.Id)'/&gt;&lt;Parameter Name='xmlNamespace' Value='$(CobosNamespaceXml)'/&gt;" />
+    
+    <SuppressXmlDocumentationWarnings Filename="$(IntermediateOutputPath)%(CobosDataModel.Id)\DataObject.cs " />
+
+  </Target>
+
+  <!-- 
+  ==================================================================== 
+  CobosDataObjectAdapter
+  
+  Creates the adapter objects to wrap the ADO.NET strongly typed
+  DataTables.
+  ==================================================================== 
+  -->
+
+  <Target Name="CobosDataObjectAdapter"
+          Inputs="@(CobosDataModel->'$(IntermediateOutputPath)%(Id)\%(Filename).Processed.xml')"
+          Outputs="@(CobosDataModel->'$(IntermediateOutputPath)%(Id)\DataObjectAdapter.cs')">
+    
+    <XslTransformation XmlInputPaths="$(IntermediateOutputPath)%(CobosDataModel.Id)\%(CobosDataModel.Filename).Processed.xml" 
+                       XslInputPath="$(CobosStylesheetsDirectory)DataAdapter\$(CobosCodeLanguage)\DataObjectAdapter.xslt" 
+                       OutputPaths="$(IntermediateOutputPath)%(CobosDataModel.Id)\DataObjectAdapter.cs"
+                       Parameters="&lt;Parameter Name='codeNamespace' Value='$(CobosNamespaceCode).%(CobosDataModel.Id)'/&gt;&lt;Parameter Name='xmlNamespace' Value='$(CobosNamespaceXml)'/&gt;" />
+    
+    <SuppressXmlDocumentationWarnings Filename="$(IntermediateOutputPath)%(CobosDataModel.Id)\DataObjectAdapter.cs " />
+
+  </Target>
+
+  <!-- 
+  ==================================================================== 
+  CobosDataModelAdapter
+  
+  Creates the adapter objects to wrap the ADO.NET strongly typed
+  DataSets.
+  ==================================================================== 
+  -->
+
+  <Target Name="CobosDataModelAdapter"
+          Inputs="@(CobosDataModel->'$(IntermediateOutputPath)%(Id)\%(Filename).Processed.xml')"
+          Outputs="@(CobosDataModel->'$(IntermediateOutputPath)%(Id)\DataModelAdapter.cs')">
+
+    <XslTransformation XmlInputPaths="$(IntermediateOutputPath)%(CobosDataModel.Id)\%(CobosDataModel.Filename).Processed.xml" 
+                       XslInputPath="$(CobosStylesheetsDirectory)DataAdapter\$(CobosCodeLanguage)\DataModelAdapter.xslt"
+                       OutputPaths="$(IntermediateOutputPath)%(CobosDataModel.Id)\DataModelAdapter.cs" 
+                       Parameters="&lt;Parameter Name='codeNamespace' Value='$(CobosNamespaceCode).%(CobosDataModel.Id)'/&gt;&lt;Parameter Name='xmlNamespace' Value='$(CobosNamespaceXml)'/&gt;" />
+    
+    <SuppressXmlDocumentationWarnings Filename="$(IntermediateOutputPath)%(CobosDataModel.Id)\DataModelAdapter.cs " />
+
+  </Target>
+
+  <!-- 
+  ==================================================================== 
+  CobosDataObjectSchema
+  
+  Creates an XML schema of all the data objects. This can be provided
+  as a reference for any clients consuming your DAOs.
+  ==================================================================== 
+  -->
+
+  <Target Name="CobosDataObjectSchema"
+          Inputs="@(CobosDataModel)"
+          Outputs="@(CobosDataModel->'$(IntermediateOutputPath)%(Id)\DataModel.xsd')">
+
+    <XslTransformation XmlInputPaths="%(CobosDataModel.Identity)" 
+                       XslInputPath="$(CobosStylesheetsDirectory)DataModel\Schema.xslt" 
+                       OutputPaths="$(IntermediateOutputPath)%(CobosDataModel.Id)\DataModel.xsd" 
+                       Parameters="&lt;Parameter Name='xmlNamespace' Value='$(CobosNamespaceXml)'/&gt;@(%(CobosDataModel.SchemaOptions))" />
+
+  </Target>
+
+</Project>

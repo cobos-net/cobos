@@ -1,0 +1,525 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema id="DataModel"
+	targetNamespace="http://schemas.cobos.co.uk/datamodel/1.0.0" 
+	elementFormDefault="qualified"
+	xmlns="http://schemas.cobos.co.uk/datamodel/1.0.0"
+	xmlns:cobos="http://schemas.cobos.co.uk/datamodel/1.0.0"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<!-- 
+	=============================================================================
+	Filename: DataModel.xsd
+	Description: Generic Data Model schema for modelling data
+	=============================================================================
+	Created by: N.Davis                        Date: 2010-04-09
+	Modified by:                               Date:
+	=============================================================================
+	Notes: 
+
+
+	============================================================================
+	-->
+  <xsd:include schemaLocation="Filter.xsd"/>
+  <xsd:include schemaLocation="Sort.xsd"/>
+  <!--
+	=============================================================================
+	Root data model element
+	=============================================================================
+	-->
+	<xsd:element name="DataModel" type="cobos:DataModel"/>
+	<xsd:complexType name="DataModel">
+		<xsd:sequence>
+			<xsd:element ref="cobos:DataModelComponent" maxOccurs="unbounded"/>
+      <xsd:element ref="cobos:StringFormats" minOccurs="0" maxOccurs="1"/>
+		</xsd:sequence>
+		<xsd:attribute name="name" type="xsd:string" use="required"/>
+		<xsd:attribute name="dateTimeMode" type="cobos:DateTimeModeEnum" use="required"/>
+	</xsd:complexType>
+	<!--
+	=============================================================================
+	Data model component
+	=============================================================================
+	-->
+  <xsd:element name="DataModelComponent" type="cobos:DataModelComponent" abstract="true"/>
+  <xsd:complexType name="DataModelComponent" abstract="true">
+		<xsd:attribute name="name" type="xsd:string" use="required"/>
+	</xsd:complexType>
+	<!--
+	=============================================================================
+	Data object
+	=============================================================================
+	-->
+	<xsd:element name="Object" type="cobos:Object" substitutionGroup="cobos:DataModelComponent"/>
+  <xsd:complexType name="Object">
+		<xsd:complexContent>
+			<xsd:extension base="DataModelComponent">
+				<xsd:sequence>
+					<xsd:choice minOccurs="0" maxOccurs="unbounded">
+						<xsd:element ref="cobos:Object"/>
+						<xsd:element ref="cobos:Property"/>
+						<xsd:element ref="cobos:XsdProperty"/>
+						<xsd:element ref="cobos:Reference"/>
+					</xsd:choice>
+					<xsd:element name="Metadata" type="cobos:TableMetadata" minOccurs="0"/>
+				</xsd:sequence>
+				<xsd:attribute name="name" type="xsd:string" use="required">
+					<xsd:annotation>
+						<xsd:documentation>
+							The name of the object to be published.
+							This defines the class and dataset names for the 
+							processed objects.
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="dbTable" type="xsd:string" use="optional">
+					<xsd:annotation>
+						<xsd:documentation>
+							The database table that this object's properties
+							are retrieved from.  If omitted this is inherited
+							from the ancestor that defines the table.
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="type" type="xsd:string" use="optional">
+					<xsd:annotation>
+						<xsd:documentation>
+							Indicates that the object is a common type, defined
+							at the top level of the data model.
+							The type declaration is inlined into the object
+							hierarchy for processing.
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="reference" type="xsd:string" use="optional">
+					<xsd:annotation>
+						<xsd:documentation>
+							Indicates a relationship between top level objects.
+							Implemented as a DataSet relationship in the dataset model.
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="isCollection" type="xsd:boolean" use="optional" default="false">
+					<xsd:annotation>
+						<xsd:documentation>
+							Indicates a one to many relationship between top level objects.
+							Implemented as a DataSet relationship in the dataset model.
+							Implemented as a List&lt;T&gt; type.
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="implements" type="xsd:string" use="optional">
+					<xsd:annotation>
+						<xsd:documentation>
+							If a number of objects in the same data model share common
+							characteristics then you can set this attribute to indicate
+							which Interface object this class implements.
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!--
+	=============================================================================
+	Data type
+	=============================================================================
+	-->
+	<xsd:element name="Type" type="cobos:DataType" substitutionGroup="cobos:DataModelComponent"/> 
+	<xsd:complexType name="DataType">
+		<xsd:complexContent>
+			<xsd:extension base="Object">
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!--
+	=============================================================================
+	Reference type - forms relationships between top level objects
+	=============================================================================
+	-->
+	<xsd:element name="Reference" type="cobos:Reference"/>
+	<xsd:complexType name="Reference">
+		<xsd:sequence>
+			<xsd:element name="Metadata" type="cobos:TableMetadata" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						This optional element can be used to define additional 
+						sql clauses when fetching data that are specific to this
+						object's use of the reference data.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+    <xsd:attribute name="ref" type="xsd:string" use="required">
+      <xsd:annotation>
+        <xsd:documentation>
+          The ref attribute references a top level object that
+          will be a relation to the top level object containing
+          this Reference object.
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="name" type="xsd:string" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+          The name of the property.
+        </xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="key" type="xsd:string" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+					The element in this type that acts as the unique key constraint.
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="refer" type="xsd:string" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+					The element in the ref type that acts as the foreign key constraint.
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<!--
+	=============================================================================
+	Table object - Use this to publish an entire database table row as an object
+	=============================================================================
+	-->
+	<xsd:element name="TableObject" type="cobos:TableObject" substitutionGroup="cobos:DataModelComponent"/>
+	<xsd:complexType name="TableObject">
+		<xsd:complexContent>
+			<xsd:extension base="DataModelComponent">
+				<xsd:sequence>
+					<xsd:element name="Metadata" type="cobos:TableMetadata"/>
+				</xsd:sequence>
+				<xsd:attribute name="dbTable" type="xsd:string">
+					<xsd:annotation>
+						<xsd:documentation>
+							The database table to generate an object from.  Creates
+							object attributes for each column in the table.
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!--
+	=============================================================================
+	Database property
+	=============================================================================
+	-->
+	<xsd:element name="Property" type="cobos:Property"/>
+	<xsd:complexType name="Property">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:string">
+				<xsd:attribute name="name" type="xsd:string" use="required">
+					<xsd:annotation>
+						<xsd:documentation>
+							The name of the property is the name that will be
+							used to access the data in the code object.  
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="dbTable" type="xsd:string" use="optional">
+					<xsd:annotation>
+						<xsd:documentation>
+							The database table that this object's properties
+							are retrieved from.  If omitted this is inherited
+							from the ancestor that defines the table.
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="dbColumn" type="xsd:string" use="required">
+					<xsd:annotation>
+						<xsd:documentation>
+							The column in the database that the value is queried from.
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="dbAlias" type="xsd:string" use="optional">
+					<xsd:annotation>
+						<xsd:documentation>
+							This can be used to resolve duplicate names when joining
+							tables or to alias an aggregate function.  Used to form
+							the 'AS' directive in a SELECT e.g.
+							SELECT SUM(COL1) AS TOTAL...
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+        <xsd:attribute name="autoIncrement" type="xsd:boolean" use="optional">
+          <xsd:annotation>
+            <xsd:documentation>
+              This column's value is set by an auto increment sequence number 
+              in the database.  The field will be marked as read only and
+              a sequence number will be automatically generated.
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+				<xsd:attribute name="hidden" type="xsd:boolean" use="optional" fixed="true">
+					<xsd:annotation>
+						<xsd:documentation>
+							If specified, the property will be hidden in the serialized object,
+							i.e. the property will only be used as part of the database query
+              or for referencing two objects.
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="stringFormat" type="xsd:string" use="optional">
+					<xsd:annotation>
+						<xsd:documentation>
+							Some database field values are other data types encoded as strings.
+							An example of this would be a custom date value.
+              An implementation must be provided in the cobos:StringFormats element.
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="formatArgs" type="xsd:string" use="optional">
+					<xsd:annotation>
+						<xsd:documentation>
+							Additional arguments used to process string encoded values.
+							The arguments supplied will depend on the implementation
+							for the particular string format.
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<!--
+	=============================================================================
+	Schema only property
+	=============================================================================
+	-->
+	<xsd:element name="XsdProperty" type="cobos:XsdProperty"/>
+	<xsd:complexType name="XsdProperty">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:string">
+				<xsd:attribute name="name" type="xsd:string" use="required">
+					<xsd:annotation>
+						<xsd:documentation></xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="type" type="xsd:string" use="required">
+					<xsd:annotation>
+						<xsd:documentation></xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="minOccurs" type="xsd:string" use="optional" default="1">
+					<xsd:annotation>
+						<xsd:documentation></xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+				<xsd:attribute name="maxOccurs" type="xsd:string" use="optional" default="1">
+					<xsd:annotation>
+						<xsd:documentation></xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<!--
+	=============================================================================
+	Enumerated types
+	=============================================================================
+	-->
+	<xsd:element name="Enumeration">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="DataModelComponent">
+					<xsd:sequence>
+						<xsd:element name="Item" type="cobos:EnumerationItem" maxOccurs="unbounded"/>
+					</xsd:sequence>
+					<xsd:attribute name="base" type="xsd:string" use="required"/>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:complexType name="EnumerationItem">
+		<xsd:simpleContent>
+			<xsd:extension base ="xsd:string">
+				<xsd:attribute name="value" type="xsd:positiveInteger" use="optional"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<!--
+	=============================================================================
+	DateTime mode
+	=============================================================================
+	-->
+	<xsd:simpleType name="DateTimeModeEnum">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Local"/>
+			<xsd:enumeration value="Unspecified"/>
+			<xsd:enumeration value="Utc"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<!--
+	=============================================================================
+	Table metadata.
+	=============================================================================
+	-->
+	<xsd:complexType name="TableMetadata">
+		<xsd:sequence>
+      <xsd:element name="Filter" type="cobos:Filter" minOccurs="0"/>
+      <xsd:element name="Joins" type="cobos:TableJoins" minOccurs="0"/>
+      <xsd:element name="SortBy" type="cobos:SortBy" minOccurs="0"/>
+			<xsd:element name="GroupBy" type="cobos:GroupBy" minOccurs="0"/>
+			<xsd:element name="StringAggregate" type="cobos:StringAggregate" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!--
+	=============================================================================
+	Table filters - Default where clauses.
+	=============================================================================
+	-->
+	<xsd:complexType name="TableFilters">
+		<xsd:sequence>
+			<xsd:element name="Filter" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!--
+	=============================================================================
+	Table joins.
+	=============================================================================
+	-->
+	<xsd:complexType name="TableJoins">
+		<xsd:sequence>
+			<xsd:element ref="cobos:TableJoin" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="TableJoin" type="cobos:TableJoin" abstract="true"/>
+	<xsd:complexType name="TableJoin" abstract="true">
+		<xsd:sequence/>
+    <xsd:attribute name="ref" type="xsd:string">
+      <xsd:annotation>
+        <xsd:documentation>
+          The name of the right hand table.
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="key" type="xsd:string">
+      <xsd:annotation>
+        <xsd:documentation>
+          The foreign key in the left hand table.
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="refer" type="xsd:string">
+      <xsd:annotation>
+        <xsd:documentation>
+          The primary key in the right hand table.
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+	</xsd:complexType>
+  <!--
+	=============================================================================
+	Inner join.
+	=============================================================================
+	-->
+  <xsd:element name="InnerJoin" type="cobos:InnerJoin" substitutionGroup="cobos:TableJoin"/>
+	<xsd:complexType name="InnerJoin">
+		<xsd:complexContent>
+			<xsd:extension base="TableJoin"/>
+		</xsd:complexContent>
+	</xsd:complexType>
+  <!--
+	=============================================================================
+	Outer joins.
+	=============================================================================
+	-->
+  <xsd:element name="OuterJoin" type="cobos:OuterJoin" substitutionGroup="cobos:TableJoin"/>
+	<xsd:complexType name="OuterJoin">
+		<xsd:complexContent>
+			<xsd:extension base="TableJoin"/>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!--
+	=============================================================================
+	Column grouping.
+	=============================================================================
+	-->
+	<xsd:complexType name="GroupBy">
+		<xsd:sequence>
+      <xsd:element name="ValueReference" type="xsd:string"  minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!--
+	=============================================================================
+	Custom string aggregator.
+	=============================================================================
+	-->
+	<xsd:complexType name="StringAggregate">
+		<xsd:sequence>
+			<xsd:element name="On" type="xsd:string"/>
+			<xsd:element name="Group">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="By" type="xsd:string" minOccurs="1" maxOccurs="unbounded"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="Order">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="By" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+  <!--
+	=============================================================================
+	Custom string formats.
+	=============================================================================
+	-->
+  <xsd:element name="StringFormats" type="cobos:StringFormats" />
+  <xsd:complexType name="StringFormats">
+    <xsd:sequence>
+      <xsd:element ref="cobos:StringFormat" minOccurs="1" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="StringFormat" type="cobos:StringFormat" />
+  <xsd:complexType name="StringFormat">
+    <xsd:sequence>
+      <xsd:element name="SchemaType" minOccurs="1" maxOccurs="1" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>
+            The XML Schema type without namespace, e.g. string, integer, dateTime etc.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="CodeType" minOccurs="1" maxOccurs="1" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>
+            The code data type, e.g. for .NET string, int, global::System.DateTime.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="PropertyGet" minOccurs="1" maxOccurs="1" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>
+            The code implementation for the body of the property get method.
+            The $columnValue variable can be used to refer to the row data value.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="PropertySet" minOccurs="1" maxOccurs="1" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>
+            The code implementation for the body of the property set method.
+            The $columnValue variable can be used to refer to the row data value.
+            The $dataValue variable can be used to refer to the setter value.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="ConvertTo" minOccurs="1" maxOccurs="1" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>
+            The code implementation for converting the property value.
+            The $propertyName variable can be used to refer to the property.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>    
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>

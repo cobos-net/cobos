@@ -19,7 +19,7 @@
     <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);CobosBuildTargetsNuGet</TargetsForTfmSpecificContentInPackage>
   </PropertyGroup>
 
-  <Import Project="../../build/cobos.tools.targets" />
+  <Import Project="..\..\package\build\cobos.tools.targets" />
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
     <PackageReference Include="Microsoft.Build.Framework" Version="16.11.0" />
@@ -93,11 +93,11 @@
   </Target>
 
   <PropertyGroup Label="Generate Data Filters">
-    <CodegenSchemaDirectory>$(MSBuildProjectDirectory)\..\..\tools\.cobos\Schemas\</CodegenSchemaDirectory>
+    <CodegenSchemaDirectory>$(MSBuildProjectDirectory)\..\..\package\tools\.cobos\Schemas\</CodegenSchemaDirectory>
   </PropertyGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="..\..\tools\.cobos\Stylesheets\Database\DatabaseSchema.xslt">
+    <EmbeddedResource Include="..\..\package\tools\.cobos\Stylesheets\Database\DatabaseSchema.xslt">
       <Link>Data\Database\DatabaseSchema.xslt</Link>
     </EmbeddedResource>
   </ItemGroup>
@@ -112,17 +112,25 @@
   </ItemGroup>
 
   <ItemGroup Label="NuGet Content">
-    <None Include="..\..\tools\**\*.*">
-      <Pack>true</Pack>
-      <PackagePath>tools</PackagePath>
-    </None>
-    <None Include="..\..\build\*.*">
+    <None Include="..\..\package\build\*.*">
       <Pack>true</Pack>
       <PackagePath>build</PackagePath>
+      <Visible>false</Visible>
     </None>
-    <None Include="..\..\images\cobos.png">
+    <None Include="..\..\package\buildCrossTargeting\*.*">
+      <Pack>true</Pack>
+      <PackagePath>buildCrossTargeting</PackagePath>
+      <Visible>false</Visible>
+    </None>
+    <None Include="..\..\package\images\cobos.png">
       <Pack>true</Pack>
       <PackagePath>\</PackagePath>
+      <Visible>false</Visible>
+    </None>
+    <None Include="..\..\package\tools\**\*.*">
+      <Pack>true</Pack>
+      <PackagePath>tools</PackagePath>
+      <Visible>false</Visible>
     </None>
   </ItemGroup>
 
@@ -132,14 +140,9 @@
     <SuppressXmlDocumentationWarnings Filename="$(IntermediateOutputPath)%(DataFilterSchema.Filename).cs" />
   </Target>
 
-  <Target Name="CobosAfterBuild" AfterTargets="AfterBuild">
-    <CallTarget Targets="CopyFullBuildTargets" Condition="'$(TargetFramework)' == 'net46'" />
-    <CallTarget Targets="CopyCoreBuildTargets" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
-  </Target>
-
-  <Target Name="CopyFullBuildTargets">
+  <Target Name="CopyCobosFullBuildTargets" AfterTargets="AfterBuild" Condition="'$(TargetFramework)' == 'net46'">
     <PropertyGroup>
-      <CobosBuildTargetsFolder>$(MSBuildThisFileDirectory)..\..\build\Full\</CobosBuildTargetsFolder>
+      <CobosBuildTargetsFolder>$(MSBuildThisFileDirectory)..\..\package\build\Full\</CobosBuildTargetsFolder>
     </PropertyGroup>
     <ItemGroup>
       <CobosOutputFiles Include="$(OutDir)**\*.*" />
@@ -148,9 +151,9 @@
     <Copy SourceFiles="@(CobosOutputFiles)" DestinationFiles="@(CobosOutputFiles->'$(CobosBuildTargetsFolder)%(Filename)%(Extension)')" />
   </Target>
 
-  <Target Name="CopyCoreBuildTargets">
+  <Target Name="CopyCobosCoreBuildTargets" AfterTargets="AfterBuild" Condition="'$(TargetFramework)' == 'netstandard2.0'">
     <PropertyGroup>
-      <CobosBuildTargetsFolder>$(MSBuildThisFileDirectory)..\..\build\Core\</CobosBuildTargetsFolder>
+      <CobosBuildTargetsFolder>$(MSBuildThisFileDirectory)..\..\package\build\Core\</CobosBuildTargetsFolder>
     </PropertyGroup>
     <ItemGroup>
       <CobosOutputFiles Include="$(OutDir)**\*.*" />
