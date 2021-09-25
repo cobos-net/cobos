@@ -211,10 +211,10 @@ namespace Cobos.Data.Statements
 
             predicate.PropertyName.Accept(this);
 
-            var propertyIsString = property.Property.PropertyType == typeof(string);
             var matchCase = predicate.Options?.MatchCase ?? true;
-            var upper = propertyIsString == true && matchCase == false;
-            var sqlValues = predicate.Values.Select(value => $"{(upper ? "UPPER(" : string.Empty)}{(propertyIsString ? value.SQLQuote() : value)}{(upper ? ")" : string.Empty)}");
+            var upper = property.IsStringType == true && matchCase == false;
+
+            var sqlValues = predicate.Values.Select(value => $"{(upper ? "UPPER(" : string.Empty)}{property.ToSqlValue(value)}{(upper ? ")" : string.Empty)}");
 
             this.buffer.Append(" IN (");
             this.buffer.Append(string.Join(", ", sqlValues));
@@ -420,16 +420,14 @@ namespace Cobos.Data.Statements
                 throw new System.InvalidOperationException($"Invalid property name '{literal.Value}' for {this.map.MappingType.Name}.");
             }
 
-            var propertyIsString = property.Property.PropertyType == typeof(string);
-
-            if (propertyIsString == true && matchCase == false)
+            if (property.IsStringType == true && matchCase == false)
             {
                 this.buffer.Append("UPPER(");
             }
 
-            this.buffer.Append(propertyIsString ? literal.Value.SQLQuote() : literal.Value);
+            this.buffer.Append(property.ToSqlValue(literal.Value));
 
-            if (propertyIsString == true && matchCase == false)
+            if (property.IsStringType == true && matchCase == false)
             {
                 this.buffer.Append(")");
             }

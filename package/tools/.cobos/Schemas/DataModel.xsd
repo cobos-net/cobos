@@ -29,7 +29,7 @@
 	<xsd:complexType name="DataModel">
 		<xsd:sequence>
 			<xsd:element ref="cobos:DataModelComponent" maxOccurs="unbounded"/>
-      <xsd:element ref="cobos:StringFormats" minOccurs="0" maxOccurs="1"/>
+      <xsd:element ref="cobos:ValueConverters" minOccurs="0" maxOccurs="1"/>
 		</xsd:sequence>
 		<xsd:attribute name="name" type="xsd:string" use="required"/>
 		<xsd:attribute name="dateTimeMode" type="cobos:DateTimeModeEnum" use="required"/>
@@ -263,21 +263,30 @@
 						</xsd:documentation>
 					</xsd:annotation>
 				</xsd:attribute>
-				<xsd:attribute name="stringFormat" type="xsd:string" use="optional">
+				<xsd:attribute name="converter" type="xsd:string" use="optional">
 					<xsd:annotation>
 						<xsd:documentation>
-							Some database field values are other data types encoded as strings.
-							An example of this would be a custom date value.
-              An implementation must be provided in the cobos:StringFormats element.
+							Some database field values are string encoded values or other data types,
+              which require mapping to the data object property type. An example of 
+              this would be a custom date string.
+              This value must be the name of a type that implements the 
+              Cobos.Data.Mapping.IValueConverter interface.
 						</xsd:documentation>
 					</xsd:annotation>
 				</xsd:attribute>
-				<xsd:attribute name="formatArgs" type="xsd:string" use="optional">
+        <xsd:attribute name="converterTargetType" type="xsd:string" use="optional">
+          <xsd:annotation>
+            <xsd:documentation>
+              Specifies the target type that the converter will convert the source data to.
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="converterParameter" type="xsd:string" use="optional">
 					<xsd:annotation>
 						<xsd:documentation>
-							Additional arguments used to process string encoded values.
-							The arguments supplied will depend on the implementation
-							for the particular string format.
+							Additional parameter to be provided to the converter.
+							The parameter supplied will depend on the implementation
+							for the particular converstion.
 						</xsd:documentation>
 					</xsd:annotation>
 				</xsd:attribute>
@@ -467,59 +476,4 @@
 			</xsd:element>
 		</xsd:sequence>
 	</xsd:complexType>
-  <!--
-	=============================================================================
-	Custom string formats.
-	=============================================================================
-	-->
-  <xsd:element name="StringFormats" type="cobos:StringFormats" />
-  <xsd:complexType name="StringFormats">
-    <xsd:sequence>
-      <xsd:element ref="cobos:StringFormat" minOccurs="1" maxOccurs="unbounded"/>
-    </xsd:sequence>
-  </xsd:complexType>
-  <xsd:element name="StringFormat" type="cobos:StringFormat" />
-  <xsd:complexType name="StringFormat">
-    <xsd:sequence>
-      <xsd:element name="SchemaType" minOccurs="1" maxOccurs="1" type="xsd:string">
-        <xsd:annotation>
-          <xsd:documentation>
-            The XML Schema type without namespace, e.g. string, integer, dateTime etc.
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="CodeType" minOccurs="1" maxOccurs="1" type="xsd:string">
-        <xsd:annotation>
-          <xsd:documentation>
-            The code data type, e.g. for .NET string, int, global::System.DateTime.
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="PropertyGet" minOccurs="1" maxOccurs="1" type="xsd:string">
-        <xsd:annotation>
-          <xsd:documentation>
-            The code implementation for the body of the property get method.
-            The $columnValue variable can be used to refer to the row data value.
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="PropertySet" minOccurs="1" maxOccurs="1" type="xsd:string">
-        <xsd:annotation>
-          <xsd:documentation>
-            The code implementation for the body of the property set method.
-            The $columnValue variable can be used to refer to the row data value.
-            The $dataValue variable can be used to refer to the setter value.
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="ConvertTo" minOccurs="1" maxOccurs="1" type="xsd:string">
-        <xsd:annotation>
-          <xsd:documentation>
-            The code implementation for converting the property value.
-            The $propertyName variable can be used to refer to the property.
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>    
-    </xsd:sequence>
-  </xsd:complexType>
 </xsd:schema>

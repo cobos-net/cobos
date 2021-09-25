@@ -145,18 +145,22 @@ namespace Cobos.Data.Statements
                 throw new InvalidOperationException("SqlSelect.ToString: The select clause is empty");
             }
 
+            var multipleJoins = ((this.innerJoin?.Length ?? 0) + (innerJoin?.Length ?? 0) + (this.outerJoin?.Length ?? 0) + (outerJoin?.Length ?? 0)) > 1;
+
             bool existsSelect = !string.IsNullOrEmpty(this.select);
 
             if (existsSelect)
             {
-                buffer.Append("SELECT " + this.select);
+                ////buffer.Append($"SELECT {(multipleJoins ? "DISTINCT " : string.Empty)}" + this.select);
+                buffer.Append($"SELECT " + this.select);
             }
 
             if (!string.IsNullOrEmpty(select))
             {
                 if (!existsSelect)
                 {
-                    buffer.Append("SELECT " + select);
+                    ////buffer.Append($"SELECT {(multipleJoins ? "DISTINCT " : string.Empty)}" + select);
+                    buffer.Append($"SELECT " + select);
                 }
                 else
                 {
@@ -351,7 +355,10 @@ namespace Cobos.Data.Statements
                 throw new InvalidOperationException("SqlSelect.ToString: The select clause is empty");
             }
 
-            buffer.Append("SELECT " + this.select);
+            var multipleJoins = ((this.innerJoin?.Length ?? 0) + (this.outerJoin?.Length ?? 0)) > 1;
+
+            ////buffer.Append($"SELECT {(multipleJoins ? "DISTINCT " : string.Empty)}" + this.select);
+            buffer.Append($"SELECT " + this.select);
 
             if (!string.IsNullOrEmpty(this.from))
             {

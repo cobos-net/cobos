@@ -6,7 +6,9 @@
 
 namespace Cobos.Data.Mapping
 {
+    using System;
     using System.Reflection;
+    using Cobos.Utilities.Extensions;
 
     /// <summary>
     /// Class specification and implementation of <see cref="PropertyDescriptor"/>.
@@ -19,39 +21,53 @@ namespace Cobos.Data.Mapping
         /// <param name="property">The property for the descriptor.</param>
         /// <param name="table">The table name.</param>
         /// <param name="column">The column name.</param>
-        public PropertyDescriptor(PropertyInfo property, string table, string column)
+        /// <param name="converter">The converter type.</param>
+        /// <param name="converterTargetType">The converter target type.</param>
+        /// <param name="converterParameter">The parameter to pass to the converter.</param>
+        public PropertyDescriptor(PropertyInfo property, string table, string column, Type converter, Type converterTargetType, object converterParameter)
         {
             this.Property = property;
             this.Table = table;
             this.Column = column;
+            this.Converter = converter;
+            this.ConverterTargetType = converterTargetType;
+            this.ConverterParameter = converterParameter;
         }
 
         /// <summary>
         /// Gets the property info for this descriptor.
         /// </summary>
-        public PropertyInfo Property
-        {
-            get;
-            private set;
-        }
+        public PropertyInfo Property { get; }
 
         /// <summary>
         /// Gets the table name.
         /// </summary>
-        public string Table
-        {
-            get;
-            private set;
-        }
+        public string Table { get; }
 
         /// <summary>
         /// Gets the column name.
         /// </summary>
-        public string Column
-        {
-            get;
-            private set;
-        }
+        public string Column { get; }
+
+        /// <summary>
+        /// Gets the value converter.
+        /// </summary>
+        public Type Converter { get; }
+
+        /// <summary>
+        /// Gets the value converter target type.
+        /// </summary>
+        public Type ConverterTargetType { get; }
+
+        /// <summary>
+        /// Gets the converter parameter.
+        /// </summary>
+        public object ConverterParameter { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether the property type is a string.
+        /// </summary>
+        public bool IsStringType => this.Property.PropertyType == typeof(string);
 
         /// <summary>
         /// Create descriptor from a property.
@@ -61,11 +77,8 @@ namespace Cobos.Data.Mapping
         /// <returns>A property descriptor representing the property.</returns>
         public static PropertyDescriptor FromProperty(PropertyInfo property, string tableName)
         {
-#if NET35
-            var table = property.GetCustomAttributes(typeof(TableAttribute), false).FirstOrDefault() as TableAttribute;
-#else
             var table = property.GetCustomAttribute<TableAttribute>();
-#endif
+
             if (table != null)
             {
                 tableName = table.Name;
@@ -73,18 +86,16 @@ namespace Cobos.Data.Mapping
 
             var columnName = property.Name;
 
-#if NET35
-            var column = property.GetCustomAttributes(typeof(ColumnAttribute), false).FirstOrDefault() as ColumnAttribute;
-#else
             var column = property.GetCustomAttribute<ColumnAttribute>();
-#endif
 
             if (column != null)
             {
                 columnName = column.Name;
             }
 
-            return new PropertyDescriptor(property, tableName, columnName);
+            var converter = property.GetCustomAttribute<ConverterAttribute>();
+
+            return new PropertyDescriptor(property, tableName, columnName, converter?.Converter, converter?.ConverterTargetType, converter?.ConverterParameter);
         }
 
         /// <summary>
@@ -94,6 +105,31 @@ namespace Cobos.Data.Mapping
         public override string ToString()
         {
             return this.Table + "." + this.Column;
+        }
+
+        /// <summary>
+        /// Convert the property value to SQL.
+        /// </summary>
+        /// <param name="value">The property value.</param>
+        /// <returns>The converted value.</returns>
+        public string ToSqlValue(object value)
+        {
+            if (this.Converter != null)
+            {
+                value = ((IValueConverter)Activator.CreateInstance(this.Converter)).ConvertBack(value, this.ConverterTargetType, this.ConverterParameter);
+            }
+
+            if (value == null)
+            {
+                return "NULL";
+            }
+
+            if (this.IsStringType)
+            {
+                return value.ToString().SQLQuote();
+            }
+
+            return value.ToString();
         }
     }
 }

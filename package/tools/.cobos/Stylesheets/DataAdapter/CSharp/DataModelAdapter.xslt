@@ -328,9 +328,9 @@
     <xsl:value-of select="concat($indent, '/// &lt;summary&gt;')"/>
     <xsl:value-of select="concat($indent, '/// Fill the table from the database.  Also fills any child tables.')"/>
     <xsl:value-of select="concat($indent, '/// &lt;/summary&gt;')"/>
-    <xsl:value-of select="concat($indent, '/// &lt;param name=&quot;filter&quot;&gt;The filter specification. May be null&lt;/param&gt;')"/>
-    <xsl:value-of select="concat($indent, '/// &lt;param name=&quot;sort&quot;&gt;The sort specification. May be null&lt;/param&gt;')"/>
-    <xsl:value-of select="concat($indent, 'private void Fill', @className,'(Cobos.Data.Filter.Filter filter, Cobos.Data.Filter.SortBy sort)')"/>
+    <xsl:value-of select="concat($indent, '/// &lt;param name=&quot;filter&quot;&gt;The optional filter specification.&lt;/param&gt;')"/>
+    <xsl:value-of select="concat($indent, '/// &lt;param name=&quot;sort&quot;&gt;The optional sort specification.&lt;/param&gt;')"/>
+    <xsl:value-of select="concat($indent, 'private void Fill', @className,'(Cobos.Data.Filter.Filter filter = null, Cobos.Data.Filter.SortBy sort = null)')"/>
     <xsl:value-of select="concat($indent, '{')"/>
     <xsl:apply-templates select="." mode="fillTableObject"/>
     <xsl:value-of select="concat($indent, '}')"/>

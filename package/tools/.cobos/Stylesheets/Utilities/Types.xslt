@@ -21,125 +21,126 @@
   -->
   <!--
   =============================================================================
-  Custom String Format
+  Property Types
   =============================================================================
   -->
-  <xsl:template match="cobos:Property[@stringFormat]" mode="propertyType">
+  <xsl:template match="cobos:Property[not(@converter)]" mode="propertyType">
     <xsl:variable name="dataType">
-      <xsl:value-of select="normalize-space(./cobos:StringFormat/cobos:CodeType)"/>
+      <xsl:apply-templates select="@dbType" mode="propertyType"/>
     </xsl:variable>
     <xsl:value-of select="$dataType"/>
-    <xsl:if test="$dataType != 'string'">
+    <xsl:if test="$dataType != 'string' and not (contains($dataType, '[]') or contains($dataType, 'System.Collections'))">
       <xsl:apply-templates select="@minOccurs" mode="propertyType"/>
     </xsl:if>
+  </xsl:template>
+
+  <xsl:template match="cobos:Property[@converter]" mode="propertyType">
+    <xsl:variable name="targetType">
+      <xsl:apply-templates select="@converterTargetType" mode="propertyType"/>
+    </xsl:variable>
+    <xsl:value-of select="$targetType"/>
+    <xsl:if test="$targetType != 'string' and not (contains($targetType, '[]') or contains($targetType, 'System.Collections'))">
+      <xsl:apply-templates select="@minOccurs" mode="propertyType"/>
+    </xsl:if>
+  </xsl:template>
+
+  <xsl:template match="cobos:Property[@converterParameter]" mode="converterParameter">
+    <xsl:value-of select="concat($quot, @converterParameter, $quot)"/>
+  </xsl:template>
+
+  <xsl:template match="cobos:Property[not(@converterParameter)]" mode="converterParameter">
+    <xsl:text>null</xsl:text>
   </xsl:template>
   <!--
   =============================================================================
   String
   =============================================================================
   -->
-  <xsl:template match="cobos:Property[@dbType = 'xsd:string' or (contains(@dbType, 'string_') and not(@stringFormat))]" mode="propertyType">
+  <xsl:template match="@*[. = 'xsd:string' or contains(., 'string_')]" mode="propertyType">
     <xsl:text>string</xsl:text>
   </xsl:template>
-  <xsl:template match="cobos:Property[@dbType = 'cobos:char']" mode="propertyType">
+  <xsl:template match="@*[. = 'cobos:char']" mode="propertyType">
     <xsl:text>char</xsl:text>
-    <xsl:apply-templates select="@minOccurs" mode="propertyType"/>
   </xsl:template>
   <!--
   =============================================================================
   Numeric - Integer
   =============================================================================
   -->
-  <xsl:template match="cobos:Property[@dbType = 'xsd:integer']" mode="propertyType">
+  <xsl:template match="@*[. = 'xsd:integer']" mode="propertyType">
     <xsl:text>long</xsl:text>
-    <xsl:apply-templates select="@minOccurs" mode="propertyType"/>
   </xsl:template>
-  <xsl:template match="cobos:Property[@dbType = 'xsd:byte']" mode="propertyType">
+  <xsl:template match="@*[. = 'xsd:byte']" mode="propertyType">
     <xsl:text>sbyte</xsl:text>
-    <xsl:apply-templates select="@minOccurs" mode="propertyType"/>
   </xsl:template>
-  <xsl:template match="cobos:Property[@dbType = 'xsd:unsignedByte']" mode="propertyType">
+  <xsl:template match="@*[. = 'xsd:unsignedByte']" mode="propertyType">
     <xsl:text>byte</xsl:text>
-    <xsl:apply-templates select="@minOccurs" mode="propertyType"/>
   </xsl:template>
-  <xsl:template match="cobos:Property[@dbType = 'xsd:short']" mode="propertyType">
+  <xsl:template match="@*[. = 'xsd:short']" mode="propertyType">
     <xsl:text>short</xsl:text>
-    <xsl:apply-templates select="@minOccurs" mode="propertyType"/>
   </xsl:template>
-  <xsl:template match="cobos:Property[@dbType = 'xsd:unsignedShort']" mode="propertyType">
+  <xsl:template match="@*[. = 'xsd:unsignedShort']" mode="propertyType">
     <xsl:text>ushort</xsl:text>
-    <xsl:apply-templates select="@minOccurs" mode="propertyType"/>
   </xsl:template>
-  <xsl:template match="cobos:Property[@dbType = 'xsd:int']" mode="propertyType">
+  <xsl:template match="@*[. = 'xsd:int']" mode="propertyType">
     <xsl:text>int</xsl:text>
-    <xsl:apply-templates select="@minOccurs" mode="propertyType"/>
   </xsl:template>
-  <xsl:template match="cobos:Property[@dbType = 'xsd:unsignedInt']" mode="propertyType">
+  <xsl:template match="@*[. = 'xsd:unsignedInt']" mode="propertyType">
     <xsl:text>uint</xsl:text>
-    <xsl:apply-templates select="@minOccurs" mode="propertyType"/>
   </xsl:template>
-  <xsl:template match="cobos:Property[@dbType = 'xsd:long']" mode="propertyType">
+  <xsl:template match="@*[. = 'xsd:long']" mode="propertyType">
     <xsl:text>long</xsl:text>
-    <xsl:apply-templates select="@minOccurs" mode="propertyType"/>
   </xsl:template>
-  <xsl:template match="cobos:Property[@dbType = 'xsd:unsignedLong']" mode="propertyType">
+  <xsl:template match="@*[. = 'xsd:unsignedLong']" mode="propertyType">
     <xsl:text>ulong</xsl:text>
-    <xsl:apply-templates select="@minOccurs" mode="propertyType"/>
   </xsl:template>
   <!--
   =============================================================================
   Numeric - Fixed point
   =============================================================================
   -->
-  <xsl:template match="cobos:Property[@dbType = 'xsd:decimal']" mode="propertyType">
+  <xsl:template match="@*[. = 'xsd:decimal']" mode="propertyType">
     <xsl:text>decimal</xsl:text>
-    <xsl:apply-templates select="@minOccurs" mode="propertyType"/>
   </xsl:template>
   <!--
   =============================================================================
   Numeric - Floating point
   =============================================================================
   -->
-  <xsl:template match="cobos:Property[@dbType = 'xsd:float']" mode="propertyType">
+  <xsl:template match="@*[. = 'xsd:float']" mode="propertyType">
     <xsl:text>float</xsl:text>
-    <xsl:apply-templates select="@minOccurs" mode="propertyType"/>
   </xsl:template>
-  <xsl:template match="cobos:Property[@dbType = 'xsd:double']" mode="propertyType">
+  <xsl:template match="@*[. = 'xsd:double']" mode="propertyType">
     <xsl:text>double</xsl:text>
-    <xsl:apply-templates select="@minOccurs" mode="propertyType"/>
   </xsl:template>
   <!--
   =============================================================================
   Date and Time.
   =============================================================================
   -->
-  <xsl:template match="cobos:Property[@dbType = 'xsd:dateTime' or @dbType = 'xsd:date' or @dbType = 'cobos:timestamp']" mode="propertyType">
+  <xsl:template match="@*[. = 'xsd:dateTime' or . = 'xsd:date' or . = 'cobos:timestamp']" mode="propertyType">
     <xsl:text>global::System.DateTime</xsl:text>
-    <xsl:apply-templates select="@minOccurs" mode="propertyType"/>
   </xsl:template>
-  <xsl:template match="cobos:Property[@dbType = 'xsd:gYear']" mode="propertyType">
+  <xsl:template match="@*[. = 'xsd:gYear']" mode="propertyType">
     <xsl:text>byte</xsl:text>
-    <xsl:apply-templates select="@minOccurs" mode="propertyType"/>
   </xsl:template>
-  <xsl:template match="cobos:Property[@dbType = 'xsd:time' or @dbType = 'xsd:duration']" mode="propertyType">
+  <xsl:template match="@*[. = 'xsd:time' or @dbType = 'xsd:duration']" mode="propertyType">
     <xsl:text>global::System.TimeSpan</xsl:text>
-    <xsl:apply-templates select="@minOccurs" mode="propertyType"/>
   </xsl:template>
   <!--
   =============================================================================
   Boolean
   =============================================================================
   -->
-  <xsl:template match="cobos:Property[@dbType = 'xsd:boolean']" mode="propertyType">
+  <xsl:template match="@*[. = 'xsd:boolean']" mode="propertyType">
     <xsl:text>bool</xsl:text>
-    <xsl:apply-templates select="@minOccurs" mode="propertyType"/>
   </xsl:template>
   <!--
   =============================================================================
   Bit Field
   =============================================================================
   -->
-  <xsl:template match="cobos:Property[@dbType = 'cobos:bitField']" mode="propertyType">
+  <xsl:template match="@*[. = 'cobos:bitField']" mode="propertyType">
     <xsl:text>global::System.Collections.BitArray</xsl:text>
   </xsl:template>
   <!--

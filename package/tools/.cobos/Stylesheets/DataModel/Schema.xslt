@@ -220,7 +220,7 @@
 	Set the data attributes for a standard type (i.e. not string encoded data)
   =============================================================================
 	-->
-	<xsl:template match="cobos:Property[not(@stringFormat)]" mode="setDataAttributes">
+	<xsl:template match="cobos:Property[not(@converter)]" mode="setDataAttributes">
 		<xsl:variable name="dbTable">
 			<xsl:apply-templates mode="getDbTable" select="."/>
 		</xsl:variable>
@@ -230,12 +230,9 @@
 	=============================================================================
 	=============================================================================
 	-->
-  <xsl:template match="cobos:Property[@stringFormat]" mode="setDataAttributes">
-    <xsl:variable name="attributeType">
-      <xsl:value-of select="./cobos:StringFormat/cobos:SchemaType"/>
-    </xsl:variable>
+  <xsl:template match="cobos:Property[@converter]" mode="setDataAttributes">
 		<xsl:attribute name="type">
-      <xsl:value-of select="concat('xsd:', $attributeType)"/>
+      <xsl:value-of select="@converterTargetType"/>
     </xsl:attribute>
 		<xsl:apply-templates select="." mode="setDataMultiplicity"/>
 	</xsl:template>

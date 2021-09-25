@@ -7,6 +7,7 @@
 namespace Cobos.Build.Tests
 {
     using System.IO;
+    using System.Linq;
     using Microsoft.Build.Framework;
     using Microsoft.Build.Utilities;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -35,13 +36,15 @@ namespace Cobos.Build.Tests
                     File.Delete(output);
                 }
 
+                var tables = new[] { "categories", "customercustomerdemo", "customerdemographics", "customers", "employees", "employeeterritories", "orderdetails", "orders", "products", "region", "shippers", "suppliers", "territories", "territorysales" };
+
                 CobosDatabaseToXsd target = new CobosDatabaseToXsd
                 {
                     BuildEngine = Substitute.For<IBuildEngine>(),
                     ConnectionString = connectionString,
                     DatabasePlatform = providerName,
                     DatabaseSchema = "Northwind",
-                    DatabaseTables = new TaskItem[] { new TaskItem("Customers"), new TaskItem("Employees"), new TaskItem("Products"), new TaskItem("OrderDetails") },
+                    DatabaseTables = tables.Select(t => new TaskItem(t)).ToArray(),
                     OutputFile = output,
                 };
 

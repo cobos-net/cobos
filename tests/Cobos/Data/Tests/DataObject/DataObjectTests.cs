@@ -38,7 +38,7 @@ namespace Cobos.Data.Tests.DataObject
             foreach (var database in TestManager.DataSource)
             {
                 var customerData = new CustomerDataAdapter(database.ConnectionString, database.ProviderFactory);
-                customerData.Fill(null, null);
+                customerData.Fill();
 
                 var customers = customerData.GetEntities();
                 Assert.IsNotNull(customers);
@@ -57,7 +57,7 @@ namespace Cobos.Data.Tests.DataObject
             foreach (var database in TestManager.DataSource)
             {
                 var territoryData = new EmployeeTerritoryDataAdapter(database.ConnectionString, database.ProviderFactory);
-                territoryData.Fill(null, null);
+                territoryData.Fill();
 
                 var territories = territoryData.GetEntities();
                 Assert.IsNotNull(territories);
@@ -77,7 +77,7 @@ namespace Cobos.Data.Tests.DataObject
             foreach (var database in TestManager.DataSource)
             {
                 var employeeData = new EmployeeDataAdapter(database.ConnectionString, database.ProviderFactory);
-                employeeData.Fill(null, null);
+                employeeData.Fill();
 
                 var employees = employeeData.GetEntities();
                 Assert.IsNotNull(employees);
@@ -99,7 +99,7 @@ namespace Cobos.Data.Tests.DataObject
             foreach (var database in TestManager.DataSource)
             {
                 var productData = new ActiveProductDataAdapter(database.ConnectionString, database.ProviderFactory);
-                productData.Fill(null, null);
+                productData.Fill();
 
                 var products = productData.GetEntities().ToList();
                 Assert.IsNotNull(products);
@@ -141,7 +141,7 @@ namespace Cobos.Data.Tests.DataObject
             foreach (var database in TestManager.DataSource)
             {
                 var orderDetailsData = new OrderDetailsSortedDataAdapter(database.ConnectionString, database.ProviderFactory);
-                orderDetailsData.Fill(null, null);
+                orderDetailsData.Fill();
                 var orders = orderDetailsData.GetEntities().ToList();
                 Assert.IsNotNull(orders);
                 Assert.AreNotEqual(0, orders.Count);
@@ -184,7 +184,7 @@ namespace Cobos.Data.Tests.DataObject
                 var customerData = new CustomerDataAdapter(database.ConnectionString, database.ProviderFactory);
                 var observer = new DataAdapterObserver(customerData, "COBOS");
 
-                customerData.Fill(null, null);
+                customerData.Fill();
                 observer.Reset();
 
                 var customer = customerData.NewCustomer();
@@ -199,7 +199,7 @@ namespace Cobos.Data.Tests.DataObject
 
                 customerData.AcceptChanges();
 
-                customerData.Fill(null, null);
+                customerData.Fill();
                 observer.Reset();
 
                 customer = customerData.GetEntityByCustomerID("COBOS");
@@ -228,7 +228,7 @@ namespace Cobos.Data.Tests.DataObject
 
                 customerData.AcceptChanges();
 
-                customerData.Fill(null, null);
+                customerData.Fill();
                 observer.Reset();
 
                 customer = customerData.GetEntityByCustomerID("COBOS");
@@ -255,7 +255,7 @@ namespace Cobos.Data.Tests.DataObject
 
                 customerData.AcceptChanges();
 
-                customerData.Fill(null, null);
+                customerData.Fill();
                 customer = customerData.GetEntityByCustomerID("COBOS");
 
                 Assert.IsNull(customer);
@@ -278,7 +278,7 @@ namespace Cobos.Data.Tests.DataObject
                 database.ExecuteNonQuery("delete from customers where customerid in (" + idsIn + ")");
 
                 var customerData = new CustomerDataAdapter(database.ConnectionString, database.ProviderFactory);
-                customerData.Fill(null, null);
+                customerData.Fill();
 
                 for (int i = 0; i < 2; ++i)
                 {
@@ -288,7 +288,7 @@ namespace Cobos.Data.Tests.DataObject
                 }
 
                 customerData.AcceptChanges();
-                customerData.Fill(null, null);
+                customerData.Fill();
 
                 for (int i = 0; i < 2; ++i)
                 {
@@ -308,7 +308,7 @@ namespace Cobos.Data.Tests.DataObject
                 customerData.DeleteCustomer(customer1);
 
                 customerData.AcceptChanges();
-                customerData.Fill(null, null);
+                customerData.Fill();
 
                 Assert.IsNotNull(customerData.GetEntityByCustomerID(ids[0]));
                 Assert.IsNull(customerData.GetEntityByCustomerID(ids[1]));
@@ -371,7 +371,7 @@ namespace Cobos.Data.Tests.DataObject
                     adapter.MissingSchemaAction = MissingSchemaAction.AddWithKey;
 
                     var employeeData = new EmployeeDataAdapter(database.ConnectionString, database.ProviderFactory);
-                    employeeData.Fill(null, null);
+                    employeeData.Fill();
 
                     var employee = employeeData.NewEmployee();
                     PopulateEmployee(employee);
@@ -476,7 +476,7 @@ namespace Cobos.Data.Tests.DataObject
                 var territoryCount = Convert.ChangeType(database.ExecuteScalar("select count(*) from territories"), typeof(long));
 
                 var territorySalesData = new TerritorySalesTotalsDataAdapter(database.ConnectionString, database.ProviderFactory);
-                territorySalesData.Fill(null, null);
+                territorySalesData.Fill();
 
                 var territorySales = territorySalesData.GetEntities().ToList();
 
@@ -500,6 +500,42 @@ namespace Cobos.Data.Tests.DataObject
                 Assert.IsTrue(nullCount > 0);
                 Assert.IsTrue(nonNullCount > 0);
                 Assert.AreEqual(territoryCount, nullCount + nonNullCount);
+            }
+        }
+
+        /// <summary>
+        /// Strategy:
+        /// ---------
+        /// 1. Test that the boolean value converter works.
+        /// </summary>
+        [TestMethod]
+        public void Boolean_converter_success()
+        {
+            foreach (var database in TestManager.DataSource)
+            {
+                var productInfo = new ProductInfoDataAdapter(database.ConnectionString, database.ProviderFactory);
+                productInfo.Fill();
+                var products = productInfo.GetEntities();
+
+                var active = products.First(o => o.Discontinued == false);
+                var discontinued = products.First(o => o.Discontinued == true);
+
+                if (active == null || discontinued == null)
+                {
+                    Assert.Inconclusive("Cannot find an active and discontinued product.");
+                }
+
+                active.Discontinued = true;
+                discontinued.Discontinued = false;
+
+                productInfo.AcceptChanges();
+                productInfo.Fill();
+
+                var newActive = productInfo.GetEntityByProductID(active.ProductID);
+                var newDiscontinued = productInfo.GetEntityByProductID(discontinued.ProductID);
+
+                Assert.IsTrue(newActive.Discontinued);
+                Assert.IsFalse(newDiscontinued.Discontinued);
             }
         }
 

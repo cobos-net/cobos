@@ -33,9 +33,9 @@
         /// &lt;summary&gt;
         /// Fills the table with data from the database.
         /// &lt;/summary&gt;
-        /// &lt;param name="filter"&gt;The filter specification. May be null.&lt;/param&gt;
-        /// &lt;param name="sort"&gt;The sort specification. May be null.&lt;/param&gt;
-        public void Fill(Cobos.Data.Filter.Filter filter, Cobos.Data.Filter.SortBy sort)
+        /// &lt;param name="filter"&gt;The optional filter specification.&lt;/param&gt;
+        /// &lt;param name="sort"&gt;The optional sort specification.&lt;/param&gt;
+        public void Fill(Cobos.Data.Filter.Filter filter = null, Cobos.Data.Filter.SortBy sort = null)
         {
             string[] where = null;
             string orderBy = null;

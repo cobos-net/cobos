@@ -47,7 +47,7 @@
     <xsl:variable name="object" select="."/>
     <xsl:for-each select="$databaseConstraintsNodeSet//xsd:key//xsd:field[translate(../xsd:selector/@xpath, $lowercase, $uppercase) = concat('.//', translate($object/@dbTable, $lowercase, $uppercase))]">
       <!-- Get the [1]st node since we will get multiple node results for db fields 
-					that are decomposed into more than property, e.g. stringFormat="Seperator" -->
+					that are decomposed into more than property, e.g. converter="StringSeperator" -->
       <xsl:variable name="property" select="$object//cobos:Property[translate(@dbColumn, $lowercase, $uppercase) = translate(current()/@xpath, $lowercase, $uppercase)][1]"/>
       <xsl:variable name="propertyType">
         <xsl:apply-templates select="$property" mode="propertyType"/>
@@ -110,18 +110,18 @@
   <xsl:template match="cobos:Property" mode="getEntityByMethodParamValue">
     <xsl:value-of select="@name"/>
   </xsl:template>
-  <xsl:template match="cobos:Property[@stringFormat]" mode="getEntityByMethodParamValue">
-    <xsl:variable name="codeTemplate">
-      <xsl:value-of select="normalize-space(./cobos:StringFormat/cobos:ConvertTo)" disable-output-escaping="yes"/>
+  
+  <xsl:template match="cobos:Property[@converter]" mode="getEntityByMethodParamValue">
+    <xsl:variable name="converterTargetType">
+      <xsl:apply-templates select="@converterTargetType" mode="propertyType"/>
     </xsl:variable>
-    <xsl:variable name="code">
-      <xsl:call-template name="string-replace-all">
-        <xsl:with-param name="text" select="$codeTemplate" />
-        <xsl:with-param name="replace" select="string('$propertyName')" />
-        <xsl:with-param name="by" select="@name" />
-      </xsl:call-template>
+    <xsl:variable name="converterSourceType">
+      <xsl:apply-templates select="@dbType" mode="propertyType"/>
     </xsl:variable>
-    <xsl:value-of select="$code"/>
+    <xsl:variable name="converterParameter">
+      <xsl:apply-templates select="." mode="converterParameter"/>
+    </xsl:variable>
+    <xsl:value-of select="concat('(', $converterSourceType ,')(new ', @converter, '().ConvertBack(', @name, ', typeof(', $converterTargetType, '), ', $converterParameter, '))')"/>
   </xsl:template>
   <!--
 	============================================================================

@@ -6,7 +6,7 @@
 	==============================================================================
 	-->
 	<Object name="Customer" dbTable="Customers">
-    <Property name="CustomerID" dbColumn="CustomerID"/>
+    <Property name="CustomerID" dbColumn="CustomerID" converter="Cobos.Data.Tests.Mapping.StringUpperCase" converterTargetType="xsd:string"/>
     <Property name="CompanyName" dbColumn="CompanyName"/>
     <Object name="Contact" type="CustomerContact"/>
     <Object name="Address" type="CustomerAddress"/>
@@ -20,7 +20,7 @@
 	-->
   <Type name="CustomerContact" dbTable="Customers">
     <Property name="Title" dbColumn="ContactTitle"/>
-    <Property name="Name" dbColumn="ContactName" stringFormat="UpperCase"/>
+    <Property name="Name" dbColumn="ContactName" converter="Cobos.Data.Tests.Mapping.StringUpperCase" converterTargetType="xsd:string" />
   </Type>
   <!--
 	==============================================================================
@@ -154,6 +154,7 @@
       <Property name="ID" dbColumn="ProductID"/>
       <Property name="Name" dbColumn="ProductName" dbTable="Products"/>
       <Property name="Category" dbColumn="CategoryName" dbTable="Categories"/>
+      <Property name="Discontinued" dbColumn="Discontinued" dbTable="Products" converter="Cobos.Data.Tests.Mapping.ByteToBoolean" converterTargetType="xsd:boolean" />
     </Object>
     <Object name="Cost">
       <Property name="UnitPrice" dbColumn="UnitPrice"/>
@@ -166,6 +167,16 @@
         <InnerJoin ref="Categories" key="Products.CategoryID" refer="Categories.CategoryID"/>
       </Joins>
     </Metadata>
+  </Object>
+  <!--
+	==============================================================================
+	Product Info - Boolean converter
+	==============================================================================
+	-->  
+  <Object name="ProductInfo" dbTable="Products">
+    <Property name="ProductID" dbColumn="ProductID" hidden="true"/>
+    <Property name="Name" dbColumn="ProductName" />
+    <Property name="Discontinued" dbColumn="Discontinued" dbTable="Products" converter="Cobos.Data.Tests.Mapping.ByteToBoolean" converterTargetType="xsd:boolean" />
   </Object>
   <!--
 	==============================================================================
@@ -215,30 +226,4 @@
       </SortBy>
     </Metadata>
   </TableObject>
-
-  <!--
-	==============================================================================
-	Custom String Formats.
-	==============================================================================
-	-->
-  <StringFormats>
-    <StringFormat name="UpperCase">
-      <SchemaType>
-        <![CDATA[string]]>
-      </SchemaType>
-      <CodeType>
-        <![CDATA[string]]>
-      </CodeType>
-      <PropertyGet>
-        <![CDATA[return $columnValue?.ToUpper();]]>
-      </PropertyGet>
-      <PropertySet>
-        <![CDATA[$columnValue = $dataValue;]]>
-      </PropertySet>
-      <ConvertTo>
-        <![CDATA[$propertyName?.ToUpper()]]>
-      </ConvertTo>
-    </StringFormat>
-  </StringFormats>
-  
 </DataModel>
