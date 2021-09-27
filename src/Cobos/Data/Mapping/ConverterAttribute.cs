@@ -14,16 +14,21 @@ namespace Cobos.Data.Mapping
         /// <summary>
         /// Gets or sets the type that implements <see cref="IValueConverter"/>.
         /// </summary>
-        public Type Converter { get; set; }
+        public Type ConverterType { get; set; }
 
         /// <summary>
-        /// Gets or sets the converter type.
+        /// Gets or sets the converter target type.
         /// </summary>
-        public Type ConverterTargetType { get; set; }
+        public Type SourceType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the converter target type.
+        /// </summary>
+        public Type TargetType { get; set; }
 
         /// <summary>
         /// Gets or sets the converter parameter.
         /// </summary>
-        public string ConverterParameter { get; set; }
+        public string Parameter { get; set; }
     }
 }

@@ -338,7 +338,7 @@ namespace Cobos.Data.Statements
                 throw new System.InvalidOperationException($"Invalid property name '{name.Value}' for {this.map.MappingType.Name}.");
             }
 
-            var propertyIsString = property.Property.PropertyType == typeof(string);
+            var propertyIsString = property.IsStringType;
 
             if (propertyIsString == true && matchCase == false)
             {

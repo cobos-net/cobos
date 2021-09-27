@@ -36,12 +36,12 @@ namespace Cobos.Data.Tests.Mapping
             var property = map["TestInteger"];
             Assert.IsNotNull(property);
             Assert.AreEqual("Integer", property.Column);
-            Assert.AreEqual(typeof(int), property.Property.PropertyType);
+            Assert.AreEqual(typeof(int), property.PropertyType);
 
             property = map["TestString"];
             Assert.IsNotNull(property);
             Assert.AreEqual("String", property.Column);
-            Assert.AreEqual(typeof(string), property.Property.PropertyType);
+            Assert.AreEqual(typeof(string), property.PropertyType);
         }
 
         /// <summary>
@@ -59,12 +59,12 @@ namespace Cobos.Data.Tests.Mapping
             PropertyDescriptor property = map["TestReference1.TestInteger"];
             Assert.IsNotNull(property);
             Assert.AreEqual("Reference1Integer", property.Column);
-            Assert.AreEqual(typeof(int), property.Property.PropertyType);
+            Assert.AreEqual(typeof(int), property.PropertyType);
 
             property = map["TestReference1.TestString"];
             Assert.IsNotNull(property);
             Assert.AreEqual("Reference1String", property.Column);
-            Assert.AreEqual(typeof(string), property.Property.PropertyType);
+            Assert.AreEqual(typeof(string), property.PropertyType);
         }
 
         /// <summary>
@@ -82,12 +82,12 @@ namespace Cobos.Data.Tests.Mapping
             PropertyDescriptor property = map["TestReference1.TestObject.TestInteger"];
             Assert.IsNotNull(property);
             Assert.AreEqual("Reference2Integer", property.Column);
-            Assert.AreEqual(typeof(int), property.Property.PropertyType);
+            Assert.AreEqual(typeof(int), property.PropertyType);
 
             property = map["TestReference1.TestObject.TestString"];
             Assert.IsNotNull(property);
             Assert.AreEqual("Reference2String", property.Column);
-            Assert.AreEqual(typeof(string), property.Property.PropertyType);
+            Assert.AreEqual(typeof(string), property.PropertyType);
         }
 
         /// <summary>
@@ -106,22 +106,22 @@ namespace Cobos.Data.Tests.Mapping
             var property = map["TestNested.TestNestedInteger"];
             Assert.IsNotNull(property);
             Assert.AreEqual("NestedInteger", property.Column);
-            Assert.AreEqual(typeof(int), property.Property.PropertyType);
+            Assert.AreEqual(typeof(int), property.PropertyType);
 
             property = map["TestNested.TestNestedString"];
             Assert.IsNotNull(property);
             Assert.AreEqual("NestedString", property.Column);
-            Assert.AreEqual(typeof(string), property.Property.PropertyType);
+            Assert.AreEqual(typeof(string), property.PropertyType);
 
             property = map["TestNested.TestObject.TestInteger"];
             Assert.IsNotNull(property);
             Assert.AreEqual("Reference1Integer", property.Column);
-            Assert.AreEqual(typeof(int), property.Property.PropertyType);
+            Assert.AreEqual(typeof(int), property.PropertyType);
 
             property = map["TestNested.TestObject.TestString"];
             Assert.IsNotNull(property);
             Assert.AreEqual("Reference1String", property.Column);
-            Assert.AreEqual(typeof(string), property.Property.PropertyType);
+            Assert.AreEqual(typeof(string), property.PropertyType);
         }
 
         /// <summary>
@@ -139,22 +139,22 @@ namespace Cobos.Data.Tests.Mapping
             PropertyDescriptor property = map["TestChild.TestInteger"];
             Assert.IsNotNull(property);
             Assert.AreEqual("Integer", property.Column);
-            Assert.AreEqual(typeof(int), property.Property.PropertyType);
+            Assert.AreEqual(typeof(int), property.PropertyType);
 
             property = map["TestChild.TestString"];
             Assert.IsNotNull(property);
             Assert.AreEqual("String", property.Column);
-            Assert.AreEqual(typeof(string), property.Property.PropertyType);
+            Assert.AreEqual(typeof(string), property.PropertyType);
 
             property = map["TestChild.TestReference1.TestInteger"];
             Assert.IsNotNull(property);
             Assert.AreEqual("Reference1Integer", property.Column);
-            Assert.AreEqual(typeof(int), property.Property.PropertyType);
+            Assert.AreEqual(typeof(int), property.PropertyType);
 
             property = map["TestChild.TestReference1.TestString"];
             Assert.IsNotNull(property);
             Assert.AreEqual("Reference1String", property.Column);
-            Assert.AreEqual(typeof(string), property.Property.PropertyType);
+            Assert.AreEqual(typeof(string), property.PropertyType);
         }
 
         /// <summary>
@@ -173,12 +173,12 @@ namespace Cobos.Data.Tests.Mapping
             var property = map["TestChild.TestChild.TestInteger"];
             Assert.IsNotNull(property);
             Assert.AreEqual("Integer", property.Column);
-            Assert.AreEqual(typeof(int), property.Property.PropertyType);
+            Assert.AreEqual(typeof(int), property.PropertyType);
 
             property = map["TestChild.TestChild.TestChild.TestChild.TestChild.TestString"];
             Assert.IsNotNull(property);
             Assert.AreEqual("String", property.Column);
-            Assert.AreEqual(typeof(string), property.Property.PropertyType);
+            Assert.AreEqual(typeof(string), property.PropertyType);
         }
 
         /// <summary>
@@ -196,22 +196,22 @@ namespace Cobos.Data.Tests.Mapping
             PropertyDescriptor property = map["TestReference1.TestNoColumnName"];
             Assert.IsNotNull(property);
             Assert.AreEqual("TestNoColumnName", property.Column);
-            Assert.AreEqual(typeof(float), property.Property.PropertyType);
+            Assert.AreEqual(typeof(float), property.PropertyType);
 
             property = map["TestNoTableName.TestInteger"];
             Assert.IsNotNull(property);
             Assert.AreEqual("Integer", property.Column);
-            Assert.AreEqual(typeof(int), property.Property.PropertyType);
+            Assert.AreEqual(typeof(int), property.PropertyType);
 
             property = map["TestNoTableName.TestString"];
             Assert.IsNotNull(property);
             Assert.AreEqual("String", property.Column);
-            Assert.AreEqual(typeof(string), property.Property.PropertyType);
+            Assert.AreEqual(typeof(string), property.PropertyType);
 
             property = map["TestNoTableName.TestNoColumnName"];
             Assert.IsNotNull(property);
             Assert.AreEqual("TestNoColumnName", property.Column);
-            Assert.AreEqual(typeof(float), property.Property.PropertyType);
+            Assert.AreEqual(typeof(float), property.PropertyType);
         }
 
         /// <summary>
@@ -229,7 +229,7 @@ namespace Cobos.Data.Tests.Mapping
             PropertyDescriptor property = map["NullableInt"];
             Assert.IsNotNull(property);
             Assert.AreEqual("NullableInt", property.Column);
-            Assert.AreEqual(typeof(int?), property.Property.PropertyType);
+            Assert.AreEqual(typeof(int?), property.PropertyType);
         }
 
         /// <summary>

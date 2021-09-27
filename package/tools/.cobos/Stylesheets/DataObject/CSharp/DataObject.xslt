@@ -182,13 +182,16 @@
     <xsl:value-of select="concat($indent, '[global::Cobos.Data.Mapping.Table(Name = &quot;', @dbTable, '&quot;)]')"/>
     <xsl:value-of select="concat($indent, '[global::Cobos.Data.Mapping.Column(Name = &quot;', @dbColumn, '&quot;)]')"/>
     <xsl:if test="@converter">
+      <xsl:variable name="converterSourceType">
+        <xsl:apply-templates select="@dbType" mode="propertyType" />
+      </xsl:variable>
       <xsl:variable name="converterTargetType">
         <xsl:apply-templates select="@converterTargetType" mode="propertyType" />
       </xsl:variable>
       <xsl:variable name="converterParameter">
         <xsl:apply-templates select="." mode="converterParameter"/>
       </xsl:variable>
-      <xsl:value-of select="concat($indent, '[global::Cobos.Data.Mapping.Converter(Converter = typeof(', @converter, '), ConverterTargetType = typeof(', $converterTargetType, '), ConverterParameter = ', $converterParameter ,')]')"/>
+      <xsl:value-of select="concat($indent, '[global::Cobos.Data.Mapping.Converter(ConverterType = typeof(', @converter, '), SourceType = typeof(', $converterSourceType, '), TargetType = typeof(', $converterTargetType, '), Parameter = ', $converterParameter ,')]')"/>
     </xsl:if>
   </xsl:template>
   <!-- 
