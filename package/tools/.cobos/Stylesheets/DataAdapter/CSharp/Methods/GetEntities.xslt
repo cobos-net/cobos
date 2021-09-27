@@ -81,7 +81,7 @@
   <xsl:template match="cobos:Object" mode="getEntityByMethodName">
     <xsl:variable name="object" select="."/>
     <xsl:for-each select="$databaseConstraintsNodeSet//xsd:key//xsd:field[translate(../xsd:selector/@xpath, $lowercase, $uppercase) = concat('.//', translate($object/@dbTable, $lowercase, $uppercase))]">
-      <xsl:variable name="property" select="$object//cobos:Property[translate(@dbColumn, $lowercase, $uppercase) = translate(current()/@xpath, $lowercase, $uppercase)]"/>
+      <xsl:variable name="property" select="$object//cobos:Property[not(@dbAlias) and (translate(@dbColumn, $lowercase, $uppercase) = translate(current()/@xpath, $lowercase, $uppercase))]"/>
       <xsl:apply-templates select="$property" mode="getEntityByMethodNamePath"/>
     </xsl:for-each>
   </xsl:template>
@@ -100,7 +100,7 @@
   <xsl:template match="cobos:Object" mode="getEntityByMethodParams">
     <xsl:variable name="object" select="."/>
     <xsl:for-each select="$databaseConstraintsNodeSet//xsd:key//xsd:field[translate(../xsd:selector/@xpath, $lowercase, $uppercase) = concat('.//', translate($object/@dbTable, $lowercase, $uppercase))]">
-      <xsl:apply-templates select="$object//cobos:Property[translate(@dbColumn, $lowercase, $uppercase) = translate(current()/@xpath, $lowercase, $uppercase)]" mode="getEntityByMethodParamValue"/>
+      <xsl:apply-templates select="$object//cobos:Property[not(@dbAlias) and (translate(@dbColumn, $lowercase, $uppercase) = translate(current()/@xpath, $lowercase, $uppercase))]" mode="getEntityByMethodParamValue"/>
       <xsl:if test="not(position() = last())">
         <xsl:text>, </xsl:text>
       </xsl:if>
