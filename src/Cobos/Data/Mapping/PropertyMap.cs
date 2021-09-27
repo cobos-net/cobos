@@ -59,17 +59,26 @@ namespace Cobos.Data.Mapping
                 if (index != -1)
                 {
                     var propertyName = path.Substring(0, index);
-                    path = path.Substring(index + 1);
+                    var childPath = path.Substring(index + 1);
 
-                    return this.children[propertyName][path];
+                    if (this.children.TryGetValue(propertyName, out var child))
+                    {
+                        return child[childPath];
+                    }
+                    else
+                    {
+                        throw new ArgumentOutOfRangeException("path", $"Invalid property name ({path})");
+                    }
                 }
 
                 if (this.properties.TryGetValue(path, out var property) == true)
                 {
                     return property;
                 }
-
-                return null;
+                else
+                {
+                    throw new ArgumentOutOfRangeException("path", $"Invalid property name ({path})");
+                }
             }
 
             set

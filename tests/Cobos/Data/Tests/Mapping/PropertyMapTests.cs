@@ -244,10 +244,24 @@ namespace Cobos.Data.Tests.Mapping
             // Act.
             PropertyMap map = PropertyMapRegistry.Instance[typeof(TestClass)];
             Assert.IsNotNull(map);
-            PropertyDescriptor property = map["ArrayIgnored"];
-            Assert.IsNull(property);
-            property = map["ListIgnored"];
-            Assert.IsNull(property);
+
+            try
+            {
+                PropertyDescriptor property = map["ArrayIgnored"];
+            }
+            catch (System.ArgumentOutOfRangeException e)
+            {
+                Assert.IsTrue(e.Message.Contains("Invalid property name (ArrayIgnored)"));
+            }
+
+            try
+            {
+                PropertyDescriptor property = map["ListIgnored"];
+            }
+            catch (System.ArgumentOutOfRangeException e)
+            {
+                Assert.IsTrue(e.Message.Contains("Invalid property name (ListIgnored)"));
+            }
         }
 
         /// <summary>
