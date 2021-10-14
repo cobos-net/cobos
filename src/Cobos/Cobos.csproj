@@ -7,7 +7,7 @@
 
   <PropertyGroup Label="NuGet">
     <PackageId>Cobos</PackageId>
-    <Version>1.0.0</Version>
+    <Version>$(AssemblyVersion)</Version>
     <Authors>Nicholas Davis</Authors>
     <Company>Cobos Open Source</Company>
     <Description>
@@ -22,63 +22,63 @@
   <Import Project="..\..\package\build\cobos.tools.targets" />
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <PackageReference Include="Microsoft.Build.Framework" Version="16.11.0" />
-    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="16.11.0" />
-    <PackageReference Include="MySql.Data" Version="8.0.26" />
-    <PackageReference Include="Npgsql" Version="5.0.7" />
-    <PackageReference Include="Oracle.ManagedDataAccess" Version="21.3.0">
+    <PackageReference Include="Microsoft.Build.Framework" Version="[16.11.0]" />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="[16.11.0]" />
+    <PackageReference Include="MySql.Data" Version="[8.0.26]" />
+    <PackageReference Include="Npgsql" Version="[5.0.7]" />
+    <PackageReference Include="Oracle.ManagedDataAccess" Version="[21.3.0]">
       <NoWarn>NU1701</NoWarn>
     </PackageReference>
-    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
+    <PackageReference Include="System.Data.DataSetExtensions" Version="[4.5.0]" />
+    <PackageReference Include="System.Data.SqlClient" Version="[4.8.2]" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net45'">
-    <PackageReference Include="Microsoft.Build.Framework" Version="14.3.0" />
-    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="14.3.0" />
-    <PackageReference Include="MySql.Data" Version="6.7.9" />
-    <PackageReference Include="Npgsql" Version="3.2.7" />
-    <PackageReference Include="Oracle.ManagedDataAccess" Version="19.12.0">
+    <PackageReference Include="Microsoft.Build.Framework" Version="[14.3.0]" />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="[14.3.0]" />
+    <PackageReference Include="MySql.Data" Version="[6.7.9]" />
+    <PackageReference Include="Npgsql" Version="[3.2.7]" />
+    <PackageReference Include="Oracle.ManagedDataAccess" Version="[19.12.0]">
       <NoWarn>NU1701</NoWarn>
     </PackageReference>
-    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.1.0-rc2-24027" />
+    <PackageReference Include="System.Data.DataSetExtensions" Version="[4.5.0]" />
+    <PackageReference Include="System.Data.SqlClient" Version="[4.1.0-rc2-24027]" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net451'">
-    <PackageReference Include="Microsoft.Build.Framework" Version="14.3.0" />
-    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="14.3.0" />
-    <PackageReference Include="MySql.Data" Version="6.7.9" />
-    <PackageReference Include="Npgsql" Version="3.2.7" />
-    <PackageReference Include="Oracle.ManagedDataAccess" Version="19.12.0">
+    <PackageReference Include="Microsoft.Build.Framework" Version="[14.3.0]" />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="[14.3.0]" />
+    <PackageReference Include="MySql.Data" Version="[6.7.9]" />
+    <PackageReference Include="Npgsql" Version="[3.2.7]" />
+    <PackageReference Include="Oracle.ManagedDataAccess" Version="[19.12.0]">
       <NoWarn>NU1701</NoWarn>
     </PackageReference>
-    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
+    <PackageReference Include="System.Data.DataSetExtensions" Version="[4.5.0]" />
+    <PackageReference Include="System.Data.SqlClient" Version="[4.8.2]" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net46'">
-    <PackageReference Include="Microsoft.Build.Framework" Version="15.9.20" />
-    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.9.20" />
-    <PackageReference Include="MySql.Data" Version="8.0.26" />
-    <PackageReference Include="Npgsql" Version="3.2.7" />
-    <PackageReference Include="Oracle.ManagedDataAccess" Version="19.12.0">
+    <PackageReference Include="Microsoft.Build.Framework" Version="[15.9.20]" />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="[15.9.20]" />
+    <PackageReference Include="MySql.Data" Version="[8.0.26]" />
+    <PackageReference Include="Npgsql" Version="[3.2.7]" />
+    <PackageReference Include="Oracle.ManagedDataAccess" Version="[19.12.0]">
       <NoWarn>NU1701</NoWarn>
     </PackageReference>
-    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
+    <PackageReference Include="System.Data.DataSetExtensions" Version="[4.5.0]" />
+    <PackageReference Include="System.Data.SqlClient" Version="[4.8.2]" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
-    <PackageReference Include="Microsoft.Build.Framework" Version="16.11.0" />
-    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="16.11.0" />
-    <PackageReference Include="MySql.Data" Version="8.0.26" />
-    <PackageReference Include="Npgsql" Version="3.2.7" />
-    <PackageReference Include="Oracle.ManagedDataAccess" Version="19.12.0">
+    <PackageReference Include="Microsoft.Build.Framework" Version="[16.11.0]" />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="[16.11.0]" />
+    <PackageReference Include="MySql.Data" Version="[8.0.26]" />
+    <PackageReference Include="Npgsql" Version="[3.2.7]" />
+    <PackageReference Include="Oracle.ManagedDataAccess" Version="[19.12.0]">
       <NoWarn>NU1701</NoWarn>
     </PackageReference>
-    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
+    <PackageReference Include="System.Data.DataSetExtensions" Version="[4.5.0]" />
+    <PackageReference Include="System.Data.SqlClient" Version="[4.8.2]" />
   </ItemGroup>
 
   <ItemGroup>

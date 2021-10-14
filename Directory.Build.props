@@ -1,0 +1,24 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup Label="Global Properties">
+    <CurrentDate>$([System.DateTime]::Now.ToString(yyyyMMdd-mmss))</CurrentDate>
+    <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Assembly Information">
+    <Company>Cobos Open Source</Company>
+    <Configuration>$(Configuration) Build</Configuration>
+    <Copyright>Copyright (c) 2009-$(CurrentYear) Nicholas Davis</Copyright>
+    <Description>Cobos Data Access Toolkit.</Description>
+    <FileVersion>1.0.2.0</FileVersion>
+    <InformationalVersion>1.0.1.0</InformationalVersion>
+    <Product>Cobos Core SDK for .NET</Product>
+    <!-- <AssemblyTitle></AssemblyTitle> -->
+    <AssemblyVersion>1.0.1</AssemblyVersion>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  
+</Project>
